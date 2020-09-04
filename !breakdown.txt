@@ -1,0 +1,48 @@
+= administrators, doctors,  nurses  and  patients
+
+= (unique  within  their  groups,  for  instance,  a  doctor  has  a  unique  doctor  id,  a  patient  hasa unique  patient  id,  if a  doctor  becomes  a  patient,  a  unique  patient  id  is  assigned  to  him/her), last  name,  first  name,  date  of  birth, mailing address(please  break  down  into  smaller components), and contact phone number
+= each doctor may also several specialties stored in the DB.
+
+
+
+= Anyone who wants to see a doctor at the clinic has to make an appointment first
+= If she is new,  a  nurse  first  creates  a  patient  record  first.
+= Then  she  helps  the  patient  to setup  an appointment  with  a  doctor  on  a  specific  date  and  time.
+= The  reasons  for  the  appointment should  also  be  specified
+= The  system  doesn't  store  which  user  helped  withregistering  the patient.Note that patient's personal information should also editable by a nurseand a patient may  be  deleted  by  a  nurse  if  the  patient  doesn't  have  any  appointments  associated  with him/her.
+= Double-booking  should  be  disallowed,  i.e.,  the  same  doctor  should  not  be  booked for different patients at the same time on the same day.
+
+
+
+= When thepatient comes inon the appointment date, a nurse (who may not be the person who registers the patient) does routine checks (blood pressureincluding systolic and diastolic reading,  body  temperature,  pulse)  and  asks  him  about  his  symptoms  and  records  theinformation in the system. 
+= The doctor then comes in and tries to  make diagnoses.Sh/e may have to order some lab tests before diagnoses can be made. in that case, the initial diagnoses are  recorded  first.
+= And  the  final  diagnoses  will  be  appended  after  the test  results  are  out.
+= When  ordering  tests,  one  can  select  which  tests  among  a  list  of  standard  tests  to  order,  the programshould  show  all  the  tests  that  are  ordered for  the  visit so  that  it's  clear  to  the  user. 
+= Before the order is submitted, one can remove from or add tests to the list
+
+
+
+= the lab tests may or may not beperformed on the same day of thevisit. The test result typically will not be available until several days later. In any case, the nurse has to record the datetime whenthe tests areperformed, what the test resultsare and what diagnoses made by the  doctor are based  on  the  test  results  (in  case  diagnoses  were  not  made  right  away  at  the time of visit) for that particular visit in the system.
+
+
+
+= In  all  the  cases,  the  nurse  does  the  bookkeeping  work  in  the  system  (for  instance,  for  a patient  visit,  recording  which  doctor  performed  the  checkup  and  made  what  diagnoses, ordered what tests, the test result, etc.
+=  To simplify the system, we omit the features that can be performed by doctors and patients. The typical tests include white blood cell (WBC), Low Density  Lipoproteins  (LDL),  hepatitis  A  test,  hepatitis  B  test,  and  so  on.  Each  test  has  a unique  test  code, and unique name. The  test  results  can  be  anything  (a  numericvalue,  or  a description).And the DB should also store ifthe test resultis abnormal or not.
+
+
+
+= the  nurses  must  authenticate  themselves  before  accessing  the  system.
+= Once  logged  in, the program should  show the  username  as  well  as  first  and  last  name  of  the  person  whois logged in. 
+= If it's a nurse, this nurse will be the person who performs the tasks, therefore, in the UI it should not let the user choose a nurse again
+
+
+
+= Other than the tasks mentioned above that a nurse can perform, a nurse can also search for a patient’spersonal information and visit information (e.g. diagnoses, tests performed and results, etc.) by his date of birth, or name (last name and first name), or combination of both
+== view the appointment information if the appointment time has passed
+== edit the details of the appointment if it is not the appointment date yet.
+== view the visit information (e.g. routine check results and any tests ordered and the results if available)
+== edit the visit by entering test results and final diagnosis. Once the final diagnosis is entered, visit information (e.g. test results, etc.) cannot be changed
+
+=   addition,  there  should  be  an  interface  provided  for  administers,  who  should  also authenticate  themselves  before  accessing  the  system. 
+= The  administrator  can  pose  queries  in SQL and view the resultin tabular format.
+
