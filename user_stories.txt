@@ -1,44 +1,58 @@
-As an Adminstrator:
+As an Administrator:
 
-= I want to log in to the data base.
-= I want to create SQL queries directly
+= I want to log in to the database.
+  So that I can read and write records directly as needed.
+= I want to execute SQL queries directly
+  So that I can read and write records directly as needed.
 = I want to view the result of queries in a tabular format
-
-
+  So that I can read the results of my queries.
 
 As a Doctor:
 
 = I want to read patients' data
+  So that I can get information to help diagnose the patient.
 = I want to record diagnoses
+  So that I will have information about the diagnosis of a patient on file for further follow-up care.
 = I want to be able to edit diagnoses as information is available
+  So that the patient file is up-to-date.
 = I want to be able to order lab tests
+  So that I can have information crucial to accurately diagnosing of the patient.
 = I want to choose from a set of currently available tests
+  So that I know what tests I can order.
 = I want to be able to remove erroneous or unnecessary tests
-
-
+  So that the patient file is accurate and only contains relevant information.
+= I want to be able to append final diagnoses to the diagnosis
 
 As a Nurse:
 
 = I want to log in to the database.
-= I want to Create records for new patients
-= I want to Setup appointments for patients
-= I want to Enter appointment specifications
-= I want to Edit a registered to self patient's information
-= I want to Prevent accidental double/multi booking of appointments
+  So that I can work with the records in the database.
+= I want to create records for new patients
+  So that patients can be registered in the system.
+= I want to setup appointments for patients
+  So that patients, nurses, and the doctors know when the patient will come.
+= I want to edit patient information
+  So that all patient information is accurate and up-to-date.
 = I want to record patient checkup status information
-= I want to be able to append final diagnoses to the diagnosis
-= I want to be able to order lab tests
-= I want to choose from a set of currently available tests
+  So that the rest of the medical team will be able to have vital statistics available.
+= I want to be able to input lab test results
+  So that the doctor has all the information needed to make an accurate diagnosis.
+= I want to be able to input final diagnoses
+  So that the patient’s record is up-to-date and allows for further follow-up if required.
 = I want to be able to remove erroneous or unnecessary tests
-= I want to register which doctor occured on the visit
+  So that the patient's record only contains relevant information.
+= I want to register which doctor tended to the patient on the visit
+  So that the patient’s record is accurate and allows for further follow-up if required.
 = I want to search for patients by their information
+  So that I can register new appointments or modify their information.
 = I want to view/edit appointment details if the appointments are not yet finished
-
-
-
+  So that I can reschedule the appointment if necessary.
 
 As a Patient:
 
 = I want to log into the database.
-= I want to register for an appointment with the help of a nurse
+  So that I can register for an appointment.
 = I want to register for an appointment without help
+  So that I can get an appointment with the doctor.
+= I want to register for an appointment with the help of a nurse
+  So that I can get assistance with setting up an appointment if I am unable to do it myself.
