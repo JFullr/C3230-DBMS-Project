@@ -1,58 +1,40 @@
 As an Administrator:
 
-= I want to log in to the database.
-  So that I can read and write records directly as needed.
-= I want to execute SQL queries directly
-  So that I can read and write records directly as needed.
-= I want to view the result of queries in a tabular format
-  So that I can read the results of my queries.
-
-As a Doctor:
-
-= I want to read patients' data
-  So that I can get information to help diagnose the patient.
-= I want to record diagnoses
-  So that I will have information about the diagnosis of a patient on file for further follow-up care.
-= I want to be able to edit diagnoses as information is available
-  So that the patient file is up-to-date.
-= I want to be able to order lab tests
-  So that I can have information crucial to accurately diagnosing of the patient.
-= I want to choose from a set of currently available tests
-  So that I know what tests I can order.
-= I want to be able to remove erroneous or unnecessary tests
-  So that the patient file is accurate and only contains relevant information.
-= I want to be able to append final diagnoses to the diagnosis
+= As an administrator, I would like to be able to log into the database 
+so that I can read and write records directly as needed.
+= As an administrator, I want to execute SQL queries directly 
+so that I can read and write records directly as needed.
+= As an administrator, I want to be able to view the results of my SQL queries as a table 
+so that I can read the records from the database.
+= As an administrator, I want to be able to view a log of any changes made to the database 
+so that the security of the system can be maintained and allow for auditing.
 
 As a Nurse:
-
-= I want to log in to the database.
-  So that I can work with the records in the database.
-= I want to create records for new patients
-  So that patients can be registered in the system.
-= I want to setup appointments for patients
-  So that patients, nurses, and the doctors know when the patient will come.
-= I want to edit patient information
-  So that all patient information is accurate and up-to-date.
-= I want to record patient checkup status information
-  So that the rest of the medical team will be able to have vital statistics available.
-= I want to be able to input lab test results
-  So that the doctor has all the information needed to make an accurate diagnosis.
-= I want to be able to input final diagnoses
-  So that the patient’s record is up-to-date and allows for further follow-up if required.
-= I want to be able to remove erroneous or unnecessary tests
-  So that the patient's record only contains relevant information.
-= I want to register which doctor tended to the patient on the visit
-  So that the patient’s record is accurate and allows for further follow-up if required.
-= I want to search for patients by their information
-  So that I can register new appointments or modify their information.
-= I want to view/edit appointment details if the appointments are not yet finished
-  So that I can reschedule the appointment if necessary.
-
-As a Patient:
-
-= I want to log into the database.
-  So that I can register for an appointment.
-= I want to register for an appointment without help
-  So that I can get an appointment with the doctor.
-= I want to register for an appointment with the help of a nurse
-  So that I can get assistance with setting up an appointment if I am unable to do it myself.
+= As a nurse, I want to be able to log in to the system 
+so that I can work with the records in the database.
+= As a nurse, I want to be able to create new patient records 
+so that a record of the patient's care is available for future reference.
+= As a nurse, I want to be able to setup appointments for patients 
+so that patients, nurses, and the doctors know when the patient will come to their appointment.
+= As a nurse, I want to be able to edit patient information 
+so that all patient information is accurate and up-to-date.
+= As a nurse, I want to be able to input initial diagnoses 
+so that the patient’s record is up-to-date and allows for further follow-up if required.
+= As a nurse, I want to be able to search for patients by their information 
+so that I can register new appointments or modify their information.
+= As a nurse, I want to be able to edit appointments 
+so that I can reschedule appointments or make accommodations for the patient as necessary.
+= As a nurse, I want to be able to view visit information 
+so that I have a prior record of the patient's visits to the client.
+= As a nurse, I want to be able to edit any initial diagnoses as a part of an appointment 
+so that the patient's file is up-to-date.
+= As a nurse, I want to record patient checkup status information 
+so that the rest of the medical team will be able to have vital statistics available.
+= As a nurse, I want to be able to input lab test results 
+so that the doctor has all the information needed to make an accurate diagnosis.
+= As a nurse, I want to be able to input final diagnoses 
+so that the patient’s record is up-to-date and allows for further follow-up if required.
+= As a nurse, I want to be able to choose from a set of currently available tests 
+so that I can order a test for a patient.
+= As a nurse, I want to be able to order lab tests 
+so that I will have relevant information needed to diagnose the patient.
