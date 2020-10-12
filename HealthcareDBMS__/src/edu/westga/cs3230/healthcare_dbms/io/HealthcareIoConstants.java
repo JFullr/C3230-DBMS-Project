@@ -5,7 +5,7 @@ package edu.westga.cs3230.healthcare_dbms.io;
  */
 public class HealthcareIoConstants {
 	
-	public static final String SERVER_ADDRESS = "sql://127.0.0.1:6600";
+	public static final String SERVER_ADDRESS = "jdbc:mysql://127.0.0.1:6600/cs3230f20i";
 	
 	public static final String NULL = "NULL";
 	

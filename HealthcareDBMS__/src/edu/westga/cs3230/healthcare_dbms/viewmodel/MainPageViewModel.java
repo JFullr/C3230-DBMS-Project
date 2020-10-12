@@ -6,6 +6,8 @@ import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.model.raw.RawQueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.raw.QueryResultStorage;
 
+import static edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants.SERVER_ADDRESS;
+
 /**
  * View-model for the MainPageCodeBehind.
  *
@@ -26,7 +28,7 @@ public class MainPageViewModel {
 	 */
 	public MainPageViewModel() {
 		this.queryResults = new QueryResultStorage();
-		this.database = new DatabaseConnector();
+		this.database = new DatabaseConnector(SERVER_ADDRESS);
 	}
 	
 	public ArrayList<RawQueryResult> getLastResult() {
