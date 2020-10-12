@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class SqlTypeConverter {
 	
-	//https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-type-conversions.html
+	//
 	private static HashMap<String, SQL_TYPE> externalConvert;
 	static {
 		externalConvert = new HashMap<String, SQL_TYPE>();
@@ -25,6 +25,7 @@ public class SqlTypeConverter {
 		externalConvert.put("TINYINT", SQL_TYPE.INT);
 		externalConvert.put("SMALLINT", SQL_TYPE.INT);
 		externalConvert.put("MEDIUMINT", SQL_TYPE.INT);
+		externalConvert.put("INT", SQL_TYPE.INT);
 		externalConvert.put("INTEGER", SQL_TYPE.INT);
 		externalConvert.put("BIGINT", SQL_TYPE.INT);
 		
@@ -46,7 +47,7 @@ public class SqlTypeConverter {
 		case BOOLEAN:
 			return (Boolean) rs.getBoolean(label);
 		case CHAR:
-			return (Byte) rs.getByte(label);
+			return (Character) (rs.getString(label).charAt(0));
 		case DATE:
 			return (Date) rs.getDate(label);
 		case DOUBLE:

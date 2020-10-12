@@ -12,13 +12,15 @@ public class HealthcareDatabase {
 	
 	private List<HealthcareQueryResult> loadedQueries;
 	private HealthcareDatabaseClient client;
+	private String dbUrl;
 	
 	/**
 	 * Instantiates a new database.
 	 */
-	public HealthcareDatabase() {
+	public HealthcareDatabase(String dbUrl) {
+		this.dbUrl = dbUrl;
 		this.loadedQueries = new LinkedList<HealthcareQueryResult>();
-		this.client = new HealthcareDatabaseClient(this.loadedQueries);
+		this.client = new HealthcareDatabaseClient(this.dbUrl, this.loadedQueries);
 	}
 	
 	/**

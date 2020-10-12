@@ -23,6 +23,7 @@ import javafx.scene.control.ListView;
 public class MainPageCodeBehind {
 
 	private static final String LOGIN_GUI = "LoginGui.fxml";
+	private static final String DB_URL = "";
 
 	@FXML
 	private Button loginButton;
@@ -55,7 +56,7 @@ public class MainPageCodeBehind {
 	 * Instantiates a new MainPageCodeBehind.
 	 */
 	public MainPageCodeBehind() {
-		this.viewModel = new MainPageViewModel();
+		this.viewModel = new MainPageViewModel(DB_URL);
 		this.viewModel.loadDataFromDatabase();
 		this.embedHandler = new HealthcareEmbedHandler(this.viewModel.getQueryStorage());
 	}

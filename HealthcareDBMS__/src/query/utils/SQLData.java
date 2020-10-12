@@ -22,5 +22,8 @@ public class SQLData {
 		return type;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return this.attribute + "(" + this.type + "): " + this.value;
+	}
 }

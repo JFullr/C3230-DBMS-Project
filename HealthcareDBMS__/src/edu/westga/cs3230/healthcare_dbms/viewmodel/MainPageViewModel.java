@@ -24,9 +24,9 @@ public class MainPageViewModel {
 	 * @postcondition 
 	 * 
 	 */
-	public MainPageViewModel() {
+	public MainPageViewModel(String dbUrl) {
 		this.queryResults = new QueryResultStorage();
-		this.database = new HealthcareDatabase();
+		this.database = new HealthcareDatabase(dbUrl);
 	}
 
 

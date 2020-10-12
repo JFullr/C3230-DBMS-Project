@@ -38,10 +38,15 @@ public class SQLManager {
 			ResultSetMetaData meta = rs.getMetaData();
 			
 			for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-				String labelName = meta.getCatalogName(i);
-				String typename = rs.getMetaData().getColumnTypeName(i);
+				String labelName = meta.getColumnName(i);
+				String typename = meta.getColumnTypeName(i);
 				SQL_TYPE type = SqlTypeConverter.convertFrom(typename);
+				
 				Object obj = SqlTypeConverter.convertObject(rs, labelName, type);
+				if(type == SQL_TYPE.STRING && meta.getPrecision(i) == 1) {
+					obj = ((String)obj).charAt(0);
+					type = SQL_TYPE.CHAR;
+				}
 				
 				attributes.put(labelName, new SQLData(labelName, obj, type));
 			}
