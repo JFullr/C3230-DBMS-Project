@@ -1,6 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.view.embed;
 
-import edu.westga.cs3230.healthcare_dbms.model.RawQueryResult;
+import edu.westga.cs3230.healthcare_dbms.model.raw.RawQueryResult;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLContainer;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.HealthcareEmbedHeaderViewModel;
 import javafx.scene.layout.Pane;

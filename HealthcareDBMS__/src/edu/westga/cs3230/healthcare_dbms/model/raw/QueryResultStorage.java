@@ -1,4 +1,4 @@
-package edu.westga.cs3230.healthcare_dbms.model;
+package edu.westga.cs3230.healthcare_dbms.model.raw;
 
 import java.util.ArrayList;
 
