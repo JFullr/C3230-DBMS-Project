@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class QueryResultStorage {
 	
-	private ArrayList<ArrayList<HealthcareQueryResult>> results;
+	private ArrayList<ArrayList<RawQueryResult>> results;
 	
 	public QueryResultStorage() {
-		this.results = new ArrayList<ArrayList<HealthcareQueryResult>>();
+		this.results = new ArrayList<ArrayList<RawQueryResult>>();
 	}
 	
-	public ArrayList<HealthcareQueryResult> getLatestResults() {
+	public ArrayList<RawQueryResult> getLatestResults() {
 		if(this.results.size() < 1) {
 			return null;
 		}

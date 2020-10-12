@@ -1,6 +1,5 @@
 package edu.westga.cs3230.healthcare_dbms.view;
 
-import edu.westga.cs3230.healthcare_dbms.model.HealthcareQueryResult;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
 import edu.westga.cs3230.healthcare_dbms.view.embed.HealthcareEmbed;
 import edu.westga.cs3230.healthcare_dbms.view.embed.HealthcareEmbedHandler;
@@ -23,7 +22,6 @@ import javafx.scene.control.ListView;
 public class MainPageCodeBehind {
 
 	private static final String LOGIN_GUI = "LoginGui.fxml";
-	private static final String DB_URL = "";
 
 	@FXML
 	private Button loginButton;
@@ -56,9 +54,8 @@ public class MainPageCodeBehind {
 	 * Instantiates a new MainPageCodeBehind.
 	 */
 	public MainPageCodeBehind() {
-		this.viewModel = new MainPageViewModel(DB_URL);
-		this.viewModel.loadDataFromDatabase();
-		this.embedHandler = new HealthcareEmbedHandler(this.viewModel.getQueryStorage());
+		this.viewModel = new MainPageViewModel();
+		this.embedHandler = new HealthcareEmbedHandler();
 	}
 
 	@FXML
@@ -100,38 +97,14 @@ public class MainPageCodeBehind {
 		}
 	}
 
-	
-	public void handleUpdateQueryListView() {
-		//TODO update from future query buttons
-		this.embedHandler.updateQueryEmbeds();
-	}
-	
-	public boolean doLogin(LoginViewModel data) {
-		
-		///TODO dummy escape handler, waiting on implementation of database
-		int a = 42;
-		if(a == 42) {
-			///change to true to see action success
-			return false;
-		}
-		
+	private boolean doLogin(LoginViewModel data) {
 		String username = data.getNameProperty().getValue();
 		String password = data.getPasswordProperty().getValue();
-		
-		///TODO use parameterized query later on, currently plaintext, no encryption
-		this.viewModel.callQuery(null);//login query with username passed as PK to find
-		
-		//more than one user gotten illegal, failure
-		if(this.viewModel.getLastResult().size() != 1) {
-			return false;
-		}
-		
-		HealthcareQueryResult loginResult = this.viewModel.getLastResult().get(0);
-		String resultPassword = (String)loginResult.getTuples().get(0).get("password").getValue();
-		
-		return resultPassword.equals(resultPassword);
+
+		// TODO: DB hookup
+		this.viewModel.attemptLogin(username, password);
+		return true;
 	}
-	
 
 	/**
 	 * Updates the display with the login name, and user type

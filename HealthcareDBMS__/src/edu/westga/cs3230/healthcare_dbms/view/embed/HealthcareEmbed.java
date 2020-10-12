@@ -1,6 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.view.embed;
 
-import edu.westga.cs3230.healthcare_dbms.model.HealthcareQueryResult;
+import edu.westga.cs3230.healthcare_dbms.model.RawQueryResult;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLContainer;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.HealthcareEmbedHeaderViewModel;
 import javafx.scene.layout.Pane;
@@ -23,7 +23,7 @@ public class HealthcareEmbed extends Pane {
 	/**
 	 * Instantiates a new healthcare embed.
 	 */
-	public HealthcareEmbed(HealthcareQueryResult resultToDisplay) {
+	public HealthcareEmbed(RawQueryResult resultToDisplay) {
 		this.createEmbedHeaderPane(resultToDisplay);
 		this.createEmbedDataPane(resultToDisplay);
 
@@ -61,27 +61,27 @@ public class HealthcareEmbed extends Pane {
 	
 	
 	
-	private void createEmbedBodyPane(HealthcareQueryResult result) {
+	private void createEmbedBodyPane(RawQueryResult result) {
 		this.dataBody = new FXMLContainer<HealthcareEmbedDataCodeBehind>(DATA_BODY_FILE);
 		this.assignBodyData(result);
 	}
 	
-	private void createEmbedHeaderPane(HealthcareQueryResult result) {
+	private void createEmbedHeaderPane(RawQueryResult result) {
 		this.header = new FXMLContainer<HealthcareEmbedHeaderCodeBehind>(HEADER_FILE);
 		this.assignHeaderData(result);
 	}
 
-	private void assignHeaderData(HealthcareQueryResult result) {
+	private void assignHeaderData(RawQueryResult result) {
 		HealthcareEmbedHeaderViewModel viewModel = this.header.getController().getViewModel();
 		
 	}
 
-	private void createEmbedDataPane(HealthcareQueryResult result) {
+	private void createEmbedDataPane(RawQueryResult result) {
 		this.dataBody = new FXMLContainer<HealthcareEmbedDataCodeBehind>(DATA_BODY_FILE);
 		this.assignBodyData(result);
 	}
 
-	private void assignBodyData(HealthcareQueryResult result) {
+	private void assignBodyData(RawQueryResult result) {
 		HealthcareEmbedHeaderViewModel viewModel = this.dataBody.getController().getViewModel();
 
 		//TODO inject tuples into list property or observable list
