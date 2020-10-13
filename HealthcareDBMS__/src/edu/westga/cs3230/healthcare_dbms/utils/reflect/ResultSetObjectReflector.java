@@ -13,7 +13,7 @@ public class ResultSetObjectReflector {
     private static Map<Class<?>, Map<String, Method>> setCache = new HashMap<Class<?>, Map<String, Method>>();
     //https://stackoverflow.com/questions/34843327/how-to-generically-populate-an-object-if-the-field-names-are-provided
 
-    public static <T> T reflect(T store, ResultSet set) throws SQLException, InvocationTargetException, IllegalAccessException {
+    public static <T> T reflect(T store, ResultSet set) throws SQLException {
         Map<String, Method> setters = getSetters(store.getClass());
         if (setters.keySet().isEmpty()) {
             return store;
@@ -28,14 +28,18 @@ public class ResultSetObjectReflector {
 
             // TODO: For now we only handle a few select data types
             Class<?> setterParameterType = entry.getValue().getParameterTypes()[0];
-            if (setterParameterType == int.class) {
-                entry.getValue().invoke(store, set.getInt(label));
-            } else if (setterParameterType == char.class) {
-                entry.getValue().invoke(store, set.getString(label).charAt(0));
-            } else if (setterParameterType == Date.class) {
-                entry.getValue().invoke(store, new Date(set.getDate(label).getTime()));
-            } else if (setterParameterType == String.class) {
-                entry.getValue().invoke(store, set.getString(label));
+            try {
+                if (setterParameterType == int.class) {
+                    entry.getValue().invoke(store, set.getInt(label));
+                } else if (setterParameterType == char.class) {
+                    entry.getValue().invoke(store, set.getString(label).charAt(0));
+                } else if (setterParameterType == Date.class) {
+                    entry.getValue().invoke(store, new Date(set.getDate(label).getTime()));
+                } else if (setterParameterType == String.class) {
+                    entry.getValue().invoke(store, set.getString(label));
+                }
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                throw new SQLException("Unable to invoke setter for " + entry.getKey(), e);
             }
         }
         return store;

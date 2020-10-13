@@ -1,5 +1,7 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
+import edu.westga.cs3230.healthcare_dbms.utils.reflect.DbName;
+
 import java.util.Date;
 
 public class Person {
@@ -20,6 +22,7 @@ public class Person {
         return personId;
     }
 
+    @DbName("person_id")
     public void setPersonId(int personId) {
         this.personId = personId;
     }
@@ -28,6 +31,7 @@ public class Person {
         return firstName;
     }
 
+    @DbName("fname")
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -36,6 +40,7 @@ public class Person {
         return lastName;
     }
 
+    @DbName("lname")
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -44,6 +49,7 @@ public class Person {
         return middleInitial;
     }
 
+    @DbName("middle_initial")
     public void setMiddleInitial(char middleInitial) {
         this.middleInitial = middleInitial;
     }
@@ -52,6 +58,7 @@ public class Person {
         return dateOfBirth;
     }
 
+    @DbName("DOB")
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
@@ -60,6 +67,7 @@ public class Person {
         return ssn;
     }
 
+    @DbName("SSN")
     public void setSsn(String ssn) {
         this.ssn = ssn;
     }
@@ -68,6 +76,7 @@ public class Person {
         return contactPhone;
     }
 
+    @DbName("contact_phone")
     public void setContactPhone(String contactPhone) {
         this.contactPhone = contactPhone;
     }
@@ -76,6 +85,7 @@ public class Person {
         return contactEmail;
     }
 
+    @DbName("contact_email")
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
@@ -84,6 +94,7 @@ public class Person {
         return mailingAddress;
     }
 
+    @DbName("mailing_address")
     public void setMailingAddress(String mailingAddress) {
         this.mailingAddress = mailingAddress;
     }

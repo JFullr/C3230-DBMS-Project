@@ -1,5 +1,7 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
+import edu.westga.cs3230.healthcare_dbms.utils.reflect.DbName;
+
 public class RegisteredUser {
     private int userId;
     private String userName;
@@ -13,6 +15,7 @@ public class RegisteredUser {
         return userId;
     }
 
+    @DbName("user_id")
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -21,6 +24,7 @@ public class RegisteredUser {
         return userName;
     }
 
+    @DbName("user_name")
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -29,6 +33,7 @@ public class RegisteredUser {
         return userType;
     }
 
+    @DbName("user_type")
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
@@ -37,6 +42,7 @@ public class RegisteredUser {
         return associatedPerson;
     }
 
+    @DbName("person_id")
     public void setAssociatedPerson(Person associatedPerson) {
         this.associatedPerson = associatedPerson;
     }
