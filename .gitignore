@@ -63,7 +63,10 @@ obj/
 
 #random
 *.zip
+*.7zip
 *.cscope_file_list
 
 #java
 *.class
+*.dll
+*.jar
