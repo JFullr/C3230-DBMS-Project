@@ -4,6 +4,8 @@ import java.time.chrono.Chronology;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.westga.cs3230.healthcare_dbms.model.Person;
+
 /**
  * Responsible for handling connections to the remote server and local database.
  */
@@ -66,10 +68,10 @@ public class HealthcareDatabase {
 		return null;
 	}
 
-	public QueryResult attemptAddPatient(String email, String phone, String dob, String fname, String lname, String address, String middleInitial, String ssn) {
+	public QueryResult attemptAddPatient(Person patient) {
 		try {
 			
-			QueryResult result = this.client.attemptAddPatient(email, phone, dob, fname, lname, address, middleInitial, ssn);
+			QueryResult result = this.client.attemptAddPatient(patient);
 			return result;
 		} catch(Exception e) {
 			e.printStackTrace();

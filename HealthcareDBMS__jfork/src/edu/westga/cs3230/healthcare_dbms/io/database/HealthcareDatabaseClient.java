@@ -52,7 +52,7 @@ public class HealthcareDatabaseClient {
 		// TODO check for correctness
 		String prepared = "select distinct r.user_name, r.user_id, p.fname, p.lname "
 						+ "from Person p, RegisteredUser r, UserPasswordStore ups "
-						+ "where p.user_id = r.user_id and r.user_name = ? and ups.password = ?";
+						+ "where p.person_id = r.person_id and r.user_name = ? and ups.password = ?";
 		
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
@@ -73,7 +73,7 @@ public class HealthcareDatabaseClient {
 		return this.lastResult;
 	}
 
-	public QueryResult attemptAddPatient(String email, String phone, String dob, String fname, String lname, String address, String middleInitial, String ssn) throws SQLException {
+	public QueryResult attemptAddPatient(Person patient) throws SQLException {
 		// TODO check for correctness
 		String prepared = "select ssn "
 						+ "from Person "
@@ -83,7 +83,7 @@ public class HealthcareDatabaseClient {
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
 				PreparedStatement stmt = con.prepareStatement(prepared);
 				) {
-			stmt.setString(1, ssn);
+			stmt.setString(1, ""+patient.getSSN());
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
 		}
@@ -91,11 +91,7 @@ public class HealthcareDatabaseClient {
 		this.lastResult = new QueryResult(manager.getTuples());
 		
 		if(this.lastResult == null || this.lastResult.getTuples().size() == 0) {
-			
-			Person person = new Person(email, phone, Date.valueOf(dob), fname, lname, 
-										address, middleInitial, ssn);
-			this.postDal.postTuple(person);
-			
+			this.postDal.postTuple(patient);
 		}
 		
 		return this.lastResult;

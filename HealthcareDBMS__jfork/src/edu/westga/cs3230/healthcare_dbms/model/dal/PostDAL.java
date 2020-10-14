@@ -3,9 +3,12 @@ package edu.westga.cs3230.healthcare_dbms.model.dal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
-import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
@@ -20,42 +23,43 @@ public class PostDAL {
 	public void postTuple(Object obj) throws SQLException {
 		
 		SqlTuple tuple = SqlGetter.getFrom(obj);
+		ArrayList<String> useAttributes = this.usingAttributes(obj);
+		String query = this.buildQueryFrom(obj, tuple, useAttributes);
 		
-		/*
-		String table = obj.getClass().getSimpleName();
-		ArrayList<String> attrOrder = new ArrayList<String>();
+		//System.out.println(query.toString());
 		
-		try (Connection con = DriverManager.getConnection(this.dbUrl)){
-			DatabaseMetaData meta = con.getMetaData();
-			ResultSet rs = meta.getTables(null, null, table, null);
+		try (Connection con = DriverManager.getConnection(this.dbUrl);
+				PreparedStatement stmt = con.prepareStatement(query.toString());
+				) {
 			
-			ResultSetMetaData tableMeta = rs.getMetaData();
-			for(int i = 1; i <= tableMeta.getColumnCount(); i++) {
-				String labelName = tableMeta.getColumnName(i);
-				attrOrder.add(labelName);
+			int j = 1;
+			for(String attr : useAttributes) {
+				//System.out.println(attr.toString());
+				stmt.setObject(j, tuple.get(attr).getValue());
+				j++;
 			}
+			//System.out.println(stmt);
+			int resultOperated = stmt.executeUpdate();
 			
-			rs.close();
 		}
 		
-		StringBuilder query = new StringBuilder("INSERT INTO TABLE ");
-		for(int i = 0; i < attrOrder.size(); i++) {
-			query.append("? ");
-		}
-		query.append("?;");
-		//*/
+	}
+	
+	private String buildQueryFrom(Object obj, SqlTuple tuple, ArrayList<String> useAttributes) {
 		
-		int attributeCount = tuple.getAttributes().size();
+		int attributeCount = useAttributes.size();
 		
-		StringBuilder query = new StringBuilder("INSERT INTO TABLE ");
+		StringBuilder query = new StringBuilder("INSERT INTO ");
 		query.append(obj.getClass().getSimpleName());
 		query.append("( ");
 		int i = 0;
-		for(SqlAttribute attr : tuple) {
-			query.append(attr.getAttribute());
+		for(String attr : useAttributes) {
+			//System.out.println(attr.toString());
+			query.append(tuple.get(attr).getAttribute());
 			if(i < attributeCount-1) {
 				query.append(", ");
 			}
+			i++;
 		}
 		query.append(") VALUES (");
 		
@@ -67,19 +71,30 @@ public class PostDAL {
 		}
 		query.append(");");
 		
+		return query.toString();
+	}
+	
+	private ArrayList<String> usingAttributes(Object data) throws SQLException{
+		
+		
+		ArrayList<String> useAttributes = new ArrayList<String>();
+		String table = data.getClass().getSimpleName();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				PreparedStatement stmt = con.prepareStatement(query.toString());
-				) {
-			
-			int j = 0;
-			for(SqlAttribute attr : tuple) {
-				stmt.setObject(j, attr.getValue());
-				j++;
+				Statement stmt = con.createStatement()){
+			ResultSet rs = stmt.executeQuery("SELECT * from "+table+" LIMIT 1");
+			ResultSetMetaData tableMeta = rs.getMetaData();
+			for(int i = 1; i <= tableMeta.getColumnCount(); i++) {
+				String labelName = tableMeta.getColumnName(i);
+				if(!tableMeta.isAutoIncrement(i)) {
+					useAttributes.add(labelName.toLowerCase());
+				}
+				
 			}
-			int resultOperated = stmt.executeUpdate();
 			
+			rs.close();
 		}
 		
+		return useAttributes;
 	}
 
 	

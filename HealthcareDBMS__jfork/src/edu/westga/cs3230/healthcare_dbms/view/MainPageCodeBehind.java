@@ -3,6 +3,7 @@ package edu.westga.cs3230.healthcare_dbms.view;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
+import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
 import edu.westga.cs3230.healthcare_dbms.view.embed.Embed;
 import edu.westga.cs3230.healthcare_dbms.view.embed.EmbedHandler;
@@ -133,20 +134,8 @@ public class MainPageCodeBehind {
 			AddPatientCodeBehind codeBehind = (AddPatientCodeBehind) window.getController();
 			window.setOnWindowClose((winEvent) -> {
 				
-				//codeBehind.setShortDbConnection(this)
-				
 				AddPatientViewModel patientData = codeBehind.getViewModel();
 				
-				/*
-				if (codeBehind.isAttemptingLogin()) {
-					if (!this.addPatient(patientData)) {
-						FXMLAlert.statusAlert("Login Status", ExceptionText.FAILED_LOGIN, "Login Failed", AlertType.ERROR);
-					} else {
-						FXMLAlert.statusAlert("Login Successful", AlertType.INFORMATION);
-						this.updateLoginDisplay();
-					}
-				}
-				/*/
 				if (codeBehind.isAttemptingAdd()) {
 					if (!this.attemptAddPatient(patientData)) {
 						FXMLAlert.statusAlert("Login Status", "Patient SSN already exists in the database.", "Add Patient Failed", AlertType.ERROR);
@@ -156,7 +145,6 @@ public class MainPageCodeBehind {
 						this.handleUpdateQueryListView();
 					}
 				}
-				//*/
 
 			});
 			window.show();
@@ -179,31 +167,16 @@ public class MainPageCodeBehind {
 		if (results == null || results.size() != 1) {
 			return false;
 		}
+		
+		this.viewModel.getLoggedInProperty().setValue(true);
 
 		return true;
 	}
 	
 	private boolean attemptAddPatient(AddPatientViewModel data) {
 		
-		String email = data.getContactEmailProperty().getValue();
-		String phone = data.getContactPhoneProperty().getValue();
-		String dob = data.getDobProperty().getValue().toString();
-		String fname = data.getFirstNameProperty().getValue();
-		String lname = data.getLastNameProperty().getValue();
-		String address = data.getMailingAddressProperty().getValue();
-		String middleInitial = data.getMiddleInitialProperty().getValue();
-		String ssn = data.getSsnProperty().getValue();
-		
-		if(!this.viewModel.attemptAddPatient(email, phone, dob, fname, lname, address, middleInitial, ssn)) {
-			return false;
-		}
-		
-		ArrayList<QueryResult> results = this.viewModel.getLastResults();
-		if (results == null || results.size() > 0) {
-			return false;
-		}
-		
-		return false;
+		Person patient = data.getPatient();
+		return this.viewModel.attemptAddPatient(patient);
 	}
 
 	private void addListeners() {

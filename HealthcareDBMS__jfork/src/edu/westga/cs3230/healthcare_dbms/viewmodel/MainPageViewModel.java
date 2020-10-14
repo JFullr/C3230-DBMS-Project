@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
+import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -142,9 +143,9 @@ public class MainPageViewModel {
 		return true;
 	}
 
-	public boolean attemptAddPatient(String email, String phone, String dob, String fname, String lname, String address, String middleInitial, String ssn) {
+	public boolean attemptAddPatient(Person patient) {
 		
-		QueryResult result = this.database.attemptAddPatient(email, phone, dob, fname, lname, address, middleInitial, ssn);
+		QueryResult result = this.database.attemptAddPatient(patient);
 		if (result == null || result.getTuples().size() == 0) {
 			return true;
 		}

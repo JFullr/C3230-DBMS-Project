@@ -37,47 +37,6 @@ public class SqlGetter {
 		
 	}
 	
-	/*
-	public static <T> T fillWith(T store, SqlTuple values, boolean noPartialFills) {
-
-		HashMap<String, SqlAttribute> attrs = values.getAttributes();
-
-		SqlSetter.getGetters(store);
-
-		if (noPartialFills && attrs.keySet().size() != SqlSetter.setCache.get(store.getClass()).keySet().size()) {
-			return null;
-		}
-
-		Class<?> sclass = store.getClass();
-
-		HashMap<String, Method> setters = SqlSetter.setCache.get(sclass);
-		if (setters == null) {
-			return null;
-		}
-
-		if (setters.keySet().size() < 1) {
-			return store;
-		}
-
-		for (String attr : attrs.keySet()) {
-			String attribute = attr.toLowerCase();
-			Method func = setters.get(attribute);
-			if (func != null) {
-				try {
-					func.invoke(store, attrs.get(attr).getValue());
-				} catch (Exception e) {
-					e.printStackTrace();
-					System.out.println(setters.get(attribute));
-					System.out.println(attribute);
-					System.out.println(attrs.get(attr));
-					return null;
-				}
-			}
-		}
-		return store;
-	}
-	*/
-	
 	private static void getGetters(Object of) {
 
 		if (SqlGetter.getCache.get(of.getClass()) != null) {
@@ -88,7 +47,9 @@ public class SqlGetter {
 
 		for (Method m : of.getClass().getMethods()) {
 			if (m.getName().startsWith("get") && m.getParameterCount() == 0 && m.getName().length() > 3) {
-				getters.put(m.getName().substring(3, m.getName().length()).toLowerCase(), m);
+				if(!m.getName().equalsIgnoreCase("getClass")) {
+					getters.put(m.getName().substring(3, m.getName().length()).toLowerCase(), m);
+				}
 			}
 		}
 

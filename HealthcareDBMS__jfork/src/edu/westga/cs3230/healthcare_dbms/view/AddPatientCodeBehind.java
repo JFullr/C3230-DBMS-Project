@@ -87,7 +87,7 @@ public class AddPatientCodeBehind {
 	};
 	
 	private UnaryOperator<Change> filterPhone = change -> {
-		Pattern pattern = Pattern.compile("\\d{0,9}");
+		Pattern pattern = Pattern.compile("\\d{0,10}");
 	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 	

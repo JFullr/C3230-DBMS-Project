@@ -13,6 +13,10 @@ public class Person {
 	private String contact_phone;
 	private String contact_email;
 	private String mailing_address;
+	
+	public Person() {
+		this.person_id = -1;
+	}
 
 	public Person(String email, String phone, Date dob, String fname, String lname, String address, String middleInitial, String ssn) {
 		this.setContact_email(email);
@@ -23,6 +27,7 @@ public class Person {
 		this.setMailing_address(address);
 		this.setMiddle_initial(middleInitial);
 		this.setSSN(Integer.parseInt(ssn));
+		this.person_id = -1;
 	}
 
 	public Integer getPerson_id() {

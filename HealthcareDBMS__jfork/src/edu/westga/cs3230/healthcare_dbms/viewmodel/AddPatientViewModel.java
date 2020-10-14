@@ -1,8 +1,8 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import java.sql.Date;
-import java.time.chrono.Chronology;
 
+import edu.westga.cs3230.healthcare_dbms.model.Person;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -75,5 +75,20 @@ public class AddPatientViewModel {
 	public ObjectProperty<Date> getDobProperty() {
 		return dobProperty;
 	}
-
+	
+	public Person getPatient() {
+		String email = this.contactEmailProperty.getValue();
+		String phone = this.contactPhoneProperty.getValue();
+		String dob = this.dobProperty.getValue().toString();
+		String fname = this.firstNameProperty.getValue();
+		String lname = this.lastNameProperty.getValue();
+		String address = this.mailingAddressProperty.getValue();
+		String middleInitial = this.middleInitialProperty.getValue();
+		String ssn = this.ssnProperty.getValue();
+		
+		return new Person(email, phone, Date.valueOf(dob), fname, lname, 
+				address, middleInitial, ssn);
+		
+	}
+	
 }
