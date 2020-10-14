@@ -51,12 +51,14 @@ public class AddPatientCodeBehind {
 	
 	private ObjectProperty<Date> dateSelect;
 	
+	/*
+	 * 
 	private UnaryOperator<Change> filterIntegers = change -> {
 	    Pattern pattern = Pattern.compile("\\d*");
 	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 	
-	/*
+	
 	private UnaryOperator<Change> filterLetters = change -> {
 	    Pattern pattern = Pattern.compile("[a-zA-Z]*");
 	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
@@ -66,6 +68,12 @@ public class AddPatientCodeBehind {
 	    Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
 	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
+	
+	private UnaryOperator<Change> filterPhone = change -> {
+		Pattern pattern = Pattern.compile("(\\d{0,10})|((\\d{0,3}[-/]?){0,3}\\d{0,1})");
+	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
+	};
+	
 	*/
 	
 	private UnaryOperator<Change> filterInitial = change -> {
@@ -78,13 +86,10 @@ public class AddPatientCodeBehind {
 	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 	
-	/*
 	private UnaryOperator<Change> filterPhone = change -> {
-		Pattern pattern = Pattern.compile("(\\d{0,10})|((\\d{0,3}[-/]?){0,3}\\d{0,1})");
+		Pattern pattern = Pattern.compile("\\d{0,9}");
 	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
-	*/
-	
 	
 	private AddPatientViewModel viewModel;
 	private boolean attemptAdd;
@@ -113,6 +118,7 @@ public class AddPatientCodeBehind {
 	@FXML
 	void addAndCloseWindow(ActionEvent event) {
 		this.attemptAdd = true;
+		this.closeWindow(event);
 	}
 	
 	@FXML
@@ -132,7 +138,7 @@ public class AddPatientCodeBehind {
 	private void initializeTextFieldFormatters() {
 		this.ssnTextField.setTextFormatter(new TextFormatter<Change>(this.filterSSN));
 		this.middleInitialTextField.setTextFormatter(new TextFormatter<Change>(this.filterInitial));
-		this.contactPhoneTextField.setTextFormatter(new TextFormatter<Change>(this.filterIntegers));
+		this.contactPhoneTextField.setTextFormatter(new TextFormatter<Change>(this.filterPhone));
 		
 		///limits on database
 		this.firstNameTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(50)));

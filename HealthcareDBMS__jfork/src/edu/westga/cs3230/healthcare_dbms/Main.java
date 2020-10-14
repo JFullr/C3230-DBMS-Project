@@ -47,7 +47,6 @@ public class Main extends Application {
 	 * @param args the arguments
 	 */
 	public static void main(String[] args) {
-		System.out.println(Main.class.getSimpleName());
 		launch(args);
 	}
 }

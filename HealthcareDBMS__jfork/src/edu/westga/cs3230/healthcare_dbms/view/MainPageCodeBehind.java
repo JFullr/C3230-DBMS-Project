@@ -1,6 +1,5 @@
 package edu.westga.cs3230.healthcare_dbms.view;
 
-import java.time.chrono.Chronology;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
@@ -60,13 +59,13 @@ public class MainPageCodeBehind {
 	@FXML
 	public void initialize() {
 
-		// TODO embed for tuples
+		// TODO embed for tuples for future iterations
 		//this.queryListView.itemsProperty().bindBidirectional(this.embedHandler.getDisplayedQueryEmbeds());
 		this.usernameLabel.textProperty().bindBidirectional(this.viewModel.getUserNameProperty());
 		this.nameLabel.textProperty().bindBidirectional(this.viewModel.getNameProperty());
 		this.userIdLabel.textProperty().bindBidirectional(this.viewModel.getUserIdProperty());
 		
-		///this.addPatientButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
+		this.addPatientButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 		this.logoutButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 
 		this.addListeners();
