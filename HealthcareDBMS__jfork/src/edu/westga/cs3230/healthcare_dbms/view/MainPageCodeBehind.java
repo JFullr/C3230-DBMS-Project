@@ -3,6 +3,7 @@ package edu.westga.cs3230.healthcare_dbms.view;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
+import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
 import edu.westga.cs3230.healthcare_dbms.view.embed.Embed;
@@ -28,7 +29,7 @@ public class MainPageCodeBehind {
 
 	private static final String LOGIN_GUI = "LoginGui.fxml";
 	private static final String ADD_GUI = "AddPatientGui.fxml";
-	private static final String DB_URL = "";
+	private static final String DB_URL = "jdbc:mysql://160.10.25.16:3306/cs3230f20i?user=jfulle11&password=9j.3pwB@B4&serverTimezone=EST";
 
 	@FXML
     private Button loginButton;
@@ -138,10 +139,10 @@ public class MainPageCodeBehind {
 				
 				if (codeBehind.isAttemptingAdd()) {
 					if (!this.attemptAddPatient(patientData)) {
-						FXMLAlert.statusAlert("Login Status", "Patient SSN already exists in the database.", "Add Patient Failed", AlertType.ERROR);
+						FXMLAlert.statusAlert("Add Patient Status", "Patient SSN already exists in the database.", "Add Patient Failed", AlertType.ERROR);
 					} else {
 						FXMLAlert.statusAlert("Add Patient Status", "Added patient Successfully", AlertType.INFORMATION);
-						///Eventually this.updateLoginDisplay();
+						///Later iteration: this.updateLoginDisplay();
 						this.handleUpdateQueryListView();
 					}
 				}
@@ -156,10 +157,9 @@ public class MainPageCodeBehind {
 	
 	private boolean doLogin(LoginViewModel data) {
 
-		String username = data.getNameProperty().getValue();
-		String password = data.getPasswordProperty().getValue();
+		Login login = data.getLogin();
 
-		if(!this.viewModel.attemptLogin(username, password)) {
+		if(!this.viewModel.attemptLogin(login)) {
 			return false;
 		}
 		

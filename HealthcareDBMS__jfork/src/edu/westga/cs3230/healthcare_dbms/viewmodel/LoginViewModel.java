@@ -1,5 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
+import edu.westga.cs3230.healthcare_dbms.model.Login;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -40,6 +41,12 @@ public class LoginViewModel {
 	 */
 	public StringProperty getPasswordProperty() {
 		return this.passwordProperty;
+	}
+	
+	public Login getLogin() {
+		String userName = this.nameProperty.getValue();
+		String password = this.passwordProperty.getValue();
+		return new Login(userName, password);
 	}
 
 }

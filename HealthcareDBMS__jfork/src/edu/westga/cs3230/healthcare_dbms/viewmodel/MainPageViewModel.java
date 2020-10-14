@@ -1,11 +1,11 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
-import java.time.chrono.Chronology;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
+import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import javafx.beans.property.BooleanProperty;
@@ -131,9 +131,9 @@ public class MainPageViewModel {
 		return loggedInProperty;
 	}
 	
-	public boolean attemptLogin(String username, String password) {
+	public boolean attemptLogin(Login login) {
 		
-		QueryResult result = this.database.attemptLogin(username, password);
+		QueryResult result = this.database.attemptLogin(login);
 		if (result == null || result.getTuples().size() != 1) {
 			return false;
 		}

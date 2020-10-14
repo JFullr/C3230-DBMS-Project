@@ -4,6 +4,7 @@ import java.time.chrono.Chronology;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 
 /**
@@ -58,9 +59,9 @@ public class HealthcareDatabase {
 	 *
 	 * @return the result of the login
 	 */
-	public QueryResult attemptLogin(String username, String password) {
+	public QueryResult attemptLogin(Login login) {
 		try {
-			QueryResult result = this.client.attemptLogin(username, password);
+			QueryResult result = this.client.attemptLogin(login);
 			return result;
 		} catch(Exception e) {
 			e.printStackTrace();
