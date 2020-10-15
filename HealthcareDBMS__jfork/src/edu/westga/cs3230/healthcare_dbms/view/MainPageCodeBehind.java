@@ -176,7 +176,15 @@ public class MainPageCodeBehind {
 	private boolean attemptAddPatient(AddPatientViewModel data) {
 		
 		Person patient = data.getPatient();
-		return this.viewModel.attemptAddPatient(patient);
+		boolean success = this.viewModel.attemptAddPatient(patient);
+		
+		/*
+		later iteration
+		if(success) {
+			String type = this.viewModel.getUsserType(patient);
+		}
+		*/
+		return success;
 	}
 
 	private void addListeners() {

@@ -155,4 +155,8 @@ public class MainPageViewModel {
 		return false;
 	}
 
+	public String getUserType(Person patient) {
+		return this.getUserType(patient);
+	}
+
 }

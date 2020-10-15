@@ -33,9 +33,12 @@ CREATE TABLE Person(
 	lname VARCHAR(30) not null,
 	middle_initial CHAR(1) not null,
 	DOB DATE not null,
-	SSN INTEGER not null,
+	SSN INTEGER(9) not null,
 	contact_phone VARCHAR(30) not null,
-	PRIMARY KEY(person_id)
+	contact_email VARCHAR(50) not null,
+	mailing_address VARCHAR(50) not null,
+	PRIMARY KEY(person_id),
+	UNIQUE(SSN)
 );
 
 CREATE TABLE RegisteredUser(

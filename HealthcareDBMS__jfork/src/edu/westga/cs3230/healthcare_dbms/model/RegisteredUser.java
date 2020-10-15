@@ -4,7 +4,7 @@ public class RegisteredUser {
 
 	private Integer user_id;
 	private String user_name;
-	private String user_type;
+	//private String user_type;
 	private Integer person_id;
 
 	public Integer getUser_id() {
@@ -22,7 +22,8 @@ public class RegisteredUser {
 	public void setUser_name(String user_name) {
 		this.user_name = user_name;
 	}
-
+	
+	/*
 	public String getUser_type() {
 		return user_type;
 	}
@@ -30,6 +31,7 @@ public class RegisteredUser {
 	public void setUser_type(String user_type) {
 		this.user_type = user_type;
 	}
+	*/
 
 	public Integer getPerson_id() {
 		return person_id;

@@ -1,9 +1,5 @@
 package edu.westga.cs3230.healthcare_dbms.io.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,8 +10,8 @@ import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.model.dal.LoginDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.PersonDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.PostDAL;
+import edu.westga.cs3230.healthcare_dbms.model.dal.UserTypeDAL;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
 /**
  * Description
@@ -23,6 +19,7 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
  */
 public class HealthcareDatabaseClient {
 	
+	private UserTypeDAL userDal;
 	private PostDAL postDal;
 	private LoginDAL loginDal;
 	private PersonDAL personDal;
@@ -41,6 +38,7 @@ public class HealthcareDatabaseClient {
 		this.postDal = new PostDAL(dbUrl);
 		this.loginDal = new LoginDAL(dbUrl);
 		this.personDal = new PersonDAL(dbUrl);
+		this.userDal = new UserTypeDAL(dbUrl);
 	}
 	
 	public boolean callQuery(String query) throws Exception {
@@ -69,5 +67,8 @@ public class HealthcareDatabaseClient {
 		return this.lastResult;
 	}
 
-
+	public String getUserType(Person patient) throws SQLException {
+		
+		return this.userDal.getUserType(patient);
+	}
 }

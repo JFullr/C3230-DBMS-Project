@@ -21,7 +21,7 @@ public class LoginDAL {
 	public QueryResult attemptLogin(Login login) throws SQLException {
 		String prepared = "select distinct r.user_name, r.user_id, p.fname, p.lname "
 				+ "from Person p, RegisteredUser r, UserPasswordStore ups "
-				+ "where p.person_id = r.person_id and r.user_name = ? and ups.password = ?";
+				+ "where p.person_id = r.person_id and r.user_name = ? and ups.password_salted_hashed = ?";
 
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
@@ -34,5 +34,5 @@ public class LoginDAL {
 
 		return new QueryResult(manager.getTuples());
 	}
-
+	
 }

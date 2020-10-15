@@ -22,11 +22,17 @@ public class QueryResult {
 		this.tuples = results;
 	}
 	
+	public QueryResult(SqlTuple result) {
+		this.dbUrl = null;
+		this.tuples = new ArrayList<SqlTuple>();
+		this.tuples.add(result);
+	}
+	
 	public ArrayList<SqlTuple> getTuples() {
 		return this.tuples;
 	}
 	
-	private void  callQuery(String query) {
+	private void callQuery(String query) {
 		
 		SqlManager manager = new SqlManager();
 		try {
