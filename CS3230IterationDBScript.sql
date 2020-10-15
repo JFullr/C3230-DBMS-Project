@@ -10,9 +10,9 @@ drop table if exists Query;
 drop table if exists UserPasswordStore;
 drop table if exists RegisteredUser;
 
-drop table if exists LabTest;
 drop table if exists LabTestResult;
 drop table if exists LabTestOrder;
+drop table if exists LabTest;
 
 drop table if exists AppointmentCheckup;
 drop table if exists Diagnosis;
