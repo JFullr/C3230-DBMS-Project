@@ -2,11 +2,13 @@ package edu.westga.cs3230.healthcare_dbms.view;
 
 import java.sql.Date;
 import java.time.LocalDate;
-
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
+
 import edu.westga.cs3230.healthcare_dbms.viewmodel.AddPatientViewModel;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -91,6 +93,9 @@ public class AddPatientCodeBehind {
 	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 	
+	private static final Pattern emailValid = Pattern.compile("[a-zA-Z]+(\\d|[a-zA-Z])*@[a-zA-Z]+(\\d|[a-zA-Z])*[.](\\d|[a-zA-Z])+");
+	private final BooleanProperty isEmailValid;
+	
 	private AddPatientViewModel viewModel;
 	private boolean attemptAdd;
 
@@ -98,6 +103,7 @@ public class AddPatientCodeBehind {
 		this.viewModel = new AddPatientViewModel();
 		this.attemptAdd = false;
 		this.dateSelect = new SimpleObjectProperty<Date>();
+		this.isEmailValid = new SimpleBooleanProperty(false);
 	}
 
 	/**
@@ -167,8 +173,12 @@ public class AddPatientCodeBehind {
 				.or(this.ssnTextField.textProperty().isEmpty())
 				.or(this.ssnTextField.textProperty().length().lessThan(9))
 				.or(this.contactPhoneTextField.textProperty().length().lessThan(10))
+				.or(this.isEmailValid.not())
 				);
-		this.viewModel.getAddEventProperty().bind(this.addPatientButton.pressedProperty());
+		
+		this.contactEmailTextField.textProperty().addListener((change)->{
+			this.isEmailValid.setValue(emailValid.matcher(this.contactEmailTextField.textProperty().getValue()).matches());
+		});
 	}
 	
 	private UnaryOperator<Change> maxLengthFormatter(int length) {
