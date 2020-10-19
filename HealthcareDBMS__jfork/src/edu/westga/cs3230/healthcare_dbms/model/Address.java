@@ -9,20 +9,20 @@ public class Address {
     private Integer zip_code;
 
     public Address(String street_address_1, String street_address_2, String city, String state, String zip_code) {
-        this.address_id = -1;
-        this.street_address_1 = street_address_1;
-        this.street_address_2 = street_address_2;
-        this.city = city;
-        this.state = state;
+        this.address_id = null;
+        this.street_address_1 = nullString(street_address_1);
+        this.street_address_2 = nullString(street_address_2);
+        this.city = nullString(city);
+        this.state = nullString(state);
         this.zip_code = zip_code != null && zip_code.isEmpty() ? Integer.parseInt(zip_code) : null;
     }
 
     public Address(Integer address_id, String street_address_1, String street_address_2, String city, String state, Integer zip_code) {
         this.address_id = address_id;
-        this.street_address_1 = street_address_1;
-        this.street_address_2 = street_address_2;
-        this.city = city;
-        this.state = state;
+        this.street_address_1 = nullString(street_address_1);
+        this.street_address_2 = nullString(street_address_2);
+        this.city = nullString(city);
+        this.state = nullString(state);
         this.zip_code = zip_code;
     }
 
@@ -72,5 +72,12 @@ public class Address {
 
     public void setZip_code(Integer zip_code) {
         this.zip_code = zip_code;
+    }
+
+    private String nullString(String check) {
+        if(check == null) {
+            return null;
+        }
+        return check.isEmpty() ? null : check;
     }
 }

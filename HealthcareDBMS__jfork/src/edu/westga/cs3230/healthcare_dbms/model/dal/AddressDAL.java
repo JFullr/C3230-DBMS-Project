@@ -7,7 +7,6 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
-import edu.westga.cs3230.healthcare_dbms.utils.EmptyUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -40,7 +39,7 @@ public class AddressDAL {
         SqlTuple tuple = SqlGetter.getFrom(address);
         StringBuilder query = new StringBuilder("SELECT * FROM Address WHERE ");
         for (SqlAttribute attribute : tuple) {
-            if (EmptyUtil.isEmpty(attribute.getValue())) {
+            if (attribute.getValue() == null) {
                 continue;
             }
             query.append(attribute.getAttribute()).append(" = ?, ");
@@ -54,7 +53,7 @@ public class AddressDAL {
         ) {
             int j = 1;
             for(SqlAttribute attr : tuple) {
-                if (EmptyUtil.isEmpty(attr.getValue())) {
+                if (attr.getValue() == null) {
                     continue;
                 }
                 stmt.setObject(j, attr.getValue());
