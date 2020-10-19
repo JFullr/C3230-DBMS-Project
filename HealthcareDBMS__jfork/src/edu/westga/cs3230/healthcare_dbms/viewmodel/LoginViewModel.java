@@ -1,8 +1,14 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import edu.westga.cs3230.healthcare_dbms.model.Login;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Viewmodel class for the Login window.
@@ -10,6 +16,8 @@ import javafx.beans.property.StringProperty;
 public class LoginViewModel {
 	private final StringProperty nameProperty;
 	private final StringProperty passwordProperty;
+	
+	private final BooleanProperty loginButtonPressed;
 
 	/**
 	 * Instantiates a new LoginViewModel.
@@ -17,6 +25,8 @@ public class LoginViewModel {
 	public LoginViewModel() {		
 		this.nameProperty = new SimpleStringProperty();
 		this.passwordProperty = new SimpleStringProperty();
+		
+		this.loginButtonPressed = new SimpleBooleanProperty(false);
 	}
 	
 	/**
@@ -47,6 +57,10 @@ public class LoginViewModel {
 		String userName = this.nameProperty.getValue();
 		String password = this.passwordProperty.getValue();
 		return new Login(userName, password);
+	}
+
+	public BooleanProperty getLoginButtonPressed() {
+		return loginButtonPressed;
 	}
 
 }

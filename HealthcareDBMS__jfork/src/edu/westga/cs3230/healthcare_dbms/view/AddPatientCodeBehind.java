@@ -110,19 +110,19 @@ public class AddPatientCodeBehind {
 	}
 
 	@FXML
-	void closeWindow(ActionEvent event) {
+	public void closeWindow(ActionEvent event) {
 		Stage stage = (Stage) this.cancelButton.getScene().getWindow();
 		stage.close();
 	}
 
 	@FXML
-	void addAndCloseWindow(ActionEvent event) {
+	public void addAndCloseWindow(ActionEvent event) {
 		this.attemptAdd = true;
-		this.closeWindow(event);
+		///this.closeWindow(event);
 	}
 	
 	@FXML
-    void getDateValue(ActionEvent event) {
+    public void getDateValue(ActionEvent event) {
 		LocalDate time = this.dobPicker.getValue();
 		this.dateSelect.setValue(Date.valueOf(time));
     }
@@ -168,6 +168,7 @@ public class AddPatientCodeBehind {
 				.or(this.ssnTextField.textProperty().length().lessThan(9))
 				.or(this.contactPhoneTextField.textProperty().length().lessThan(10))
 				);
+		this.viewModel.getAddEventProperty().bind(this.addPatientButton.pressedProperty());
 	}
 	
 	private UnaryOperator<Change> maxLengthFormatter(int length) {

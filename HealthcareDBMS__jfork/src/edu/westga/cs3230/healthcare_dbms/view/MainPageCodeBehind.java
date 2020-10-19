@@ -27,8 +27,6 @@ import javafx.scene.control.ListView;
  */
 public class MainPageCodeBehind {
 
-	private static final String LOGIN_GUI = "LoginGui.fxml";
-	private static final String ADD_GUI = "AddPatientGui.fxml";
 	private static final String DB_URL = "jdbc:mysql://160.10.25.16:3306/cs3230f20i?user=jfulle11&password=9j.3pwB@B4&serverTimezone=EST";
 
 	@FXML
@@ -101,90 +99,13 @@ public class MainPageCodeBehind {
 	
 	@FXML
 	public void handleOpenLoginView(ActionEvent event) {
-
-		try {
-			FXMLWindow window = new FXMLWindow(getClass().getResource(LOGIN_GUI), "Healthcare Login", true);
-			LoginCodeBehind codeBehind = (LoginCodeBehind) window.getController();
-			window.setOnWindowClose((winEvent) -> {
-
-				LoginViewModel loginData = codeBehind.getViewModel();
-
-				if (codeBehind.isAttemptingLogin()) {
-					if (!this.doLogin(loginData)) {
-						FXMLAlert.statusAlert("Login Status", ExceptionText.FAILED_LOGIN, "Login Failed", AlertType.ERROR);
-						
-					} else {
-						FXMLAlert.statusAlert("Login Successful", AlertType.INFORMATION);
-						this.updateLoginDisplay();
-					}
-				}
-
-			});
-			window.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.viewModel.showLogin();
 	}
 	
 	@FXML
 	public void handleAddPatient(ActionEvent event) {
 
-		try {
-			FXMLWindow window = new FXMLWindow(getClass().getResource(ADD_GUI), "Add Patient", true);
-			AddPatientCodeBehind codeBehind = (AddPatientCodeBehind) window.getController();
-			window.setOnWindowClose((winEvent) -> {
-				
-				AddPatientViewModel patientData = codeBehind.getViewModel();
-				
-				if (codeBehind.isAttemptingAdd()) {
-					if (!this.attemptAddPatient(patientData)) {
-						FXMLAlert.statusAlert("Add Patient Status", "Patient SSN already exists in the database.", "Add Patient Failed", AlertType.ERROR);
-					} else {
-						FXMLAlert.statusAlert("Add Patient Status", "Added patient Successfully", AlertType.INFORMATION);
-						///Later iteration: this.updateLoginDisplay();
-						this.handleUpdateQueryListView();
-					}
-				}
-
-			});
-			window.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private boolean doLogin(LoginViewModel data) {
-
-		Login login = data.getLogin();
-
-		if(!this.viewModel.attemptLogin(login)) {
-			return false;
-		}
-		
-		ArrayList<QueryResult> results = this.viewModel.getLastResults();
-		if (results == null || results.size() != 1) {
-			return false;
-		}
-		
-		this.viewModel.getLoggedInProperty().setValue(true);
-
-		return true;
-	}
-	
-	private boolean attemptAddPatient(AddPatientViewModel data) {
-		
-		Person patient = data.getPatient();
-		boolean success = this.viewModel.attemptAddPatient(patient);
-		
-		/*
-		later iteration
-		if(success) {
-			String type = this.viewModel.getUsserType(patient);
-		}
-		*/
-		return success;
+		this.viewModel.showAddPatient();
 	}
 
 	private void addListeners() {

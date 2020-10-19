@@ -1,11 +1,14 @@
 package edu.westga.cs3230.healthcare_dbms.view;
 
 import edu.westga.cs3230.healthcare_dbms.viewmodel.LoginViewModel;
+import javafx.beans.property.ObjectProperty;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class LoginCodeBehind {
@@ -39,16 +42,16 @@ public class LoginCodeBehind {
 	}
 	
     @FXML
-    void closeWindow(ActionEvent event) {
+    public void closeWindow(ActionEvent event) {
     	Stage stage = (Stage) this.cancelButton.getScene().getWindow();
 	    stage.close();
     }
 
     @FXML
-    void loginCloseWindow(ActionEvent event) {
+    public void loginCloseWindow(ActionEvent event) {
     	
 		this.attemptLogin = true;
-		this.closeWindow(event);
+		///this.closeWindow(event);
     	
     }
     
@@ -63,6 +66,8 @@ public class LoginCodeBehind {
     private void bindProperties() {
 		this.viewModel.getNameProperty().bindBidirectional(this.nameTextField.textProperty());
 		this.viewModel.getPasswordProperty().bindBidirectional(this.passwordField.textProperty());
+		this.viewModel.getLoginButtonPressed().bind(this.loginButton.pressedProperty());
+		//this.viewModel.getLoginEventProperty().bindBidirectional(this.loginButton.change);
 	}
 
 }

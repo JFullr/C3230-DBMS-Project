@@ -3,23 +3,19 @@ package edu.westga.cs3230.healthcare_dbms.viewmodel;
 import java.sql.Date;
 
 import edu.westga.cs3230.healthcare_dbms.model.Person;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Viewmodel class for the Login window.
  */
 public class AddPatientViewModel {
-
-	/*
-	 * private Button addPatientButton; private Button cancelButton; private
-	 * TextField firstNameTextField; private TextField lastNameTextField; private
-	 * TextField contactPhoneTextField; private TextField contactEmailTextField;
-	 * private TextField mailingAddressTextField; private DatePicker dobPicker;
-	 * private TextField middleInitialTextField; private TextField ssnTextField;
-	 */
 
 	private final StringProperty firstNameProperty;
 	private final StringProperty lastNameProperty;
@@ -29,6 +25,8 @@ public class AddPatientViewModel {
 	private final ObjectProperty<Date> dobProperty;
 	private final StringProperty middleInitialProperty;
 	private final StringProperty ssnProperty;
+	
+	private final BooleanProperty addEventProperty;
 
 	/**
 	 * Instantiates a new LoginViewModel.
@@ -42,6 +40,7 @@ public class AddPatientViewModel {
 		this.dobProperty = new SimpleObjectProperty<Date>();
 		this.middleInitialProperty = new SimpleStringProperty();
 		this.ssnProperty = new SimpleStringProperty();
+		this.addEventProperty = new SimpleBooleanProperty(false);
 	}
 
 	public StringProperty getFirstNameProperty() {
@@ -89,6 +88,10 @@ public class AddPatientViewModel {
 		return new Person(email, phone, Date.valueOf(dob), fname, lname, 
 				address, middleInitial, ssn);
 		
+	}
+	
+	public BooleanProperty getAddEventProperty() {
+		return this.addEventProperty;
 	}
 	
 }

@@ -10,26 +10,25 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
-public class PostDAL {
+public class PullDAL {
 	
 	private String dbUrl;
 	
-	public PostDAL(String dbUrl) {
+	public PullDAL(String dbUrl) {
 		this.dbUrl = dbUrl;
 	}
 	
-	public ArrayList<SqlTuple> postTuple(Object obj) throws SQLException {
+	/*
+	public void pullTuple(Object obj) throws SQLException {
 		
 		SqlTuple tuple = SqlGetter.getFrom(obj);
 		ArrayList<String> useAttributes = this.usingAttributes(obj);
 		String query = this.buildQueryFrom(obj, tuple, useAttributes);
 		
-		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				PreparedStatement stmt = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
+				PreparedStatement stmt = con.prepareStatement(query.toString());
 				) {
 			
 			int j = 1;
@@ -37,11 +36,10 @@ public class PostDAL {
 				stmt.setObject(j, tuple.get(attr).getValue());
 				j++;
 			}
-			
 			stmt.executeUpdate();
-			manager.readTuples(stmt.getGeneratedKeys());
+			
 		}
-		return manager.getTuples();
+		
 	}
 	
 	private String buildQueryFrom(Object obj, SqlTuple tuple, ArrayList<String> useAttributes) {
@@ -72,6 +70,9 @@ public class PostDAL {
 		return query.toString();
 	}
 	
+	/*
+	private 
+	
 	private ArrayList<String> usingAttributes(Object data) throws SQLException{
 		
 		
@@ -94,6 +95,6 @@ public class PostDAL {
 		
 		return useAttributes;
 	}
-
+	*/
 	
 }

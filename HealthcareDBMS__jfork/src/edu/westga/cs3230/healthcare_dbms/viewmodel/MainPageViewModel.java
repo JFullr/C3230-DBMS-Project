@@ -8,10 +8,17 @@ import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
+import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
+import edu.westga.cs3230.healthcare_dbms.view.AddPatientCodeBehind;
+import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
+import edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind;
+import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
+import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLWindow;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * View-model for the MainPageCodeBehind.
@@ -20,7 +27,11 @@ import javafx.beans.property.StringProperty;
  */
 public class MainPageViewModel {
 	
+	private static final String ADD_GUI = "AddPatientGui.fxml";
+	private static final String LOGIN_GUI = "LoginGui.fxml";
+	
 	private final BooleanProperty loggedInProperty;
+	private final BooleanProperty attemptingLoginProperty;
 
 	private final StringProperty nameProperty;
 	private final StringProperty userIdProperty;
@@ -44,7 +55,7 @@ public class MainPageViewModel {
 		this.userIdProperty = new SimpleStringProperty();
 		this.userNameProperty = new SimpleStringProperty();
 		this.loggedInProperty = new SimpleBooleanProperty(false);
-
+		this.attemptingLoginProperty  = new SimpleBooleanProperty(false);
 	}
 
 	/**
@@ -93,6 +104,8 @@ public class MainPageViewModel {
 	 */
 	public void updateLoginDisplay() {
 		
+		this.loggedInProperty.setValue(true);
+		
 		ArrayList<QueryResult> results = this.getLastResults();
 		ArrayList<SqlTuple> loginTuples = results.get(0).getTuples();
 		SqlTuple loginData = loginTuples.get(0);
@@ -131,6 +144,35 @@ public class MainPageViewModel {
 		return loggedInProperty;
 	}
 	
+	public BooleanProperty getAttemptingLoginProperty() {
+		return attemptingLoginProperty;
+	}
+	
+	public void showLogin() {
+		try {
+			FXMLWindow window = new FXMLWindow(LoginCodeBehind.class.getResource(LOGIN_GUI), "Healthcare Login", true);
+			LoginCodeBehind codeBehind = (LoginCodeBehind) window.getController();
+			LoginViewModel viewModel = codeBehind.getViewModel();
+			
+			viewModel.getLoginButtonPressed().addListener((evt)->{
+				if (viewModel.getLoginButtonPressed().getValue()) {
+					if (!this.attemptLogin(viewModel.getLogin())) {
+						FXMLAlert.statusAlert("Login Status", ExceptionText.FAILED_LOGIN, "Login Failed", AlertType.ERROR);
+					} else {
+						FXMLAlert.statusAlert("Login Successful", AlertType.INFORMATION);
+						codeBehind.closeWindow(null);
+						this.updateLoginDisplay();
+					}
+				}
+			});
+			
+			window.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public boolean attemptLogin(Login login) {
 		
 		QueryResult result = this.database.attemptLogin(login);
@@ -142,6 +184,36 @@ public class MainPageViewModel {
 
 		return true;
 	}
+	
+	
+	public void showAddPatient() {
+		try {
+			FXMLWindow window = new FXMLWindow(AddPatientCodeBehind.class.getResource(ADD_GUI), "Add Patient", true);
+			AddPatientCodeBehind codeBehind = (AddPatientCodeBehind) window.getController();
+			AddPatientViewModel viewModel = codeBehind.getViewModel();
+			
+			viewModel.getAddEventProperty().addListener((evt) -> {
+				
+				if (viewModel.getAddEventProperty().getValue()) {
+					if (!this.attemptAddPatient(viewModel.getPatient())) {
+						FXMLAlert.statusAlert("Add Patient Status", "Patient SSN already exists in the database.", "Add Patient Failed", AlertType.ERROR);
+					} else {
+						FXMLAlert.statusAlert("Add Patient Status", "Added patient Successfully", AlertType.INFORMATION);
+						codeBehind.closeWindow(null);
+						///TODO Later iteration: 
+						//this.handleUpdateQueryListView();
+					}
+				}
+
+			});
+			
+			window.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	public boolean attemptAddPatient(Person patient) {
 		

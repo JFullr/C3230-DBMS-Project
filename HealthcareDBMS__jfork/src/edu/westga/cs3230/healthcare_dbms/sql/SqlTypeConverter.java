@@ -47,6 +47,15 @@ public class SqlTypeConverter {
 	
 	public static Object convertObject(ResultSet rs, String label, String typename) throws SQLException {
 		try {
+			if(typename.toLowerCase().endsWith("unsigned")) {
+				typename = typename.substring(0, typename.length()-"unsigned".length()).trim();
+			}
+			/*
+			 * if(convertFromSqlMethod.get(typename) == null) {
+				System.out.println(label+" :: "+typename);
+				return null;
+			}
+			*/
 			return convertFromSqlMethod.get(typename).invoke(rs, label);
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
