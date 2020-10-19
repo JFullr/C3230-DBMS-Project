@@ -6,6 +6,7 @@ import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 import edu.westga.cs3230.healthcare_dbms.viewmodel.AddPatientViewModel;
+import edu.westga.cs3230.healthcare_dbms.viewmodel.SearchPatientViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -13,16 +14,20 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.stage.Stage;
 
-public class AddPatientCodeBehind {
+public class SearchPatientCodeBehind {
+	
+	@FXML
+    private ComboBox<?> dobFilter;
 
 	@FXML
-	private Button addPatientButton;
+	private Button searchButton;
 
 	@FXML
 	private Button cancelButton;
@@ -96,14 +101,14 @@ public class AddPatientCodeBehind {
 	private static final Pattern emailValid = Pattern.compile("[a-zA-Z]+(\\d|[a-zA-Z])*@[a-zA-Z]+(\\d|[a-zA-Z])*[.](\\d|[a-zA-Z])+");
 	private final BooleanProperty isEmailValid;
 	
-	private AddPatientViewModel viewModel;
+	private SearchPatientViewModel viewModel;
 	private boolean attemptAdd;
 
-	public AddPatientCodeBehind() {
-		this.viewModel = new AddPatientViewModel();
+	public SearchPatientCodeBehind() {
+		this.viewModel = new SearchPatientViewModel();
 		this.attemptAdd = false;
 		this.dateSelect = new SimpleObjectProperty<Date>();
-		this.isEmailValid = new SimpleBooleanProperty(false);
+		this.isEmailValid = new SimpleBooleanProperty(true);
 	}
 
 	/**
@@ -122,7 +127,7 @@ public class AddPatientCodeBehind {
 	}
 
 	@FXML
-	public void addAndCloseWindow(ActionEvent event) {
+	public void searchForPatient(ActionEvent event) {
 		this.attemptAdd = true;
 		///this.closeWindow(event);
 	}
@@ -137,7 +142,7 @@ public class AddPatientCodeBehind {
 		return this.attemptAdd;
 	}
 
-	public AddPatientViewModel getViewModel() {
+	public SearchPatientViewModel getViewModel() {
 		return this.viewModel;
 	}
 	
@@ -162,23 +167,28 @@ public class AddPatientCodeBehind {
 		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
 		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
 		this.viewModel.getDobProperty().bindBidirectional(this.dateSelect);
-		this.viewModel.getAddEventProperty().bind(this.addPatientButton.pressedProperty());
+		this.viewModel.getSearchEventProperty().bind(this.searchButton.pressedProperty());
 		
-		this.addPatientButton.disableProperty().bind(this.dateSelect.isNull()
-				.or(this.contactEmailTextField.textProperty().isEmpty())
-				.or(this.contactPhoneTextField.textProperty().isEmpty())
-				.or(this.firstNameTextField.textProperty().isEmpty())
-				.or(this.lastNameTextField.textProperty().isEmpty())
-				.or(this.mailingAddressTextField.textProperty().isEmpty())
-				.or(this.middleInitialTextField.textProperty().isEmpty())
-				.or(this.ssnTextField.textProperty().isEmpty())
-				.or(this.ssnTextField.textProperty().length().lessThan(9))
-				.or(this.contactPhoneTextField.textProperty().length().lessThan(10))
+		this.searchButton.disableProperty().bind(this.dateSelect.isNull()
+				.and(this.contactEmailTextField.textProperty().isEmpty())
+				.and(this.contactPhoneTextField.textProperty().isEmpty())
+				.and(this.firstNameTextField.textProperty().isEmpty())
+				.and(this.lastNameTextField.textProperty().isEmpty())
+				.and(this.mailingAddressTextField.textProperty().isEmpty())
+				.and(this.middleInitialTextField.textProperty().isEmpty())
+				.and(this.ssnTextField.textProperty().isEmpty())
+				.and(this.ssnTextField.textProperty().length().lessThan(9))
+				.and(this.contactPhoneTextField.textProperty().length().lessThan(10))
 				.or(this.isEmailValid.not())
 				);
 		
 		this.contactEmailTextField.textProperty().addListener((change)->{
-			this.isEmailValid.setValue(emailValid.matcher(this.contactEmailTextField.textProperty().getValue()).matches());
+			String value = this.contactEmailTextField.textProperty().getValue();
+			if(value == null || value.length() == 0) {
+				this.isEmailValid.setValue(true);;
+				return;
+			}
+			this.isEmailValid.setValue(emailValid.matcher(value).matches());
 		});
 	}
 	

@@ -12,6 +12,7 @@ import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
 import edu.westga.cs3230.healthcare_dbms.view.AddPatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind;
+import edu.westga.cs3230.healthcare_dbms.view.SearchPatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLWindow;
 import javafx.beans.property.BooleanProperty;
@@ -29,6 +30,7 @@ public class MainPageViewModel {
 	
 	private static final String ADD_GUI = "AddPatientGui.fxml";
 	private static final String LOGIN_GUI = "LoginGui.fxml";
+	private static final String SEARCH_GUI = "SearchPatientGui.fxml";
 	
 	private final BooleanProperty loggedInProperty;
 	private final BooleanProperty attemptingLoginProperty;
@@ -214,6 +216,34 @@ public class MainPageViewModel {
 		}
 	}
 	
+	public void showPatientSearch() {
+		try {
+			FXMLWindow window = new FXMLWindow(SearchPatientCodeBehind.class.getResource(SEARCH_GUI), "Add Patient", true);
+			SearchPatientCodeBehind codeBehind = (SearchPatientCodeBehind) window.getController();
+			SearchPatientViewModel viewModel = codeBehind.getViewModel();
+			
+			viewModel.getSearchEventProperty().addListener((evt) -> {
+				
+				if (viewModel.getSearchEventProperty().getValue()) {
+					/*if (!this.attemptAddPatient(viewModel.getPatient())) {
+						FXMLAlert.statusAlert("Add Patient Status", "Patient SSN already exists in the database.", "Add Patient Failed", AlertType.ERROR);
+					} else {
+						FXMLAlert.statusAlert("Add Patient Status", "Added patient Successfully", AlertType.INFORMATION);
+						codeBehind.closeWindow(null);
+						///TODO Later iteration: 
+						//this.handleUpdateQueryListView();
+					}*/
+				}
+
+			});
+			
+			window.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	public boolean attemptAddPatient(Person patient) {
 		
@@ -230,5 +260,7 @@ public class MainPageViewModel {
 	public String getUserType(Person patient) {
 		return this.getUserType(patient);
 	}
+
+	
 
 }

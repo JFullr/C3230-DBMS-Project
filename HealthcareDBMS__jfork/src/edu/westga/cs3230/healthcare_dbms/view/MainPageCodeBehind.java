@@ -28,7 +28,10 @@ import javafx.scene.control.ListView;
 public class MainPageCodeBehind {
 
 	private static final String DB_URL = "jdbc:mysql://160.10.25.16:3306/cs3230f20i?user=jfulle11&password=9j.3pwB@B4&serverTimezone=EST";
-
+	
+	@FXML
+    private Button patientSearchButton;
+	
 	@FXML
     private Button loginButton;
 
@@ -67,6 +70,7 @@ public class MainPageCodeBehind {
 		
 		this.addPatientButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 		this.logoutButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
+		this.patientSearchButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 
 		this.addListeners();
 	}
@@ -86,6 +90,11 @@ public class MainPageCodeBehind {
 		///TODO clear tuples later
 		this.viewModel.handleLogOut();
 		
+    }
+	
+	@FXML
+    void handlePatientSearch(ActionEvent event) {
+		this.viewModel.showPatientSearch();
     }
 	
 	public void updateLoginDisplay() {
