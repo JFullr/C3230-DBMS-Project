@@ -26,7 +26,7 @@ public class Person {
 		this.setLname(lname);
 		this.setMailing_address(address);
 		this.setMiddle_initial(middleInitial);
-		this.setSSN(Integer.parseInt(ssn));
+		this.setSSN(ssn == null || ssn.isEmpty() ? null : Integer.parseInt(ssn));
 		this.person_id = -1;
 	}
 

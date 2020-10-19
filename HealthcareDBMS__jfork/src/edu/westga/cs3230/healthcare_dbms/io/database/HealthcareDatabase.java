@@ -79,5 +79,15 @@ public class HealthcareDatabase {
 		}
 		return null;
 	}
-	
+
+	public QueryResult attemptSearchPatient(Person patient) {
+		try {
+
+			QueryResult result = this.client.attemptSearchPatient(patient);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

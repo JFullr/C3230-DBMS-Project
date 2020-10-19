@@ -2,13 +2,14 @@ package edu.westga.cs3230.healthcare_dbms.sql;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 public class SqlTuple implements Iterable<SqlAttribute> {
 	
 	private HashMap<String, SqlAttribute> attrs;
 	
 	public SqlTuple(SqlAttribute attr) {
-		this.attrs = new HashMap<String, SqlAttribute>();
+		this.attrs = new LinkedHashMap<>();
 		this.attrs.put(attr.getAttribute(), attr);
 	}
 	

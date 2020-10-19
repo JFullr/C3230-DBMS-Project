@@ -12,8 +12,10 @@ import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
+import edu.westga.cs3230.healthcare_dbms.utils.EmptyUtil;
 
 public class PersonDAL {
 	
@@ -66,6 +68,37 @@ public class PersonDAL {
 			manager.readTuples(rs);
 		}
 		
+		return new QueryResult(manager.getTuples());
+	}
+
+	public QueryResult getPersonMatching(Person person) throws SQLException {
+		SqlTuple tuple = SqlGetter.getFrom(person);
+		StringBuilder query = new StringBuilder("SELECT * FROM Person WHERE ");
+		for (SqlAttribute attribute : tuple) {
+			if (EmptyUtil.isEmpty(attribute.getValue())) {
+				continue;
+			}
+			query.append(attribute.getAttribute()).append(" = ?, ");
+		}
+		// remove the trailing comma at the end
+		query.setLength(query.length() - 2);
+
+		SqlManager manager = new SqlManager();
+		try (Connection con = DriverManager.getConnection(this.dbUrl);
+			 PreparedStatement stmt = con.prepareStatement(query.toString());
+		) {
+			int j = 1;
+			for(SqlAttribute attr : tuple) {
+				if (EmptyUtil.isEmpty(attr.getValue())) {
+					continue;
+				}
+				stmt.setObject(j, attr.getValue());
+				j++;
+			}
+			ResultSet rs = stmt.executeQuery();
+			manager.readTuples(rs);
+		}
+
 		return new QueryResult(manager.getTuples());
 	}
 

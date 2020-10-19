@@ -71,4 +71,9 @@ public class HealthcareDatabaseClient {
 		
 		return this.userDal.getUserType(patient);
 	}
+
+	public QueryResult attemptSearchPatient(Person patient) throws SQLException {
+		this.lastResult = this.personDal.getPersonMatching(patient);
+		return this.lastResult;
+	}
 }

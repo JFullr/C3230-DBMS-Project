@@ -78,14 +78,14 @@ public class SearchPatientViewModel {
 	public Person getPatient() {
 		String email = this.contactEmailProperty.getValue();
 		String phone = this.contactPhoneProperty.getValue();
-		String dob = this.dobProperty.getValue().toString();
+		String dob = this.dobProperty.getValue() != null ? this.dobProperty.getValue().toString() : null;
 		String fname = this.firstNameProperty.getValue();
 		String lname = this.lastNameProperty.getValue();
 		String address = this.mailingAddressProperty.getValue();
 		String middleInitial = this.middleInitialProperty.getValue();
 		String ssn = this.ssnProperty.getValue();
 		
-		Person person = new Person(email, phone, Date.valueOf(dob), fname, lname, 
+		Person person = new Person(email, phone, dob != null ? Date.valueOf(dob) : null, fname, lname,
 				address, middleInitial, ssn);
 		
 		person.setPerson_id(null);
