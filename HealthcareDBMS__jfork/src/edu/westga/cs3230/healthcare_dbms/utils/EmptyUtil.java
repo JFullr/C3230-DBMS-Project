@@ -5,7 +5,7 @@ public class EmptyUtil {
         if (o == null) {
             return true;
         } else if (o instanceof Number) {
-            return Double.compare(0, ((Number) o).doubleValue()) == 0;
+            return Double.compare(0, ((Number) o).doubleValue()) == -1;
         } else if (o instanceof String) {
             return ((String) o).isEmpty();
         } else {
