@@ -40,7 +40,19 @@ public class AddPatientCodeBehind {
 	private TextField contactEmailTextField;
 
 	@FXML
-	private TextField mailingAddressTextField;
+	private TextField streetAddress1TextField;
+
+	@FXML
+	private TextField streetAddress2TextField;
+
+	@FXML
+	private TextField cityTextField;
+
+	@FXML
+	private TextField stateTextField;
+
+	@FXML
+	private TextField zipCodeTextField;
 
 	@FXML
 	private DatePicker dobPicker;
@@ -91,6 +103,11 @@ public class AddPatientCodeBehind {
 	private UnaryOperator<Change> filterPhone = change -> {
 		Pattern pattern = Pattern.compile("\\d{0,10}");
 	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
+	};
+
+	private UnaryOperator<Change> filterZip = change -> {
+		Pattern pattern = Pattern.compile("\\d{0,5}");
+		return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 	
 	private static final Pattern emailValid = Pattern.compile("[a-zA-Z]+(\\d|[a-zA-Z])*@[a-zA-Z]+(\\d|[a-zA-Z])*[.](\\d|[a-zA-Z])+");
@@ -145,12 +162,16 @@ public class AddPatientCodeBehind {
 		this.ssnTextField.setTextFormatter(new TextFormatter<Change>(this.filterSSN));
 		this.middleInitialTextField.setTextFormatter(new TextFormatter<Change>(this.filterInitial));
 		this.contactPhoneTextField.setTextFormatter(new TextFormatter<Change>(this.filterPhone));
+		this.zipCodeTextField.setTextFormatter(new TextFormatter<Change>(this.filterZip));
 		
 		///limits on database
 		this.firstNameTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(50)));
 		this.lastNameTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(50)));
 		this.contactEmailTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
-		this.mailingAddressTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
+		this.streetAddress1TextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
+		this.streetAddress2TextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
+		this.cityTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
+		this.stateTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(32)));
 	}
 
 	private void bindProperties() {
@@ -158,7 +179,11 @@ public class AddPatientCodeBehind {
 		this.viewModel.getContactPhoneProperty().bindBidirectional(this.contactPhoneTextField.textProperty());
 		this.viewModel.getFirstNameProperty().bindBidirectional(this.firstNameTextField.textProperty());
 		this.viewModel.getLastNameProperty().bindBidirectional(this.lastNameTextField.textProperty());
-		this.viewModel.getMailingAddressProperty().bindBidirectional(this.mailingAddressTextField.textProperty());
+		this.viewModel.getStreetAddress1Property().bindBidirectional(this.streetAddress1TextField.textProperty());
+		this.viewModel.getStreetAddress2Property().bindBidirectional(this.streetAddress2TextField.textProperty());
+		this.viewModel.getCityProperty().bindBidirectional(this.cityTextField.textProperty());
+		this.viewModel.getStateProperty().bindBidirectional(this.stateTextField.textProperty());
+		this.viewModel.getZipCodePropertyy().bindBidirectional(this.zipCodeTextField.textProperty());
 		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
 		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
 		this.viewModel.getDobProperty().bindBidirectional(this.dateSelect);
@@ -169,7 +194,11 @@ public class AddPatientCodeBehind {
 				.or(this.contactPhoneTextField.textProperty().isEmpty())
 				.or(this.firstNameTextField.textProperty().isEmpty())
 				.or(this.lastNameTextField.textProperty().isEmpty())
-				.or(this.mailingAddressTextField.textProperty().isEmpty())
+				.or(this.streetAddress1TextField.textProperty().isEmpty())
+				.or(this.streetAddress2TextField.textProperty().isEmpty())
+				.or(this.cityTextField.textProperty().isEmpty())
+				.or(this.stateTextField.textProperty().isEmpty())
+				.or(this.zipCodeTextField.textProperty().isEmpty())
 				.or(this.middleInitialTextField.textProperty().isEmpty())
 				.or(this.ssnTextField.textProperty().isEmpty())
 				.or(this.ssnTextField.textProperty().length().lessThan(9))
