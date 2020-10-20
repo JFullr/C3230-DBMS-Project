@@ -76,14 +76,14 @@ public class SearchPatientViewModel {
 	}
 	
 	public Person getPatient() {
-		String email = this.contactEmailProperty.getValue();
-		String phone = this.contactPhoneProperty.getValue();
-		String dob = this.dobProperty.getValue() != null ? this.dobProperty.getValue().toString() : null;
-		String fname = this.firstNameProperty.getValue();
-		String lname = this.lastNameProperty.getValue();
-		String address = this.mailingAddressProperty.getValue();
-		String middleInitial = this.middleInitialProperty.getValue();
-		String ssn = this.ssnProperty.getValue();
+		String email = this.nullString(this.contactEmailProperty.getValue());
+		String phone =  this.nullString(this.contactPhoneProperty.getValue());
+		String dob =  this.nullString(this.dobProperty.getValue() != null ? this.dobProperty.getValue().toString() : null);
+		String fname =  this.nullString(this.firstNameProperty.getValue());
+		String lname =  this.nullString(this.lastNameProperty.getValue());
+		String address =  this.nullString(this.mailingAddressProperty.getValue());
+		String middleInitial =  this.nullString(this.middleInitialProperty.getValue());
+		String ssn =  this.nullString(this.ssnProperty.getValue());
 		
 		Person person = new Person(email, phone, dob != null ? Date.valueOf(dob) : null, fname, lname,
 				address, middleInitial, ssn);
@@ -95,6 +95,13 @@ public class SearchPatientViewModel {
 	
 	public BooleanProperty getSearchEventProperty() {
 		return this.searchEventProperty;
+	}
+	
+	private String nullString(String check) {
+		if(check == null) {
+			return null;
+		}
+		return check.isEmpty() ? null : check;
 	}
 	
 }

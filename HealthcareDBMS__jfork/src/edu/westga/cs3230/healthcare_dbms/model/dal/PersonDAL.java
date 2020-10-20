@@ -15,7 +15,6 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
-import edu.westga.cs3230.healthcare_dbms.utils.EmptyUtil;
 
 public class PersonDAL {
 	
@@ -75,13 +74,20 @@ public class PersonDAL {
 		SqlTuple tuple = SqlGetter.getFrom(person);
 		StringBuilder query = new StringBuilder("SELECT * FROM Person WHERE ");
 		for (SqlAttribute attribute : tuple) {
-			if (EmptyUtil.isEmpty(attribute.getValue())) {
+			if (attribute.getValue() == null) {
 				continue;
 			}
 			query.append(attribute.getAttribute()).append(" = ?, ");
 		}
+		
+		//no non null or non empty attributes found
+		if(!query.toString().contains("?")) {
+			return null;
+		}
 		// remove the trailing comma at the end
 		query.setLength(query.length() - 2);
+		
+		//System.out.println(query);
 
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
@@ -89,12 +95,13 @@ public class PersonDAL {
 		) {
 			int j = 1;
 			for(SqlAttribute attr : tuple) {
-				if (EmptyUtil.isEmpty(attr.getValue())) {
+				if (attr.getValue() == null) {
 					continue;
 				}
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
+			//System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
 		}

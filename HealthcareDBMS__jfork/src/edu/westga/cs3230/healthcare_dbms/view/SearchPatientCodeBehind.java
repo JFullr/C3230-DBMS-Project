@@ -131,10 +131,6 @@ public class SearchPatientCodeBehind {
 	@FXML
 	public void searchForPatient(ActionEvent event) {
 		this.attemptAdd = true;
-
-		Person patient = viewModel.getPatient();
-
-		///this.closeWindow(event);
 	}
 	
 	@FXML

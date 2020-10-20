@@ -228,6 +228,7 @@ public class MainPageViewModel {
 					if (!this.attemptPatientSearch(viewModel.getPatient())) {
 						FXMLAlert.statusAlert("Search Failed", "The patient search did not complete successfully.", "Patient Search failed", AlertType.ERROR);
 					} else {
+						FXMLAlert.statusAlert("Search Success", "The patient search found one or more results.", "Patient Search Success", AlertType.INFORMATION);
 						codeBehind.closeWindow(null);
 						///TODO Later iteration: 
 						//this.handleUpdateQueryListView();
@@ -257,7 +258,7 @@ public class MainPageViewModel {
 
 	private boolean attemptPatientSearch(Person patient) {
 		QueryResult result = this.database.attemptSearchPatient(patient);
-		if (result == null) {
+		if (result == null || result.getTuples().size() == 0) {
 			return false;
 		}
 		this.queryResults.add(result);
