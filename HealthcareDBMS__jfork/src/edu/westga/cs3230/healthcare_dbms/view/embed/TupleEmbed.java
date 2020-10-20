@@ -1,12 +1,18 @@
 package edu.westga.cs3230.healthcare_dbms.view.embed;
 
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlTypeConverter;
+import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -14,24 +20,49 @@ import javafx.scene.layout.GridPane;
 
 public class TupleEmbed extends ListView<Node> {
 	
-	/*
-	public TupleEmbed() {
-		ObservableList<Label> labels = FXCollections.observableArrayList();
-		for(int i = 0; i < 15; i++) {
-			labels.add(new Label("Test Data: "+i));
-		}
-		this.setItems(labels);
-		this.setOrientation(Orientation.HORIZONTAL);
-		this.setMaxHeight(100.0);
-		//System.out.println(this.setFixedCellSize(100.0));
-		//this.setPadding(new Insets(0,0,0,0));
-	}
-	*/
+	private Object operatesOn;
+	private SqlTuple attributes;
 	
-	public TupleEmbed(SqlTuple attributes) {
-		ObservableList<Node> items = FXCollections.observableArrayList();
+	private ObservableList<Node> items;
+	private BooleanProperty canPost;
+	
+	public TupleEmbed(Object operatesOn, SqlTuple attributes) {
+		
+		this.operatesOn = operatesOn;
+		this.attributes = attributes;
+		this.canPost = new SimpleBooleanProperty(false);
+		this.items = FXCollections.observableArrayList();
+		
+		this.generateControlHeader();
+		this.generateFieldForms();
+		
+		this.setItems(items);
+		
+		this.setOrientation(Orientation.HORIZONTAL);
+		this.setMaxHeight(150.0);
+	}
+	
+	public Object getOperatedObject() {
+		this.fillData();
+		return this.operatesOn;
+	}
+	
+	private void generateControlHeader() {
+		
+		Button postEdits = new Button("Save Edits");
+		postEdits.disableProperty().bind(this.canPost.not());
+		
+		postEdits.setOnAction((evt)->{
+			FXMLAlert.statusAlert("Test Press", AlertType.INFORMATION);
+			//TODO change to MVVM and post on press property
+		});
+		
+		this.items.add(postEdits);
+		
+	}
+	
+	private void generateFieldForms() {
 		for(SqlAttribute attr : attributes) {
-			//System.out.println(attr);
 			if(attr.getAttribute() != null) {
 				
 				GridPane layout = new GridPane();
@@ -42,14 +73,63 @@ public class TupleEmbed extends ListView<Node> {
 				edit.setText(""+attr.getValue());
 				edit.setMaxHeight(50.0);
 				edit.setMaxWidth(100.0);
+				edit.textProperty().addListener((evt)->{
+					this.attachEditEvent(edit.getText(), attr.getAttribute(), attr.getValue().getClass());
+				});
 				layout.add(edit, 0, 1);
 				
-				items.add(layout);
+				this.items.add(layout);
 			}
 		}
-		this.setItems(items);
-		this.setOrientation(Orientation.HORIZONTAL);
-		this.setMaxHeight(150.0);
+	}
+	
+	private void attachEditEvent(String value, String attribute, Class<?> type) {
+		
+		Object mutated = SqlTypeConverter.convertStringTo(value, type);
+		
+		if(mutated != null) {
+			
+			this.canPost.setValue(this.checkIfEdited());
+			
+		}
+		
+	}
+	
+	private void fillData() {
+		
+		for(int i = 1; i < this.items.size(); i++) {
+			String attribute = ((Label)((GridPane)items.get(i)).getChildren().get(0)).getText();
+			String value = ((TextArea)((GridPane)items.get(i)).getChildren().get(1)).getText();
+			
+			
+			SqlAttribute attr = this.attributes.get(attribute);
+			Object mutated = SqlTypeConverter.convertStringTo(value, attr.getValue().getClass());
+			
+			if(attr != null) {
+				SqlAttribute replace = new SqlAttribute(attribute, mutated);
+				this.attributes.set(attribute, replace);
+			}
+		}
+		
+		SqlSetter.fillWith(this.operatesOn, this.attributes);
+	}
+	
+	private boolean checkIfEdited() {
+		
+		for(int i = 1; i < this.items.size(); i++) {
+			String attribute = ((Label)((GridPane)items.get(i)).getChildren().get(0)).getText();
+			String value = ((TextArea)((GridPane)items.get(i)).getChildren().get(1)).getText();
+			
+			SqlAttribute attr = this.attributes.get(attribute);
+			if(attr != null) {
+				if(!(""+attr.getValue()).equalsIgnoreCase(value)){
+					return true;
+				}
+			}
+		}
+		
+		
+		return false;
 	}
 	
 }

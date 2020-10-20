@@ -197,7 +197,7 @@ public class MainPageViewModel {
 			return false;
 		}
 		
-		this.addResults(result);
+		this.addResults(login, result);
 
 		return true;
 	}
@@ -265,7 +265,7 @@ public class MainPageViewModel {
 		
 		QueryResult result = this.database.attemptAddPatient(patient);
 		if (result == null || result.getTuples().size() == 0) {
-			this.addResults(this.database.getPatientBySSN(patient));
+			this.addResults(patient, this.database.getPatientBySSN(patient));
 			return true;
 		}
 		
@@ -283,11 +283,12 @@ public class MainPageViewModel {
 		if (result == null || result.getTuples().size() == 0) {
 			return false;
 		}
-		this.addResults(result);
+		this.addResults(patient, result);
 		return true;
 	}
 	
-	private void addResults(QueryResult results) {
+	private void addResults(Object operatedOn, QueryResult results) {
+		
 		if(results == this.lastResults || results == null) {
 			return;
 		}
@@ -296,7 +297,7 @@ public class MainPageViewModel {
 		
 		this.tuples.clear();
 		for(SqlTuple tup : results.getTuples()) {
-			this.tuples.add(new TupleEmbed(tup));
+			this.tuples.add(new TupleEmbed(operatedOn, tup));
 		}
 		
 	}

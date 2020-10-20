@@ -24,6 +24,11 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 	public SqlAttribute get(String attribute) {
 		return this.attrs.get(attribute);
 	}
+	
+	public SqlAttribute set(String attribute, SqlAttribute value) {
+		return this.attrs.put(attribute, value);
+	}
+	
 
 	@Override
 	public Iterator<SqlAttribute> iterator() {

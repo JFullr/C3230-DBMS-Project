@@ -2,6 +2,8 @@ package edu.westga.cs3230.healthcare_dbms.sql;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -65,6 +67,30 @@ public class SqlTypeConverter {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static Object convertStringTo(String value, Class<?> type) {
+		
+		Object ret = null;
+		try {
+			if(type == String.class) {
+				ret = value;
+			} else if(type == Double.class) {
+				ret = Double.parseDouble(value);
+			} else if(type == Integer.class) {
+				ret = Integer.parseInt(value);
+			} else if(type == Float.class) {
+				ret = Float.parseFloat(value);
+			} else if(type == Date.class) {
+				ret = Date.valueOf(value);
+			} else if(type == BigDecimal.class) {
+				ret = new BigDecimal(value);
+			}
+		} catch (Exception e) {
+			return null;
+		}
+		
+		return ret;
 	}
 	
 }
