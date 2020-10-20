@@ -90,4 +90,15 @@ public class HealthcareDatabase {
 		}
 		return null;
 	}
+
+	public QueryResult getPatientBySSN(Person patient) {
+		try {
+
+			QueryResult result = this.client.getPatientBySSN(patient);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

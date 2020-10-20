@@ -27,4 +27,8 @@ public class QueryResultStorage {
 		return this.results.get(this.results.size()-1);
 	}
 
+	public void clear() {
+		this.results.clear();
+	}
+
 }

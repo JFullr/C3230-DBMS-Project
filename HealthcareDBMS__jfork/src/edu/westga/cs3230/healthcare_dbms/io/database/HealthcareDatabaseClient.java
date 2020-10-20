@@ -76,4 +76,9 @@ public class HealthcareDatabaseClient {
 		this.lastResult = this.personDal.getPersonMatching(patient);
 		return this.lastResult;
 	}
+
+	public QueryResult getPatientBySSN(Person patient) throws SQLException {
+		this.lastResult = this.personDal.getPersonBySSN(patient);
+		return this.lastResult;
+	}
 }

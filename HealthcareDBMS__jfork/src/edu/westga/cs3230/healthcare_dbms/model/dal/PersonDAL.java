@@ -52,7 +52,7 @@ public class PersonDAL {
 		return result;
 	}
 	
-	private QueryResult getPersonBySSN(Person person) throws SQLException {
+	public QueryResult getPersonBySSN(Person person) throws SQLException {
 		String prepared = "select * "
 						+ "from Person "
 						+ "where ssn = ? "

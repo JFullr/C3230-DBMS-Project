@@ -13,12 +13,15 @@ import edu.westga.cs3230.healthcare_dbms.view.AddPatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.SearchPatientCodeBehind;
+import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLWindow;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert.AlertType;
 
 /**
@@ -41,6 +44,9 @@ public class MainPageViewModel {
 
 	private QueryResultStorage queryResults;
 	private HealthcareDatabase database;
+	
+	private ObservableList<TupleEmbed> tuples;
+	private QueryResult lastResults;
 
 	/**
 	 * Instantiates a new MainPageViewModel
@@ -58,6 +64,9 @@ public class MainPageViewModel {
 		this.userNameProperty = new SimpleStringProperty();
 		this.loggedInProperty = new SimpleBooleanProperty(false);
 		this.attemptingLoginProperty  = new SimpleBooleanProperty(false);
+		
+		this.tuples = FXCollections.observableArrayList();
+		this.lastResults = null;
 	}
 
 	/**
@@ -98,6 +107,8 @@ public class MainPageViewModel {
 		this.userIdProperty.setValue("");
 		this.userNameProperty.setValue("");
 		this.nameProperty.setValue("");
+		this.queryResults.clear();
+		this.tuples.clear();
 	}
 	
 	/**
@@ -150,6 +161,10 @@ public class MainPageViewModel {
 		return attemptingLoginProperty;
 	}
 	
+	public ObservableList<TupleEmbed> getTupleList() {
+		return this.tuples;
+	}
+	
 	public void showLogin() {
 		try {
 			FXMLWindow window = new FXMLWindow(LoginCodeBehind.class.getResource(LOGIN_GUI), "Healthcare Login", true);
@@ -182,7 +197,7 @@ public class MainPageViewModel {
 			return false;
 		}
 		
-		this.queryResults.add(result);
+		this.addResults(result);
 
 		return true;
 	}
@@ -248,12 +263,17 @@ public class MainPageViewModel {
 		
 		QueryResult result = this.database.attemptAddPatient(patient);
 		if (result == null || result.getTuples().size() == 0) {
+			this.addResults(this.database.getPatientBySSN(patient));
 			return true;
 		}
 		
-		this.queryResults.add(result);
-
+		//this.addResults(result);
+		
 		return false;
+	}
+
+	public String getUserType(Person patient) {
+		return this.getUserType(patient);
 	}
 
 	private boolean attemptPatientSearch(Person patient) {
@@ -261,16 +281,22 @@ public class MainPageViewModel {
 		if (result == null || result.getTuples().size() == 0) {
 			return false;
 		}
-		this.queryResults.add(result);
+		this.addResults(result);
 		return true;
 	}
-
-
-
-	public String getUserType(Person patient) {
-		return this.getUserType(patient);
-	}
-
 	
+	private void addResults(QueryResult results) {
+		if(results == this.lastResults || results == null) {
+			return;
+		}
+
+		this.queryResults.add(results);
+		
+		this.tuples.clear();
+		for(SqlTuple tup : results.getTuples()) {
+			this.tuples.add(new TupleEmbed(tup));
+		}
+		
+	}
 
 }

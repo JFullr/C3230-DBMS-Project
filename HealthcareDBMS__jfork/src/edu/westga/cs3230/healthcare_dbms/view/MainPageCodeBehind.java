@@ -8,13 +8,17 @@ import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
 import edu.westga.cs3230.healthcare_dbms.view.embed.Embed;
 import edu.westga.cs3230.healthcare_dbms.view.embed.EmbedHandler;
+import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLWindow;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.AddPatientViewModel;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.LoginViewModel;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.MainPageViewModel;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -51,7 +55,7 @@ public class MainPageCodeBehind {
     private Button addPatientButton;
 
 	@FXML
-	private ListView<Embed> queryListView;
+	private ListView<TupleEmbed> queryListView;
 
 	private EmbedHandler embedHandler;
 	private MainPageViewModel viewModel;
@@ -73,6 +77,9 @@ public class MainPageCodeBehind {
 		this.patientSearchButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 
 		this.addListeners();
+		
+		this.setupTupleView();
+		
 	}
 
 	/**
@@ -93,7 +100,7 @@ public class MainPageCodeBehind {
     }
 	
 	@FXML
-    void handlePatientSearch(ActionEvent event) {
+    public void handlePatientSearch(ActionEvent event) {
 		this.viewModel.showPatientSearch();
     }
 	
@@ -119,12 +126,22 @@ public class MainPageCodeBehind {
 
 	private void addListeners() {
 		this.queryListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			//TODO custom actions on selections
 			if (oldValue != newValue && oldValue != null) {
-				oldValue.hidePane();
+				//oldValue.hidePane();
 			}
 			if (newValue != null) {
-				newValue.showPane();
+				//newValue.showPane();
 			}
+		});
+	}
+	
+	private void setupTupleView() {
+		this.queryListView.setItems(this.viewModel.getTupleList());
+		this.queryListView.setPadding(new Insets(0,0,0,0));
+		this.queryListView.setFixedCellSize(100.0);
+		this.queryListView.selectionModelProperty().addListener((evt)->{
+			this.queryListView.refresh();
 		});
 	}
 
