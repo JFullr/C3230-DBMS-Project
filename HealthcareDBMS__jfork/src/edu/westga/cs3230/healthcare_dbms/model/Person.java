@@ -18,6 +18,7 @@ public class Person {
 		this.person_id = -1;
 	}
 
+	// TODO: Point to Address entity.
 	public Person(String email, String phone, Date dob, String fname, String lname, String address, String middleInitial, String ssn) {
 		this.setContact_email(email);
 		this.setContact_phone(phone);

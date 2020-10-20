@@ -21,7 +21,11 @@ public class AddPatientViewModel {
 	private final StringProperty lastNameProperty;
 	private final StringProperty contactPhoneProperty;
 	private final StringProperty contactEmailProperty;
-	private final StringProperty mailingAddressProperty;
+	private final StringProperty streetAddress1Property;
+	private final StringProperty streetAddress2Property;
+	private final StringProperty cityProperty;
+	private final StringProperty stateProperty;
+	private final StringProperty zipCodeProperty;
 	private final ObjectProperty<Date> dobProperty;
 	private final StringProperty middleInitialProperty;
 	private final StringProperty ssnProperty;
@@ -36,7 +40,11 @@ public class AddPatientViewModel {
 		this.lastNameProperty = new SimpleStringProperty();
 		this.contactPhoneProperty = new SimpleStringProperty();
 		this.contactEmailProperty = new SimpleStringProperty();
-		this.mailingAddressProperty = new SimpleStringProperty();
+		this.streetAddress1Property = new SimpleStringProperty();
+		this.streetAddress2Property = new SimpleStringProperty();
+		this.cityProperty = new SimpleStringProperty();
+		this.stateProperty = new SimpleStringProperty();
+		this.zipCodeProperty = new SimpleStringProperty();
 		this.dobProperty = new SimpleObjectProperty<Date>();
 		this.middleInitialProperty = new SimpleStringProperty();
 		this.ssnProperty = new SimpleStringProperty();
@@ -55,8 +63,24 @@ public class AddPatientViewModel {
 		return lastNameProperty;
 	}
 
-	public StringProperty getMailingAddressProperty() {
-		return mailingAddressProperty;
+	public StringProperty getStreetAddress1Property() {
+		return streetAddress1Property;
+	}
+
+	public StringProperty getStreetAddress2Property() {
+		return streetAddress2Property;
+	}
+
+	public StringProperty getCityProperty() {
+		return cityProperty;
+	}
+
+	public StringProperty getStateProperty() {
+		return stateProperty;
+	}
+
+	public StringProperty getZipCodePropertyy() {
+		return zipCodeProperty;
 	}
 
 	public StringProperty getContactEmailProperty() {
@@ -81,7 +105,7 @@ public class AddPatientViewModel {
 		String dob = this.dobProperty.getValue().toString();
 		String fname = this.firstNameProperty.getValue();
 		String lname = this.lastNameProperty.getValue();
-		String address = this.mailingAddressProperty.getValue();
+		String address = ""; // TODO
 		String middleInitial = this.middleInitialProperty.getValue();
 		String ssn = this.ssnProperty.getValue();
 		
