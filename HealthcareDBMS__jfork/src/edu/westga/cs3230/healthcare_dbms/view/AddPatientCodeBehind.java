@@ -140,7 +140,9 @@ public class AddPatientCodeBehind {
 
 	@FXML
 	public void addAndCloseWindow(ActionEvent event) {
-		this.attemptAdd = true;
+		this.viewModel.getAddEventProperty().setValue(true);
+		this.viewModel.getAddEventProperty().setValue(false);
+		//this.attemptAdd = true;
 		///this.closeWindow(event);
 	}
 	
@@ -187,7 +189,8 @@ public class AddPatientCodeBehind {
 		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
 		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
 		this.viewModel.getDobProperty().bindBidirectional(this.dateSelect);
-		this.viewModel.getAddEventProperty().bind(this.addPatientButton.pressedProperty());
+		
+		//this.viewModel.getAddEventProperty().bind(this.addPatientButton.pressedProperty());
 		
 		this.addPatientButton.disableProperty().bind(this.dateSelect.isNull()
 				.or(this.contactEmailTextField.textProperty().isEmpty())

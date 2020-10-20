@@ -130,7 +130,9 @@ public class SearchPatientCodeBehind {
 
 	@FXML
 	public void searchForPatient(ActionEvent event) {
-		this.attemptAdd = true;
+		//this.attemptAdd = true;
+		this.viewModel.getSearchEventProperty().setValue(true);
+		this.viewModel.getSearchEventProperty().setValue(false);
 	}
 	
 	@FXML
@@ -168,7 +170,7 @@ public class SearchPatientCodeBehind {
 		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
 		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
 		this.viewModel.getDobProperty().bindBidirectional(this.dateSelect);
-		this.viewModel.getSearchEventProperty().bind(this.searchButton.pressedProperty());
+		//this.viewModel.getSearchEventProperty().bind(this.searchButton.pressedProperty());
 		
 		this.searchButton.disableProperty().bind(this.dateSelect.isNull()
 				.and(this.contactEmailTextField.textProperty().isEmpty())

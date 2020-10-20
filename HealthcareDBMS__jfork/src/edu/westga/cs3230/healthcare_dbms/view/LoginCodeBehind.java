@@ -52,7 +52,8 @@ public class LoginCodeBehind {
     @FXML
     public void loginCloseWindow(ActionEvent event) {
     	
-		this.attemptLogin.setValue(true);
+		this.viewModel.getLoginButtonPressed().setValue(true);
+		this.viewModel.getLoginButtonPressed().setValue(false);
     	
     }
     
@@ -67,7 +68,7 @@ public class LoginCodeBehind {
 		this.attemptLogin.bind(this.loginButton.pressedProperty());
 		this.viewModel.getLoginButtonPressed().bind(this.attemptLogin);
 		/*/
-		this.viewModel.getLoginButtonPressed().bind(this.loginButton.pressedProperty());
+			//this.viewModel.getLoginButtonPressed().bind(this.loginButton.pressedProperty());
 		//*/
 	}
 
