@@ -214,6 +214,7 @@ public class MainPageViewModel {
 				if (viewModel.getAddEventProperty().getValue()) {
 					if (!this.attemptAddPatient(viewModel.getPatient())) {
 						FXMLAlert.statusAlert("Add Patient Status", "Patient SSN already exists in the database.", "Add Patient Failed", AlertType.ERROR);
+						viewModel.getAddEventProperty().setValue(false);
 					} else {
 						FXMLAlert.statusAlert("Add Patient Status", "Added patient Successfully", AlertType.INFORMATION);
 						codeBehind.closeWindow(null);
@@ -242,6 +243,7 @@ public class MainPageViewModel {
 				if (viewModel.getSearchEventProperty().getValue()) {
 					if (!this.attemptPatientSearch(viewModel.getPatient())) {
 						FXMLAlert.statusAlert("Search Failed", "The patient search did not complete successfully.", "Patient Search failed", AlertType.ERROR);
+						viewModel.getSearchEventProperty().setValue(false);
 					} else {
 						FXMLAlert.statusAlert("Search Success", "The patient search found one or more results.", "Patient Search Success", AlertType.INFORMATION);
 						codeBehind.closeWindow(null);

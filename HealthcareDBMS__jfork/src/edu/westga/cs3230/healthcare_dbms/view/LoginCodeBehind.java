@@ -1,7 +1,9 @@
 package edu.westga.cs3230.healthcare_dbms.view;
 
 import edu.westga.cs3230.healthcare_dbms.viewmodel.LoginViewModel;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -26,10 +28,11 @@ public class LoginCodeBehind {
     private PasswordField passwordField;
     
     private LoginViewModel viewModel;
-    private boolean attemptLogin;
+    private BooleanProperty attemptLogin;
     
     public LoginCodeBehind() {
 		this.viewModel = new LoginViewModel();
+		this.attemptLogin = new SimpleBooleanProperty(false);
     }
     
     /**
@@ -38,7 +41,6 @@ public class LoginCodeBehind {
 	@FXML
 	public void initialize() {
 		this.bindProperties();
-		this.attemptLogin = false;
 	}
 	
     @FXML
@@ -50,13 +52,8 @@ public class LoginCodeBehind {
     @FXML
     public void loginCloseWindow(ActionEvent event) {
     	
-		this.attemptLogin = true;
-		///this.closeWindow(event);
+		this.attemptLogin.setValue(true);
     	
-    }
-    
-    public boolean isAttemptingLogin() {
-    	return this.attemptLogin;
     }
     
     public LoginViewModel getViewModel() {
@@ -66,8 +63,12 @@ public class LoginCodeBehind {
     private void bindProperties() {
 		this.viewModel.getNameProperty().bindBidirectional(this.nameTextField.textProperty());
 		this.viewModel.getPasswordProperty().bindBidirectional(this.passwordField.textProperty());
+		/*
+		this.attemptLogin.bind(this.loginButton.pressedProperty());
+		this.viewModel.getLoginButtonPressed().bind(this.attemptLogin);
+		/*/
 		this.viewModel.getLoginButtonPressed().bind(this.loginButton.pressedProperty());
-		//this.viewModel.getLoginEventProperty().bindBidirectional(this.loginButton.change);
+		//*/
 	}
 
 }
