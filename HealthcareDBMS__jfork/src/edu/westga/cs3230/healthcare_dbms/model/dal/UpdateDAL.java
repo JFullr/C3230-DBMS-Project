@@ -40,7 +40,11 @@ public class UpdateDAL {
 		}
 		query.setLength(query.length() - 2);
 		
-		///TODO create WHERE discriminator from selection values
+		query.append(" WHERE ");
+		for (SqlAttribute value : selection.getAttributes().values()) {
+			query.append(value.getAttribute()).append(" = ?, ");
+		}
+		query.setLength(query.length() - 2);
 
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
@@ -52,6 +56,13 @@ public class UpdateDAL {
 					continue;
 				}
 				stmt.setObject(j, attr.getValue());
+				j++;
+			}
+			for (SqlAttribute attribute : selection) {
+				if (attribute.getValue() == null) {
+					continue;
+				}
+				stmt.setObject(j, attribute.getValue());
 				j++;
 			}
 			ResultSet rs = stmt.executeQuery();

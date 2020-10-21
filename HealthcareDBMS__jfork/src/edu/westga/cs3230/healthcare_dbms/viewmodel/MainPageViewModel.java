@@ -293,25 +293,10 @@ public class MainPageViewModel {
 		try {
 			FXMLWindow window = new FXMLWindow(PatientCodeBehind.class.getResource(ADD_GUI), "Update Patient", true);
 			PatientCodeBehind codeBehind = (PatientCodeBehind) window.getController();
-			codeBehind.setupForUpdate(existing);
+			codeBehind.setupForUpdate(patient);
 			PatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.getActionTextProperty().setValue("Update Patient");
-			
-			Person person = patient.getPerson(); 
-			Address address = patient.getAddress();
-			System.out.println(person+"\n\n"+address);
-			viewModel.getFirstNameProperty().setValue(person.getFname());
-			viewModel.getLastNameProperty().setValue(person.getLname());
-			viewModel.getMiddleInitialProperty().setValue(person.getMiddle_initial());
-			viewModel.getDobProperty().setValue(person.getDOB());
-			viewModel.getSsnProperty().setValue(""+person.getSSN());
-			viewModel.getContactPhoneProperty().setValue(person.getContact_phone());
-			viewModel.getContactEmailProperty().setValue(person.getContact_email());
-			viewModel.getCityProperty().setValue(address.getCity());
-			viewModel.getStreetAddress1Property().setValue(address.getStreet_address1());
-			viewModel.getStreetAddress2Property().setValue(address.getStreet_address2());
-			viewModel.getZipCodePropertyy().setValue(""+address.getZip_code());
-			
+
 			viewModel.getAddEventProperty().addListener((evt) -> {
 				
 				if (viewModel.getAddEventProperty().getValue()) {

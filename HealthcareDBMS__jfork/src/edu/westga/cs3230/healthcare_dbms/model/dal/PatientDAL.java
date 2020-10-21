@@ -70,8 +70,9 @@ public class PatientDAL {
 	}
 	
 	public QueryResult attemptUpdatePatient(PatientData updateData, PatientData existingData) throws SQLException {
-		//
-		return null;
+		QueryResult addressUpdate = this.addressDal.attemptUpdateAddress(existingData.getAddress(), updateData.getAddress());
+		QueryResult personUpdate = this.personDal.attemptUpdatePerson(existingData.getPerson(), updateData.getPerson());
+		return personUpdate.combine(addressUpdate);
 	}
 
 	public QueryResult getPersonMatching(PatientData patient) throws SQLException {
