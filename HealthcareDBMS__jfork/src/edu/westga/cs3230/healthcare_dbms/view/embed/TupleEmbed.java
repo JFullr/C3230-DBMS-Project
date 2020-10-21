@@ -23,15 +23,17 @@ import javafx.scene.layout.GridPane;
 public class TupleEmbed extends ListView<Node> {
 	
 	private Object operatesOn;
+	private Object display;
 	private SqlTuple attributes;
 	
 	private ObservableList<Node> items;
 	private BooleanProperty canPost;
 	private ObjectProperty<Object> selectedObjectProperty;
 	
-	public TupleEmbed(Object operatesOn, SqlTuple attributes) {
+	public TupleEmbed(Object operatesOn, Object display, SqlTuple attributes) {
 		
 		this.operatesOn = operatesOn;
+		this.display = display;
 		this.attributes = attributes;
 		this.canPost = new SimpleBooleanProperty(true);
 		this.selectedObjectProperty = new SimpleObjectProperty<Object>(null);
@@ -124,7 +126,7 @@ public class TupleEmbed extends ListView<Node> {
 			}
 		}
 		
-		SqlSetter.fillWith(this.operatesOn, this.attributes);
+		SqlSetter.fillWith(this.display, this.attributes);
 	}
 	
 	private boolean checkIfEdited() {

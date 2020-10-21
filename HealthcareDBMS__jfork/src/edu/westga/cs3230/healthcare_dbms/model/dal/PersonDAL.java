@@ -26,7 +26,7 @@ public class PersonDAL {
 		this.postDal = new PostDAL(dbUrl);
 	}
 	
-	public QueryResult attemptAddPatient(Person patient) throws SQLException {
+	public QueryResult attemptAddPerson(Person patient) throws SQLException {
 		
 		///TODO use transactions
 		
@@ -80,14 +80,12 @@ public class PersonDAL {
 			query.append(attribute.getAttribute()).append(" = ? AND ");
 		}
 		
-		//no non null or non empty attributes found
 		if(!query.toString().contains("?")) {
 			return null;
 		}
-		// remove the trailing comma at the end
 		query.setLength(query.lastIndexOf("?")+1);
 		
-		System.out.println(query);
+		//System.out.println(query);
 
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
@@ -101,7 +99,7 @@ public class PersonDAL {
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
-			System.out.println(stmt);
+			//System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
 		}

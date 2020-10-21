@@ -6,6 +6,7 @@ import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
+import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
@@ -88,8 +89,8 @@ public class MainPageViewModel {
 			
 			Class<?> mutateClass = obj.getClass();
 			//TODO add more classes to editt
-			if(mutateClass == Person.class) {
-				this.showUpdatePatient((Person)obj);
+			if(mutateClass == PatientData.class) {
+				this.showUpdatePatient((PatientData)obj);
 			}
 			else {
 				FXMLAlert.statusAlert("Cannot Edit", AlertType.WARNING);
@@ -289,7 +290,7 @@ public class MainPageViewModel {
 		}
 	}
 	
-	public void showUpdatePatient(Person existing) {
+	public void showUpdatePatient(PatientData existing) {
 		try {
 			FXMLWindow window = new FXMLWindow(AddPatientCodeBehind.class.getResource(ADD_GUI), "Update Patient", true);
 			AddPatientCodeBehind codeBehind = (AddPatientCodeBehind) window.getController();
@@ -317,11 +318,11 @@ public class MainPageViewModel {
 	}
 
 
-	private boolean attemptUpdatePatient(Person updateData, Person existing) {
+	private boolean attemptUpdatePatient(PatientData patientData, PatientData existing) {
 
-		QueryResult result = this.database.attemptUpdatePatient(updateData, existing);
+		QueryResult result = this.database.attemptUpdatePatient(patientData, existing);
 		if (result == null || result.getTuples().size() == 0) {
-			this.addResults(updateData, this.database.getPatientBySSN(updateData));
+			this.addResults(patientData, this.database.getPatientBySSN(patientData));
 			return true;
 		}
 		
@@ -330,11 +331,11 @@ public class MainPageViewModel {
 		return false;
 	}
 
-	public boolean attemptAddPatient(Person patient) {
+	public boolean attemptAddPatient(PatientData patientData) {
 		
-		QueryResult result = this.database.attemptAddPatient(patient);
+		QueryResult result = this.database.attemptAddPatient(patientData);
 		if (result == null || result.getTuples().size() == 0) {
-			this.addResults(patient, this.database.getPatientBySSN(patient));
+			this.addResults(patientData, patientData.getPerson(), this.database.getPatientBySSN(patientData));
 			return true;
 		}
 		
@@ -347,16 +348,20 @@ public class MainPageViewModel {
 		return this.getUserType(patient);
 	}
 
-	private boolean attemptPatientSearch(Person patient) {
-		QueryResult result = this.database.attemptSearchPatient(patient);
+	private boolean attemptPatientSearch(PatientData patientData) {
+		QueryResult result = this.database.attemptSearchPatient(patientData);
 		if (result == null || result.getTuples().size() == 0) {
 			return false;
 		}
-		this.addResults(patient, result);
+		this.addResults(patientData, result);
 		return true;
 	}
 	
 	private void addResults(Object operatedOn, QueryResult results) {
+		this.addResults(operatedOn, operatedOn, results);
+	}
+	
+	private void addResults(Object operatedOn, Object display, QueryResult results) {
 		
 		if(results == this.lastResults || results == null) {
 			return;
@@ -366,7 +371,7 @@ public class MainPageViewModel {
 		
 		this.tuples.clear();
 		for(SqlTuple tup : results.getTuples()) {
-			TupleEmbed embed = new TupleEmbed(operatedOn, tup);
+			TupleEmbed embed = new TupleEmbed(operatedOn, display, tup);
 			this.tuples.add(embed);
 			this.selectedTupleObject.bind(embed.getPressedPropertyAction());
 		}

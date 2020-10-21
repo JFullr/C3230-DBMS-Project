@@ -2,6 +2,8 @@ package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import java.sql.Date;
 
+import edu.westga.cs3230.healthcare_dbms.model.Address;
+import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -102,18 +104,26 @@ public class AddPatientViewModel {
 		return dobProperty;
 	}
 	
-	public Person getPatient() {
+	public PatientData getPatient() {
 		String email = this.contactEmailProperty.getValue();
 		String phone = this.contactPhoneProperty.getValue();
 		String dob = this.dobProperty.getValue().toString();
 		String fname = this.firstNameProperty.getValue();
 		String lname = this.lastNameProperty.getValue();
-		String address = ""; // TODO
 		String middleInitial = this.middleInitialProperty.getValue();
 		String ssn = this.ssnProperty.getValue();
 		
-		return new Person(email, phone, Date.valueOf(dob), fname, lname, 
-				address, middleInitial, ssn);
+		Person person = new Person(email, phone, Date.valueOf(dob), fname, lname, middleInitial, ssn);
+		
+		String street1 = this.streetAddress1Property.getValue();
+		String street2 = this.streetAddress2Property.getValue();
+		street2 = street2 == null ? "" : street2;
+		String state = this.stateProperty.getValue();
+		Integer zip = Integer.parseInt(this.zipCodeProperty.getValue());
+		
+		Address addr = new Address(street1, street2, state, zip);
+		
+		return new PatientData(person, addr);
 		
 	}
 	

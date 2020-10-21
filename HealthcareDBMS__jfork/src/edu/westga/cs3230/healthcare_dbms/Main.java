@@ -1,5 +1,8 @@
 package edu.westga.cs3230.healthcare_dbms;
 
+import edu.westga.cs3230.healthcare_dbms.model.Patient;
+import edu.westga.cs3230.healthcare_dbms.model.Person;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 import edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLContainer;
 import javafx.application.Application;
@@ -45,8 +48,11 @@ public class Main extends Application {
 	 * The main method.
 	 *
 	 * @param args the arguments
+	 * @throws SecurityException 
+	 * @throws NoSuchFieldException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchFieldException, SecurityException {
+		System.out.println(Person.class.getDeclaredField("person_id").getDeclaredAnnotation(SqlGenerated.class)!=null);
 		launch(args);
 	}
 }

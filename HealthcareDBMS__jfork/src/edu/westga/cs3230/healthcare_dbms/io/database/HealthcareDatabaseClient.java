@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.westga.cs3230.healthcare_dbms.model.Login;
+import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.model.dal.LoginDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.PatientDAL;
@@ -64,9 +65,9 @@ public class HealthcareDatabaseClient {
 		return this.lastResult;
 	}
 
-	public QueryResult attemptAddPatient(Person patient) throws SQLException {
+	public QueryResult attemptAddPatient(PatientData patientData) throws SQLException {
 		
-		this.lastResult = this.personDal.attemptAddPatient(patient);
+		this.lastResult = this.patientDal.attemptAddPatient(patientData);
 		return this.lastResult;
 	}
 
@@ -75,18 +76,19 @@ public class HealthcareDatabaseClient {
 		return this.userDal.getUserType(patient);
 	}
 
-	public QueryResult attemptSearchPatient(Person patient) throws SQLException {
-		this.lastResult = this.personDal.getPersonMatching(patient);
+	public QueryResult attemptSearchPatient(PatientData patient) throws SQLException {
+		this.lastResult = this.patientDal.getPersonMatching(patient);
 		return this.lastResult;
 	}
 
-	public QueryResult getPatientBySSN(Person patient) throws SQLException {
-		this.lastResult = this.personDal.getPersonBySSN(patient);
+	public QueryResult getPatientBySSN(PatientData patientData) throws SQLException {
+		this.lastResult = this.patientDal.getPersonBySSN(patientData);
 		return this.lastResult;
 	}
 
-	public QueryResult updatePatient(Person updateData, Person existing) throws SQLException {
-		this.lastResult = this.patientDal.attemptUpdatePatient(updateData, existing);
+	public QueryResult updatePatient(PatientData updateData, PatientData existingData) throws SQLException {
+		//TODO fix
+		this.lastResult = this.patientDal.attemptUpdatePatient(updateData, existingData);
 		return this.lastResult;
 	}
 }

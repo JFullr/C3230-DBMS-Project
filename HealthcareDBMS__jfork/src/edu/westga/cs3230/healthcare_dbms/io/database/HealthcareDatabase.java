@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.westga.cs3230.healthcare_dbms.model.Login;
+import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 
 /**
@@ -69,10 +70,10 @@ public class HealthcareDatabase {
 		return null;
 	}
 
-	public QueryResult attemptAddPatient(Person patient) {
+	public QueryResult attemptAddPatient(PatientData patientData) {
 		try {
 			
-			QueryResult result = this.client.attemptAddPatient(patient);
+			QueryResult result = this.client.attemptAddPatient(patientData);
 			return result;
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -80,7 +81,7 @@ public class HealthcareDatabase {
 		return null;
 	}
 
-	public QueryResult attemptSearchPatient(Person patient) {
+	public QueryResult attemptSearchPatient(PatientData patient) {
 		try {
 
 			QueryResult result = this.client.attemptSearchPatient(patient);
@@ -91,10 +92,10 @@ public class HealthcareDatabase {
 		return null;
 	}
 
-	public QueryResult getPatientBySSN(Person patient) {
+	public QueryResult getPatientBySSN(PatientData patientData) {
 		try {
 
-			QueryResult result = this.client.getPatientBySSN(patient);
+			QueryResult result = this.client.getPatientBySSN(patientData);
 			return result;
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -102,10 +103,10 @@ public class HealthcareDatabase {
 		return null;
 	}
 
-	public QueryResult attemptUpdatePatient(Person updateData, Person existing) {
+	public QueryResult attemptUpdatePatient(PatientData patientData, PatientData existing) {
 		try {
 
-			QueryResult result = this.client.updatePatient(updateData, existing);
+			QueryResult result = this.client.updatePatient(patientData, existing);
 			return result;
 		} catch(Exception e) {
 			e.printStackTrace();

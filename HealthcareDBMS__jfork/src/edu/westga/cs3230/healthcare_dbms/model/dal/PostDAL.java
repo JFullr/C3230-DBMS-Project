@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
@@ -76,6 +78,8 @@ public class PostDAL {
 		
 		
 		ArrayList<String> useAttributes = new ArrayList<String>();
+		
+		/*
 		String table = data.getClass().getSimpleName();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
 				Statement stmt = con.createStatement()){
@@ -91,6 +95,20 @@ public class PostDAL {
 			
 			rs.close();
 		}
+		/*/
+		SqlTuple tup = SqlGetter.getFrom(data);
+		
+		for(SqlAttribute attr : tup) {
+			try {
+				if(data.getClass().getField(attr.getAttribute())
+						.getDeclaredAnnotation(SqlGenerated.class) == null) {
+					useAttributes.add(attr.getAttribute());
+				}
+			}catch(Exception e) {
+				useAttributes.add(attr.getAttribute());
+			}
+		}
+		//*/
 		
 		return useAttributes;
 	}

@@ -2,8 +2,11 @@ package edu.westga.cs3230.healthcare_dbms.model;
 
 import java.sql.Date;
 
-public class Person {
+import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 
+public class Person {
+	
+	@SqlGenerated
 	private Integer person_id;
 	private String fname;
 	private String lname;
@@ -12,23 +15,19 @@ public class Person {
 	private Integer SSN;
 	private String contact_phone;
 	private String contact_email;
-	private String mailing_address;
+	@SqlGenerated
+	private Integer mailing_address_id;
 	
-	public Person() {
-		this.person_id = -1;
-	}
-
-	// TODO: Point to Address entity.
-	public Person(String email, String phone, Date dob, String fname, String lname, String address, String middleInitial, String ssn) {
+	public Person(String email, String phone, Date dob, String fname, String lname, String middleInitial, String ssn) {
 		this.setContact_email(email);
 		this.setContact_phone(phone);
 		this.setDOB(dob);
 		this.setFname(fname);
 		this.setLname(lname);
-		this.setMailing_address(address);
 		this.setMiddle_initial(middleInitial);
 		this.setSSN(ssn == null || ssn.isEmpty() ? null : Integer.parseInt(ssn));
-		this.person_id = -1;
+		this.person_id = null;
+		this.setMailing_address_id(null);
 	}
 
 	public Integer getPerson_id() {
@@ -95,12 +94,12 @@ public class Person {
 		this.contact_email = contact_email;
 	}
 
-	public String getMailing_address() {
-		return mailing_address;
+	public Integer getMailing_address_id() {
+		return mailing_address_id;
 	}
 
-	public void setMailing_address(String mailing_address) {
-		this.mailing_address = mailing_address;
+	public void setMailing_address_id(Integer mailing_address_id) {
+		this.mailing_address_id = mailing_address_id;
 	}
 
 }
