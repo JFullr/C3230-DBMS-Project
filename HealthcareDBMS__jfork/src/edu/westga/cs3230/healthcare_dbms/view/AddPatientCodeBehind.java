@@ -5,17 +5,16 @@ import java.time.LocalDate;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+import edu.westga.cs3230.healthcare_dbms.utils.States;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.AddPatientViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.stage.Stage;
 
@@ -49,7 +48,7 @@ public class AddPatientCodeBehind {
 	private TextField cityTextField;
 
 	@FXML
-	private TextField stateTextField;
+	private ComboBox<String> stateComboBox;
 
 	@FXML
 	private TextField zipCodeTextField;
@@ -165,6 +164,8 @@ public class AddPatientCodeBehind {
 		this.middleInitialTextField.setTextFormatter(new TextFormatter<Change>(this.filterInitial));
 		this.contactPhoneTextField.setTextFormatter(new TextFormatter<Change>(this.filterPhone));
 		this.zipCodeTextField.setTextFormatter(new TextFormatter<Change>(this.filterZip));
+
+		this.stateComboBox.setItems(FXCollections.observableArrayList(States.ALL_STATES));
 		
 		///limits on database
 		this.firstNameTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(50)));
@@ -173,7 +174,6 @@ public class AddPatientCodeBehind {
 		this.streetAddress1TextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
 		this.streetAddress2TextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
 		this.cityTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
-		this.stateTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(32)));
 	}
 
 	private void bindProperties() {
@@ -184,7 +184,7 @@ public class AddPatientCodeBehind {
 		this.viewModel.getStreetAddress1Property().bindBidirectional(this.streetAddress1TextField.textProperty());
 		this.viewModel.getStreetAddress2Property().bindBidirectional(this.streetAddress2TextField.textProperty());
 		this.viewModel.getCityProperty().bindBidirectional(this.cityTextField.textProperty());
-		this.viewModel.getStateProperty().bindBidirectional(this.stateTextField.textProperty());
+		this.viewModel.getStateProperty().bind(this.stateComboBox.getSelectionModel().selectedItemProperty());
 		this.viewModel.getZipCodePropertyy().bindBidirectional(this.zipCodeTextField.textProperty());
 		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
 		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
@@ -202,7 +202,7 @@ public class AddPatientCodeBehind {
 				//.or(this.streetAddress2TextField.textProperty().isEmpty())
 				.or(this.cityTextField.textProperty().isEmpty())
 				.or(this.zipCodeTextField.textProperty().length().lessThan(5))
-				.or(this.stateTextField.textProperty().isEmpty())
+				.or(this.stateComboBox.getSelectionModel().selectedItemProperty().isNull())
 				.or(this.zipCodeTextField.textProperty().isEmpty())
 				.or(this.middleInitialTextField.textProperty().isEmpty())
 				.or(this.ssnTextField.textProperty().isEmpty())

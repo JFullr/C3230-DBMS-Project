@@ -63,9 +63,9 @@
             <Label text="State" GridPane.columnIndex="1" GridPane.rowIndex="10" />
             <TextField fx:id="streetAddress2TextField" GridPane.columnIndex="2" GridPane.rowIndex="8" />
             <TextField fx:id="cityTextField" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-            <TextField fx:id="stateTextField" GridPane.columnIndex="2" GridPane.rowIndex="10" />
             <Label text="Zip Code" GridPane.columnIndex="1" GridPane.rowIndex="11" />
             <TextField fx:id="zipCodeTextField" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+            <ComboBox fx:id="stateComboBox" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="10" />
          </children>
       </GridPane>
    </center>
