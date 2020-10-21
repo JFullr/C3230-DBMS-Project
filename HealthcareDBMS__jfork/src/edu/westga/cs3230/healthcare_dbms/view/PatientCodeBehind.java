@@ -66,8 +66,6 @@ public class PatientCodeBehind {
 	@FXML
 	private TextField ssnTextField;
 	
-	private ObjectProperty<Date> dateSelect;
-	
 	/*
 	 * 
 	private UnaryOperator<Change> filterIntegers = change -> {
@@ -123,13 +121,14 @@ public class PatientCodeBehind {
 	public PatientCodeBehind() {
 		this.viewModel = new PatientViewModel();
 		this.attemptAdd = false;
-		this.dateSelect = new SimpleObjectProperty<Date>();
 		this.isEmailValid = new SimpleBooleanProperty(false);
 	}
 
 	public void setupForUpdate(PatientData data) {
 		existingPatientData = data;
 		this.viewModel.pull(data);
+
+		// Combo boxes work a bit weirdly
 		this.stateComboBox.getSelectionModel().select(data.getAddress().getState());
 	}
 
@@ -155,12 +154,6 @@ public class PatientCodeBehind {
 		//this.attemptAdd = true;
 		///this.closeWindow(event);
 	}
-	
-	@FXML
-    public void getDateValue(ActionEvent event) {
-		LocalDate time = this.dobPicker.getValue();
-		this.dateSelect.setValue(Date.valueOf(time));
-    }
 
 	public boolean isAttemptingAdd() {
 		return this.attemptAdd;
@@ -199,12 +192,12 @@ public class PatientCodeBehind {
 		this.viewModel.getZipCodePropertyy().bindBidirectional(this.zipCodeTextField.textProperty());
 		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
 		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
-		this.viewModel.getDobProperty().bindBidirectional(this.dateSelect);
+		this.viewModel.getDobProperty().bindBidirectional(this.dobPicker.valueProperty());
 		this.viewModel.getActionTextProperty().bindBidirectional(this.addPatientButton.textProperty());
 		
 		//this.viewModel.getAddEventProperty().bind(this.addPatientButton.pressedProperty());
 		
-		this.addPatientButton.disableProperty().bind(this.dateSelect.isNull()
+		this.addPatientButton.disableProperty().bind(this.dobPicker.valueProperty().isNull()
 				.or(this.contactEmailTextField.textProperty().isEmpty())
 				.or(this.contactPhoneTextField.textProperty().isEmpty())
 				.or(this.firstNameTextField.textProperty().isEmpty())

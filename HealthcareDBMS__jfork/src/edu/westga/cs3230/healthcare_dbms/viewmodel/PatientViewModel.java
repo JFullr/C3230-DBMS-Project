@@ -1,9 +1,11 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import edu.westga.cs3230.healthcare_dbms.model.Address;
-import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import javafx.beans.property.BooleanProperty;
@@ -12,8 +14,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 
 /**
  * Viewmodel class for the Login window.
@@ -29,7 +29,7 @@ public class PatientViewModel {
 	private final StringProperty cityProperty;
 	private final StringProperty stateProperty;
 	private final StringProperty zipCodeProperty;
-	private final ObjectProperty<Date> dobProperty;
+	private final ObjectProperty<LocalDate> dobProperty;
 	private final StringProperty middleInitialProperty;
 	private final StringProperty ssnProperty;
 	
@@ -50,7 +50,7 @@ public class PatientViewModel {
 		this.cityProperty = new SimpleStringProperty();
 		this.stateProperty = new SimpleStringProperty();
 		this.zipCodeProperty = new SimpleStringProperty();
-		this.dobProperty = new SimpleObjectProperty<Date>();
+		this.dobProperty = new SimpleObjectProperty<LocalDate>();
 		this.middleInitialProperty = new SimpleStringProperty();
 		this.ssnProperty = new SimpleStringProperty();
 		this.addEventProperty = new SimpleBooleanProperty(false);
@@ -101,20 +101,20 @@ public class PatientViewModel {
 		return ssnProperty;
 	}
 
-	public ObjectProperty<Date> getDobProperty() {
+	public ObjectProperty<LocalDate> getDobProperty() {
 		return dobProperty;
 	}
 	
 	public PatientData getPatient() {
 		String email = this.contactEmailProperty.getValue();
 		String phone = this.contactPhoneProperty.getValue();
-		String dob = this.dobProperty.getValue().toString();
+		Date dob = new Date(Instant.from(this.dobProperty.getValue()).toEpochMilli());
 		String fname = this.firstNameProperty.getValue();
 		String lname = this.lastNameProperty.getValue();
 		String middleInitial = this.middleInitialProperty.getValue();
 		String ssn = this.ssnProperty.getValue();
 		
-		Person person = new Person(email, phone, Date.valueOf(dob), fname, lname, middleInitial, ssn);
+		Person person = new Person(email, phone, dob, fname, lname, middleInitial, ssn);
 		
 		String street1 = this.streetAddress1Property.getValue();
 		String street2 = this.streetAddress2Property.getValue();
@@ -141,7 +141,7 @@ public class PatientViewModel {
 		Person person = data.getPerson();
 		this.contactEmailProperty.set(nullToEmpty(person.getContact_email()));
 		this.contactPhoneProperty.set(nullToEmpty(person.getContact_phone()));
-		this.dobProperty.set(person.getDOB());
+		this.dobProperty.set(LocalDate.ofInstant(new java.util.Date(person.getDOB().getTime()).toInstant(), ZoneId.of("UTC")));
 		this.firstNameProperty.set(nullToEmpty(person.getFname()));
 		this.lastNameProperty.set(nullToEmpty(person.getLname()));
 		this.middleInitialProperty.set(nullToEmpty(person.getMiddle_initial()));
@@ -151,6 +151,7 @@ public class PatientViewModel {
 		this.streetAddress1Property.set(nullToEmpty(addr.getStreet_address1()));
 		this.streetAddress2Property.set(nullToEmpty(addr.getStreet_address2()));
 		//this.stateProperty.set(addr.getState());
+		this.cityProperty.set(nullToEmpty(addr.getCity()));
 		this.zipCodeProperty.set(String.format("%05d", addr.getZip_code()));
 	}
 
