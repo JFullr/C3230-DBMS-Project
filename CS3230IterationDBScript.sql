@@ -29,8 +29,8 @@ drop table if exists Address;
 
 CREATE TABLE Address (
 	address_id INTEGER not null,
-	street_address1_id VARCHAR(50) not null,
-	street_address2_id VARCHAR(50),
+	street_address1 VARCHAR(50) not null,
+	street_address2 VARCHAR(50),
 	city VARCHAR(50) not null,
 	state VARCHAR(25) not null,
 	zip_code INTEGER not null,
