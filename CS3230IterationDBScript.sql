@@ -28,7 +28,7 @@ drop table if exists Person;
 drop table if exists Address;
 
 CREATE TABLE Address (
-	address_id INTEGER not null,
+	address_id INTEGER not null AUTO_INCREMENT,
 	street_address1 VARCHAR(50) not null,
 	street_address2 VARCHAR(50),
 	city VARCHAR(50) not null,
@@ -38,7 +38,7 @@ CREATE TABLE Address (
 );
 
 CREATE TABLE Person( 
-	person_id INTEGER not null auto_increment, 
+	person_id INTEGER not null AUTO_INCREMENT, 
 	fname VARCHAR(30) not null,
 	lname VARCHAR(30) not null,
 	middle_initial CHAR(1) not null,
