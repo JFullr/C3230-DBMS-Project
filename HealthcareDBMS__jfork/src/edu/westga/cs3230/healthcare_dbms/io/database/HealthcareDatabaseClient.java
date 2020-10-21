@@ -58,6 +58,7 @@ public class HealthcareDatabaseClient {
 	public QueryResult attemptLogin(Login login) throws SQLException {
 		
 		this.lastResult = this.loginDal.attemptLogin(login);
+		this.lastResult.setAssociated(login);
 		return this.lastResult;
 	}
 	
@@ -78,6 +79,7 @@ public class HealthcareDatabaseClient {
 
 	public QueryResult attemptSearchPatient(PatientData patient) throws SQLException {
 		this.lastResult = this.patientDal.getPersonMatching(patient);
+		this.lastResult.setAssociated(patient);
 		return this.lastResult;
 	}
 

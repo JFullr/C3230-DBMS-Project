@@ -67,7 +67,7 @@ public class AddressDAL {
 
     public QueryResult attemptAddAddress(Address address) throws SQLException {
         QueryResult attemptedMatch = this.matchAddress(address);
-        if (attemptedMatch.getTuples().size() > 0) {
+        if (attemptedMatch.getBatch().size() > 0) {
             return attemptedMatch;
         }
 

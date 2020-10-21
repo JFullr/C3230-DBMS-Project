@@ -149,8 +149,7 @@ public class MainPageViewModel {
 		this.loggedInProperty.setValue(true);
 		
 		ArrayList<QueryResult> results = this.getLastResults();
-		ArrayList<SqlTuple> loginTuples = results.get(0).getTuples();
-		SqlTuple loginData = loginTuples.get(0);
+		SqlTuple loginData = results.get(0).getTuple();
 		
 		String user_name= loginData.get("user_name").getValue().toString();
 		String user_id = loginData.get("user_id").getValue().toString();
@@ -226,7 +225,7 @@ public class MainPageViewModel {
 	public boolean attemptLogin(Login login) {
 		
 		QueryResult result = this.database.attemptLogin(login);
-		if (result == null || result.getTuples().size() != 1) {
+		if (result == null || result.getTuple() == null) {
 			return false;
 		}
 		
@@ -321,7 +320,7 @@ public class MainPageViewModel {
 	private boolean attemptUpdatePatient(PatientData patientData, PatientData existing) {
 
 		QueryResult result = this.database.attemptUpdatePatient(patientData, existing);
-		if (result == null || result.getTuples().size() == 0) {
+		if (result == null || result.getTuple() == null) {
 			this.addResults(patientData, this.database.getPatientBySSN(patientData));
 			return true;
 		}
@@ -334,7 +333,7 @@ public class MainPageViewModel {
 	public boolean attemptAddPatient(PatientData patientData) {
 		
 		QueryResult results = this.database.attemptAddPatient(patientData);
-		if (results == null || results.getTuples().size() == 0) {
+		if (results == null || results.getTuple()== null) {
 			return false;
 		}
 		
@@ -350,7 +349,7 @@ public class MainPageViewModel {
 
 	private boolean attemptPatientSearch(PatientData patientData) {
 		QueryResult result = this.database.attemptSearchPatient(patientData);
-		if (result == null || result.getTuples().size() == 0) {
+		if (result == null || result.getTuple() == null) {
 			return false;
 		}
 		this.addResults(patientData, result);
@@ -370,19 +369,21 @@ public class MainPageViewModel {
 		this.queryResults.add(results);
 		
 		this.tuples.clear();
-		/*
-		TupleEmbed guaranted = new TupleEmbed(operatedOn, display, null);
-		this.tuples.add(guaranted);
-		this.selectedTupleObject.bind(guaranteed.getPressedPropertyAction());
-		*/
-		for(SqlTuple tup : results.getTuples()) {
-			TupleEmbed embed = new TupleEmbed(operatedOn, display, tup);
-			this.tuples.add(embed);
-			embed.getPressedPropertyAction().addListener((evt)->{
-				//if(embed.getPressedPropertyAction().getValue() != null) {
-					this.selectedTupleObject.setValue(embed.getPressedPropertyAction().getValue());
-				//}
+		
+		TupleEmbed embed = null;
+		for(QueryResult result : results) {
+			SqlTuple tup = result.getTuple();
+			if(result.getAssociated() == null) {
+				embed = new TupleEmbed(operatedOn, display, tup);
+			} else {
+				embed = new TupleEmbed(result.getAssociated(), result.getAssociated(), tup);
+			}
+			
+			final TupleEmbed xbed = embed;
+			xbed.getPressedPropertyAction().addListener((evt)->{
+				this.selectedTupleObject.setValue(xbed.getPressedPropertyAction().getValue());
 			});
+			this.tuples.add(xbed);
 		}
 		
 	}

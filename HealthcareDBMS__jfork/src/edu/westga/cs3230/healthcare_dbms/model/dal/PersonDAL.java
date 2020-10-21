@@ -32,7 +32,7 @@ public class PersonDAL {
 		
 		QueryResult result = this.getPersonBySSN(patient);
 		
-		if(result == null || result.getTuples().size() == 0) {
+		if(result == null || result.getTuple() == null) {
 			ArrayList<SqlTuple> current = this.postDal.postTuple(patient);
 			Integer id = null;
 			if(current == null || current.size() == 0) {
@@ -62,7 +62,8 @@ public class PersonDAL {
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
 				PreparedStatement stmt = con.prepareStatement(prepared);
 				) {
-			stmt.setString(1, ""+person.getSSN());
+			stmt.setObject(1, person.getSSN());
+			//System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
 		}
