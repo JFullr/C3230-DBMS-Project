@@ -6,7 +6,9 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTypeConverter;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
@@ -25,12 +27,14 @@ public class TupleEmbed extends ListView<Node> {
 	
 	private ObservableList<Node> items;
 	private BooleanProperty canPost;
+	private ObjectProperty<Object> selectedObjectProperty;
 	
 	public TupleEmbed(Object operatesOn, SqlTuple attributes) {
 		
 		this.operatesOn = operatesOn;
 		this.attributes = attributes;
-		this.canPost = new SimpleBooleanProperty(false);
+		this.canPost = new SimpleBooleanProperty(true);
+		this.selectedObjectProperty = new SimpleObjectProperty<Object>(null);
 		this.items = FXCollections.observableArrayList();
 		
 		this.generateControlHeader();
@@ -42,6 +46,10 @@ public class TupleEmbed extends ListView<Node> {
 		this.setMaxHeight(150.0);
 	}
 	
+	public ObjectProperty<Object> getPressedPropertyAction() {
+		return this.selectedObjectProperty;
+	}
+	
 	public Object getOperatedObject() {
 		this.fillData();
 		return this.operatesOn;
@@ -49,18 +57,22 @@ public class TupleEmbed extends ListView<Node> {
 	
 	private void generateControlHeader() {
 		
-		Button postEdits = new Button("Save Edits");
+		Button postEdits = new Button("Edit");
 		postEdits.disableProperty().bind(this.canPost.not());
 		
 		postEdits.setOnAction((evt)->{
-			FXMLAlert.statusAlert("Test Press", AlertType.INFORMATION);
-			//TODO change to MVVM and post on press property
+			this.postTupleObject();
 		});
 		
 		this.items.add(postEdits);
 		
 	}
 	
+	private void postTupleObject() {
+		this.selectedObjectProperty.setValue(this.operatesOn);
+		this.selectedObjectProperty.setValue(null);
+	}
+
 	private void generateFieldForms() {
 		for(SqlAttribute attr : attributes) {
 			if(attr.getAttribute() != null) {
@@ -70,6 +82,7 @@ public class TupleEmbed extends ListView<Node> {
 				layout.add(new Label(attr.getAttribute()), 0, 0);
 				
 				TextArea edit = new TextArea();
+				edit.setEditable(false);
 				edit.setText(""+attr.getValue());
 				edit.setMaxHeight(50.0);
 				edit.setMaxWidth(100.0);

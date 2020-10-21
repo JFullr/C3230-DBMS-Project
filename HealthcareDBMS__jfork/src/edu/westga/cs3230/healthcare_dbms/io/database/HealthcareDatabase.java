@@ -101,4 +101,15 @@ public class HealthcareDatabase {
 		}
 		return null;
 	}
+
+	public QueryResult attemptUpdatePatient(Person updateData, Person existing) {
+		try {
+
+			QueryResult result = this.client.updatePatient(updateData, existing);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

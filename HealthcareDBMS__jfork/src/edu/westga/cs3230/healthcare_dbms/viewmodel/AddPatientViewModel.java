@@ -30,6 +30,8 @@ public class AddPatientViewModel {
 	private final StringProperty middleInitialProperty;
 	private final StringProperty ssnProperty;
 	
+	private final StringProperty actionTextProperty;
+	
 	private final BooleanProperty addEventProperty;
 
 	/**
@@ -49,6 +51,7 @@ public class AddPatientViewModel {
 		this.middleInitialProperty = new SimpleStringProperty();
 		this.ssnProperty = new SimpleStringProperty();
 		this.addEventProperty = new SimpleBooleanProperty(false);
+		this.actionTextProperty = new SimpleStringProperty();
 	}
 
 	public StringProperty getFirstNameProperty() {
@@ -117,5 +120,10 @@ public class AddPatientViewModel {
 	public BooleanProperty getAddEventProperty() {
 		return this.addEventProperty;
 	}
+
+	public StringProperty getActionTextProperty() {
+		return actionTextProperty;
+	}
+
 	
 }

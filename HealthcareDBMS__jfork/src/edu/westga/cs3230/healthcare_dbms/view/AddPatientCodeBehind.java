@@ -189,6 +189,7 @@ public class AddPatientCodeBehind {
 		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
 		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
 		this.viewModel.getDobProperty().bindBidirectional(this.dateSelect);
+		this.viewModel.getActionTextProperty().bindBidirectional(this.addPatientButton.textProperty());
 		
 		//this.viewModel.getAddEventProperty().bind(this.addPatientButton.pressedProperty());
 		

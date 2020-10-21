@@ -8,6 +8,7 @@ import java.util.List;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.model.dal.LoginDAL;
+import edu.westga.cs3230.healthcare_dbms.model.dal.PatientDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.PersonDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.PostDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.UserTypeDAL;
@@ -23,6 +24,7 @@ public class HealthcareDatabaseClient {
 	private PostDAL postDal;
 	private LoginDAL loginDal;
 	private PersonDAL personDal;
+	private PatientDAL patientDal;
 	
 	private QueryResult lastResult;
 	private String dbUrl;
@@ -39,6 +41,7 @@ public class HealthcareDatabaseClient {
 		this.loginDal = new LoginDAL(dbUrl);
 		this.personDal = new PersonDAL(dbUrl);
 		this.userDal = new UserTypeDAL(dbUrl);
+		this.patientDal = new PatientDAL(dbUrl);
 	}
 	
 	public boolean callQuery(String query) throws Exception {
@@ -79,6 +82,11 @@ public class HealthcareDatabaseClient {
 
 	public QueryResult getPatientBySSN(Person patient) throws SQLException {
 		this.lastResult = this.personDal.getPersonBySSN(patient);
+		return this.lastResult;
+	}
+
+	public QueryResult updatePatient(Person updateData, Person existing) throws SQLException {
+		this.lastResult = this.patientDal.attemptUpdatePatient(updateData, existing);
 		return this.lastResult;
 	}
 }

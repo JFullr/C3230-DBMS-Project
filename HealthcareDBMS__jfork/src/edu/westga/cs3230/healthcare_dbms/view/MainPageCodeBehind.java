@@ -132,6 +132,7 @@ public class MainPageCodeBehind {
 			}
 			if (newValue != null) {
 				//newValue.showPane();
+				//this.viewModel.getSelectedTupleObject().setValue(newValue.getOperatedObject());
 			}
 		});
 	}

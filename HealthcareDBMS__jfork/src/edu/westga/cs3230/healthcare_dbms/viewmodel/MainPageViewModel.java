@@ -17,7 +17,9 @@ import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLWindow;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -41,6 +43,8 @@ public class MainPageViewModel {
 	private final StringProperty nameProperty;
 	private final StringProperty userIdProperty;
 	private final StringProperty userNameProperty;
+	
+	private final ObjectProperty<Object> selectedTupleObject;
 
 	private QueryResultStorage queryResults;
 	private HealthcareDatabase database;
@@ -65,8 +69,32 @@ public class MainPageViewModel {
 		this.loggedInProperty = new SimpleBooleanProperty(false);
 		this.attemptingLoginProperty  = new SimpleBooleanProperty(false);
 		
+		this.selectedTupleObject = new SimpleObjectProperty<Object>(null);
+		
 		this.tuples = FXCollections.observableArrayList();
 		this.lastResults = null;
+		
+		this.addListeners();
+	}
+	
+	private void addListeners() {
+		this.selectedTupleObject.addListener((evt)->{
+			
+			Object obj = this.selectedTupleObject.getValue();
+			if(obj == null) {
+				return;
+			}
+			
+			
+			Class<?> mutateClass = obj.getClass();
+			//TODO add more classes to editt
+			if(mutateClass == Person.class) {
+				this.showUpdatePatient((Person)obj);
+			}
+			else {
+				FXMLAlert.statusAlert("Cannot Edit", AlertType.WARNING);
+			}
+		});
 	}
 
 	/**
@@ -165,6 +193,10 @@ public class MainPageViewModel {
 		return this.tuples;
 	}
 	
+	public ObjectProperty<Object> getSelectedTupleObject() {
+		return selectedTupleObject;
+	}
+	
 	public void showLogin() {
 		try {
 			FXMLWindow window = new FXMLWindow(LoginCodeBehind.class.getResource(LOGIN_GUI), "Healthcare Login", true);
@@ -218,8 +250,6 @@ public class MainPageViewModel {
 					} else {
 						FXMLAlert.statusAlert("Add Patient Status", "Added patient Successfully", AlertType.INFORMATION);
 						codeBehind.closeWindow(null);
-						///TODO Later iteration: 
-						//this.handleUpdateQueryListView();
 					}
 				}
 
@@ -247,8 +277,6 @@ public class MainPageViewModel {
 					} else {
 						FXMLAlert.statusAlert("Search Success", "The patient search found one or more results.", "Patient Search Success", AlertType.INFORMATION);
 						codeBehind.closeWindow(null);
-						///TODO Later iteration: 
-						//this.handleUpdateQueryListView();
 					}
 				}
 
@@ -259,6 +287,47 @@ public class MainPageViewModel {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void showUpdatePatient(Person existing) {
+		try {
+			FXMLWindow window = new FXMLWindow(AddPatientCodeBehind.class.getResource(ADD_GUI), "Update Patient", true);
+			AddPatientCodeBehind codeBehind = (AddPatientCodeBehind) window.getController();
+			AddPatientViewModel viewModel = codeBehind.getViewModel();
+			viewModel.getActionTextProperty().setValue("Update Patient");
+			
+			viewModel.getAddEventProperty().addListener((evt) -> {
+				
+				if (viewModel.getAddEventProperty().getValue()) {
+					if (!this.attemptUpdatePatient(viewModel.getPatient(), existing)) {
+						FXMLAlert.statusAlert("Update Failed", "The patient update did not complete successfully.", "Patient Update failed", AlertType.ERROR);
+						viewModel.getAddEventProperty().setValue(false);
+					} else {
+						FXMLAlert.statusAlert("Update Success", "The patient update completed Successfully.", "Patient Update Success", AlertType.INFORMATION);
+						codeBehind.closeWindow(null);
+					}
+				}
+
+			});
+			window.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	private boolean attemptUpdatePatient(Person updateData, Person existing) {
+
+		QueryResult result = this.database.attemptUpdatePatient(updateData, existing);
+		if (result == null || result.getTuples().size() == 0) {
+			this.addResults(updateData, this.database.getPatientBySSN(updateData));
+			return true;
+		}
+		
+		//this.addResults(result);
+		
+		return false;
 	}
 
 	public boolean attemptAddPatient(Person patient) {
@@ -297,9 +366,14 @@ public class MainPageViewModel {
 		
 		this.tuples.clear();
 		for(SqlTuple tup : results.getTuples()) {
-			this.tuples.add(new TupleEmbed(operatedOn, tup));
+			TupleEmbed embed = new TupleEmbed(operatedOn, tup);
+			this.tuples.add(embed);
+			this.selectedTupleObject.bind(embed.getPressedPropertyAction());
 		}
 		
 	}
 
+	
+
+	
 }
