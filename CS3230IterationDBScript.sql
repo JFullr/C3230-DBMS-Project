@@ -23,9 +23,19 @@ drop table if exists Admin;
 drop table if exists Doctor;
 drop table if exists Nurse;
 drop table if exists Patient;
+
 drop table if exists Person;
+drop table if exists Address;
 
-
+CREATE TABLE Address {
+	address_id INTEGER not null,
+	street_address1_id VARCHAR(50) not null,
+	street_address2_id VARCHAR(50),
+	city VARCHAR(50) not null,
+	state VARCHAR(25) not null,
+	zip_code INTEGER not null,
+	PRIMARY KEY(person_id)
+}
 
 CREATE TABLE Person( 
 	person_id INTEGER not null auto_increment, 
@@ -36,10 +46,12 @@ CREATE TABLE Person(
 	SSN INTEGER(9) not null,
 	contact_phone VARCHAR(30) not null,
 	contact_email VARCHAR(50) not null,
-	mailing_address VARCHAR(50) not null,
-	PRIMARY KEY(person_id),
+	mailing_address_id INTEGER not null,
 	UNIQUE(SSN)
+	PRIMARY KEY(person_id),
+	FOREIGN KEY(mailing_address_id) REFERENCES Address ON UPDATE CASCADE ON DELETE NONE
 );
+
 
 CREATE TABLE RegisteredUser(
 	user_id INTEGER NOT NULL AUTO_INCREMENT,
@@ -194,3 +206,8 @@ CREATE TABLE UpdateQuery(
 	PRIMARY KEY(query_id),
 	FOREIGN KEY(query_id) REFERENCES Query(query_id)
 );
+
+INSERT INTO Address VALUES(1, 'hamburger 42', null, 'Bunderful Yum', 'WA', 66666)
+INSERT INTO Person VALUES(1, 'frank', 'burg', 'f', '2020-5-5', 123456789, "uieh@grjnrg.eee", "324 er 346", 1)
+INSERT INTO RegisteredUser VALUES(1, 'aa bb', 1)
+INSERT INTO UserPasswordStore VALUES(1, "123")
