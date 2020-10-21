@@ -77,7 +77,7 @@ public class PersonDAL {
 			if (attribute.getValue() == null) {
 				continue;
 			}
-			query.append(attribute.getAttribute()).append(" = ?, ");
+			query.append(attribute.getAttribute()).append(" = ? AND ");
 		}
 		
 		//no non null or non empty attributes found
@@ -85,9 +85,9 @@ public class PersonDAL {
 			return null;
 		}
 		// remove the trailing comma at the end
-		query.setLength(query.length() - 2);
+		query.setLength(query.lastIndexOf("?")+1);
 		
-		//System.out.println(query);
+		System.out.println(query);
 
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
@@ -101,7 +101,7 @@ public class PersonDAL {
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
-			//System.out.println(stmt);
+			System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
 		}
