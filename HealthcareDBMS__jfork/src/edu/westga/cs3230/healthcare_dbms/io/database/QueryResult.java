@@ -46,7 +46,6 @@ public class QueryResult implements Iterable<QueryResult>{
 			return this;
 		}
 		
-		this.batch.add(other);
 		this.batch.addAll(other.getBatch());
 		
 		return this;

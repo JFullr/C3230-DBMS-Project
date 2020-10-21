@@ -69,6 +69,7 @@ public class HealthcareDatabaseClient {
 	public QueryResult attemptAddPatient(PatientData patientData) throws SQLException {
 		
 		this.lastResult = this.patientDal.attemptAddPatient(patientData);
+		this.lastResult.setAssociated(patientData);
 		return this.lastResult;
 	}
 
@@ -85,12 +86,13 @@ public class HealthcareDatabaseClient {
 
 	public QueryResult getPatientBySSN(PatientData patientData) throws SQLException {
 		this.lastResult = this.patientDal.getPersonBySSN(patientData);
+		this.lastResult.setAssociated(patientData);
 		return this.lastResult;
 	}
 
 	public QueryResult updatePatient(PatientData updateData, PatientData existingData) throws SQLException {
-		//TODO fix
 		this.lastResult = this.patientDal.attemptUpdatePatient(updateData, existingData);
+		this.lastResult.setAssociated(updateData);
 		return this.lastResult;
 	}
 }
