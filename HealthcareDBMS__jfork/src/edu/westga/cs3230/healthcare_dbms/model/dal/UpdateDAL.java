@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabaseClient;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
@@ -18,10 +19,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class UpdateDAL {
 	
-	private String dbUrl;
+	private HealthcareDatabaseClient client;
 	
-	public UpdateDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
+	public UpdateDAL(HealthcareDatabaseClient client) {
+		this.client = client;
 	}
 	
 	
@@ -43,9 +44,8 @@ public class UpdateDAL {
 		///TODO create WHERE discriminator from selection values
 
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-			 PreparedStatement stmt = con.prepareStatement(query.toString());
-		) {
+		Connection con = client.getConnection();
+		try (PreparedStatement stmt = con.prepareStatement(query.toString())) {
 			int j = 1;
 			for(SqlAttribute attr : tuple) {
 				if (attr.getValue() == null) {

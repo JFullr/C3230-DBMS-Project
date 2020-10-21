@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
+import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabaseClient;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
@@ -21,12 +23,12 @@ public class PatientDAL {
 	
 	private PostDAL postDal;
 	private PersonDAL personDal;
-	private String dbUrl;
+	private HealthcareDatabaseClient client;
 
-	public PatientDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
-		this.postDal = new PostDAL(dbUrl);
-		this.personDal = new PersonDAL(dbUrl);
+	public PatientDAL(HealthcareDatabaseClient client) {
+		this.client = client;
+		this.postDal = new PostDAL(client);
+		this.personDal = new PersonDAL(client);
 	}
 	
 	public QueryResult attemptAddPatient(PatientData patient) throws SQLException {

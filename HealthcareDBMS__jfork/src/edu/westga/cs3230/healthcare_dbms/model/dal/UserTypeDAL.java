@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabaseClient;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
@@ -14,10 +15,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class UserTypeDAL {
 
-	private String dbUrl;
+	private HealthcareDatabaseClient client;
 
-	public UserTypeDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
+	public UserTypeDAL(HealthcareDatabaseClient client) {
+		this.client = client;
 	}
 
 	public String getUserType(Person patient) throws SQLException {
@@ -44,8 +45,8 @@ public class UserTypeDAL {
 							"where person_id = ?";
 
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				PreparedStatement stmt = con.prepareStatement(prepared);) {
+		Connection con = client.getConnection();
+		try (PreparedStatement stmt = con.prepareStatement(prepared)) {
 			stmt.setString(1, "" + tableName);
 			stmt.setObject(2, person_id);
 			ResultSet rs = stmt.executeQuery();

@@ -1,5 +1,7 @@
 package edu.westga.cs3230.healthcare_dbms.io.database;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +31,7 @@ public class HealthcareDatabaseClient {
 	
 	private QueryResult lastResult;
 	private String dbUrl;
+	private Connection connection;
 	
 	/**
 	 * Instantiates a new healthcare database client.
@@ -38,11 +41,26 @@ public class HealthcareDatabaseClient {
 	public HealthcareDatabaseClient(String dbUrl, List<QueryResult> storageForReadQueries) {
 		this.lastResult = null;
 		this.dbUrl = dbUrl;
-		this.postDal = new PostDAL(dbUrl);
-		this.loginDal = new LoginDAL(dbUrl);
-		this.personDal = new PersonDAL(dbUrl);
-		this.userDal = new UserTypeDAL(dbUrl);
-		this.patientDal = new PatientDAL(dbUrl);
+		this.postDal = new PostDAL(this);
+		this.loginDal = new LoginDAL(this);
+		this.personDal = new PersonDAL(this);
+		this.userDal = new UserTypeDAL(this);
+		this.patientDal = new PatientDAL(this);
+	}
+
+	public Connection getConnection() throws SQLException {
+		boolean valid = connection != null;
+		if (valid) {
+			try {
+				valid = connection.isValid(1000);
+			} catch (SQLException e) {
+				valid = false;
+			}
+		}
+		if (!valid) {
+			connection = DriverManager.getConnection(dbUrl);
+		}
+		return connection;
 	}
 	
 	public boolean callQuery(String query) throws Exception {
