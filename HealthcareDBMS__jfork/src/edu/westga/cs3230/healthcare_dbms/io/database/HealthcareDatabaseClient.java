@@ -80,19 +80,16 @@ public class HealthcareDatabaseClient {
 
 	public QueryResult attemptSearchPatient(PatientData patient) throws SQLException {
 		this.lastResult = this.patientDal.getPersonMatching(patient);
-		this.lastResult.setAssociated(patient);
 		return this.lastResult;
 	}
 
 	public QueryResult getPatientBySSN(PatientData patientData) throws SQLException {
 		this.lastResult = this.patientDal.getPatientBySSN(patientData);
-		this.lastResult.setAssociated(patientData);
 		return this.lastResult;
 	}
 
 	public QueryResult updatePatient(PatientData updateData, PatientData existingData) throws SQLException {
 		this.lastResult = this.patientDal.attemptUpdatePatient(updateData, existingData);
-		this.lastResult.setAssociated(updateData);
 		return this.lastResult;
 	}
 }

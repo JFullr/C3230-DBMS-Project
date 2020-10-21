@@ -76,6 +76,9 @@ public class PatientDAL {
 
 	public QueryResult getPersonMatching(PatientData patient) throws SQLException {
 		QueryResult qPerson = this.personDal.getPersonMatching(patient.getPerson());
+		if (qPerson.getTuple().getAttributes().isEmpty()) {
+			return qPerson;
+		}
 		Person person = new Person(null, null, null, null, null, null, null);
 		SqlSetter.fillWith(person, qPerson.getTuple());
 		//qPerson.setAssociated(person);

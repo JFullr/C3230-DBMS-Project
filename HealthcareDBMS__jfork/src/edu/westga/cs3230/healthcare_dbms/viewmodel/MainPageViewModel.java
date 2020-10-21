@@ -264,7 +264,7 @@ public class MainPageViewModel {
 	
 	public void showPatientSearch() {
 		try {
-			FXMLWindow window = new FXMLWindow(SearchPatientCodeBehind.class.getResource(SEARCH_GUI), "Add Patient", true);
+			FXMLWindow window = new FXMLWindow(SearchPatientCodeBehind.class.getResource(SEARCH_GUI), "Search for Patient", true);
 			SearchPatientCodeBehind codeBehind = (SearchPatientCodeBehind) window.getController();
 			SearchPatientViewModel viewModel = codeBehind.getViewModel();
 			
