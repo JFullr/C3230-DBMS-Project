@@ -116,7 +116,7 @@ public class PersonDAL {
 			throw new SQLException("Need a person to update.");
 		}
 
-		return updateDal.updateTuple(newValues, SqlGetter.getFrom(previous));
+		return updateDal.updateTuple(newValues, new SqlAttribute("person_id", previous.getPerson_id()));
 	}
 
 }

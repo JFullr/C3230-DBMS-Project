@@ -24,8 +24,7 @@ public class UpdateDAL {
 		this.dbUrl = dbUrl;
 	}
 	
-	
-	public QueryResult updateTuple(Object values, SqlTuple selection) throws SQLException {
+	public QueryResult updateTuple(Object values, SqlAttribute updateBy) throws SQLException {
 		SqlTuple tuple = SqlGetter.getFrom(values);
 		StringBuilder query = new StringBuilder("UPDATE "+values.getClass().getSimpleName()+" SET ");
 		for (SqlAttribute attribute : tuple) {
@@ -40,15 +39,11 @@ public class UpdateDAL {
 		}
 		query.setLength(query.length() - 2);
 		
-		query.append(" WHERE ");
-		for (SqlAttribute value : selection.getAttributes().values()) {
-			query.append(value.getAttribute()).append(" = ?, ");
-		}
-		query.setLength(query.length() - 2);
+		query.append(" WHERE ").append(updateBy.getAttribute()).append(" = ?");
 
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
-			 PreparedStatement stmt = con.prepareStatement(query.toString());
+			 PreparedStatement stmt = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
 		) {
 			int j = 1;
 			for(SqlAttribute attr : tuple) {
@@ -58,15 +53,9 @@ public class UpdateDAL {
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
-			for (SqlAttribute attribute : selection) {
-				if (attribute.getValue() == null) {
-					continue;
-				}
-				stmt.setObject(j, attribute.getValue());
-				j++;
-			}
-			ResultSet rs = stmt.executeQuery();
-			manager.readTuples(rs);
+			stmt.setObject(j, updateBy.getValue());
+			stmt.executeUpdate();
+			manager.readTuples(stmt.getGeneratedKeys());
 		}
 
 		return new QueryResult(manager.getTuples());

@@ -83,6 +83,6 @@ public class AddressDAL {
             throw new SQLException("Need an address to update.");
         }
 
-        return updateDal.updateTuple(newAddress, SqlGetter.getFrom(oldAddress));
+        return updateDal.updateTuple(newAddress, new SqlAttribute("address_id", oldAddress.getAddress_id()));
     }
 }

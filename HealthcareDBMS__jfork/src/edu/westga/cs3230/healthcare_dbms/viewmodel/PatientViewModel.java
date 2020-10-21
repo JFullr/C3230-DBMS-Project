@@ -1,9 +1,8 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 
 import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
@@ -108,13 +107,14 @@ public class PatientViewModel {
 	public PatientData getPatient() {
 		String email = this.contactEmailProperty.getValue();
 		String phone = this.contactPhoneProperty.getValue();
-		Date dob = new Date(Instant.from(this.dobProperty.getValue()).toEpochMilli());
+
+		Date dob = java.util.Date.from(this.dobProperty.get().atStartOfDay(ZoneId.of("UTC")).toInstant());
 		String fname = this.firstNameProperty.getValue();
 		String lname = this.lastNameProperty.getValue();
 		String middleInitial = this.middleInitialProperty.getValue();
 		String ssn = this.ssnProperty.getValue();
 		
-		Person person = new Person(email, phone, dob, fname, lname, middleInitial, ssn);
+		Person person = new Person(email, phone, new java.sql.Date(dob.getTime()), fname, lname, middleInitial, ssn);
 		
 		String street1 = this.streetAddress1Property.getValue();
 		String street2 = this.streetAddress2Property.getValue();
@@ -141,7 +141,7 @@ public class PatientViewModel {
 		Person person = data.getPerson();
 		this.contactEmailProperty.set(nullToEmpty(person.getContact_email()));
 		this.contactPhoneProperty.set(nullToEmpty(person.getContact_phone()));
-		this.dobProperty.set(LocalDate.ofInstant(new java.util.Date(person.getDOB().getTime()).toInstant(), ZoneId.of("UTC")));
+		this.dobProperty.set(new java.util.Date(person.getDOB().getTime()).toInstant().atZone(ZoneId.of("UTC")).toLocalDate());
 		this.firstNameProperty.set(nullToEmpty(person.getFname()));
 		this.lastNameProperty.set(nullToEmpty(person.getLname()));
 		this.middleInitialProperty.set(nullToEmpty(person.getMiddle_initial()));
