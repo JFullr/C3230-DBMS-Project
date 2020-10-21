@@ -11,6 +11,20 @@ import java.util.HashMap;
 public class SqlTypeConverter {
 	
 	//https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-type-conversions.html
+/*	
+	private static HashMap<String, Class<?>> nullMappings;
+	static {
+		try {
+		nullMappings = new HashMap<String, Class<?>>();
+		nullMappings.put("CHAR", String.class);
+		nullMappings.put("VARCHAR", String.class);
+		nullMappings.put("BLOB",  String.class);
+		nullMappings.put("TEXT", String.class);
+		nullMappings.put("ENUM",  String.class);
+		nullMappings.put("SET", String.class);
+		
+	}
+*/
 	
 	private static HashMap<String, Method> convertFromSqlMethod;
 	static {
@@ -47,18 +61,19 @@ public class SqlTypeConverter {
 		}
 	}
 	
-	public static Object convertObject(ResultSet rs, String label, String typename) throws SQLException {
+	public static Object convertObject(ResultSet rs, String label, String typename, int precision) throws SQLException {
 		try {
 			if(typename.toLowerCase().endsWith("unsigned")) {
 				typename = typename.substring(0, typename.length()-"unsigned".length()).trim();
 			}
-			/*
-			 * if(convertFromSqlMethod.get(typename) == null) {
-				System.out.println(label+" :: "+typename);
-				return null;
-			}
-			*/
-			return convertFromSqlMethod.get(typename).invoke(rs, label);
+			
+			Object obj = convertFromSqlMethod.get(typename).invoke(rs, label);
+
+			/* TODO Add back in for character handling
+			if(precision == 1 && obj != null && obj.getClass() == String.class) {
+				obj = (Character)((String)obj).charAt(0);
+			}*/
+			return obj;
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {

@@ -93,7 +93,7 @@ public class MainPageViewModel {
 				this.showUpdatePatient((PatientData)obj);
 			}
 			else {
-				FXMLAlert.statusAlert("Cannot Edit", AlertType.WARNING);
+				FXMLAlert.statusAlert("Cannot Edit "+mutateClass.getSimpleName(), AlertType.WARNING);
 			}
 		});
 	}
@@ -352,7 +352,8 @@ public class MainPageViewModel {
 		if (result == null || result.getTuple() == null) {
 			return false;
 		}
-		this.addResults(patientData, result);
+		PatientData patientFound = (PatientData) result.getAssociated();
+		this.addResults(patientFound, patientFound.getPerson(), result);
 		return true;
 	}
 	

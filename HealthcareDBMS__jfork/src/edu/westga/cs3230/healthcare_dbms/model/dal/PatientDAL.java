@@ -9,12 +9,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
+import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class PatientDAL {
@@ -73,11 +75,23 @@ public class PatientDAL {
 	}
 
 	public QueryResult getPersonMatching(PatientData patient) throws SQLException {
-		//
-		return this.personDal.getPersonMatching(patient.getPerson());
+		QueryResult qPerson = this.personDal.getPersonMatching(patient.getPerson());
+		Person person = new Person(null, null, null, null, null, null, null);
+		SqlSetter.fillWith(person, qPerson.getTuple());
+		//qPerson.setAssociated(person);
+		
+		QueryResult qAddress = this.addressDal.getAddressById(person.getPerson_id());
+		Address address = new Address(null, null, null, null);
+		SqlSetter.fillWith(address, qAddress.getTuple());
+		qAddress.setAssociated(address);
+		
+		QueryResult combined = qAddress.combine(qPerson);
+		combined.setAssociated(new PatientData(person,address));
+		
+		return combined;
 	}
 
-	public QueryResult getPersonBySSN(PatientData patientData) throws SQLException {
+	public QueryResult getPatientBySSN(PatientData patientData) throws SQLException {
 		// 
 		return this.personDal.getPersonBySSN(patientData.getPerson());
 	}

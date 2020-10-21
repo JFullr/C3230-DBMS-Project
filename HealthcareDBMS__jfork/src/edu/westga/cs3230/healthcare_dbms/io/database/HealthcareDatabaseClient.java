@@ -85,7 +85,7 @@ public class HealthcareDatabaseClient {
 	}
 
 	public QueryResult getPatientBySSN(PatientData patientData) throws SQLException {
-		this.lastResult = this.patientDal.getPersonBySSN(patientData);
+		this.lastResult = this.patientDal.getPatientBySSN(patientData);
 		this.lastResult.setAssociated(patientData);
 		return this.lastResult;
 	}
