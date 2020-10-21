@@ -75,7 +75,7 @@ public class HealthcareDatabaseClient {
 
 			connection.setAutoCommit(false);
 			runnable.run();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			connection.rollback();
 			throw e;
 		} finally {
