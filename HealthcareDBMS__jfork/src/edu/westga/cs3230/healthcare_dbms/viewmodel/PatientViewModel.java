@@ -120,9 +120,10 @@ public class PatientViewModel {
 		String street2 = this.streetAddress2Property.getValue();
 		street2 = street2 == null ? "" : street2;
 		String state = this.stateProperty.getValue();
+		String city = this.cityProperty.getValue();
 		Integer zip = Integer.parseInt(this.zipCodeProperty.getValue());
 		
-		Address addr = new Address(street1, street2, state, zip);
+		Address addr = new Address(street1, street2, city, state, zip);
 		
 		return new PatientData(person, addr);
 		
@@ -138,18 +139,22 @@ public class PatientViewModel {
 
 	public void pull(PatientData data) {
 		Person person = data.getPerson();
-		this.contactEmailProperty.set(person.getContact_email());
-		this.contactPhoneProperty.set(person.getContact_phone());
+		this.contactEmailProperty.set(nullToEmpty(person.getContact_email()));
+		this.contactPhoneProperty.set(nullToEmpty(person.getContact_phone()));
 		this.dobProperty.set(person.getDOB());
-		this.firstNameProperty.set(person.getFname());
-		this.lastNameProperty.set(person.getLname());
-		this.middleInitialProperty.set(person.getMiddle_initial());
+		this.firstNameProperty.set(nullToEmpty(person.getFname()));
+		this.lastNameProperty.set(nullToEmpty(person.getLname()));
+		this.middleInitialProperty.set(nullToEmpty(person.getMiddle_initial()));
 		this.ssnProperty.set(String.format("%09d", person.getSSN()));
 
 		Address addr = data.getAddress();
-		this.streetAddress1Property.set(addr.getStreet_address1());
-		this.streetAddress2Property.set(addr.getStreet_address2());
-		this.stateProperty.set(addr.getState());
+		this.streetAddress1Property.set(nullToEmpty(addr.getStreet_address1()));
+		this.streetAddress2Property.set(nullToEmpty(addr.getStreet_address2()));
+		//this.stateProperty.set(addr.getState());
 		this.zipCodeProperty.set(String.format("%05d", addr.getZip_code()));
+	}
+
+	private String nullToEmpty(String str) {
+		return str == null ? "" : str;
 	}
 }
