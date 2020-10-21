@@ -1,15 +1,10 @@
 package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabaseClient;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
@@ -18,10 +13,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class PostDAL {
 	
-	private HealthcareDatabaseClient client;
+	private ConnectionDAL connectionDal;
 	
-	public PostDAL(HealthcareDatabaseClient client) {
-		this.client = client;
+	public PostDAL(ConnectionDAL connectionDal) {
+		this.connectionDal = this.connectionDal;
 	}
 	
 	public ArrayList<SqlTuple> postTuple(Object obj) throws SQLException {
@@ -31,7 +26,7 @@ public class PostDAL {
 		String query = this.buildQueryFrom(obj, tuple, useAttributes);
 		
 		SqlManager manager = new SqlManager();
-		Connection con = client.getConnection();
+		Connection con = connectionDal.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 			
 			int j = 1;

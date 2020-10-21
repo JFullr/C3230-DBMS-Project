@@ -13,10 +13,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
 public class LoginDAL {
 
-	private HealthcareDatabaseClient client;
+	private ConnectionDAL connectionDal;
 
-	public LoginDAL(HealthcareDatabaseClient client) {
-		this.client = client;
+	public LoginDAL(ConnectionDAL connectionDal) {
+		this.connectionDal = connectionDal;
 	}
 
 	public QueryResult attemptLogin(Login login) throws SQLException {
@@ -25,7 +25,7 @@ public class LoginDAL {
 				+ "where p.person_id = r.person_id and r.user_name = ? and ups.password_salted_hashed = ?";
 
 		SqlManager manager = new SqlManager();
-		Connection con = client.getConnection();
+		Connection con = connectionDal.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(prepared)) {
 			stmt.setString(1, login.getUser_name());
 			stmt.setString(2, login.getPassword());

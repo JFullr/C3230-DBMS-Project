@@ -1,6 +1,5 @@
 package edu.westga.cs3230.healthcare_dbms.model.dal;
 
-import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabaseClient;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
@@ -12,18 +11,18 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class AddressDAL {
-    private HealthcareDatabaseClient client;
+    private ConnectionDAL connectionDal;
     private PostDAL postDal;
 
-    public AddressDAL(HealthcareDatabaseClient client) {
-        this.client = client;
-        this.postDal = new PostDAL(client);
+    public AddressDAL(ConnectionDAL connectionDal) {
+        this.connectionDal = connectionDal;
+        this.postDal = new PostDAL(connectionDal);
     }
 
     public QueryResult getAddressById(int addressId) throws SQLException {
         String prepared = "select * from Address where address_id = ?";
 
-        Connection con = client.getConnection();
+        Connection con = connectionDal.getConnection();
         SqlManager manager = new SqlManager();
         try (PreparedStatement stmt = con.prepareStatement(prepared)) {
             stmt.setInt(1, addressId);
@@ -46,7 +45,7 @@ public class AddressDAL {
         // remove the trailing comma at the end
         query.setLength(query.length() - 2);
 
-        Connection con = client.getConnection();
+        Connection con = connectionDal.getConnection();
         SqlManager manager = new SqlManager();
         try (PreparedStatement stmt = con.prepareStatement(query.toString())) {
             int j = 1;

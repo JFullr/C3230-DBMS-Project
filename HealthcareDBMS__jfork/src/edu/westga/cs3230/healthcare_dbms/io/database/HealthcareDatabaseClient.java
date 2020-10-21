@@ -10,11 +10,7 @@ import java.util.List;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
-import edu.westga.cs3230.healthcare_dbms.model.dal.LoginDAL;
-import edu.westga.cs3230.healthcare_dbms.model.dal.PatientDAL;
-import edu.westga.cs3230.healthcare_dbms.model.dal.PersonDAL;
-import edu.westga.cs3230.healthcare_dbms.model.dal.PostDAL;
-import edu.westga.cs3230.healthcare_dbms.model.dal.UserTypeDAL;
+import edu.westga.cs3230.healthcare_dbms.model.dal.*;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 
 /**
@@ -28,12 +24,9 @@ public class HealthcareDatabaseClient {
 	private LoginDAL loginDal;
 	private PersonDAL personDal;
 	private PatientDAL patientDal;
-	
-	private QueryResult lastResult;
-	private String dbUrl;
-	private Connection connection;
 
-	private boolean inTransaction;
+	private QueryResult lastResult;
+	private ConnectionDAL connectionDal;
 	
 	/**
 	 * Instantiates a new healthcare database client.
@@ -42,36 +35,18 @@ public class HealthcareDatabaseClient {
 	 */
 	public HealthcareDatabaseClient(String dbUrl, List<QueryResult> storageForReadQueries) {
 		this.lastResult = null;
-		this.dbUrl = dbUrl;
-		this.postDal = new PostDAL(this);
-		this.loginDal = new LoginDAL(this);
-		this.personDal = new PersonDAL(this);
-		this.userDal = new UserTypeDAL(this);
-		this.patientDal = new PatientDAL(this);
-	}
-
-	public Connection getConnection() throws SQLException {
-		if (inTransaction && connection != null) {
-			return connection;
-		}
-		boolean valid = connection != null;
-		if (valid) {
-			try {
-				valid = connection.isValid(1000);
-			} catch (SQLException e) {
-				valid = false;
-			}
-		}
-		if (!valid) {
-			connection = DriverManager.getConnection(dbUrl);
-		}
-		return connection;
+		this.connectionDal = new ConnectionDAL(dbUrl);
+		this.postDal = new PostDAL(connectionDal);
+		this.loginDal = new LoginDAL(connectionDal);
+		this.personDal = new PersonDAL(connectionDal);
+		this.userDal = new UserTypeDAL(connectionDal);
+		this.patientDal = new PatientDAL(connectionDal);
 	}
 
 	public void runInTransaction(Runnable runnable) throws SQLException {
-		Connection connection = this.getConnection();
+		Connection connection = this.connectionDal.getConnection();
 		try {
-			inTransaction = true;
+			this.connectionDal.setInTransaction(true);
 
 			connection.setAutoCommit(false);
 			runnable.run();
@@ -81,7 +56,7 @@ public class HealthcareDatabaseClient {
 		} finally {
 			connection.commit();
 			connection.setAutoCommit(true);
-			inTransaction = false;
+			this.connectionDal.setInTransaction(false);
 		}
 	}
 	

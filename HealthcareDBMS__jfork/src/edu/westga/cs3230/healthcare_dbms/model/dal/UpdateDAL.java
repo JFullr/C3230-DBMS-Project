@@ -19,10 +19,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class UpdateDAL {
 	
-	private HealthcareDatabaseClient client;
-	
-	public UpdateDAL(HealthcareDatabaseClient client) {
-		this.client = client;
+	private ConnectionDAL connectionDAL;
+
+	public UpdateDAL(ConnectionDAL connectionDAL) {
+		this.connectionDAL = connectionDAL;
 	}
 	
 	
@@ -44,7 +44,7 @@ public class UpdateDAL {
 		///TODO create WHERE discriminator from selection values
 
 		SqlManager manager = new SqlManager();
-		Connection con = client.getConnection();
+		Connection con = connectionDAL.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(query.toString())) {
 			int j = 1;
 			for(SqlAttribute attr : tuple) {

@@ -2,13 +2,11 @@ package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabaseClient;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
@@ -20,11 +18,11 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 public class PersonDAL {
 	
 	private PostDAL postDal;
-	private HealthcareDatabaseClient client;
+	private ConnectionDAL connectionDal;
 
-	public PersonDAL(HealthcareDatabaseClient client) {
-		this.client = client;
-		this.postDal = new PostDAL(client);
+	public PersonDAL(ConnectionDAL connectionDal) {
+		this.connectionDal = connectionDal;
+		this.postDal = new PostDAL(connectionDal);
 	}
 	
 	public QueryResult attemptAddPerson(Person patient) throws SQLException {
@@ -60,7 +58,7 @@ public class PersonDAL {
 						+ "LIMIT 2";
 		
 		SqlManager manager = new SqlManager();
-		Connection con = client.getConnection();
+		Connection con = connectionDal.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(prepared)) {
 			stmt.setString(1, ""+person.getSSN());
 			ResultSet rs = stmt.executeQuery();
@@ -88,7 +86,7 @@ public class PersonDAL {
 		//System.out.println(query);
 
 		SqlManager manager = new SqlManager();
-		Connection con = client.getConnection();
+		Connection con = connectionDal.getConnection();
 		try (PreparedStatement stmt = con.prepareStatement(query.toString())) {
 			int j = 1;
 			for(SqlAttribute attr : tuple) {
