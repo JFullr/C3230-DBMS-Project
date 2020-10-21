@@ -5,8 +5,12 @@ import java.time.LocalDate;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+import edu.westga.cs3230.healthcare_dbms.model.Address;
+import edu.westga.cs3230.healthcare_dbms.model.Patient;
+import edu.westga.cs3230.healthcare_dbms.model.PatientData;
+import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.utils.States;
-import edu.westga.cs3230.healthcare_dbms.viewmodel.AddPatientViewModel;
+import edu.westga.cs3230.healthcare_dbms.viewmodel.PatientViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,7 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.stage.Stage;
 
-public class AddPatientCodeBehind {
+public class PatientCodeBehind {
 
 	@FXML
 	private Button addPatientButton;
@@ -112,14 +116,21 @@ public class AddPatientCodeBehind {
 	private static final Pattern emailValid = Pattern.compile("[a-zA-Z]+(\\d|[a-zA-Z])*@[a-zA-Z]+(\\d|[a-zA-Z])*[.](\\d|[a-zA-Z])+");
 	private final BooleanProperty isEmailValid;
 	
-	private AddPatientViewModel viewModel;
+	private PatientViewModel viewModel;
+	private PatientData existingPatientData;
 	private boolean attemptAdd;
 
-	public AddPatientCodeBehind() {
-		this.viewModel = new AddPatientViewModel();
+	public PatientCodeBehind() {
+		this.viewModel = new PatientViewModel();
 		this.attemptAdd = false;
 		this.dateSelect = new SimpleObjectProperty<Date>();
 		this.isEmailValid = new SimpleBooleanProperty(false);
+	}
+
+	public void setupForUpdate(PatientData data) {
+		existingPatientData = data;
+		this.viewModel.pull(data);
+		this.stateComboBox.getSelectionModel().select(data.getAddress().getState());
 	}
 
 	/**
@@ -155,7 +166,7 @@ public class AddPatientCodeBehind {
 		return this.attemptAdd;
 	}
 
-	public AddPatientViewModel getViewModel() {
+	public PatientViewModel getViewModel() {
 		return this.viewModel;
 	}
 	
