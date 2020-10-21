@@ -79,7 +79,7 @@ public class PatientDAL {
 
 	public QueryResult getPersonMatching(PatientData patient) throws SQLException {
 		QueryResult qPerson = this.personDal.getPersonMatching(patient.getPerson());
-		Person person = new Person(null, null, null, null, null, null, null);
+		Person person = new Person(null, null, null, null, null, null, null, null);
 		SqlSetter.fillWith(person, qPerson.getTuple());
 		//qPerson.setAssociated(person);
 		

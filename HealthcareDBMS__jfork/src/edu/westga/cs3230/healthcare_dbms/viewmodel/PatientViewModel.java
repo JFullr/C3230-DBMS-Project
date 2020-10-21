@@ -21,6 +21,7 @@ public class PatientViewModel {
 
 	private final StringProperty firstNameProperty;
 	private final StringProperty lastNameProperty;
+	private final StringProperty genderProperty;
 	private final StringProperty contactPhoneProperty;
 	private final StringProperty contactEmailProperty;
 	private final StringProperty streetAddress1Property;
@@ -54,6 +55,7 @@ public class PatientViewModel {
 		this.ssnProperty = new SimpleStringProperty();
 		this.addEventProperty = new SimpleBooleanProperty(false);
 		this.actionTextProperty = new SimpleStringProperty();
+		this.genderProperty = new SimpleStringProperty();
 	}
 
 	public StringProperty getFirstNameProperty() {
@@ -66,6 +68,10 @@ public class PatientViewModel {
 
 	public StringProperty getLastNameProperty() {
 		return lastNameProperty;
+	}
+
+	public StringProperty getGenderProperty() {
+		return genderProperty;
 	}
 
 	public StringProperty getStreetAddress1Property() {
@@ -113,8 +119,9 @@ public class PatientViewModel {
 		String lname = this.lastNameProperty.getValue();
 		String middleInitial = this.middleInitialProperty.getValue();
 		String ssn = this.ssnProperty.getValue();
+		String gender = this.genderProperty.getValue();
 		
-		Person person = new Person(email, phone, new java.sql.Date(dob.getTime()), fname, lname, middleInitial, ssn);
+		Person person = new Person(email, phone, new java.sql.Date(dob.getTime()), fname, lname, middleInitial, gender, ssn);
 		
 		String street1 = this.streetAddress1Property.getValue();
 		String street2 = this.streetAddress2Property.getValue();
@@ -146,6 +153,7 @@ public class PatientViewModel {
 		this.lastNameProperty.set(nullToEmpty(person.getLname()));
 		this.middleInitialProperty.set(nullToEmpty(person.getMiddle_initial()));
 		this.ssnProperty.set(String.format("%09d", person.getSSN()));
+		//this.genderProperty.set(person.getGender());
 
 		Address addr = data.getAddress();
 		this.streetAddress1Property.set(nullToEmpty(addr.getStreet_address1()));

@@ -21,6 +21,7 @@ public class SearchPatientViewModel {
 
 	private final StringProperty firstNameProperty;
 	private final StringProperty lastNameProperty;
+	private final StringProperty genderProperty;
 	private final StringProperty contactPhoneProperty;
 	private final StringProperty contactEmailProperty;
 	private final StringProperty mailingAddressProperty;
@@ -43,6 +44,7 @@ public class SearchPatientViewModel {
 		this.middleInitialProperty = new SimpleStringProperty();
 		this.ssnProperty = new SimpleStringProperty();
 		this.searchEventProperty = new SimpleBooleanProperty(false);
+		this.genderProperty = new SimpleStringProperty();
 	}
 
 	public StringProperty getFirstNameProperty() {
@@ -76,6 +78,10 @@ public class SearchPatientViewModel {
 	public ObjectProperty<Date> getDobProperty() {
 		return dobProperty;
 	}
+
+	public StringProperty getGenderProperty() {
+		return genderProperty;
+	}
 	
 	public PatientData getPatient() {
 		String email = this.nullString(this.contactEmailProperty.getValue());
@@ -85,8 +91,9 @@ public class SearchPatientViewModel {
 		String lname =  this.nullString(this.lastNameProperty.getValue());
 		String middleInitial =  this.nullString(this.middleInitialProperty.getValue());
 		String ssn =  this.nullString(this.ssnProperty.getValue());
+		String gender =  this.nullString(this.genderProperty.getValue());
 		
-		Person person = new Person(email, phone, dob != null ? Date.valueOf(dob) : null, fname, lname, middleInitial, ssn);
+		Person person = new Person(email, phone, dob != null ? Date.valueOf(dob) : null, fname, lname, middleInitial, gender, ssn);
 		person.setPerson_id(null);
 		
 		String street1 = null;//this.streetAddress1Property.getValue();

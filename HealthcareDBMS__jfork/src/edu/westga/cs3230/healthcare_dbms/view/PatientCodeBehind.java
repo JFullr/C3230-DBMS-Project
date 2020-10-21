@@ -9,6 +9,7 @@ import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
+import edu.westga.cs3230.healthcare_dbms.utils.Genders;
 import edu.westga.cs3230.healthcare_dbms.utils.States;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.PatientViewModel;
 import javafx.beans.property.BooleanProperty;
@@ -35,6 +36,9 @@ public class PatientCodeBehind {
 
 	@FXML
 	private TextField lastNameTextField;
+
+	@FXML
+	private ComboBox<String> genderComboBox;
 
 	@FXML
 	private TextField contactPhoneTextField;
@@ -130,6 +134,7 @@ public class PatientCodeBehind {
 
 		// Combo boxes work a bit weirdly
 		this.stateComboBox.getSelectionModel().select(data.getAddress().getState());
+		this.genderComboBox.getSelectionModel().select(data.getPerson().getGender());
 	}
 
 	/**
@@ -170,6 +175,7 @@ public class PatientCodeBehind {
 		this.zipCodeTextField.setTextFormatter(new TextFormatter<Change>(this.filterZip));
 
 		this.stateComboBox.setItems(FXCollections.observableArrayList(States.ALL_STATES));
+		this.genderComboBox.setItems(FXCollections.observableArrayList(Genders.ALL_GENDERS));
 		
 		///limits on database
 		this.firstNameTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(50)));
@@ -188,6 +194,7 @@ public class PatientCodeBehind {
 		this.viewModel.getStreetAddress1Property().bindBidirectional(this.streetAddress1TextField.textProperty());
 		this.viewModel.getStreetAddress2Property().bindBidirectional(this.streetAddress2TextField.textProperty());
 		this.viewModel.getCityProperty().bindBidirectional(this.cityTextField.textProperty());
+		this.viewModel.getGenderProperty().bind(this.genderComboBox.getSelectionModel().selectedItemProperty());
 		this.viewModel.getStateProperty().bind(this.stateComboBox.getSelectionModel().selectedItemProperty());
 		this.viewModel.getZipCodePropertyy().bindBidirectional(this.zipCodeTextField.textProperty());
 		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
@@ -202,6 +209,7 @@ public class PatientCodeBehind {
 				.or(this.contactPhoneTextField.textProperty().isEmpty())
 				.or(this.firstNameTextField.textProperty().isEmpty())
 				.or(this.lastNameTextField.textProperty().isEmpty())
+				.or(this.genderComboBox.getSelectionModel().selectedItemProperty().isNull())
 				.or(this.streetAddress1TextField.textProperty().isEmpty())
 				//.or(this.streetAddress2TextField.textProperty().isEmpty())
 				.or(this.cityTextField.textProperty().isEmpty())

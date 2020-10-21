@@ -5,11 +5,13 @@ import java.time.LocalDate;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+import edu.westga.cs3230.healthcare_dbms.utils.Genders;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.SearchPatientViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,6 +26,9 @@ public class SearchPatientCodeBehind {
 	
 	@FXML
     private ComboBox<?> dobFilter;
+
+	@FXML
+	private ComboBox<String> genderComboBox;
 
 	@FXML
 	private Button searchButton;
@@ -117,6 +122,8 @@ public class SearchPatientCodeBehind {
 	public void initialize() {
 		this.bindProperties();
 		this.initializeTextFieldFormatters();
+
+		this.genderComboBox.setItems(FXCollections.observableArrayList(Genders.ALL_GENDERS));
 	}
 
 	@FXML
@@ -168,10 +175,13 @@ public class SearchPatientCodeBehind {
 		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
 		this.viewModel.getDobProperty().bindBidirectional(this.dateSelect);
 		//this.viewModel.getSearchEventProperty().bind(this.searchButton.pressedProperty());
+
+		this.viewModel.getGenderProperty().bind(this.genderComboBox.getSelectionModel().selectedItemProperty());
 		
 		this.searchButton.disableProperty().bind(this.dateSelect.isNull()
 				.and(this.contactEmailTextField.textProperty().isEmpty())
 				.and(this.contactPhoneTextField.textProperty().isEmpty())
+				.and(this.genderComboBox.getSelectionModel().selectedItemProperty().isNull())
 				.and(this.firstNameTextField.textProperty().isEmpty())
 				.and(this.lastNameTextField.textProperty().isEmpty())
 				.and(this.mailingAddressTextField.textProperty().isEmpty())

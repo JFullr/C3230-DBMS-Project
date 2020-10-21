@@ -11,13 +11,14 @@ public class Person {
 	private String fname;
 	private String lname;
 	private String middle_initial;
+	private String gender;
 	private Date DOB;
 	private Integer SSN;
 	private String contact_phone;
 	private String contact_email;
 	private Integer mailing_address_id;
 	
-	public Person(String email, String phone, Date dob, String fname, String lname, String middleInitial, String ssn) {
+	public Person(String email, String phone, Date dob, String fname, String lname, String middleInitial, String gender, String ssn) {
 		this.setContact_email(email);
 		this.setContact_phone(phone);
 		this.setDOB(dob);
@@ -27,6 +28,7 @@ public class Person {
 		this.setSSN(ssn == null || ssn.isEmpty() ? null : Integer.parseInt(ssn));
 		this.person_id = null;
 		this.setMailing_address_id(null);
+		this.setGender(gender);
 	}
 
 	public Integer getPerson_id() {
@@ -99,6 +101,14 @@ public class Person {
 
 	public void setMailing_address_id(Integer mailing_address_id) {
 		this.mailing_address_id = mailing_address_id;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	/*
 	@Override
