@@ -333,15 +333,15 @@ public class MainPageViewModel {
 
 	public boolean attemptAddPatient(PatientData patientData) {
 		
-		QueryResult result = this.database.attemptAddPatient(patientData);
-		if (result == null || result.getTuples().size() == 0) {
-			this.addResults(patientData, patientData.getPerson(), this.database.getPatientBySSN(patientData));
-			return true;
+		QueryResult results = this.database.attemptAddPatient(patientData);
+		if (results == null || results.getTuples().size() == 0) {
+			return false;
 		}
 		
-		//this.addResults(result);
+		results.combine(this.database.getPatientBySSN(patientData));
 		
-		return false;
+		this.addResults(patientData, patientData.getPerson(), results);
+		return true;
 	}
 
 	public String getUserType(Person patient) {
@@ -370,10 +370,19 @@ public class MainPageViewModel {
 		this.queryResults.add(results);
 		
 		this.tuples.clear();
+		/*
+		TupleEmbed guaranted = new TupleEmbed(operatedOn, display, null);
+		this.tuples.add(guaranted);
+		this.selectedTupleObject.bind(guaranteed.getPressedPropertyAction());
+		*/
 		for(SqlTuple tup : results.getTuples()) {
 			TupleEmbed embed = new TupleEmbed(operatedOn, display, tup);
 			this.tuples.add(embed);
-			this.selectedTupleObject.bind(embed.getPressedPropertyAction());
+			embed.getPressedPropertyAction().addListener((evt)->{
+				//if(embed.getPressedPropertyAction().getValue() != null) {
+					this.selectedTupleObject.setValue(embed.getPressedPropertyAction().getValue());
+				//}
+			});
 		}
 		
 	}

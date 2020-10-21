@@ -15,7 +15,6 @@ public class Person {
 	private Integer SSN;
 	private String contact_phone;
 	private String contact_email;
-	@SqlGenerated
 	private Integer mailing_address_id;
 	
 	public Person(String email, String phone, Date dob, String fname, String lname, String middleInitial, String ssn) {

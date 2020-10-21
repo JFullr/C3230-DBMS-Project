@@ -1,28 +1,32 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
+import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
+
 public class Address {
+	
+	@SqlGenerated
     private Integer address_id;
-    private String street_address_1;
-    private String street_address_2;
+    private String street_address1;
+    private String street_address2;
     private String city;
     private String state;
     private Integer zip_code;
 
-    public Address(String street_address_1, String city, String state, Integer zip_code) {
+    public Address(String street_address1, String city, String state, Integer zip_code) {
         this.address_id = null;
-        this.street_address_1 = nullString(street_address_1);
-        this.street_address_2 = nullString(street_address_2);
-        this.city = nullString(city);
-        this.state = nullString(state);
+        this.street_address1 = street_address1;
+        this.street_address2 = null;
+        this.city = city;
+        this.state = state;
         this.zip_code = zip_code;
     }
 
     public Address(String street_address_1, String street_address_2, String city, String state, Integer zip_code) {
         this.address_id = null;
-    	this.street_address_1 = nullString(street_address_1);
-        this.street_address_2 = nullString(street_address_2);
-        this.city = nullString(city);
-        this.state = nullString(state);
+    	this.street_address1 = street_address_1;
+        this.street_address2 = street_address_2;
+        this.city = city;
+        this.state = state;
         this.zip_code = zip_code;
     }
 
@@ -34,20 +38,20 @@ public class Address {
         this.address_id = address_id;
     }
 
-    public String getStreet_address_1() {
-        return street_address_1;
+    public String getStreet_address1() {
+        return street_address1;
     }
 
-    public void setStreet_address_1(String street_address_1) {
-        this.street_address_1 = street_address_1;
+    public void setStreet_address1(String street_address_1) {
+        this.street_address1 = street_address_1;
     }
 
-    public String getStreet_address_2() {
-        return street_address_2;
+    public String getStreet_address2() {
+        return street_address2;
     }
 
-    public void setStreet_address_2(String street_address_2) {
-        this.street_address_2 = street_address_2;
+    public void setStreet_address2(String street_address_2) {
+        this.street_address2 = street_address_2;
     }
 
     public String getCity() {
@@ -73,11 +77,5 @@ public class Address {
     public void setZip_code(Integer zip_code) {
         this.zip_code = zip_code;
     }
-
-    private String nullString(String check) {
-        if(check == null) {
-            return null;
-        }
-        return check.isEmpty() ? null : check;
-    }
+    
 }

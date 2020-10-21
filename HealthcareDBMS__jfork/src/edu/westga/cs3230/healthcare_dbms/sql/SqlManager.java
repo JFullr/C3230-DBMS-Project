@@ -44,7 +44,7 @@ public class SqlManager {
 				
 				Object obj = SqlTypeConverter.convertObject(rs, labelName, typeName);
 				//if(type == SQL_TYPE.STRING && meta.getPrecision(i) == 1) {
-				if(obj.getClass() == String.class && meta.getPrecision(i) == 1) {
+				if(obj != null && obj.getClass() == String.class && meta.getPrecision(i) == 1) {
 					obj = (Character)((String)obj).charAt(0);
 				}
 				

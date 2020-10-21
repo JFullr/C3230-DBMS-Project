@@ -32,6 +32,20 @@ public class QueryResult {
 		return this.tuples;
 	}
 	
+	public QueryResult combine(QueryResult other) {
+		if(other == null || other.getTuples() == null) {
+			return this;
+		}
+		
+		if(this.tuples == null) {
+			this.tuples = new ArrayList<SqlTuple>();
+		}
+		
+		this.tuples.addAll(other.getTuples());
+		
+		return this;
+	}
+	
 	private void callQuery(String query) {
 		
 		SqlManager manager = new SqlManager();

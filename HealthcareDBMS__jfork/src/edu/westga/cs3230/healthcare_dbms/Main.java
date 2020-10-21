@@ -48,11 +48,9 @@ public class Main extends Application {
 	 * The main method.
 	 *
 	 * @param args the arguments
-	 * @throws SecurityException 
-	 * @throws NoSuchFieldException 
 	 */
-	public static void main(String[] args) throws NoSuchFieldException, SecurityException {
-		System.out.println(Person.class.getDeclaredField("person_id").getDeclaredAnnotation(SqlGenerated.class)!=null);
+	public static void main(String[] args) throws Exception {
+		//System.out.println(Person.class.getDeclaredField("person_id").getDeclaredAnnotation(SqlGenerated.class)!=null);
 		launch(args);
 	}
 }

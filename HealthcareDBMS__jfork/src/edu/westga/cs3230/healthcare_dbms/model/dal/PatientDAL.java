@@ -19,19 +19,52 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class PatientDAL {
 	
+	private String dbUrl;
 	private PostDAL postDal;
 	private PersonDAL personDal;
-	private String dbUrl;
+	private AddressDAL addressDal;
 
 	public PatientDAL(String dbUrl) {
 		this.dbUrl = dbUrl;
 		this.postDal = new PostDAL(dbUrl);
 		this.personDal = new PersonDAL(dbUrl);
+		this.addressDal = new AddressDAL(dbUrl);
 	}
 	
 	public QueryResult attemptAddPatient(PatientData patient) throws SQLException {
-		//
-		return this.personDal.attemptAddPerson(patient.getPerson());
+		
+		QueryResult result = null;
+		Integer addressId = null;
+		try {
+			ArrayList<BigDecimal> generated = this.postDal.getGeneratedIds(this.postDal.postTuple(patient.getAddress()));
+			if(generated.size() == 0) {
+				System.out.println("ADDRESS FAILED GENERATED CHECK");
+				return null;
+			}
+			addressId = generated.get(0).intValue();
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		result = this.addressDal.getAddressById(addressId);
+		
+		if(result == null) {
+			System.out.println("ADDRESS FAILED TO BE FOUND");
+			return null;
+		}
+		
+		patient.getPerson().setMailing_address_id(addressId);
+		
+		QueryResult person = this.personDal.attemptAddPerson(patient.getPerson());
+		
+		if(person == null) {
+			System.out.println("PERSON FAILED TO ADD");
+			//TODO delete person
+			return null;
+		}
+		
+		return result.combine(person);
 	}
 	
 	public QueryResult attemptUpdatePatient(PatientData updateData, PatientData existingData) throws SQLException {

@@ -201,6 +201,7 @@ public class AddPatientCodeBehind {
 				.or(this.streetAddress1TextField.textProperty().isEmpty())
 				//.or(this.streetAddress2TextField.textProperty().isEmpty())
 				.or(this.cityTextField.textProperty().isEmpty())
+				.or(this.zipCodeTextField.textProperty().length().lessThan(5))
 				.or(this.stateTextField.textProperty().isEmpty())
 				.or(this.zipCodeTextField.textProperty().isEmpty())
 				.or(this.middleInitialTextField.textProperty().isEmpty())

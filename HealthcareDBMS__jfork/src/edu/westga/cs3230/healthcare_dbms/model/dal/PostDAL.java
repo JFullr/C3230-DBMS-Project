@@ -1,5 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.model.dal;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
@@ -44,6 +46,20 @@ public class PostDAL {
 			manager.readTuples(stmt.getGeneratedKeys());
 		}
 		return manager.getTuples();
+	}
+	
+	public ArrayList<BigDecimal> getGeneratedIds(ArrayList<SqlTuple> postResult){
+		
+		ArrayList<BigDecimal> values = new ArrayList<BigDecimal>();
+		Integer id = null;
+		for(SqlTuple tup : postResult) {
+			SqlAttribute attr = tup.get("GENERATED_KEY");
+			if(attr != null) {
+				values.add((BigDecimal)attr.getValue());
+			}
+		}
+	
+		return values;
 	}
 	
 	private String buildQueryFrom(Object obj, SqlTuple tuple, ArrayList<String> useAttributes) {
@@ -103,6 +119,8 @@ public class PostDAL {
 				if(data.getClass().getField(attr.getAttribute())
 						.getDeclaredAnnotation(SqlGenerated.class) == null) {
 					useAttributes.add(attr.getAttribute());
+				}else {
+					System.out.println("GENERATED VALUE HIT");
 				}
 			}catch(Exception e) {
 				useAttributes.add(attr.getAttribute());

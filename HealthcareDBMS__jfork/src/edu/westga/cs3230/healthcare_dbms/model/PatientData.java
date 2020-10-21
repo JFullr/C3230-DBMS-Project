@@ -3,33 +3,22 @@ package edu.westga.cs3230.healthcare_dbms.model;
 public class PatientData {
 	
 	private Person person;
-	private Address first;
-	private Address second;
+	private Address address;
 	
 	public PatientData(Person person, Address first) {
-		this.assign(person, first, null);
+		this.assign(person, first);
 	}
 	
-	public PatientData(Person person, Address first, Address second) {
-		this.assign(person, first, second);
-	}
-	
-	private void assign(Person person, Address first, Address second) {
+	private void assign(Person person, Address address) {
 		this.person = person;
-		this.first = first;
-		this.second = second;
+		this.address = address;
 	}
 
 	public Person getPerson() {
 		return person;
 	}
 
-	public Address getFirstAddress() {
-		return first;
+	public Address getAddress() {
+		return address;
 	}
-
-	public Address getSecondAddress() {
-		return second;
-	}
-
 }
