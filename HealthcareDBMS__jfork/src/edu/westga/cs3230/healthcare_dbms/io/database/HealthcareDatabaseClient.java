@@ -32,6 +32,8 @@ public class HealthcareDatabaseClient {
 	private QueryResult lastResult;
 	private String dbUrl;
 	private Connection connection;
+
+	private boolean inTransaction;
 	
 	/**
 	 * Instantiates a new healthcare database client.
@@ -49,6 +51,9 @@ public class HealthcareDatabaseClient {
 	}
 
 	public Connection getConnection() throws SQLException {
+		if (inTransaction && connection != null) {
+			return connection;
+		}
 		boolean valid = connection != null;
 		if (valid) {
 			try {
@@ -61,6 +66,23 @@ public class HealthcareDatabaseClient {
 			connection = DriverManager.getConnection(dbUrl);
 		}
 		return connection;
+	}
+
+	public void runInTransaction(Runnable runnable) throws SQLException {
+		Connection connection = this.getConnection();
+		try {
+			inTransaction = true;
+
+			connection.setAutoCommit(false);
+			runnable.run();
+		} catch (SQLException e) {
+			connection.rollback();
+			throw e;
+		} finally {
+			connection.commit();
+			connection.setAutoCommit(true);
+			inTransaction = false;
+		}
 	}
 	
 	public boolean callQuery(String query) throws Exception {
