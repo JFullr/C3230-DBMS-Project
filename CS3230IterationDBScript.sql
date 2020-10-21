@@ -27,15 +27,15 @@ drop table if exists Patient;
 drop table if exists Person;
 drop table if exists Address;
 
-CREATE TABLE Address {
+CREATE TABLE Address (
 	address_id INTEGER not null,
 	street_address1_id VARCHAR(50) not null,
 	street_address2_id VARCHAR(50),
 	city VARCHAR(50) not null,
 	state VARCHAR(25) not null,
 	zip_code INTEGER not null,
-	PRIMARY KEY(person_id)
-}
+	PRIMARY KEY(address_id)
+);
 
 CREATE TABLE Person( 
 	person_id INTEGER not null auto_increment, 
@@ -47,9 +47,9 @@ CREATE TABLE Person(
 	contact_phone VARCHAR(30) not null,
 	contact_email VARCHAR(50) not null,
 	mailing_address_id INTEGER not null,
-	UNIQUE(SSN)
+	UNIQUE(SSN),
 	PRIMARY KEY(person_id),
-	FOREIGN KEY(mailing_address_id) REFERENCES Address ON UPDATE CASCADE ON DELETE NONE
+	FOREIGN KEY(mailing_address_id) REFERENCES Address(address_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
@@ -207,7 +207,7 @@ CREATE TABLE UpdateQuery(
 	FOREIGN KEY(query_id) REFERENCES Query(query_id)
 );
 
-INSERT INTO Address VALUES(1, 'hamburger 42', null, 'Bunderful Yum', 'WA', 66666)
-INSERT INTO Person VALUES(1, 'frank', 'burg', 'f', '2020-5-5', 123456789, "uieh@grjnrg.eee", "324 er 346", 1)
-INSERT INTO RegisteredUser VALUES(1, 'aa bb', 1)
-INSERT INTO UserPasswordStore VALUES(1, "123")
+INSERT INTO Address VALUES(1, 'hamburger 42', null, 'Bunderful Yum', 'WA', 66666);
+INSERT INTO Person VALUES(1, 'frank', 'burg', 'f', '2020-5-5', 123456789, "uieh@grjnrg.eee", "324 er 346", 1);
+INSERT INTO RegisteredUser VALUES(1, 'aa bb', 1);
+INSERT INTO UserPasswordStore VALUES(1, "123", "hash");
