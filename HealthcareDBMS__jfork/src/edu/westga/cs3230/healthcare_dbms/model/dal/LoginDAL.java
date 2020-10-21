@@ -6,16 +6,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabaseClient;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
 public class LoginDAL {
 
-	private String dbUrl;
+	private HealthcareDatabaseClient client;
 
-	public LoginDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
+	public LoginDAL(HealthcareDatabaseClient client) {
+		this.client = client;
 	}
 
 	public QueryResult attemptLogin(Login login) throws SQLException {
@@ -24,8 +25,8 @@ public class LoginDAL {
 				+ "where p.person_id = r.person_id and r.user_name = ? and ups.password_salted_hashed = ?";
 
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				PreparedStatement stmt = con.prepareStatement(prepared);) {
+		Connection con = client.getConnection();
+		try (PreparedStatement stmt = con.prepareStatement(prepared)) {
 			stmt.setString(1, login.getUser_name());
 			stmt.setString(2, login.getPassword());
 			ResultSet rs = stmt.executeQuery();

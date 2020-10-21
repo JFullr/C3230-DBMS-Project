@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabaseClient;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
@@ -19,11 +20,11 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 public class PersonDAL {
 	
 	private PostDAL postDal;
-	private String dbUrl;
+	private HealthcareDatabaseClient client;
 
-	public PersonDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
-		this.postDal = new PostDAL(dbUrl);
+	public PersonDAL(HealthcareDatabaseClient client) {
+		this.client = client;
+		this.postDal = new PostDAL(client);
 	}
 	
 	public QueryResult attemptAddPerson(Person patient) throws SQLException {
@@ -59,9 +60,8 @@ public class PersonDAL {
 						+ "LIMIT 2";
 		
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				PreparedStatement stmt = con.prepareStatement(prepared);
-				) {
+		Connection con = client.getConnection();
+		try (PreparedStatement stmt = con.prepareStatement(prepared)) {
 			stmt.setString(1, ""+person.getSSN());
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
@@ -88,9 +88,8 @@ public class PersonDAL {
 		//System.out.println(query);
 
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-			 PreparedStatement stmt = con.prepareStatement(query.toString());
-		) {
+		Connection con = client.getConnection();
+		try (PreparedStatement stmt = con.prepareStatement(query.toString())) {
 			int j = 1;
 			for(SqlAttribute attr : tuple) {
 				if (attr.getValue() == null) {
