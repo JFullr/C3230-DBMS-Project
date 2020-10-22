@@ -42,6 +42,7 @@ CREATE TABLE Person(
 	fname VARCHAR(30) not null,
 	lname VARCHAR(30) not null,
 	middle_initial CHAR(1) not null,
+	gender ENUM('Male', 'Female', 'Other') not null,
 	DOB DATE not null,
 	SSN INTEGER(9) not null,
 	contact_phone VARCHAR(30) not null,
@@ -208,6 +209,6 @@ CREATE TABLE UpdateQuery(
 );
 
 INSERT INTO Address VALUES(1,'hamburger 42', null, 'Bunderful Yum', 'WA', 66666);
-INSERT INTO Person VALUES(1,'frank', 'burg', 'f', '2020-5-5', 123456789, "0123456789", "uieh@grjnrg.eee", 1);
+INSERT INTO Person VALUES(1,'frank', 'burg', 'f', 'Male', '2020-5-5', 123456789, "0123456789", "uieh@grjnrg.eee", 1);
 INSERT INTO RegisteredUser VALUES(1, 'aa bb', 1);
 INSERT INTO UserPasswordStore VALUES(1, "123", "hash");
