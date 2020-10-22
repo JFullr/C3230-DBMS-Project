@@ -293,7 +293,7 @@ public class MainPageViewModel {
 		try {
 			FXMLWindow window = new FXMLWindow(PatientCodeBehind.class.getResource(ADD_GUI), "Update Patient", true);
 			PatientCodeBehind codeBehind = (PatientCodeBehind) window.getController();
-			codeBehind.setupForUpdate(existing);
+			codeBehind.setupForUpdate(patient);
 			PatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.getActionTextProperty().setValue("Update Patient");
 			
@@ -335,15 +335,15 @@ public class MainPageViewModel {
 
 	private boolean attemptUpdatePatient(PatientData patientData, PatientData existing) {
 
-		QueryResult result = this.database.attemptUpdatePatient(patientData, existing);
-		if (result == null || result.getTuple() == null) {
-			this.addResults(patientData, this.database.getPatientBySSN(patientData));
-			return true;
+		QueryResult results = this.database.attemptUpdatePatient(patientData, existing);
+		if (results == null) {
+			return false;
 		}
 		
-		//this.addResults(result);
-		
-		return false;
+		this.database.getPatientBySSN(patientData).combine(results);
+		this.addResults(patientData, patientData.getPerson(), results);
+
+		return true;
 	}
 
 	public boolean attemptAddPatient(PatientData patientData) {

@@ -76,7 +76,10 @@ public class TupleEmbed extends ListView<Node> {
 	}
 
 	private void generateFieldForms() {
-		for(SqlAttribute attr : attributes) {
+		if(this.attributes == null) {
+			return;
+		}
+		for(SqlAttribute attr : this.attributes) {
 			if(attr.getAttribute() != null) {
 				
 				GridPane layout = new GridPane();

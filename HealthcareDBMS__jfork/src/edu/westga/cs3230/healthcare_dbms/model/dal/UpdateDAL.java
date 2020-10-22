@@ -24,38 +24,64 @@ public class UpdateDAL {
 		this.dbUrl = dbUrl;
 	}
 	
+	public QueryResult updateTuple(Object newValues, Object oldValues) throws SQLException {
+		return updateTuple(newValues, oldValues, null);
+	}
 	
-	public QueryResult updateTuple(Object values, SqlTuple selection) throws SQLException {
-		SqlTuple tuple = SqlGetter.getFrom(values);
-		StringBuilder query = new StringBuilder("UPDATE "+values.getClass().getSimpleName()+" SET ");
-		for (SqlAttribute attribute : tuple) {
+	public QueryResult updateTuple(Object newValues, Object oldValues, SqlTuple selection) throws SQLException {
+		SqlTuple oldTuple = SqlGetter.getFrom(oldValues);
+		SqlTuple newTuple = SqlGetter.getFrom(newValues);
+		StringBuilder query = new StringBuilder("UPDATE "+newValues.getClass().getSimpleName()+" SET ");
+		for (SqlAttribute attribute : newTuple) {
 			if (attribute.getValue() == null) {
 				continue;
 			}
-			query.append(attribute.getAttribute()).append(" = ?, ");
+			query.append(attribute.getAttribute()).append(" = ? , ");
 		}
 		
-		if(!query.toString().contains("?")) {
+		if(!query.toString().contains(",")) {
 			return null;
 		}
-		query.setLength(query.length() - 2);
+		query.setLength(query.lastIndexOf(","));
 		
 		///TODO create WHERE discriminator from selection values
+		query.append(" WHERE ");
+		for (SqlAttribute attribute : oldTuple) {
+			if (attribute.getValue() == null) {
+				continue;
+			}
+			query.append(attribute.getAttribute()).append(" = ? AND ");
+		}
+		
+		if(!query.toString().contains("AND")) {
+			return null;
+		}
+		query.setLength(query.lastIndexOf("AND"));
 
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
 			 PreparedStatement stmt = con.prepareStatement(query.toString());
 		) {
 			int j = 1;
-			for(SqlAttribute attr : tuple) {
+			for(SqlAttribute attr : newTuple) {
 				if (attr.getValue() == null) {
 					continue;
 				}
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
-			ResultSet rs = stmt.executeQuery();
-			manager.readTuples(rs);
+			
+			for(SqlAttribute attr : oldTuple) {
+				if (attr.getValue() == null) {
+					continue;
+				}
+				stmt.setObject(j, attr.getValue());
+				j++;
+			}
+			System.out.println(stmt);
+			stmt.executeUpdate();
+			//ResultSet rs = stmt.executeQuery();
+			//manager.readTuples(rs);
 		}
 
 		return new QueryResult(manager.getTuples());

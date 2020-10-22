@@ -42,7 +42,7 @@ public class QueryResult implements Iterable<QueryResult>{
 	}
 	
 	public QueryResult combine(QueryResult other) {
-		if(other == null || other.getTuple() == null) {
+		if(other == null ) {
 			return this;
 		}
 		

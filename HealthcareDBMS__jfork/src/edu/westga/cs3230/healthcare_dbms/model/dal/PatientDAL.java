@@ -25,12 +25,14 @@ public class PatientDAL {
 	private PostDAL postDal;
 	private PersonDAL personDal;
 	private AddressDAL addressDal;
+	private UpdateDAL updateDal;
 
 	public PatientDAL(String dbUrl) {
 		this.dbUrl = dbUrl;
 		this.postDal = new PostDAL(dbUrl);
 		this.personDal = new PersonDAL(dbUrl);
 		this.addressDal = new AddressDAL(dbUrl);
+		this.updateDal = new UpdateDAL(dbUrl);
 	}
 	
 	public QueryResult attemptAddPatient(PatientData patient) throws SQLException {
@@ -70,8 +72,9 @@ public class PatientDAL {
 	}
 	
 	public QueryResult attemptUpdatePatient(PatientData updateData, PatientData existingData) throws SQLException {
-		//
-		return null;
+		QueryResult pers = this.updateDal.updateTuple(updateData.getPerson(), existingData.getPerson());
+		QueryResult addr = this.updateDal.updateTuple(updateData.getAddress(), existingData.getAddress());
+		return pers.combine(addr);
 	}
 
 	public QueryResult getPersonMatching(PatientData patient) throws SQLException {
@@ -87,7 +90,7 @@ public class PatientDAL {
 		
 		QueryResult combined = qAddress.combine(qPerson);
 		PatientData data = new PatientData(person,address);
-		combined.setAssociated(data);
+		combined.setAssociated(data); 
 		
 		return combined;
 	}
