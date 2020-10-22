@@ -207,7 +207,7 @@ CREATE TABLE UpdateQuery(
 	FOREIGN KEY(query_id) REFERENCES Query(query_id)
 );
 
-INSERT INTO Address VALUES(1, 'hamburger 42', null, 'Bunderful Yum', 'WA', 66666);
-INSERT INTO Person VALUES(1, 'frank', 'burg', 'f', '2020-5-5', 123456789, "uieh@grjnrg.eee", "324 er 346", 1);
+INSERT INTO Address VALUES(1,'hamburger 42', null, 'Bunderful Yum', 'WA', 66666);
+INSERT INTO Person VALUES(1,'frank', 'burg', 'f', '2020-5-5', 123456789, "0123456789", "uieh@grjnrg.eee", 1);
 INSERT INTO RegisteredUser VALUES(1, 'aa bb', 1);
 INSERT INTO UserPasswordStore VALUES(1, "123", "hash");

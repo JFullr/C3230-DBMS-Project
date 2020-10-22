@@ -11,9 +11,8 @@ import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
-import edu.westga.cs3230.healthcare_dbms.view.AddPatientCodeBehind;
+import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
-import edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.SearchPatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
@@ -35,7 +34,7 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class MainPageViewModel {
 	
-	private static final String ADD_GUI = "AddPatientGui.fxml";
+	private static final String ADD_GUI = "PatientGui.fxml";
 	private static final String LOGIN_GUI = "LoginGui.fxml";
 	private static final String SEARCH_GUI = "SearchPatientGui.fxml";
 	
@@ -238,9 +237,9 @@ public class MainPageViewModel {
 	
 	public void showAddPatient() {
 		try {
-			FXMLWindow window = new FXMLWindow(AddPatientCodeBehind.class.getResource(ADD_GUI), "Add Patient", true);
-			AddPatientCodeBehind codeBehind = (AddPatientCodeBehind) window.getController();
-			AddPatientViewModel viewModel = codeBehind.getViewModel();
+			FXMLWindow window = new FXMLWindow(PatientCodeBehind.class.getResource(ADD_GUI), "Add Patient", true);
+			PatientCodeBehind codeBehind = (PatientCodeBehind) window.getController();
+			PatientViewModel viewModel = codeBehind.getViewModel();
 			
 			viewModel.getAddEventProperty().addListener((evt) -> {
 				
@@ -292,9 +291,10 @@ public class MainPageViewModel {
 	
 	public void showUpdatePatient(PatientData patient) {
 		try {
-			FXMLWindow window = new FXMLWindow(AddPatientCodeBehind.class.getResource(ADD_GUI), "Update Patient", true);
-			AddPatientCodeBehind codeBehind = (AddPatientCodeBehind) window.getController();
-			AddPatientViewModel viewModel = codeBehind.getViewModel();
+			FXMLWindow window = new FXMLWindow(PatientCodeBehind.class.getResource(ADD_GUI), "Update Patient", true);
+			PatientCodeBehind codeBehind = (PatientCodeBehind) window.getController();
+			codeBehind.setupForUpdate(existing);
+			PatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.getActionTextProperty().setValue("Update Patient");
 			
 			Person person = patient.getPerson(); 

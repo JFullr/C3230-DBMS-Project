@@ -5,9 +5,6 @@ import java.time.LocalDate;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
-import edu.westga.cs3230.healthcare_dbms.model.Patient;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
-import edu.westga.cs3230.healthcare_dbms.viewmodel.AddPatientViewModel;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.SearchPatientViewModel;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;

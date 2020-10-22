@@ -80,7 +80,7 @@ public class PatientDAL {
 		SqlSetter.fillWith(person, qPerson.getTuple());
 		//qPerson.setAssociated(person);
 		
-		QueryResult qAddress = this.addressDal.getAddressById(person.getPerson_id());
+		QueryResult qAddress = this.addressDal.getAddressById(person.getMailing_address_id());
 		Address address = new Address(null, null, null, null);
 		SqlSetter.fillWith(address, qAddress.getTuple());
 		qAddress.setAssociated(address);

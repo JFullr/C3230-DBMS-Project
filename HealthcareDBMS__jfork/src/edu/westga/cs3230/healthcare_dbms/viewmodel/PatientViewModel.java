@@ -3,6 +3,7 @@ package edu.westga.cs3230.healthcare_dbms.viewmodel;
 import java.sql.Date;
 
 import edu.westga.cs3230.healthcare_dbms.model.Address;
+import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import javafx.beans.property.BooleanProperty;
@@ -17,7 +18,7 @@ import javafx.scene.input.MouseEvent;
 /**
  * Viewmodel class for the Login window.
  */
-public class AddPatientViewModel {
+public class PatientViewModel {
 
 	private final StringProperty firstNameProperty;
 	private final StringProperty lastNameProperty;
@@ -39,7 +40,7 @@ public class AddPatientViewModel {
 	/**
 	 * Instantiates a new LoginViewModel.
 	 */
-	public AddPatientViewModel() {
+	public PatientViewModel() {
 		this.firstNameProperty = new SimpleStringProperty();
 		this.lastNameProperty = new SimpleStringProperty();
 		this.contactPhoneProperty = new SimpleStringProperty();
@@ -119,9 +120,10 @@ public class AddPatientViewModel {
 		String street2 = this.streetAddress2Property.getValue();
 		street2 = street2 == null ? "" : street2;
 		String state = this.stateProperty.getValue();
+		String city = this.cityProperty.getValue();
 		Integer zip = Integer.parseInt(this.zipCodeProperty.getValue());
 		
-		Address addr = new Address(street1, street2, state, zip);
+		Address addr = new Address(street1, street2, city, state, zip);
 		
 		return new PatientData(person, addr);
 		
@@ -135,5 +137,24 @@ public class AddPatientViewModel {
 		return actionTextProperty;
 	}
 
-	
+	public void pull(PatientData data) {
+		Person person = data.getPerson();
+		this.contactEmailProperty.set(nullToEmpty(person.getContact_email()));
+		this.contactPhoneProperty.set(nullToEmpty(person.getContact_phone()));
+		this.dobProperty.set(person.getDOB());
+		this.firstNameProperty.set(nullToEmpty(person.getFname()));
+		this.lastNameProperty.set(nullToEmpty(person.getLname()));
+		this.middleInitialProperty.set(nullToEmpty(person.getMiddle_initial()));
+		this.ssnProperty.set(String.format("%09d", person.getSSN()));
+
+		Address addr = data.getAddress();
+		this.streetAddress1Property.set(nullToEmpty(addr.getStreet_address1()));
+		this.streetAddress2Property.set(nullToEmpty(addr.getStreet_address2()));
+		//this.stateProperty.set(addr.getState());
+		this.zipCodeProperty.set(String.format("%05d", addr.getZip_code()));
+	}
+
+	private String nullToEmpty(String str) {
+		return str == null ? "" : str;
+	}
 }

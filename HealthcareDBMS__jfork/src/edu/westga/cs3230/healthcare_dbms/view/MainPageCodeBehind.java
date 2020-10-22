@@ -1,25 +1,11 @@
 package edu.westga.cs3230.healthcare_dbms.view;
 
-import java.util.ArrayList;
-
-import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
-import edu.westga.cs3230.healthcare_dbms.model.Login;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
-import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
-import edu.westga.cs3230.healthcare_dbms.view.embed.Embed;
 import edu.westga.cs3230.healthcare_dbms.view.embed.EmbedHandler;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
-import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
-import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLWindow;
-import edu.westga.cs3230.healthcare_dbms.viewmodel.AddPatientViewModel;
-import edu.westga.cs3230.healthcare_dbms.viewmodel.LoginViewModel;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.MainPageViewModel;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
