@@ -86,7 +86,8 @@ public class PatientDAL {
 		qAddress.setAssociated(address);
 		
 		QueryResult combined = qAddress.combine(qPerson);
-		combined.setAssociated(new PatientData(person,address));
+		PatientData data = new PatientData(person,address);
+		combined.setAssociated(data);
 		
 		return combined;
 	}

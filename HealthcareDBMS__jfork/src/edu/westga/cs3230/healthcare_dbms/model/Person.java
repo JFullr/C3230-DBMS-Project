@@ -100,5 +100,10 @@ public class Person {
 	public void setMailing_address_id(Integer mailing_address_id) {
 		this.mailing_address_id = mailing_address_id;
 	}
-
+	/*
+	@Override
+	public String toString() {
+		return
+	}
+	*/
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
+import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
@@ -289,17 +290,32 @@ public class MainPageViewModel {
 		}
 	}
 	
-	public void showUpdatePatient(PatientData existing) {
+	public void showUpdatePatient(PatientData patient) {
 		try {
 			FXMLWindow window = new FXMLWindow(AddPatientCodeBehind.class.getResource(ADD_GUI), "Update Patient", true);
 			AddPatientCodeBehind codeBehind = (AddPatientCodeBehind) window.getController();
 			AddPatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.getActionTextProperty().setValue("Update Patient");
 			
+			Person person = patient.getPerson(); 
+			Address address = patient.getAddress();
+			System.out.println(person+"\n\n"+address);
+			viewModel.getFirstNameProperty().setValue(person.getFname());
+			viewModel.getLastNameProperty().setValue(person.getLname());
+			viewModel.getMiddleInitialProperty().setValue(person.getMiddle_initial());
+			viewModel.getDobProperty().setValue(person.getDOB());
+			viewModel.getSsnProperty().setValue(""+person.getSSN());
+			viewModel.getContactPhoneProperty().setValue(person.getContact_phone());
+			viewModel.getContactEmailProperty().setValue(person.getContact_email());
+			viewModel.getCityProperty().setValue(address.getCity());
+			viewModel.getStreetAddress1Property().setValue(address.getStreet_address1());
+			viewModel.getStreetAddress2Property().setValue(address.getStreet_address2());
+			viewModel.getZipCodePropertyy().setValue(""+address.getZip_code());
+			
 			viewModel.getAddEventProperty().addListener((evt) -> {
 				
 				if (viewModel.getAddEventProperty().getValue()) {
-					if (!this.attemptUpdatePatient(viewModel.getPatient(), existing)) {
+					if (!this.attemptUpdatePatient(viewModel.getPatient(), patient)) {
 						FXMLAlert.statusAlert("Update Failed", "The patient update did not complete successfully.", "Patient Update failed", AlertType.ERROR);
 						viewModel.getAddEventProperty().setValue(false);
 					} else {
@@ -352,6 +368,7 @@ public class MainPageViewModel {
 		if (result == null || result.getTuple() == null) {
 			return false;
 		}
+		
 		PatientData patientFound = (PatientData) result.getAssociated();
 		this.addResults(patientFound, patientFound.getPerson(), result);
 		return true;
