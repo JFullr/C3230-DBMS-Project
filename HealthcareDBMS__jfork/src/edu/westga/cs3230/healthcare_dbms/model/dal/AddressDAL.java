@@ -13,10 +13,12 @@ import java.util.ArrayList;
 public class AddressDAL {
     private String dbUrl;
     private PostDAL postDal;
+    private UpdateDAL updateDal;
 
     public AddressDAL(String dbUrl) {
         this.dbUrl = dbUrl;
         this.postDal = new PostDAL(dbUrl);
+        this.updateDal = new UpdateDAL(dbUrl);
     }
 
     public QueryResult getAddressById(int addressId) throws SQLException {
@@ -74,5 +76,13 @@ public class AddressDAL {
         // TODO: Transaction support, uniqueness of address
         ArrayList<SqlTuple> result = this.postDal.postTuple(SqlGetter.getFrom(address));
         return new QueryResult(result);
+    }
+
+    public QueryResult attemptUpdateAddress(Address oldAddress, Address newAddress) throws SQLException {
+        if (oldAddress.getAddress_id() == null) {
+            throw new SQLException("Need an address to update.");
+        }
+
+        return updateDal.updateTuple(newAddress, new SqlAttribute("address_id", oldAddress.getAddress_id()));
     }
 }

@@ -60,7 +60,7 @@ public class UpdateDAL {
 
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
-			 PreparedStatement stmt = con.prepareStatement(query.toString());
+			 PreparedStatement stmt = con.prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS);
 		) {
 			int j = 1;
 			for(SqlAttribute attr : newTuple) {
@@ -78,10 +78,10 @@ public class UpdateDAL {
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
-			System.out.println(stmt);
+			//System.out.println(stmt);
 			stmt.executeUpdate();
 			//ResultSet rs = stmt.executeQuery();
-			//manager.readTuples(rs);
+			manager.readTuples(stmt.getGeneratedKeys());
 		}
 
 		return new QueryResult(manager.getTuples());

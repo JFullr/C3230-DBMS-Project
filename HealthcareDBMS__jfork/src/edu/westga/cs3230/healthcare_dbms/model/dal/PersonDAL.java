@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
+import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
@@ -19,11 +20,13 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 public class PersonDAL {
 	
 	private PostDAL postDal;
+	private UpdateDAL updateDal;
 	private String dbUrl;
 
 	public PersonDAL(String dbUrl) {
 		this.dbUrl = dbUrl;
 		this.postDal = new PostDAL(dbUrl);
+		this.updateDal = new UpdateDAL(dbUrl);
 	}
 	
 	public QueryResult attemptAddPerson(Person patient) throws SQLException {
@@ -106,6 +109,14 @@ public class PersonDAL {
 		}
 
 		return new QueryResult(manager.getTuples());
+	}
+
+	public QueryResult attemptUpdatePerson(Person previous, Person newValues) throws SQLException {
+		if (previous.getPerson_id() == null) {
+			throw new SQLException("Need a person to update.");
+		}
+
+		return updateDal.updateTuple(newValues, new SqlAttribute("person_id", previous.getPerson_id()));
 	}
 
 }

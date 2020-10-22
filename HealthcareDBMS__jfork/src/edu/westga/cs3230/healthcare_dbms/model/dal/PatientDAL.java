@@ -97,7 +97,8 @@ public class PatientDAL {
 
 	public QueryResult getPatientBySSN(PatientData patientData) throws SQLException {
 		// 
-		return this.personDal.getPersonBySSN(patientData.getPerson());
+		//return this.personDal.getPersonBySSN(patientData.getPerson());
+		return this.getPersonMatching(patientData);
 	}
 
 }

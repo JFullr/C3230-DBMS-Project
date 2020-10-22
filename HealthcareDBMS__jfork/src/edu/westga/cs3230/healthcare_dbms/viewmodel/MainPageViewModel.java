@@ -264,7 +264,7 @@ public class MainPageViewModel {
 	
 	public void showPatientSearch() {
 		try {
-			FXMLWindow window = new FXMLWindow(SearchPatientCodeBehind.class.getResource(SEARCH_GUI), "Add Patient", true);
+			FXMLWindow window = new FXMLWindow(SearchPatientCodeBehind.class.getResource(SEARCH_GUI), "Search for Patient", true);
 			SearchPatientCodeBehind codeBehind = (SearchPatientCodeBehind) window.getController();
 			SearchPatientViewModel viewModel = codeBehind.getViewModel();
 			
@@ -296,22 +296,7 @@ public class MainPageViewModel {
 			codeBehind.setupForUpdate(patient);
 			PatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.getActionTextProperty().setValue("Update Patient");
-			
-			Person person = patient.getPerson(); 
-			Address address = patient.getAddress();
-			System.out.println(person+"\n\n"+address);
-			viewModel.getFirstNameProperty().setValue(person.getFname());
-			viewModel.getLastNameProperty().setValue(person.getLname());
-			viewModel.getMiddleInitialProperty().setValue(person.getMiddle_initial());
-			viewModel.getDobProperty().setValue(person.getDOB());
-			viewModel.getSsnProperty().setValue(""+person.getSSN());
-			viewModel.getContactPhoneProperty().setValue(person.getContact_phone());
-			viewModel.getContactEmailProperty().setValue(person.getContact_email());
-			viewModel.getCityProperty().setValue(address.getCity());
-			viewModel.getStreetAddress1Property().setValue(address.getStreet_address1());
-			viewModel.getStreetAddress2Property().setValue(address.getStreet_address2());
-			viewModel.getZipCodePropertyy().setValue(""+address.getZip_code());
-			
+
 			viewModel.getAddEventProperty().addListener((evt) -> {
 				
 				if (viewModel.getAddEventProperty().getValue()) {
@@ -340,8 +325,9 @@ public class MainPageViewModel {
 			return false;
 		}
 		
-		this.database.getPatientBySSN(patientData).combine(results);
-		this.addResults(patientData, patientData.getPerson(), results);
+		results = this.database.getPatientBySSN(patientData);
+		PatientData updatedPatient = (PatientData)results.getAssociated();
+		this.addResults(updatedPatient, updatedPatient.getPerson(), results);
 
 		return true;
 	}
