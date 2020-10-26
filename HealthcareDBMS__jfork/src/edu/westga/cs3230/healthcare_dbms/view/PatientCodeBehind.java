@@ -71,28 +71,10 @@ public class PatientCodeBehind {
 	private TextField ssnTextField;
 	
 	/*
-	 * 
-	private UnaryOperator<Change> filterIntegers = change -> {
-	    Pattern pattern = Pattern.compile("\\d*");
-	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
-	};
-	
-	
-	private UnaryOperator<Change> filterLetters = change -> {
-	    Pattern pattern = Pattern.compile("[a-zA-Z]*");
-	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
-	};
-	
 	private UnaryOperator<Change> filterDecimals = change -> {
 	    Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
 	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
-	
-	private UnaryOperator<Change> filterPhone = change -> {
-		Pattern pattern = Pattern.compile("(\\d{0,10})|((\\d{0,3}[-/]?){0,3}\\d{0,1})");
-	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
-	};
-	
 	*/
 	
 	private UnaryOperator<Change> filterInitial = change -> {
@@ -127,16 +109,7 @@ public class PatientCodeBehind {
 		this.attemptAdd = false;
 		this.isEmailValid = new SimpleBooleanProperty(false);
 	}
-
-	public void setupForUpdate(PatientData data) {
-		existingPatientData = data;
-		this.viewModel.pull(data);
-
-		// Combo boxes work a bit weirdly
-		this.stateComboBox.getSelectionModel().select(data.getAddress().getState());
-		this.genderComboBox.getSelectionModel().select(data.getPerson().getGender());
-	}
-
+	
 	/**
 	 * Initializer for the fxml data
 	 */
@@ -194,8 +167,8 @@ public class PatientCodeBehind {
 		this.viewModel.getStreetAddress1Property().bindBidirectional(this.streetAddress1TextField.textProperty());
 		this.viewModel.getStreetAddress2Property().bindBidirectional(this.streetAddress2TextField.textProperty());
 		this.viewModel.getCityProperty().bindBidirectional(this.cityTextField.textProperty());
-		this.viewModel.getGenderProperty().bind(this.genderComboBox.getSelectionModel().selectedItemProperty());
-		this.viewModel.getStateProperty().bind(this.stateComboBox.getSelectionModel().selectedItemProperty());
+		this.viewModel.getGenderProperty().bind(this.genderComboBox.selectionModelProperty());
+		this.viewModel.getStateProperty().bind(this.stateComboBox.selectionModelProperty());
 		this.viewModel.getZipCodePropertyy().bindBidirectional(this.zipCodeTextField.textProperty());
 		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
 		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());

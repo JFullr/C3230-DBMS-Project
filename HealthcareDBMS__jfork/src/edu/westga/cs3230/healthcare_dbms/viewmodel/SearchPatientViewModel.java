@@ -11,8 +11,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.SingleSelectionModel;
 
 /**
  * Viewmodel class for the Login window.
@@ -21,7 +20,6 @@ public class SearchPatientViewModel {
 
 	private final StringProperty firstNameProperty;
 	private final StringProperty lastNameProperty;
-	private final StringProperty genderProperty;
 	private final StringProperty contactPhoneProperty;
 	private final StringProperty contactEmailProperty;
 	private final StringProperty mailingAddressProperty;
@@ -30,6 +28,9 @@ public class SearchPatientViewModel {
 	private final StringProperty ssnProperty;
 	
 	private final BooleanProperty searchEventProperty;
+	
+	private final ObjectProperty<SingleSelectionModel<String>> stateProperty;
+	private final ObjectProperty<SingleSelectionModel<String>> genderProperty;
 
 	/**
 	 * Instantiates a new LoginViewModel.
@@ -44,7 +45,8 @@ public class SearchPatientViewModel {
 		this.middleInitialProperty = new SimpleStringProperty();
 		this.ssnProperty = new SimpleStringProperty();
 		this.searchEventProperty = new SimpleBooleanProperty(false);
-		this.genderProperty = new SimpleStringProperty();
+		this.stateProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
+		this.genderProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
 	}
 
 	public StringProperty getFirstNameProperty() {
@@ -79,7 +81,7 @@ public class SearchPatientViewModel {
 		return dobProperty;
 	}
 
-	public StringProperty getGenderProperty() {
+	public ObjectProperty<SingleSelectionModel<String>> getGenderProperty() {
 		return genderProperty;
 	}
 	
@@ -91,7 +93,7 @@ public class SearchPatientViewModel {
 		String lname =  this.nullString(this.lastNameProperty.getValue());
 		String middleInitial =  this.nullString(this.middleInitialProperty.getValue());
 		String ssn =  this.nullString(this.ssnProperty.getValue());
-		String gender =  this.nullString(this.genderProperty.getValue());
+		String gender =  this.nullString(this.genderProperty.getValue().getSelectedItem());
 		
 		Person person = new Person(email, phone, dob != null ? Date.valueOf(dob) : null, fname, lname, middleInitial, gender, ssn);
 		person.setPerson_id(null);
@@ -115,6 +117,10 @@ public class SearchPatientViewModel {
 			return null;
 		}
 		return check.isEmpty() ? null : check;
+	}
+
+	public ObjectProperty<SingleSelectionModel<String>> getStateProperty() {
+		return stateProperty;
 	}
 	
 }

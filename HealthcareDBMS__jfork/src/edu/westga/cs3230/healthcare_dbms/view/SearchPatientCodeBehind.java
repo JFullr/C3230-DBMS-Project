@@ -176,7 +176,7 @@ public class SearchPatientCodeBehind {
 		this.viewModel.getDobProperty().bindBidirectional(this.dateSelect);
 		//this.viewModel.getSearchEventProperty().bind(this.searchButton.pressedProperty());
 
-		this.viewModel.getGenderProperty().bind(this.genderComboBox.getSelectionModel().selectedItemProperty());
+		this.viewModel.getGenderProperty().bind(this.genderComboBox.selectionModelProperty());
 		
 		this.searchButton.disableProperty().bind(this.dateSelect.isNull()
 				.and(this.contactEmailTextField.textProperty().isEmpty())

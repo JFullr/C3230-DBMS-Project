@@ -96,7 +96,13 @@
                      <children>
                         <Button fx:id="addPatientButton" mnemonicParsing="false" onAction="#handleAddPatient" text="Add Patient" />
                         <Button fx:id="patientSearchButton" mnemonicParsing="false" onAction="#handlePatientSearch" text="Patient Search" />
+                        <Button fx:id="appointSearchButton" mnemonicParsing="false" text="Appointment Search" />
                      </children>
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </FlowPane>
+                  <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <padding>
                         <Insets left="10.0" top="10.0" />
                      </padding>

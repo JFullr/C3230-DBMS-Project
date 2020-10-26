@@ -96,6 +96,7 @@ public class TupleEmbed extends ListView<Node> {
 				});
 				layout.add(edit, 0, 1);
 				
+				layout.setDisable(true);
 				this.items.add(layout);
 			}
 		}

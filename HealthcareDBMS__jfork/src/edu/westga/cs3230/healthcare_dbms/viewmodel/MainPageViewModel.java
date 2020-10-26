@@ -92,6 +92,7 @@ public class MainPageViewModel {
 			if(mutateClass == PatientData.class) {
 				this.showUpdatePatient((PatientData)obj);
 			}
+			
 			else {
 				FXMLAlert.statusAlert("Cannot Edit "+mutateClass.getSimpleName(), AlertType.WARNING);
 			}
@@ -293,8 +294,8 @@ public class MainPageViewModel {
 		try {
 			FXMLWindow window = new FXMLWindow(PatientCodeBehind.class.getResource(ADD_GUI), "Update Patient", true);
 			PatientCodeBehind codeBehind = (PatientCodeBehind) window.getController();
-			codeBehind.setupForUpdate(patient);
 			PatientViewModel viewModel = codeBehind.getViewModel();
+			viewModel.initFrom(patient);
 			viewModel.getActionTextProperty().setValue("Update Patient");
 
 			viewModel.getAddEventProperty().addListener((evt) -> {

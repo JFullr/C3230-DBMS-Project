@@ -74,21 +74,20 @@ public class PatientDAL {
 	public QueryResult attemptUpdatePatient(PatientData updateData, PatientData existingData) throws SQLException {
 		QueryResult pers = this.updateDal.updateTuple(updateData.getPerson(), existingData.getPerson());
 		QueryResult addr = this.updateDal.updateTuple(updateData.getAddress(), existingData.getAddress());
-		return pers.combine(addr);
+		return pers.combineMerge(addr);
 	}
 
 	public QueryResult getPersonMatching(PatientData patient) throws SQLException {
 		QueryResult qPerson = this.personDal.getPersonMatching(patient.getPerson());
 		Person person = new Person(null, null, null, null, null, null, null, null);
 		SqlSetter.fillWith(person, qPerson.getTuple());
-		//qPerson.setAssociated(person);
 		
 		QueryResult qAddress = this.addressDal.getAddressById(person.getMailing_address_id());
 		Address address = new Address(null, null, null, null);
 		SqlSetter.fillWith(address, qAddress.getTuple());
 		qAddress.setAssociated(address);
 		
-		QueryResult combined = qAddress.combine(qPerson);
+		QueryResult combined = qAddress.combineMerge(qPerson);
 		PatientData data = new PatientData(person,address);
 		combined.setAssociated(data); 
 		

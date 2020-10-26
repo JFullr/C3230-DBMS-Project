@@ -39,6 +39,9 @@ public class MainPageCodeBehind {
 
     @FXML
     private Button addPatientButton;
+    
+    @FXML
+    private Button appointSearchButton;
 
 	@FXML
 	private ListView<TupleEmbed> queryListView;
@@ -61,6 +64,7 @@ public class MainPageCodeBehind {
 		this.addPatientButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 		this.logoutButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 		this.patientSearchButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
+		this.appointSearchButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 
 		this.addListeners();
 		

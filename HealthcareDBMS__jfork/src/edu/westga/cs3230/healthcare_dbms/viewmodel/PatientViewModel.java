@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.control.SingleSelectionModel;
 
 /**
  * Viewmodel class for the Login window.
@@ -21,13 +22,11 @@ public class PatientViewModel {
 
 	private final StringProperty firstNameProperty;
 	private final StringProperty lastNameProperty;
-	private final StringProperty genderProperty;
 	private final StringProperty contactPhoneProperty;
 	private final StringProperty contactEmailProperty;
 	private final StringProperty streetAddress1Property;
 	private final StringProperty streetAddress2Property;
 	private final StringProperty cityProperty;
-	private final StringProperty stateProperty;
 	private final StringProperty zipCodeProperty;
 	private final ObjectProperty<LocalDate> dobProperty;
 	private final StringProperty middleInitialProperty;
@@ -36,6 +35,11 @@ public class PatientViewModel {
 	private final StringProperty actionTextProperty;
 	
 	private final BooleanProperty addEventProperty;
+	
+	private final ObjectProperty<SingleSelectionModel<String>> stateProperty;
+	private final ObjectProperty<SingleSelectionModel<String>> genderProperty;
+	
+	
 
 	/**
 	 * Instantiates a new LoginViewModel.
@@ -48,14 +52,14 @@ public class PatientViewModel {
 		this.streetAddress1Property = new SimpleStringProperty();
 		this.streetAddress2Property = new SimpleStringProperty();
 		this.cityProperty = new SimpleStringProperty();
-		this.stateProperty = new SimpleStringProperty();
 		this.zipCodeProperty = new SimpleStringProperty();
 		this.dobProperty = new SimpleObjectProperty<LocalDate>();
 		this.middleInitialProperty = new SimpleStringProperty();
 		this.ssnProperty = new SimpleStringProperty();
 		this.addEventProperty = new SimpleBooleanProperty(false);
 		this.actionTextProperty = new SimpleStringProperty();
-		this.genderProperty = new SimpleStringProperty();
+		this.stateProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
+		this.genderProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
 	}
 
 	public StringProperty getFirstNameProperty() {
@@ -70,7 +74,7 @@ public class PatientViewModel {
 		return lastNameProperty;
 	}
 
-	public StringProperty getGenderProperty() {
+	public ObjectProperty<SingleSelectionModel<String>> getGenderProperty() {
 		return genderProperty;
 	}
 
@@ -86,7 +90,7 @@ public class PatientViewModel {
 		return cityProperty;
 	}
 
-	public StringProperty getStateProperty() {
+	public ObjectProperty<SingleSelectionModel<String>> getStateProperty() {
 		return stateProperty;
 	}
 
@@ -119,14 +123,14 @@ public class PatientViewModel {
 		String lname = this.lastNameProperty.getValue();
 		String middleInitial = this.middleInitialProperty.getValue();
 		String ssn = this.ssnProperty.getValue();
-		String gender = this.genderProperty.getValue();
+		String gender = this.genderProperty.getValue().getSelectedItem();
 		
 		Person person = new Person(email, phone, new java.sql.Date(dob.getTime()), fname, lname, middleInitial, gender, ssn);
 		
 		String street1 = this.streetAddress1Property.getValue();
 		String street2 = this.streetAddress2Property.getValue();
 		street2 = street2 == null ? "" : street2;
-		String state = this.stateProperty.getValue();
+		String state = this.stateProperty.getValue().getSelectedItem();
 		String city = this.cityProperty.getValue();
 		Integer zip = Integer.parseInt(this.zipCodeProperty.getValue());
 		
@@ -144,7 +148,7 @@ public class PatientViewModel {
 		return actionTextProperty;
 	}
 
-	public void pull(PatientData data) {
+	public void initFrom(PatientData data) {
 		Person person = data.getPerson();
 		this.contactEmailProperty.set(nullToEmpty(person.getContact_email()));
 		this.contactPhoneProperty.set(nullToEmpty(person.getContact_phone()));
@@ -161,6 +165,10 @@ public class PatientViewModel {
 		//this.stateProperty.set(addr.getState());
 		this.cityProperty.set(nullToEmpty(addr.getCity()));
 		this.zipCodeProperty.set(String.format("%05d", addr.getZip_code()));
+		
+		this.genderProperty.getValue().select(person.getGender());
+		this.stateProperty.getValue().select(addr.getState());
+		
 	}
 
 	private String nullToEmpty(String str) {

@@ -29,6 +29,31 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 		return this.attrs.put(attribute, value);
 	}
 	
+	public boolean add(SqlAttribute value) {
+		
+		if(this.attrs.get(value.getAttribute()) == null) {
+			this.attrs.put(value.getAttribute(), value);
+			return false;
+		}
+		
+		StringBuilder builder = new StringBuilder(value.getAttribute());
+		builder.append("_");
+		for(int i = 0; i < Integer.MAX_VALUE; i++) {
+			builder.append(i);
+			
+			if(this.attrs.get(builder.toString()) == null) {
+				this.attrs.put(builder.toString(), value);
+				return true;
+			}
+			
+			builder.setLength(builder.length()-1);
+		}
+		
+		
+		
+		return false;
+	}
+	
 
 	@Override
 	public Iterator<SqlAttribute> iterator() {
