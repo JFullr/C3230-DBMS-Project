@@ -16,6 +16,7 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
+import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 
 public class PersonDAL {
 	

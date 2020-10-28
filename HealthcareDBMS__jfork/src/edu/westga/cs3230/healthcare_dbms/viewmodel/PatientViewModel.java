@@ -2,11 +2,13 @@ package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
+import java.sql.Date;
 
 import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
+import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
+import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -34,10 +36,12 @@ public class PatientViewModel {
 	
 	private final StringProperty actionTextProperty;
 	
-	private final BooleanProperty addEventProperty;
+	private final BooleanProperty actionPressedProperty;
 	
 	private final ObjectProperty<SingleSelectionModel<String>> stateProperty;
 	private final ObjectProperty<SingleSelectionModel<String>> genderProperty;
+	
+	private final StringProperty validationProperty;
 	
 	
 
@@ -56,10 +60,11 @@ public class PatientViewModel {
 		this.dobProperty = new SimpleObjectProperty<LocalDate>();
 		this.middleInitialProperty = new SimpleStringProperty();
 		this.ssnProperty = new SimpleStringProperty();
-		this.addEventProperty = new SimpleBooleanProperty(false);
+		this.actionPressedProperty = new SimpleBooleanProperty(false);
 		this.actionTextProperty = new SimpleStringProperty();
 		this.stateProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
 		this.genderProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
+		this.validationProperty = new SimpleStringProperty(null);
 	}
 
 	public StringProperty getFirstNameProperty() {
@@ -114,64 +119,98 @@ public class PatientViewModel {
 		return dobProperty;
 	}
 	
-	public PatientData getPatient() {
-		String email = this.contactEmailProperty.getValue();
-		String phone = this.contactPhoneProperty.getValue();
-
-		Date dob = java.util.Date.from(this.dobProperty.get().atStartOfDay(ZoneId.of("UTC")).toInstant());
-		String fname = this.firstNameProperty.getValue();
-		String lname = this.lastNameProperty.getValue();
-		String middleInitial = this.middleInitialProperty.getValue();
-		String ssn = this.ssnProperty.getValue();
-		String gender = this.genderProperty.getValue().getSelectedItem();
-		
-		Person person = new Person(email, phone, new java.sql.Date(dob.getTime()), fname, lname, middleInitial, gender, ssn);
-		
-		String street1 = this.streetAddress1Property.getValue();
-		String street2 = this.streetAddress2Property.getValue();
-		street2 = street2 == null ? "" : street2;
-		String state = this.stateProperty.getValue().getSelectedItem();
-		String city = this.cityProperty.getValue();
-		Integer zip = Integer.parseInt(this.zipCodeProperty.getValue());
-		
-		Address addr = new Address(street1, street2, city, state, zip);
-		
-		return new PatientData(person, addr);
-		
+	public void setActionButtonText(String text) {
+		this.getActionTextProperty().setValue(text);
 	}
 	
-	public BooleanProperty getAddEventProperty() {
-		return this.addEventProperty;
+	public void setActionButtonValidationNone() {
+		this.validationProperty.setValue(PatientCodeBehind.ACTION_VALID_NONE);
+	}
+	
+	public void setActionButtonValidationMinimal() {
+		this.validationProperty.setValue(PatientCodeBehind.ACTION_VALID_MINIMAL);
+	}
+	
+	public void setActionButtonValidationAll() {
+		this.validationProperty.setValue(PatientCodeBehind.ACTION_VALID_ALL);
+	}
+	
+	public BooleanProperty getActionPressedProperty() {
+		return this.actionPressedProperty;
 	}
 
 	public StringProperty getActionTextProperty() {
 		return actionTextProperty;
 	}
+	
+	public StringProperty getValidationProperty() {
+		return validationProperty;
+	}
 
 	public void initFrom(PatientData data) {
 		Person person = data.getPerson();
-		this.contactEmailProperty.set(nullToEmpty(person.getContact_email()));
-		this.contactPhoneProperty.set(nullToEmpty(person.getContact_phone()));
-		this.dobProperty.set(new java.util.Date(person.getDOB().getTime()).toInstant().atZone(ZoneId.of("UTC")).toLocalDate());
-		this.firstNameProperty.set(nullToEmpty(person.getFname()));
-		this.lastNameProperty.set(nullToEmpty(person.getLname()));
-		this.middleInitialProperty.set(nullToEmpty(person.getMiddle_initial()));
-		this.ssnProperty.set(String.format("%09d", person.getSSN()));
-		//this.genderProperty.set(person.getGender());
+		this.contactEmailProperty.setValue(this.nullToEmpty(person.getContact_email()));
+		this.contactPhoneProperty.setValue(this.nullToEmpty(person.getContact_phone()));
+		this.dobProperty.setValue(person.getDOB().toLocalDate());
+		this.firstNameProperty.setValue(this.nullToEmpty(person.getFname()));
+		this.lastNameProperty.setValue(this.nullToEmpty(person.getLname()));
+		this.middleInitialProperty.setValue(this.nullToEmpty(person.getMiddle_initial()));
+		this.ssnProperty.setValue(String.format("%09d", person.getSSN()));
 
 		Address addr = data.getAddress();
-		this.streetAddress1Property.set(nullToEmpty(addr.getStreet_address1()));
-		this.streetAddress2Property.set(nullToEmpty(addr.getStreet_address2()));
-		//this.stateProperty.set(addr.getState());
-		this.cityProperty.set(nullToEmpty(addr.getCity()));
-		this.zipCodeProperty.set(String.format("%05d", addr.getZip_code()));
+		this.streetAddress1Property.setValue(this.nullToEmpty(addr.getStreet_address1()));
+		this.streetAddress2Property.setValue(this.nullToEmpty(addr.getStreet_address2()));
+		this.cityProperty.setValue(this.nullToEmpty(addr.getCity()));
+		this.zipCodeProperty.setValue(String.format("%05d", addr.getZip_code()));
 		
 		this.genderProperty.getValue().select(person.getGender());
 		this.stateProperty.getValue().select(addr.getState());
 		
 	}
 
+	public PatientData getPatient() {
+		
+		Date dob = null;
+		LocalDate time = this.dobProperty.getValue();
+		if(time != null) {
+			dob = Date.valueOf(time);
+		}
+		
+		String email = this.nullString(this.contactEmailProperty.getValue());
+		String phone =  this.nullString(this.contactPhoneProperty.getValue());
+		String fname =  this.nullString(this.firstNameProperty.getValue());
+		String lname =  this.nullString(this.lastNameProperty.getValue());
+		String middleInitial =  this.nullString(this.middleInitialProperty.getValue());
+		String ssn =  this.nullString(this.ssnProperty.getValue());
+		String gender =  this.nullString(this.genderProperty.getValue().getSelectedItem());
+		
+		String street1 = this.nullString(this.streetAddress1Property.getValue());
+		String street2 = this.nullString(this.streetAddress2Property.getValue());
+		String state = this.nullString(this.stateProperty.getValue().getSelectedItem());
+		String city = this.nullString(this.cityProperty.getValue());
+		
+		Integer zip = null;
+		try {
+			zip = Integer.parseInt(this.zipCodeProperty.getValue());
+		}catch(Exception e) {}
+		
+		Person person = new Person(email, phone, dob != null ? new java.sql.Date(dob.getTime()) : null, fname, lname, middleInitial, gender, ssn);
+		person.setPerson_id(null);
+		
+		Address addr = new Address(street1, street2, city, state, zip);
+		
+		return new PatientData(person, addr);
+	}
+	
 	private String nullToEmpty(String str) {
 		return str == null ? "" : str;
 	}
+	
+	private String nullString(String check) {
+		if(check == null) {
+			return null;
+		}
+		return check.isEmpty() ? null : check;
+	}
+	
 }

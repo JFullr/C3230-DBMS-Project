@@ -80,6 +80,11 @@ public class PatientDAL {
 	public QueryResult getPersonMatching(PatientData patient) throws SQLException {
 		QueryResult qPerson = this.personDal.getPersonMatching(patient.getPerson());
 		Person person = new Person(null, null, null, null, null, null, null, null);
+		
+		if(qPerson.getTuple() == null) {
+			return null;
+		}
+		
 		SqlSetter.fillWith(person, qPerson.getTuple());
 		
 		QueryResult qAddress = this.addressDal.getAddressById(person.getMailing_address_id());

@@ -24,9 +24,13 @@ import javafx.scene.control.TextFormatter.Change;
 import javafx.stage.Stage;
 
 public class PatientCodeBehind {
+	
+	public static final String ACTION_VALID_ALL = "all";
+	public static final String ACTION_VALID_MINIMAL = "min";
+	public static final String ACTION_VALID_NONE = "none";
 
 	@FXML
-	private Button addPatientButton;
+	private Button actionButton;
 
 	@FXML
 	private Button cancelButton;
@@ -101,12 +105,9 @@ public class PatientCodeBehind {
 	private final BooleanProperty isEmailValid;
 	
 	private PatientViewModel viewModel;
-	private PatientData existingPatientData;
-	private boolean attemptAdd;
 
 	public PatientCodeBehind() {
 		this.viewModel = new PatientViewModel();
-		this.attemptAdd = false;
 		this.isEmailValid = new SimpleBooleanProperty(false);
 	}
 	
@@ -126,58 +127,19 @@ public class PatientCodeBehind {
 	}
 
 	@FXML
-	public void addAndCloseWindow(ActionEvent event) {
-		this.viewModel.getAddEventProperty().setValue(true);
-		this.viewModel.getAddEventProperty().setValue(false);
-		//this.attemptAdd = true;
-		///this.closeWindow(event);
-	}
-
-	public boolean isAttemptingAdd() {
-		return this.attemptAdd;
+	public void actionButtonHandler(ActionEvent event) {
+		this.viewModel.getActionPressedProperty().setValue(true);
+		this.viewModel.getActionPressedProperty().setValue(false);
 	}
 
 	public PatientViewModel getViewModel() {
 		return this.viewModel;
 	}
 	
-	private void initializeTextFieldFormatters() {
-		this.ssnTextField.setTextFormatter(new TextFormatter<Change>(this.filterSSN));
-		this.middleInitialTextField.setTextFormatter(new TextFormatter<Change>(this.filterInitial));
-		this.contactPhoneTextField.setTextFormatter(new TextFormatter<Change>(this.filterPhone));
-		this.zipCodeTextField.setTextFormatter(new TextFormatter<Change>(this.filterZip));
-
-		this.stateComboBox.setItems(FXCollections.observableArrayList(States.ALL_STATES));
-		this.genderComboBox.setItems(FXCollections.observableArrayList(Genders.ALL_GENDERS));
+	public void setValidationAll(){
+		this.actionButton.disableProperty().unbind();
 		
-		///limits on database
-		this.firstNameTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(50)));
-		this.lastNameTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(50)));
-		this.contactEmailTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
-		this.streetAddress1TextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
-		this.streetAddress2TextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
-		this.cityTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
-	}
-
-	private void bindProperties() {
-		this.viewModel.getContactEmailProperty().bindBidirectional(this.contactEmailTextField.textProperty());
-		this.viewModel.getContactPhoneProperty().bindBidirectional(this.contactPhoneTextField.textProperty());
-		this.viewModel.getFirstNameProperty().bindBidirectional(this.firstNameTextField.textProperty());
-		this.viewModel.getLastNameProperty().bindBidirectional(this.lastNameTextField.textProperty());
-		this.viewModel.getStreetAddress1Property().bindBidirectional(this.streetAddress1TextField.textProperty());
-		this.viewModel.getStreetAddress2Property().bindBidirectional(this.streetAddress2TextField.textProperty());
-		this.viewModel.getCityProperty().bindBidirectional(this.cityTextField.textProperty());
-		this.viewModel.getGenderProperty().bind(this.genderComboBox.selectionModelProperty());
-		this.viewModel.getStateProperty().bind(this.stateComboBox.selectionModelProperty());
-		this.viewModel.getZipCodePropertyy().bindBidirectional(this.zipCodeTextField.textProperty());
-		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
-		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
-		this.viewModel.getDobProperty().bindBidirectional(this.dobPicker.valueProperty());
-		this.viewModel.getActionTextProperty().bindBidirectional(this.addPatientButton.textProperty());
-		
-		//this.viewModel.getAddEventProperty().bind(this.addPatientButton.pressedProperty());
-		
-		this.addPatientButton.disableProperty().bind(this.dobPicker.valueProperty().isNull()
+		this.actionButton.disableProperty().bind(this.dobPicker.valueProperty().isNull()
 				.or(this.contactEmailTextField.textProperty().isEmpty())
 				.or(this.contactPhoneTextField.textProperty().isEmpty())
 				.or(this.firstNameTextField.textProperty().isEmpty())
@@ -195,10 +157,88 @@ public class PatientCodeBehind {
 				.or(this.contactPhoneTextField.textProperty().length().lessThan(10))
 				.or(this.isEmailValid.not())
 				);
+	}
+	
+	public void setValidationMinimum() {
+		this.actionButton.disableProperty().unbind();
 		
+		this.actionButton.disableProperty().bind(
+				this.dobPicker.valueProperty().isNull()
+				.and(this.genderComboBox.getSelectionModel().selectedItemProperty().isNull())
+				.and(this.contactEmailTextField.textProperty().isEmpty())
+				.and(this.contactPhoneTextField.textProperty().isEmpty())
+				.and(this.genderComboBox.getSelectionModel().selectedItemProperty().isNull())
+				.and(this.firstNameTextField.textProperty().isEmpty())
+				.and(this.lastNameTextField.textProperty().isEmpty())
+				.and(this.contactEmailTextField.textProperty().isEmpty())
+				.and(this.middleInitialTextField.textProperty().isEmpty())
+				.and(this.ssnTextField.textProperty().isEmpty())
+				.and(this.ssnTextField.textProperty().length().lessThan(9))
+				.and(this.contactPhoneTextField.textProperty().length().lessThan(10))
+				.and(this.isEmailValid.not())
+				);
+	}
+	
+	public void setValidationNone() {
+		this.actionButton.disableProperty().unbind();
+		
+	}
+	
+	
+	
+	private void initializeTextFieldFormatters() {
+		this.ssnTextField.setTextFormatter(new TextFormatter<Change>(this.filterSSN));
+		this.middleInitialTextField.setTextFormatter(new TextFormatter<Change>(this.filterInitial));
+		this.contactPhoneTextField.setTextFormatter(new TextFormatter<Change>(this.filterPhone));
+		this.zipCodeTextField.setTextFormatter(new TextFormatter<Change>(this.filterZip));
+
+		this.stateComboBox.setItems(FXCollections.observableArrayList(States.ALL_STATES));
+		this.genderComboBox.setItems(FXCollections.observableArrayList(Genders.ALL_GENDERS));
+		
+		this.firstNameTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(50)));
+		this.lastNameTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(50)));
+		this.contactEmailTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
+		this.streetAddress1TextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
+		this.streetAddress2TextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
+		this.cityTextField.setTextFormatter(new TextFormatter<Change>(this.maxLengthFormatter(100)));
+	
 		this.contactEmailTextField.textProperty().addListener((change)->{
 			this.isEmailValid.setValue(emailValid.matcher(this.contactEmailTextField.textProperty().getValue()).matches());
 		});
+	}
+
+	private void bindProperties() {
+		this.viewModel.getContactEmailProperty().bindBidirectional(this.contactEmailTextField.textProperty());
+		this.viewModel.getContactPhoneProperty().bindBidirectional(this.contactPhoneTextField.textProperty());
+		this.viewModel.getFirstNameProperty().bindBidirectional(this.firstNameTextField.textProperty());
+		this.viewModel.getLastNameProperty().bindBidirectional(this.lastNameTextField.textProperty());
+		this.viewModel.getStreetAddress1Property().bindBidirectional(this.streetAddress1TextField.textProperty());
+		this.viewModel.getStreetAddress2Property().bindBidirectional(this.streetAddress2TextField.textProperty());
+		this.viewModel.getCityProperty().bindBidirectional(this.cityTextField.textProperty());
+		this.viewModel.getGenderProperty().bind(this.genderComboBox.selectionModelProperty());
+		this.viewModel.getStateProperty().bind(this.stateComboBox.selectionModelProperty());
+		this.viewModel.getZipCodePropertyy().bindBidirectional(this.zipCodeTextField.textProperty());
+		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
+		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
+		this.viewModel.getDobProperty().bindBidirectional(this.dobPicker.valueProperty());
+		this.viewModel.getActionTextProperty().bindBidirectional(this.actionButton.textProperty());
+		
+		this.viewModel.getValidationProperty().addListener((evt)->{
+			String prop = this.viewModel.getValidationProperty().getValue();
+			if(prop == null) {
+				return;
+			}
+			
+			if(prop.equalsIgnoreCase(PatientCodeBehind.ACTION_VALID_ALL)) {
+				this.setValidationAll();
+			}else if(prop.equalsIgnoreCase(PatientCodeBehind.ACTION_VALID_MINIMAL)) {
+				this.setValidationMinimum();
+			}else if(prop.equalsIgnoreCase(PatientCodeBehind.ACTION_VALID_NONE)) {
+				this.setValidationNone();
+			} 
+		});
+		
+		this.setValidationAll();
 	}
 	
 	private UnaryOperator<Change> maxLengthFormatter(int length) {

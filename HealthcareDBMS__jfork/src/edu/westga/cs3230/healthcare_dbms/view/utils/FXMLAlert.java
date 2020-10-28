@@ -28,5 +28,13 @@ public class FXMLAlert {
 		alert.setContentText(message);
 		alert.showAndWait();
 	}
+	
+	public static void statusAlert(String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Status");
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
 
 }

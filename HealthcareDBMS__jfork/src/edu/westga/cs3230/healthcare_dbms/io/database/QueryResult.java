@@ -105,7 +105,7 @@ public class QueryResult implements Iterable<QueryResult>{
 
 	private void addTuples(ArrayList<SqlTuple> tuples) {
 		
-		if(tuples.size() == 0) {
+		if(tuples == null || tuples.size() == 0) {
 			return;
 		}
 		this.tuple = tuples.get(0);

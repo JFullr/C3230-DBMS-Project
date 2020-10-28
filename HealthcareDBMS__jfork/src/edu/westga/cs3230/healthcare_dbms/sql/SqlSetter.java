@@ -13,7 +13,11 @@ public class SqlSetter {
 	}
 
 	public static <T> T fillWith(T store, SqlTuple values, boolean noPartialFills) {
-
+		
+		if(values == null) {
+			return store;
+		}
+		
 		HashMap<String, SqlAttribute> attrs = values.getAttributes();
 
 		SqlSetter.getSetters(store);
