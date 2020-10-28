@@ -78,23 +78,35 @@ public class PatientDAL {
 	}
 
 	public QueryResult getPersonMatching(PatientData patient) throws SQLException {
-		QueryResult qPerson = this.personDal.getPersonMatching(patient.getPerson());
-		Person person = new Person(null, null, null, null, null, null, null, null);
 		
-		if(qPerson.getTuple() == null) {
-			return null;
+		QueryResult people = this.personDal.getPersonMatching(patient.getPerson());
+		
+		QueryResult combined = null;
+		for(QueryResult qPerson : people.getBatch()) {
+			
+			Person person = new Person(null, null, null, null, null, null, null, null);
+			
+			if(qPerson.getTuple() == null) {
+				return null;
+			}
+			
+			SqlSetter.fillWith(person, qPerson.getTuple());
+			
+			QueryResult qAddress = this.addressDal.getAddressById(person.getMailing_address_id());
+			Address address = new Address(null, null, null, null);
+			SqlSetter.fillWith(address, qAddress.getTuple());
+			qAddress.setAssociated(address);
+			
+			QueryResult midCombine = qAddress.combineMerge(qPerson);
+			PatientData data = new PatientData(person,address);
+			midCombine.setAssociated(data);
+			
+			if(combined == null) {
+				combined = midCombine;
+			} else {
+				combined.combine(midCombine);
+			}
 		}
-		
-		SqlSetter.fillWith(person, qPerson.getTuple());
-		
-		QueryResult qAddress = this.addressDal.getAddressById(person.getMailing_address_id());
-		Address address = new Address(null, null, null, null);
-		SqlSetter.fillWith(address, qAddress.getTuple());
-		qAddress.setAssociated(address);
-		
-		QueryResult combined = qAddress.combineMerge(qPerson);
-		PatientData data = new PatientData(person,address);
-		combined.setAssociated(data); 
 		
 		return combined;
 	}

@@ -53,7 +53,11 @@ public class TupleEmbed extends ListView<Node> {
 	}
 	
 	public Object getOperatedObject() {
-		this.fillData();
+		/*
+		if(this.operatesOn != null) {
+			this.fillData();
+		}
+		*/
 		return this.operatesOn;
 	}
 	

@@ -370,7 +370,7 @@ public class MainPageViewModel {
 			return false;
 		}
 		
-		results.combine(this.database.getPatientBySSN(patientData));
+		results = this.database.getPatientBySSN(patientData);
 		
 		this.addResults(patientData, patientData.getPerson(), results);
 		return true;
