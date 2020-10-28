@@ -73,6 +73,7 @@ public class AppointmentCodeBehind {
 			PatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.setActionButtonText("Search Patient");
 			viewModel.setActionButtonValidationMinimal();
+			viewModel.setCloseButtonDisabled();
 			this.searchHolder.getChildren().add(window.getNode());
 		} catch (Exception e) {
 			e.printStackTrace();

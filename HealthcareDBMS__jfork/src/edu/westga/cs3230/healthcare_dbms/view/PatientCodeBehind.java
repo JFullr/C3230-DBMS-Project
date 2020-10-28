@@ -139,9 +139,9 @@ public class PatientCodeBehind {
 	public void setValidationAll(){
 		this.actionButton.disableProperty().unbind();
 		
-		this.actionButton.disableProperty().bind(this.dobPicker.valueProperty().isNull()
+		this.actionButton.disableProperty().bind(
+				this.dobPicker.valueProperty().isNull()
 				.or(this.contactEmailTextField.textProperty().isEmpty())
-				.or(this.contactPhoneTextField.textProperty().isEmpty())
 				.or(this.firstNameTextField.textProperty().isEmpty())
 				.or(this.lastNameTextField.textProperty().isEmpty())
 				.or(this.genderComboBox.getSelectionModel().selectedItemProperty().isNull())
@@ -150,9 +150,7 @@ public class PatientCodeBehind {
 				.or(this.cityTextField.textProperty().isEmpty())
 				.or(this.zipCodeTextField.textProperty().length().lessThan(5))
 				.or(this.stateComboBox.getSelectionModel().selectedItemProperty().isNull())
-				.or(this.zipCodeTextField.textProperty().isEmpty())
 				.or(this.middleInitialTextField.textProperty().isEmpty())
-				.or(this.ssnTextField.textProperty().isEmpty())
 				.or(this.ssnTextField.textProperty().length().lessThan(9))
 				.or(this.contactPhoneTextField.textProperty().length().lessThan(10))
 				.or(this.isEmailValid.not())
@@ -165,16 +163,15 @@ public class PatientCodeBehind {
 		this.actionButton.disableProperty().bind(
 				this.dobPicker.valueProperty().isNull()
 				.and(this.genderComboBox.getSelectionModel().selectedItemProperty().isNull())
-				.and(this.contactEmailTextField.textProperty().isEmpty())
-				.and(this.contactPhoneTextField.textProperty().isEmpty())
 				.and(this.genderComboBox.getSelectionModel().selectedItemProperty().isNull())
 				.and(this.firstNameTextField.textProperty().isEmpty())
 				.and(this.lastNameTextField.textProperty().isEmpty())
-				.and(this.contactEmailTextField.textProperty().isEmpty())
+				.and(this.streetAddress1TextField.textProperty().isEmpty())
+				//.and(this.contactEmailTextField.textProperty().)
 				.and(this.middleInitialTextField.textProperty().isEmpty())
-				.and(this.ssnTextField.textProperty().isEmpty())
-				.and(this.ssnTextField.textProperty().length().lessThan(9))
-				.and(this.contactPhoneTextField.textProperty().length().lessThan(10))
+				.and(this.ssnTextField.textProperty().length().isNotEqualTo(9))
+				.and(this.contactPhoneTextField.textProperty().length().isNotEqualTo(10))
+				.and(this.zipCodeTextField.textProperty().length().isNotEqualTo(5))
 				.and(this.isEmailValid.not())
 				);
 	}
@@ -222,6 +219,8 @@ public class PatientCodeBehind {
 		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
 		this.viewModel.getDobProperty().bindBidirectional(this.dobPicker.valueProperty());
 		this.viewModel.getActionTextProperty().bindBidirectional(this.actionButton.textProperty());
+		
+		this.viewModel.getCloseDisableProperty().bindBidirectional(this.cancelButton.disableProperty());
 		
 		this.viewModel.getValidationProperty().addListener((evt)->{
 			String prop = this.viewModel.getValidationProperty().getValue();

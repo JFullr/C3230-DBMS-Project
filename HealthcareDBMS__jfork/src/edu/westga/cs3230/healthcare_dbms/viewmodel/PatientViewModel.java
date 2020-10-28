@@ -35,8 +35,9 @@ public class PatientViewModel {
 	private final StringProperty ssnProperty;
 	
 	private final StringProperty actionTextProperty;
-	
 	private final BooleanProperty actionPressedProperty;
+	
+	private final BooleanProperty closeDisableProperty;
 	
 	private final ObjectProperty<SingleSelectionModel<String>> stateProperty;
 	private final ObjectProperty<SingleSelectionModel<String>> genderProperty;
@@ -65,6 +66,8 @@ public class PatientViewModel {
 		this.stateProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
 		this.genderProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
 		this.validationProperty = new SimpleStringProperty(null);
+		
+		this.closeDisableProperty = new SimpleBooleanProperty(false);
 	}
 
 	public StringProperty getFirstNameProperty() {
@@ -117,6 +120,10 @@ public class PatientViewModel {
 
 	public ObjectProperty<LocalDate> getDobProperty() {
 		return dobProperty;
+	}
+	
+	public void setCloseButtonDisabled() {
+		this.closeDisableProperty.setValue(true);
 	}
 	
 	public void setActionButtonText(String text) {
@@ -211,6 +218,10 @@ public class PatientViewModel {
 			return null;
 		}
 		return check.isEmpty() ? null : check;
+	}
+
+	public BooleanProperty getCloseDisableProperty() {
+		return this.closeDisableProperty;
 	}
 	
 }
