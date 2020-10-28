@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -83,6 +84,7 @@ public class AppointmentCodeBehind {
 		this.minutePicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_MINUTES));
 		this.diurnalPicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_DIURNALS));
 		
+		this.setupTupleView();
 	}
 
 	@FXML
@@ -110,6 +112,19 @@ public class AppointmentCodeBehind {
 		this.viewModel.getHourProperty().bindBidirectional(this.hourPicker.selectionModelProperty());
 		this.viewModel.getMinuteProperty().bindBidirectional(this.minutePicker.selectionModelProperty());
 		this.viewModel.getDiurnalProperty().bindBidirectional(this.diurnalPicker.selectionModelProperty());
+	}
+	
+	private void setupTupleView() {
+		
+		this.tupleDisplay.selectionModelProperty().addListener((evt)->{
+			this.tupleDisplay.refresh();
+		});
+		this.tupleDisplay.setItems(this.viewModel.getTupleList());
+		this.tupleDisplay.setPadding(new Insets(0,0,0,0));
+		this.tupleDisplay.setFixedCellSize(100.0);
+		this.tupleDisplay.selectionModelProperty().addListener((evt)->{
+			this.tupleDisplay.refresh();
+		});
 	}
 
 }

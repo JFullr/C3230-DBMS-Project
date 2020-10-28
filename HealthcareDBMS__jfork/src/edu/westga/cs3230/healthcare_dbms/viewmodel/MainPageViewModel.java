@@ -323,6 +323,7 @@ public class MainPageViewModel {
 			AppointmentCodeBehind codeBehind = (AppointmentCodeBehind) window.getController();
 			AppointmentViewModel viewModel = codeBehind.getViewModel();
 			//viewModel.initFrom(patient);
+			viewModel.populateFrom(this.getTuplesByAssociated(PatientData.class));
 			viewModel.setActionButtonText("Create Appointment");
 
 			viewModel.getActionPressedProperty().addListener((evt) -> {
@@ -422,6 +423,17 @@ public class MainPageViewModel {
 		
 	}
 	
-
+	private ObservableList<TupleEmbed> getTuplesByAssociated(Class<?> classAssociated){
+		ObservableList<TupleEmbed> found = FXCollections.observableArrayList();
+		
+		for(TupleEmbed embed : this.tuples) {
+			Object obj = embed.getOperatedObject();
+			if(obj != null && obj.getClass() == classAssociated) {
+				found.add(embed);
+			}
+		}
+		
+		return found;
+	}
 	
 }
