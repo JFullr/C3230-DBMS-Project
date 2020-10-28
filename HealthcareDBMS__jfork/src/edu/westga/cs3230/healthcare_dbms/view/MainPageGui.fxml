@@ -96,6 +96,7 @@
                      <children>
                         <Button fx:id="addPatientButton" mnemonicParsing="false" onAction="#handleAddPatient" text="Add Patient" />
                         <Button fx:id="patientSearchButton" mnemonicParsing="false" onAction="#handlePatientSearch" text="Patient Search" />
+                        <Button fx:id="createAppointButton" mnemonicParsing="false" onAction="#handleCreateAppointment" text="Create Appointment" />
                         <Button fx:id="appointSearchButton" mnemonicParsing="false" text="Appointment Search" />
                      </children>
                      <padding>

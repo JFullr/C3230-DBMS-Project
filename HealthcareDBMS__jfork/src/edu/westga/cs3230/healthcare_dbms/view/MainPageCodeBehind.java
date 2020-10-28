@@ -42,6 +42,9 @@ public class MainPageCodeBehind {
     
     @FXML
     private Button appointSearchButton;
+    
+    @FXML
+    private Button createAppointButton;
 
 	@FXML
 	private ListView<TupleEmbed> queryListView;
@@ -84,24 +87,18 @@ public class MainPageCodeBehind {
 	@FXML
     public void handleLogOut(ActionEvent event) {
 		
-		///TODO clear tuples later
-		this.viewModel.handleLogOut();
-		
-    }
+		this.viewModel.handleLogOut();	
+	}
 	
 	@FXML
     public void handlePatientSearch(ActionEvent event) {
 		this.viewModel.showPatientSearch();
     }
 	
-	public void updateLoginDisplay() {
-		this.viewModel.updateLoginDisplay();
-	}
-	
-	public void handleUpdateQueryListView() {
-		// TODO update from future query buttons
-		this.embedHandler.updateQueryEmbeds();
-	}
+	@FXML
+    void handleCreateAppointment(ActionEvent event) {
+		this.viewModel.showCreateAppointment();
+    }
 	
 	@FXML
 	public void handleOpenLoginView(ActionEvent event) {
@@ -113,7 +110,15 @@ public class MainPageCodeBehind {
 
 		this.viewModel.showAddPatient();
 	}
-
+	
+	public void updateLoginDisplay() {
+		this.viewModel.updateLoginDisplay();
+	}
+	
+	public void handleUpdateQueryListView() {
+		this.embedHandler.updateQueryEmbeds();
+	}
+	
 	private void addListeners() {
 		this.queryListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			//TODO custom actions on selections

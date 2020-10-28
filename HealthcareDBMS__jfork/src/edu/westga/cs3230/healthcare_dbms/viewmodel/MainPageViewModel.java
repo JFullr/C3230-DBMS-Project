@@ -2,6 +2,7 @@ package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
@@ -10,6 +11,7 @@ import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
+import edu.westga.cs3230.healthcare_dbms.view.AppointmentCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
@@ -31,10 +33,6 @@ import javafx.scene.control.Alert.AlertType;
  * @author
  */
 public class MainPageViewModel {
-	
-	private static final String PATIENT_GUI = "PatientGui.fxml";
-	private static final String LOGIN_GUI = "LoginGui.fxml";
-	private static final String SEARCH_GUI = "SearchPatientGui.fxml";
 	
 	private final BooleanProperty loggedInProperty;
 	private final BooleanProperty attemptingLoginProperty;
@@ -198,7 +196,7 @@ public class MainPageViewModel {
 	
 	public void showLogin() {
 		try {
-			FXMLWindow window = new FXMLWindow(LoginCodeBehind.class.getResource(LOGIN_GUI), "Healthcare Login", true);
+			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.LOGIN_GUI_URL, "Healthcare Login", true);
 			LoginCodeBehind codeBehind = (LoginCodeBehind) window.getController();
 			LoginViewModel viewModel = codeBehind.getViewModel();
 			
@@ -236,7 +234,7 @@ public class MainPageViewModel {
 	
 	public void showAddPatient() {
 		try {
-			FXMLWindow window = new FXMLWindow(PatientCodeBehind.class.getResource(PATIENT_GUI), "Add Patient", true);
+			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.PATIENT_GUI_URL, "Add Patient", true);
 			PatientCodeBehind codeBehind = (PatientCodeBehind) window.getController();
 			PatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.setActionButtonText("Add Patient");
@@ -264,7 +262,7 @@ public class MainPageViewModel {
 	
 	public void showPatientSearch() {
 		try {
-			FXMLWindow window = new FXMLWindow(PatientCodeBehind.class.getResource(PATIENT_GUI), "Search Patient", true);
+			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.PATIENT_GUI_URL, "Search Patient", true);
 			PatientCodeBehind codeBehind = (PatientCodeBehind) window.getController();
 			PatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.setActionButtonText("Search Patient");
@@ -292,7 +290,7 @@ public class MainPageViewModel {
 	
 	public void showUpdatePatient(PatientData patient) {
 		try {
-			FXMLWindow window = new FXMLWindow(PatientCodeBehind.class.getResource(PATIENT_GUI), "Update Patient", true);
+			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.PATIENT_GUI_URL, "Update Patient", true);
 			PatientCodeBehind codeBehind = (PatientCodeBehind) window.getController();
 			PatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.initFrom(patient);
@@ -311,6 +309,37 @@ public class MainPageViewModel {
 				}
 
 			});
+			window.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void showCreateAppointment() {
+		// TODO Auto-generated method stub
+		try {
+			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_GUI_URL, "Create Appointment", true);
+			AppointmentCodeBehind codeBehind = (AppointmentCodeBehind) window.getController();
+			AppointmentViewModel viewModel = codeBehind.getViewModel();
+			//viewModel.initFrom(patient);
+			viewModel.setActionButtonText("Create Appointment");
+
+			viewModel.getActionPressedProperty().addListener((evt) -> {
+				
+				if (viewModel.getActionPressedProperty().getValue()) {
+					/*if (!this.attemptUpdatePatient(viewModel.getPatient(), patient)) {
+						FXMLAlert.statusAlert("Update Failed", "The patient update did not complete successfully.", "Patient Update failed", AlertType.ERROR);
+						viewModel.getActionPressedProperty().setValue(false);
+					} else {
+						FXMLAlert.statusAlert("Update Success", "The patient update completed Successfully.", "Patient Update Success", AlertType.INFORMATION);
+						codeBehind.closeWindow(null);
+					}*/
+					codeBehind.closeWindow(null);
+				}
+
+			});
+			window.pack();
 			window.show();
 
 		} catch (Exception e) {
@@ -392,7 +421,6 @@ public class MainPageViewModel {
 		}
 		
 	}
-
 	
 
 	
