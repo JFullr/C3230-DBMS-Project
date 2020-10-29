@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
+import edu.westga.cs3230.healthcare_dbms.model.dal.AppointmentDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.LoginDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.PatientDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.PersonDAL;
@@ -26,6 +28,7 @@ public class HealthcareDatabaseClient {
 	private LoginDAL loginDal;
 	private PersonDAL personDal;
 	private PatientDAL patientDal;
+	private AppointmentDAL appointmentDal;
 	
 	private QueryResult lastResult;
 	private String dbUrl;
@@ -43,6 +46,7 @@ public class HealthcareDatabaseClient {
 		this.personDal = new PersonDAL(dbUrl);
 		this.userDal = new UserTypeDAL(dbUrl);
 		this.patientDal = new PatientDAL(dbUrl);
+		this.appointmentDal = new AppointmentDAL(dbUrl);
 	}
 	
 	public boolean callQuery(String query) throws Exception {
@@ -69,6 +73,7 @@ public class HealthcareDatabaseClient {
 	public QueryResult attemptAddPatient(PatientData patientData) throws SQLException {
 		
 		this.lastResult = this.patientDal.attemptAddPatient(patientData);
+		//TODO remove due to null error
 		this.lastResult.setAssociated(patientData);
 		return this.lastResult;
 	}
@@ -90,6 +95,17 @@ public class HealthcareDatabaseClient {
 
 	public QueryResult updatePatient(PatientData updateData, PatientData existingData) throws SQLException {
 		this.lastResult = this.patientDal.attemptUpdatePatient(updateData, existingData);
+		return this.lastResult;
+	}
+
+	public QueryResult attemptAddAppointment(AppointmentData appointmentData) throws SQLException {
+		this.lastResult = this.appointmentDal.attemptAddAppointment(appointmentData);
+		//this.lastResult.setAssociated(appointmentData);
+		return this.lastResult;
+	}
+
+	public QueryResult getAppointmentBy(AppointmentData appointmentData) throws SQLException {
+		this.lastResult = this.appointmentDal.getAppointmentMatching(appointmentData);
 		return this.lastResult;
 	}
 }

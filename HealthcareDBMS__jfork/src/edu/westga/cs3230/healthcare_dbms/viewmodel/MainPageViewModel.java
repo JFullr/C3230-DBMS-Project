@@ -380,7 +380,15 @@ public class MainPageViewModel {
 	
 	public boolean attemptAddAppointment(AppointmentData appointmentData) {
 		
-		return false;
+		QueryResult results = this.database.attemptAddAppointment(appointmentData);
+		if (results == null || results.getTuple()== null) {
+			return false;
+		}
+		
+		results = this.database.getAppointmentBy(appointmentData);
+		
+		//this.addResults(patientData, patientData.getPerson(), results);
+		return true;
 	}
 
 	public String getUserType(Person patient) {

@@ -11,33 +11,22 @@ import java.util.ArrayList;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
-import edu.westga.cs3230.healthcare_dbms.model.Patient;
+import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
-public class PatientDAL {
-	
+public class AppointmentDAL {
+
 	private String dbUrl;
-	private PostDAL postDal;
-	private PersonDAL personDal;
-	private AddressDAL addressDal;
-	private UpdateDAL updateDal;
 
-	public PatientDAL(String dbUrl) {
+	public AppointmentDAL(String dbUrl) {
 		this.dbUrl = dbUrl;
-		this.postDal = new PostDAL(dbUrl);
-		this.personDal = new PersonDAL(dbUrl);
-		this.addressDal = new AddressDAL(dbUrl);
-		this.updateDal = new UpdateDAL(dbUrl);
 	}
-	
-	public QueryResult attemptAddPatient(PatientData patient) throws SQLException {
-		
+
+	public QueryResult attemptAddAppointment(AppointmentData patient) throws SQLException {
+		/*
 		QueryResult result = null;
 		Integer addressId = null;
 		try {
@@ -70,16 +59,12 @@ public class PatientDAL {
 		}
 		
 		return result.combine(person);
-	}
-	
-	public QueryResult attemptUpdatePatient(PatientData updateData, PatientData existingData) throws SQLException {
-		QueryResult pers = this.updateDal.updateTuple(updateData.getPerson(), existingData.getPerson());
-		QueryResult addr = this.updateDal.updateTuple(updateData.getAddress(), existingData.getAddress());
-		return pers.combineMerge(addr);
+		//*/
+		return null;
 	}
 
-	public QueryResult getPersonMatching(PatientData patient) throws SQLException {
-		
+	public QueryResult getAppointmentMatching(AppointmentData appointmentData) throws SQLException{
+		/*
 		QueryResult people = this.personDal.getPersonMatching(patient.getPerson());
 		
 		QueryResult combined = null;
@@ -110,12 +95,8 @@ public class PatientDAL {
 		}
 		
 		return combined;
+		*/
+		return null;
 	}
-
-	public QueryResult getPatientBySSN(PatientData patientData) throws SQLException {
-		// 
-		//return this.personDal.getPersonBySSN(patientData.getPerson());
-		return this.getPersonMatching(patientData);
-	}
-
+	
 }

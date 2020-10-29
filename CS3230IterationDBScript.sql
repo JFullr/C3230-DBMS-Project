@@ -96,7 +96,7 @@ CREATE TABLE UserPasswordStore(
 
 CREATE TABLE Appointment(
 	appointment_id INTEGER NOT NULL AUTO_INCREMENT,
-	patient_id INTEGER NOT NULL,
+	person_id INTEGER NOT NULL,
 	date_time TIMESTAMP NOT NULL,
 	PRIMARY KEY(appointment_id),
 	FOREIGN KEY(patient_id) REFERENCES Person(person_id) ON UPDATE CASCADE ON DELETE CASCADE

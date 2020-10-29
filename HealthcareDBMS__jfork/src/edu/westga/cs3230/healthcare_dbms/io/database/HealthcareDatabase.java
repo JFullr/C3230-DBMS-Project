@@ -4,6 +4,7 @@ import java.time.chrono.Chronology;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
@@ -107,6 +108,28 @@ public class HealthcareDatabase {
 		try {
 
 			QueryResult result = this.client.updatePatient(patientData, existing);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public QueryResult attemptAddAppointment(AppointmentData appointmentData) {
+		try {
+
+			QueryResult result = this.client.attemptAddAppointment(appointmentData);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public QueryResult getAppointmentBy(AppointmentData appointmentData) {
+		try {
+
+			QueryResult result = this.client.getAppointmentBy(appointmentData);
 			return result;
 		} catch(Exception e) {
 			e.printStackTrace();
