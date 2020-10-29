@@ -139,11 +139,13 @@ public class AppointmentSearchViewModel {
 		this.pastList.clear();
 		this.availableList.clear();
 		
-		QueryResult results = this.givenDB.getAppointmentsByPatient((PatientData)operated);
-		this.addResults(null, null, results);
+		QueryResult valid = this.givenDB.getValidAppointmentsByPatient((PatientData)operated);
+		QueryResult invalid = this.givenDB.getInvalidAppointmentsByPatient((PatientData)operated);
+		this.addValidResults(null, null, valid);
+		this.addInvalidResults(null, null, invalid);
 	}
 	
-	private void addResults(Object operatedOn, Object display, QueryResult results) {
+	private void addValidResults(Object operatedOn, Object display, QueryResult results) {
 		
 		if(results == null) {
 			return;
@@ -159,6 +161,26 @@ public class AppointmentSearchViewModel {
 			}
 			
 			this.availableList.add(embed);
+		}
+		
+	}
+	
+	private void addInvalidResults(Object operatedOn, Object display, QueryResult results) {
+		
+		if(results == null) {
+			return;
+		}
+		
+		TupleEmbed embed = null;
+		for(QueryResult result : results) {
+			SqlTuple tup = result.getTuple();
+			if(result.getAssociated() == null) {
+				embed =  this.createEmbed(operatedOn, display, tup);
+			} else {
+				embed = this.createEmbed(null, result.getAssociated(), tup);
+			}
+			
+			this.pastList.add(embed);
 		}
 		
 	}

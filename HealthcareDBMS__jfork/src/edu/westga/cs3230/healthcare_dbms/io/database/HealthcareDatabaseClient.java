@@ -113,5 +113,14 @@ public class HealthcareDatabaseClient {
 		this.lastResult = this.appointmentDal.getAppointmentsMatching(patient);
 		return this.lastResult;
 	}
-
+	
+	public QueryResult getValidAppointmentsMatching(PatientData patient) throws SQLException {
+		this.lastResult = this.appointmentDal.getValidAppointmentsMatching(patient);
+		return this.lastResult;
+	}
+	
+	public QueryResult getInvalidAppointmentsMatching(PatientData patient) throws SQLException {
+		this.lastResult = this.appointmentDal.getInvalidAppointmentsMatching(patient);
+		return this.lastResult;
+	}
 }

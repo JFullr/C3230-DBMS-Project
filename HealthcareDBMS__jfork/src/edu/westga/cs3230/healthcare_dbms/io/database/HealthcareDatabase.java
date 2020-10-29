@@ -148,4 +148,26 @@ public class HealthcareDatabase {
 		return null;
 	}
 	
+	public QueryResult getValidAppointmentsByPatient(PatientData patient) {
+		try {
+
+			QueryResult result = this.client.getValidAppointmentsMatching(patient);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public QueryResult getInvalidAppointmentsByPatient(PatientData patient) {
+		try {
+
+			QueryResult result = this.client.getInvalidAppointmentsMatching(patient);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }
