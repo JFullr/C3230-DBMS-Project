@@ -66,6 +66,14 @@ public class TupleEmbed extends ListView<Node> {
 		return this.operatesOn;
 	}
 	
+	public Object getDisplay() {
+		return this.display;
+	}
+	
+	public SqlTuple getAttributes() {
+		return this.attributes;
+	}
+	
 	private void generateControlHeader() {
 		
 		Button postEdits = new Button("Edit");
@@ -79,9 +87,12 @@ public class TupleEmbed extends ListView<Node> {
 		
 	}
 	
-	public void simulateEdit() {
-		this.postTupleObject();
+	public TupleEmbed getCopy() {
+		TupleEmbed copy = new TupleEmbed(this.getOperatedObject(), this.getDisplay(), this.getAttributes());
+		return copy;
 	}
+	
+	//TODO maybe remove editing in the future, or leave for adminitrator
 	
 	private void postTupleObject() {
 		this.selectedObjectProperty.setValue(this.operatesOn);

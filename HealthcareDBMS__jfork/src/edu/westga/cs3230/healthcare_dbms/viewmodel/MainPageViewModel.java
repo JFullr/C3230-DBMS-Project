@@ -13,6 +13,7 @@ import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
 import edu.westga.cs3230.healthcare_dbms.view.AppointmentCodeBehind;
+import edu.westga.cs3230.healthcare_dbms.view.AppointmentSearchCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
@@ -349,6 +350,38 @@ public class MainPageViewModel {
 			e.printStackTrace();
 		}
 	}
+	
+	public void showPatientAppointmentSearch() {
+		// TODO Auto-generated method stub
+		try {
+			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_SEARCH_GUI_URL, "Search Appointments by Patient", true);
+			AppointmentSearchCodeBehind codeBehind = (AppointmentSearchCodeBehind) window.getController();
+			AppointmentSearchViewModel viewModel = codeBehind.getViewModel();
+			//viewModel.initFrom(patient);
+			viewModel.populatePatientsFrom(this.getTuplesByAssociated(PatientData.class));
+			viewModel.setActionButtonText("Finish");
+
+			viewModel.getActionPressedProperty().addListener((evt) -> {
+				
+				if (viewModel.getActionPressedProperty().getValue()) {
+					/*if (!this.attemptAddAppointment(viewModel.getAppointment())) {
+						FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
+						viewModel.getActionPressedProperty().setValue(false);
+					} else {
+						FXMLAlert.statusAlert("Add Appointment Success", "The appointment added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
+						codeBehind.closeWindow(null);
+					}*/
+					codeBehind.closeWindow(null);
+				}
+
+			});
+			window.pack();
+			window.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	private boolean attemptUpdatePatient(PatientData patientData, PatientData existing) {
@@ -456,8 +489,12 @@ public class MainPageViewModel {
 		for(TupleEmbed embed : this.tuplesShadow) {
 			Object obj = embed.getOperatedObject();
 			if(obj != null && obj.getClass() == classAssociated) {
-				embed.setMouseTransparent(true);
-				found.add(embed);
+				//embed.setMouseTransparent(true);
+				TupleEmbed copy = embed.getCopy(); 
+				copy.getPressedPropertyAction().addListener((evt)->{
+					this.selectedTupleObject.setValue(copy.getPressedPropertyAction().getValue());
+				});
+				found.add(copy);
 			}
 		}
 		

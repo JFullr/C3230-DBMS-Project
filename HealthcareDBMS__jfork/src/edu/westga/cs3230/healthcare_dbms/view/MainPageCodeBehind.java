@@ -114,6 +114,12 @@ public class MainPageCodeBehind {
 		this.viewModel.showAddPatient();
 	}
 	
+	@FXML
+	public void handlePatientAppointmentSearch(ActionEvent event) {
+
+		this.viewModel.showPatientAppointmentSearch();
+	}
+	
 	public void updateLoginDisplay() {
 		this.viewModel.updateLoginDisplay();
 	}

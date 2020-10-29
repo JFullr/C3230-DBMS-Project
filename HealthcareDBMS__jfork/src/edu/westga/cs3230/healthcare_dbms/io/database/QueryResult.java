@@ -59,8 +59,10 @@ public class QueryResult implements Iterable<QueryResult>{
 		}
 		
 		for(QueryResult result : other.getBatch()) {
-			for(SqlAttribute attr : result.getTuple()) {
-				this.tuple.add(attr);
+			if(result.getTuple() != null) {
+				for(SqlAttribute attr : result.getTuple()) {
+					this.tuple.add(attr);
+				}
 			}
 		}
 		
