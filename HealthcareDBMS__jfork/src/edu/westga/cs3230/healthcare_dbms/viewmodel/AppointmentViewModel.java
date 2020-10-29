@@ -3,6 +3,7 @@ package edu.westga.cs3230.healthcare_dbms.viewmodel;
 import java.time.LocalDate;
 
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
+import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import javafx.beans.property.BooleanProperty;
@@ -50,9 +51,9 @@ public class AppointmentViewModel {
 	}
 	
 	
-	public Appointment getAppointment() {
+	public AppointmentData getAppointment() {
 		
-		return new Appointment();
+		return new AppointmentData();
 	}
 
 	public BooleanProperty getActionPressedProperty() {
@@ -89,9 +90,6 @@ public class AppointmentViewModel {
 
 	public void populateFrom(ObservableList<TupleEmbed> tuplesByAssociated) {
 		this.tupleList.clear();
-		for(TupleEmbed embed : tuplesByAssociated) {
-			embed.setMouseTransparent(true);
-		}
 		this.tupleList.addAll(tuplesByAssociated);
 	}
 

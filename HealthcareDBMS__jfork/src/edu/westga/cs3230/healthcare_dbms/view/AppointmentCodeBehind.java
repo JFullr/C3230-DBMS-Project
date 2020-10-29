@@ -52,9 +52,6 @@ public class AppointmentCodeBehind {
 	@FXML
 	private ListView<TupleEmbed> tupleDisplay;
 
-	@FXML
-	private FlowPane searchHolder;
-
 	private AppointmentViewModel viewModel;
 
 	public AppointmentCodeBehind() {
@@ -67,19 +64,6 @@ public class AppointmentCodeBehind {
 	@FXML
 	public void initialize() {
 		this.bindProperties();
-		
-		FXMLWindow window;
-		try {
-			window = new FXMLWindow(HealthcareIoConstants.PATIENT_GUI_URL, "Search Patient", true);
-			PatientCodeBehind codeBehind = (PatientCodeBehind) window.getController();
-			PatientViewModel viewModel = codeBehind.getViewModel();
-			viewModel.setActionButtonText("Search Patient");
-			viewModel.setActionButtonValidationMinimal();
-			viewModel.setCloseButtonDisabled();
-			this.searchHolder.getChildren().add(window.getNode());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 		this.hourPicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_HOURS));
 		this.minutePicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_MINUTES));

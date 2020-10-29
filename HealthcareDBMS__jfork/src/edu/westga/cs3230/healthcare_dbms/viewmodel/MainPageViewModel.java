@@ -6,6 +6,7 @@ import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
+import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
@@ -331,14 +332,13 @@ public class MainPageViewModel {
 			viewModel.getActionPressedProperty().addListener((evt) -> {
 				
 				if (viewModel.getActionPressedProperty().getValue()) {
-					/*if (!this.attemptUpdatePatient(viewModel.getPatient(), patient)) {
-						FXMLAlert.statusAlert("Update Failed", "The patient update did not complete successfully.", "Patient Update failed", AlertType.ERROR);
+					if (!this.attemptAddAppointment(viewModel.getAppointment())) {
+						FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
 						viewModel.getActionPressedProperty().setValue(false);
 					} else {
-						FXMLAlert.statusAlert("Update Success", "The patient update completed Successfully.", "Patient Update Success", AlertType.INFORMATION);
+						FXMLAlert.statusAlert("Add Appointment Success", "The appointment added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
 						codeBehind.closeWindow(null);
-					}*/
-					codeBehind.closeWindow(null);
+					}
 				}
 
 			});
@@ -376,6 +376,11 @@ public class MainPageViewModel {
 		
 		this.addResults(patientData, patientData.getPerson(), results);
 		return true;
+	}
+	
+	public boolean attemptAddAppointment(AppointmentData appointmentData) {
+		
+		return false;
 	}
 
 	public String getUserType(Person patient) {
@@ -443,6 +448,7 @@ public class MainPageViewModel {
 		for(TupleEmbed embed : this.tuplesShadow) {
 			Object obj = embed.getOperatedObject();
 			if(obj != null && obj.getClass() == classAssociated) {
+				embed.setMouseTransparent(true);
 				found.add(embed);
 			}
 		}
