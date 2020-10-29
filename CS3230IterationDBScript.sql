@@ -221,7 +221,8 @@ INSERT INTO Address VALUES
 INSERT INTO Person VALUES(1,'frank', 'burg', 'f', 'Male', '2020-5-5', 123456789, "0123456789", "uieh@grjnrg.eee", 1);
 INSERT INTO RegisteredUser VALUES(1, 'aa bb', 1);
 INSERT INTO UserPasswordStore VALUES(1, "123", "hash");
-;
+
+INSERT INTO Doctor VALUES(1);
 
 INSERT INTO `Person` (`person_id`, `fname`, `lname`, `middle_initial`, `gender`, `DOB`, `SSN`, `contact_phone`, `contact_email`, `mailing_address_id`) VALUES
 (2, 'Jane', 'Doe', 'M', 'Female', '1997-01-22', 11111111, '1111111111', 'jane@example.com', 2),
@@ -231,4 +232,11 @@ INSERT INTO `Person` (`person_id`, `fname`, `lname`, `middle_initial`, `gender`,
 (6, 'test', 'add', 'a', 'Other', '2020-11-06', 545454634, '4865865865', 'a@a.com', 6),
 (7, 'test', '1', 'a', 'Other', '2020-10-07', 786786787, '7865685678', 'a@a.com', 7);
 
+INSERT INTO Patient VALUES
+(2),
+(3),
+(4),
+(5),
+(6),
+(7);
 

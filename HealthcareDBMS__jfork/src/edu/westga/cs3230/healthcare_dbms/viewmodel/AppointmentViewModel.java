@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -21,7 +20,7 @@ import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SingleSelectionModel;
 
 /**
- * Viewmodel class for the Login window.
+ * Viewmodel class for the Appointment window.
  */
 public class AppointmentViewModel {
 	
@@ -38,7 +37,7 @@ public class AppointmentViewModel {
 	private ObjectProperty<MultipleSelectionModel<TupleEmbed>> tupleSelectionProperty;
 
 	/**
-	 * Instantiates a new LoginViewModel.
+	 * Instantiates a new AppointmentViewModel.
 	 */
 	public AppointmentViewModel() {		
 		
@@ -172,8 +171,6 @@ public class AppointmentViewModel {
 		build.append(":");
 		build.append(minutes);
 		build.append(":00");
-		
-		System.out.println(build.toString());
 		
 		try {
 			return Timestamp.valueOf(build.toString());
