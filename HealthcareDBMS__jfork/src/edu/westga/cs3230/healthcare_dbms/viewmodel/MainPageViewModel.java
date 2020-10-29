@@ -49,7 +49,6 @@ public class MainPageViewModel {
 	private HealthcareDatabase database;
 	
 	private ObservableList<TupleEmbed> tuples;
-	private ObservableList<TupleEmbed> tuplesShadow;
 	private QueryResult lastResults;
 
 	/**
@@ -72,7 +71,6 @@ public class MainPageViewModel {
 		this.selectedTupleObject = new SimpleObjectProperty<Object>(null);
 		
 		this.tuples = FXCollections.observableArrayList();
-		this.tuplesShadow = FXCollections.observableArrayList();
 		this.lastResults = null;
 		
 		this.addListeners();
@@ -357,7 +355,7 @@ public class MainPageViewModel {
 			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_SEARCH_GUI_URL, "Search Appointments by Patient", true);
 			AppointmentSearchCodeBehind codeBehind = (AppointmentSearchCodeBehind) window.getController();
 			AppointmentSearchViewModel viewModel = codeBehind.getViewModel();
-			//viewModel.initFrom(patient);
+			viewModel.setDatabaseAccess(this.database);
 			viewModel.populatePatientsFrom(this.getTuplesByAssociated(PatientData.class));
 			viewModel.setActionButtonText("Finish");
 
@@ -452,7 +450,6 @@ public class MainPageViewModel {
 		this.queryResults.add(results);
 		
 		this.tuples.clear();
-		this.tuplesShadow.clear();
 		
 		TupleEmbed embed = null;
 		TupleEmbed shadow = null;
@@ -467,7 +464,6 @@ public class MainPageViewModel {
 			}
 			
 			this.tuples.add(embed);
-			this.tuplesShadow.add(shadow);
 		}
 		
 	}
@@ -486,7 +482,7 @@ public class MainPageViewModel {
 	private ObservableList<TupleEmbed> getTuplesByAssociated(Class<?> classAssociated){
 		ObservableList<TupleEmbed> found = FXCollections.observableArrayList();
 		
-		for(TupleEmbed embed : this.tuplesShadow) {
+		for(TupleEmbed embed : this.tuples) {
 			Object obj = embed.getOperatedObject();
 			if(obj != null && obj.getClass() == classAssociated) {
 				//embed.setMouseTransparent(true);

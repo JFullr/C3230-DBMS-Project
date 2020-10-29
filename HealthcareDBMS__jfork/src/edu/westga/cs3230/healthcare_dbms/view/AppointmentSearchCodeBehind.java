@@ -105,6 +105,7 @@ public class AppointmentSearchCodeBehind {
 			}
 			if (newValue != null) {
 				newValue.setMouseTransparent(false);
+				this.viewModel.searchUpdate();
 			}
 		});
 	}

@@ -67,6 +67,12 @@ public class AppointmentDAL {
 
         return new QueryResult(manager.getTuples());
     }
+	
+	public QueryResult getAppointmentsMatching(PatientData patient) throws SQLException {
+		Appointment appt = new Appointment(null,null);
+		appt.setPerson_id(patient.getPerson().getPerson_id());
+		return getAppointmentsMatching(new AppointmentData(appt));
+	}
 
 	public QueryResult getAppointmentsMatching(AppointmentData appointmentData) throws SQLException{
 		

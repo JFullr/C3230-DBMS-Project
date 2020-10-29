@@ -136,4 +136,16 @@ public class HealthcareDatabase {
 		}
 		return null;
 	}
+	
+	public QueryResult getAppointmentsByPatient(PatientData patient) {
+		try {
+
+			QueryResult result = this.client.getAppointmentsMatching(patient);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

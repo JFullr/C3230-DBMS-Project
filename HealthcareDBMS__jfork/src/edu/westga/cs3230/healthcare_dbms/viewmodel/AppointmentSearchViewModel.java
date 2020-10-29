@@ -1,12 +1,9 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDate;
-
-import edu.westga.cs3230.healthcare_dbms.model.Appointment;
-import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
+import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
+import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -17,7 +14,6 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
-import javafx.scene.control.SingleSelectionModel;
 
 /**
  * Viewmodel class for the Appointment window.
@@ -35,6 +31,8 @@ public class AppointmentSearchViewModel {
 	
 	private ObservableList<TupleEmbed> pastList;
 	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> pastSelectionProperty;
+	
+	private HealthcareDatabase givenDB;
 
 	/**
 	 * Instantiates a new AppointmentViewModel.
@@ -85,7 +83,10 @@ public class AppointmentSearchViewModel {
 	public void setActionButtonText(String string) {
 		this.actionTextProperty.setValue(string);
 	}
-
+	
+	public void setDatabaseAccess(HealthcareDatabase givenDB) {
+		this.givenDB = givenDB;
+	}
 
 	public void populatePatientsFrom(ObservableList<TupleEmbed> tuplesByAssociated) {
 		this.patientList.clear();
@@ -118,4 +119,79 @@ public class AppointmentSearchViewModel {
 	public ObjectProperty<MultipleSelectionModel<TupleEmbed>>  getPastSelectionProperty() {
 		return this.pastSelectionProperty;
 	}
+	
+	public void searchUpdate() {
+		
+		if(this.patientSelectionProperty.getValue() == null || this.givenDB == null) {
+			return;
+		}
+		
+		TupleEmbed embed = this.patientSelectionProperty.getValue().getSelectedItem();
+		if(embed == null || embed.getOperatedObject() == null) {
+			return;
+		}
+		
+		Object operated = embed.getOperatedObject();
+		if(operated.getClass() != PatientData.class) {
+			return;
+		}
+		
+		this.pastList.clear();
+		this.availableList.clear();
+		
+		QueryResult results = this.givenDB.getAppointmentsByPatient((PatientData)operated);
+		this.addResults(null, null, results);
+	}
+	
+	private void addResults(Object operatedOn, Object display, QueryResult results) {
+		
+		if(results == null) {
+			return;
+		}
+		
+		TupleEmbed embed = null;
+		for(QueryResult result : results) {
+			SqlTuple tup = result.getTuple();
+			if(result.getAssociated() == null) {
+				embed =  this.createEmbed(operatedOn, display, tup);
+			} else {
+				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup);
+			}
+			
+			this.availableList.add(embed);
+		}
+		
+	}
+	
+	private TupleEmbed createEmbed(Object operatesOn, Object display, SqlTuple attributes) {
+		TupleEmbed embed = new TupleEmbed(operatesOn, display, attributes);
+			
+		/*final TupleEmbed xbed = embed;
+		xbed.getPressedPropertyAction().addListener((evt)->{
+			this.selectedTupleObject.setValue(xbed.getPressedPropertyAction().getValue());
+		});*/
+		
+		return embed;
+	}
+	
+	/*
+	private ObservableList<TupleEmbed> getTuplesByAssociated(Class<?> classAssociated){
+		ObservableList<TupleEmbed> found = FXCollections.observableArrayList();
+		
+		for(TupleEmbed embed : this.tuplesShadow) {
+			Object obj = embed.getOperatedObject();
+			if(obj != null && obj.getClass() == classAssociated) {
+				//embed.setMouseTransparent(true);
+				TupleEmbed copy = embed.getCopy(); 
+				copy.getPressedPropertyAction().addListener((evt)->{
+					this.selectedTupleObject.setValue(copy.getPressedPropertyAction().getValue());
+				});
+				found.add(copy);
+			}
+		}
+		
+		return found;
+	}
+	*/
+	
 }
