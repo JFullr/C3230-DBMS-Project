@@ -6,6 +6,7 @@ import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
+import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
@@ -89,6 +90,9 @@ public class MainPageViewModel {
 			//TODO add more classes to editt
 			if(mutateClass == PatientData.class) {
 				this.showUpdatePatient((PatientData)obj);
+			}
+			else if(mutateClass == Appointment.class) {
+				this.showUpdateAppointment((Appointment)obj);
 			}
 			
 			else {
@@ -349,13 +353,45 @@ public class MainPageViewModel {
 		}
 	}
 	
+	public void showUpdateAppointment(Appointment appt) {
+		// TODO Auto-generated method stub
+		try {
+			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_GUI_URL, "Update Appointment", true);
+			AppointmentCodeBehind codeBehind = (AppointmentCodeBehind) window.getController();
+			AppointmentViewModel viewModel = codeBehind.getViewModel();
+			//viewModel.initFrom(patient);
+			viewModel.initFrom(appt);
+			viewModel.setActionButtonText("Update Appointment");
+
+			viewModel.getActionPressedProperty().addListener((evt) -> {
+				/*
+				if (viewModel.getActionPressedProperty().getValue()) {
+					if (!this.attemptAddAppointment(viewModel.getAppointment())) {
+						FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
+						viewModel.getActionPressedProperty().setValue(false);
+					} else {
+						FXMLAlert.statusAlert("Add Appointment Success", "The appointment added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
+						codeBehind.closeWindow(null);
+					}
+				}
+				*/
+				codeBehind.closeWindow(null);
+			});
+			window.pack();
+			window.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void showPatientAppointmentSearch() {
 		// TODO Auto-generated method stub
 		try {
 			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_SEARCH_GUI_URL, "Search Appointments by Patient", true);
 			AppointmentSearchCodeBehind codeBehind = (AppointmentSearchCodeBehind) window.getController();
 			AppointmentSearchViewModel viewModel = codeBehind.getViewModel();
-			viewModel.setDatabaseAccess(this.database);
+			viewModel.setDatabaseAccess(this.database, this.selectedTupleObject);
 			viewModel.populatePatientsFrom(this.getTuplesByAssociated(PatientData.class));
 			viewModel.setActionButtonText("Finish");
 
@@ -380,7 +416,6 @@ public class MainPageViewModel {
 			e.printStackTrace();
 		}
 	}
-
 
 	private boolean attemptUpdatePatient(PatientData patientData, PatientData existing) {
 
@@ -486,7 +521,7 @@ public class MainPageViewModel {
 			Object obj = embed.getOperatedObject();
 			if(obj != null && obj.getClass() == classAssociated) {
 				//embed.setMouseTransparent(true);
-				TupleEmbed copy = embed.getCopy(); 
+				TupleEmbed copy = embed.getCopy();
 				copy.getPressedPropertyAction().addListener((evt)->{
 					this.selectedTupleObject.setValue(copy.getPressedPropertyAction().getValue());
 				});

@@ -33,6 +33,7 @@ public class AppointmentSearchViewModel {
 	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> pastSelectionProperty;
 	
 	private HealthcareDatabase givenDB;
+	private ObjectProperty<Object> givenStore;
 
 	/**
 	 * Instantiates a new AppointmentViewModel.
@@ -84,8 +85,9 @@ public class AppointmentSearchViewModel {
 		this.actionTextProperty.setValue(string);
 	}
 	
-	public void setDatabaseAccess(HealthcareDatabase givenDB) {
+	public void setDatabaseAccess(HealthcareDatabase givenDB, ObjectProperty<Object> selectedTupleObject) {
 		this.givenDB = givenDB;
+		this.givenStore = selectedTupleObject;
 	}
 
 	public void populatePatientsFrom(ObservableList<TupleEmbed> tuplesByAssociated) {
@@ -160,6 +162,11 @@ public class AppointmentSearchViewModel {
 				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup);
 			}
 			
+			final TupleEmbed xbed = embed;
+			xbed.getPressedPropertyAction().addListener((evt)->{
+				this.givenStore.setValue(xbed.getPressedPropertyAction().getValue());
+			});
+			
 			this.availableList.add(embed);
 		}
 		
@@ -187,33 +194,8 @@ public class AppointmentSearchViewModel {
 	
 	private TupleEmbed createEmbed(Object operatesOn, Object display, SqlTuple attributes) {
 		TupleEmbed embed = new TupleEmbed(operatesOn, display, attributes);
-			
-		/*final TupleEmbed xbed = embed;
-		xbed.getPressedPropertyAction().addListener((evt)->{
-			this.selectedTupleObject.setValue(xbed.getPressedPropertyAction().getValue());
-		});*/
-		
 		return embed;
 	}
 	
-	/*
-	private ObservableList<TupleEmbed> getTuplesByAssociated(Class<?> classAssociated){
-		ObservableList<TupleEmbed> found = FXCollections.observableArrayList();
-		
-		for(TupleEmbed embed : this.tuplesShadow) {
-			Object obj = embed.getOperatedObject();
-			if(obj != null && obj.getClass() == classAssociated) {
-				//embed.setMouseTransparent(true);
-				TupleEmbed copy = embed.getCopy(); 
-				copy.getPressedPropertyAction().addListener((evt)->{
-					this.selectedTupleObject.setValue(copy.getPressedPropertyAction().getValue());
-				});
-				found.add(copy);
-			}
-		}
-		
-		return found;
-	}
-	*/
 	
 }

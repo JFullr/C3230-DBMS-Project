@@ -1,8 +1,10 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
@@ -78,15 +80,20 @@ public class AppointmentViewModel {
 		
 		Integer person_id = patient.getPerson().getPerson_id();
 		
-		Integer hour = this.nullInteger(this.getHourProperty().getValue().getSelectedItem());
-		Integer minutes =  this.nullInteger(this.getHourProperty().getValue().getSelectedItem());
-		String diurnal =  this.nullString(this.getMinuteProperty().getValue().getSelectedItem());
+		Integer hour = this.nullInteger(this.hourProperty.getValue().getSelectedItem());
+		Integer minutes =  this.nullInteger(this.minuteProperty.getValue().getSelectedItem());
+		String diurnal =  this.nullString(this.diurnalProperty.getValue().getSelectedItem());
 		
 		if(hour == null || minutes == null || diurnal == null) {
 			return null;
 		}
 		
-		Timestamp stamp = this.makeTimestampFrom(date, hour, minutes, "pm".equalsIgnoreCase(diurnal));
+		boolean pm = "pm".equalsIgnoreCase(diurnal);
+		if(hour == 12 && !pm) {
+			hour = 0;
+		}
+		
+		Timestamp stamp = this.makeTimestampFrom(date, hour, hour, pm);
 		
 		Appointment appt = new Appointment(person_id, stamp);
 		
@@ -134,7 +141,41 @@ public class AppointmentViewModel {
 	public ObservableList<TupleEmbed> getTupleList() {
 		return this.tupleList;
 	}
-	
+
+
+	public ObjectProperty<MultipleSelectionModel<TupleEmbed>>  getTupleSelectionProperty() {
+		return this.tupleSelectionProperty;
+	}
+
+
+	public void initFrom(Appointment appt) {
+		Timestamp time = appt.getDate_time();
+		Date date = new Date(time.getTime());
+		LocalDate ldate = date.toLocalDate();
+		this.dateProperty.setValue(ldate);
+		
+		LocalTime ltime = time.toLocalDateTime().toLocalTime();
+		
+		
+		int hour = ltime.getHour();
+		boolean pm = false;
+		if(hour > 11) {
+			pm = true;
+			if(hour != 12) {
+				hour-=12;
+			}
+		}
+		if(hour == 0) {
+			hour = 12;
+		}
+		this.hourProperty.getValue().select(""+hour);
+		this.minuteProperty.getValue().select(""+ltime.getMinute());
+		if(pm) {
+			this.diurnalProperty.getValue().select("PM");
+		} else {
+			this.diurnalProperty.getValue().select("AM");
+		}
+	}
 	
 	private String nullString(String check) {
 		if(check == null) {
@@ -173,16 +214,12 @@ public class AppointmentViewModel {
 		build.append(":00");
 		
 		try {
+			System.out.println(build.toString());
 			return Timestamp.valueOf(build.toString());
 		}catch(Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 		
-	}
-
-
-	public ObjectProperty<MultipleSelectionModel<TupleEmbed>>  getTupleSelectionProperty() {
-		return this.tupleSelectionProperty;
 	}
 }
