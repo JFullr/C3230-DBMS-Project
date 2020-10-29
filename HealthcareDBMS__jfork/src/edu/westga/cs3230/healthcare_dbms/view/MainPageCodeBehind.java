@@ -123,11 +123,10 @@ public class MainPageCodeBehind {
 		this.queryListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			//TODO custom actions on selections
 			if (oldValue != newValue && oldValue != null) {
-				//oldValue.hidePane();
+				oldValue.setMouseTransparent(true);
 			}
 			if (newValue != null) {
-				//newValue.showPane();
-				//this.viewModel.getSelectedTupleObject().setValue(newValue.getOperatedObject());
+				newValue.setMouseTransparent(false);
 			}
 		});
 	}

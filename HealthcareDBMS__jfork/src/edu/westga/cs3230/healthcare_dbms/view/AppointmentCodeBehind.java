@@ -21,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.FocusModel;
 import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -112,6 +113,14 @@ public class AppointmentCodeBehind {
 		this.viewModel.getHourProperty().bindBidirectional(this.hourPicker.selectionModelProperty());
 		this.viewModel.getMinuteProperty().bindBidirectional(this.minutePicker.selectionModelProperty());
 		this.viewModel.getDiurnalProperty().bindBidirectional(this.diurnalPicker.selectionModelProperty());
+	
+		this.actionButton.disableProperty().bind(
+				this.datePicker.valueProperty().isNull()
+				.or(this.hourPicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.minutePicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.diurnalPicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.tupleDisplay.getSelectionModel().selectedItemProperty().isNull())
+				);
 	}
 	
 	private void setupTupleView() {
@@ -125,6 +134,17 @@ public class AppointmentCodeBehind {
 		this.tupleDisplay.selectionModelProperty().addListener((evt)->{
 			this.tupleDisplay.refresh();
 		});
+		
+		this.tupleDisplay.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			//TODO custom actions on selections
+			if (oldValue != newValue && oldValue != null) {
+				oldValue.setMouseTransparent(true);
+			}
+			if (newValue != null) {
+				newValue.setMouseTransparent(false);
+			}
+		});
+		//this.tupleDisplay.setFocusModel(new FocusModel());
 	}
 
 }

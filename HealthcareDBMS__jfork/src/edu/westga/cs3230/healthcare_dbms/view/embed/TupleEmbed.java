@@ -1,5 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.view.embed;
 
+
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
@@ -18,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 public class TupleEmbed extends ListView<Node> {
@@ -46,6 +48,9 @@ public class TupleEmbed extends ListView<Node> {
 		
 		this.setOrientation(Orientation.HORIZONTAL);
 		this.setMaxHeight(150.0);
+		
+		this.setMouseTransparent(true);
+		
 	}
 	
 	public ObjectProperty<Object> getPressedPropertyAction() {
@@ -80,6 +85,7 @@ public class TupleEmbed extends ListView<Node> {
 	}
 
 	private void generateFieldForms() {
+		
 		if(this.attributes == null) {
 			return;
 		}
@@ -99,8 +105,6 @@ public class TupleEmbed extends ListView<Node> {
 					this.attachEditEvent(edit.getText(), attr.getAttribute(), attr.getValue().getClass());
 				});
 				layout.add(edit, 0, 1);
-				
-				layout.setDisable(true);
 				this.items.add(layout);
 			}
 		}
