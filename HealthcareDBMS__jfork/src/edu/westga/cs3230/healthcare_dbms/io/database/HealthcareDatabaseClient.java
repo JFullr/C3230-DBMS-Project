@@ -105,7 +105,7 @@ public class HealthcareDatabaseClient {
 	}
 
 	public QueryResult getAppointmentBy(AppointmentData appointmentData) throws SQLException {
-		this.lastResult = this.appointmentDal.getAppointmentMatching(appointmentData);
+		this.lastResult = this.appointmentDal.getAppointmentsMatching(appointmentData);
 		return this.lastResult;
 	}
 }

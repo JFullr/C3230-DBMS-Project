@@ -9,11 +9,11 @@ public class Appointment {
 	@SqlGenerated
 	private Integer appointment_id;
 	private Integer person_id;
-	private Timestamp datetime;
+	private Timestamp date_time;
 	
-	public Appointment(Integer person_id, Timestamp datetime) {
+	public Appointment(Integer person_id, Timestamp date_time) {
 		this.setPerson_id(person_id);
-		this.setDatetime(datetime);
+		this.setDate_time(date_time);
 	}
 
 	public Integer getAppointment_id() {
@@ -32,12 +32,12 @@ public class Appointment {
 		this.person_id = person_id;
 	}
 
-	public Timestamp getDatetime() {
-		return datetime;
+	public Timestamp getDate_time() {
+		return date_time;
 	}
 
-	public void setDatetime(Timestamp datetime) {
-		this.datetime = datetime;
+	public void setDate_time(Timestamp datetime) {
+		this.date_time = datetime;
 	}
 
 }

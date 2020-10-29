@@ -2,21 +2,21 @@ package edu.westga.cs3230.healthcare_dbms.model;
 
 public class AppointmentData {
 	
-	private Appointment appt;
+	private Appointment appointment;
 	private PatientData patient;
 	
 	public AppointmentData() {
-		this.setAppt(null);
+		this.setAppointment(null);
 		this.setPatient(null);
 	}
 	
 	public AppointmentData(Appointment appt) {
-		this.setAppt(appt);
+		this.setAppointment(appt);
 		this.setPatient(null);
 	}
 	
-	public AppointmentData(Appointment appt, PatientData patient) {
-		this.setAppt(appt);
+	public AppointmentData(Appointment appointment, PatientData patient) {
+		this.setAppointment(appointment);
 		this.setPatient(patient);
 	}
 
@@ -28,12 +28,12 @@ public class AppointmentData {
 		this.patient = patient;
 	}
 
-	public Appointment getAppt() {
-		return appt;
+	public Appointment getAppointment() {
+		return appointment;
 	}
 
-	public void setAppt(Appointment appt) {
-		this.appt = appt;
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
 	}
 
 }

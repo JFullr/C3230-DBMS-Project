@@ -72,12 +72,12 @@ public class AppointmentViewModel {
 		if(embed.getOperatedObject() == null || embed.getOperatedObject().getClass() != PatientData.class) {
 			return null;
 		}
-		Person person = ((PatientData) embed.getOperatedObject()).getPerson();
-		if(person == null || person.getPerson_id() == null) {
+		PatientData patient = ((PatientData) embed.getOperatedObject());
+		if(patient == null || patient.getPerson() == null || patient.getPerson().getPerson_id() == null) {
 			return null;
 		}
 		
-		Integer person_id = person.getPerson_id();
+		Integer person_id = patient.getPerson().getPerson_id();
 		
 		Integer hour = this.nullInteger(this.getHourProperty().getValue().getSelectedItem());
 		Integer minutes =  this.nullInteger(this.getHourProperty().getValue().getSelectedItem());
@@ -91,7 +91,7 @@ public class AppointmentViewModel {
 		
 		Appointment appt = new Appointment(person_id, stamp);
 		
-		return new AppointmentData();
+		return new AppointmentData(appt, patient);
 	}
 
 	public BooleanProperty getActionPressedProperty() {
@@ -167,10 +167,13 @@ public class AppointmentViewModel {
 		
 		StringBuilder build = new StringBuilder(base.toString());
 		
-		build.append(":");
+		build.append(" ");
 		build.append(hour);
 		build.append(":");
 		build.append(minutes);
+		build.append(":00");
+		
+		System.out.println(build.toString());
 		
 		try {
 			return Timestamp.valueOf(build.toString());

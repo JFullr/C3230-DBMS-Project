@@ -10,27 +10,34 @@ import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Address;
+import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class AppointmentDAL {
 
 	private String dbUrl;
+	
+	private PostDAL postDal;
 
 	public AppointmentDAL(String dbUrl) {
 		this.dbUrl = dbUrl;
+		this.postDal = new PostDAL(dbUrl);
 	}
 
-	public QueryResult attemptAddAppointment(AppointmentData patient) throws SQLException {
-		/*
+	public QueryResult attemptAddAppointment(AppointmentData appointment) throws SQLException {
+		
 		QueryResult result = null;
 		Integer addressId = null;
 		try {
-			ArrayList<BigDecimal> generated = this.postDal.getGeneratedIds(this.postDal.postTuple(patient.getAddress()));
+			ArrayList<BigDecimal> generated = this.postDal.getGeneratedIds(this.postDal.postTuple(appointment.getAppointment()));
 			if(generated.size() == 0) {
 				System.out.println("ADDRESS FAILED GENERATED CHECK");
 				return null;
@@ -41,51 +48,44 @@ public class AppointmentDAL {
 			return null;
 		}
 		
-		result = this.addressDal.getAddressById(addressId);
+		result = this.getAppointmentById(addressId);
 		
-		if(result == null) {
-			System.out.println("ADDRESS FAILED TO BE FOUND");
-			return null;
-		}
-		
-		patient.getPerson().setMailing_address_id(addressId);
-		
-		QueryResult person = this.personDal.attemptAddPerson(patient.getPerson());
-		
-		if(person == null) {
-			System.out.println("PERSON FAILED TO ADD");
-			//TODO delete person
-			return null;
-		}
-		
-		return result.combine(person);
-		//*/
-		return null;
+		return result;
 	}
+	
+	public QueryResult getAppointmentById(int addressId) throws SQLException {
+        String prepared = "select * from Appointment where appointment_id = ?";
 
-	public QueryResult getAppointmentMatching(AppointmentData appointmentData) throws SQLException{
-		/*
-		QueryResult people = this.personDal.getPersonMatching(patient.getPerson());
+        SqlManager manager = new SqlManager();
+        try (Connection con = DriverManager.getConnection(this.dbUrl);
+             PreparedStatement stmt = con.prepareStatement(prepared);
+        ) {
+            stmt.setInt(1, addressId);
+            ResultSet rs = stmt.executeQuery();
+            manager.readTuples(rs);
+        }
+
+        return new QueryResult(manager.getTuples());
+    }
+
+	public QueryResult getAppointmentsMatching(AppointmentData appointmentData) throws SQLException{
+		
+		//*
+		QueryResult appointments = this.getAppointmentsMatching(appointmentData.getAppointment());
 		
 		QueryResult combined = null;
-		for(QueryResult qPerson : people.getBatch()) {
+		for(QueryResult appt : appointments.getBatch()) {
 			
-			Person person = new Person(null, null, null, null, null, null, null, null);
+			Appointment found = new Appointment(null, null);
 			
-			if(qPerson.getTuple() == null) {
-				return null;
+			if(appt.getTuple() == null) {
+				continue;
 			}
 			
-			SqlSetter.fillWith(person, qPerson.getTuple());
+			SqlSetter.fillWith(found, appt.getTuple());
 			
-			QueryResult qAddress = this.addressDal.getAddressById(person.getMailing_address_id());
-			Address address = new Address(null, null, null, null);
-			SqlSetter.fillWith(address, qAddress.getTuple());
-			qAddress.setAssociated(address);
-			
-			QueryResult midCombine = qAddress.combineMerge(qPerson);
-			PatientData data = new PatientData(person,address);
-			midCombine.setAssociated(data);
+			QueryResult midCombine = new QueryResult(appt.getTuple());
+			midCombine.setAssociated(found);
 			
 			if(combined == null) {
 				combined = midCombine;
@@ -95,8 +95,42 @@ public class AppointmentDAL {
 		}
 		
 		return combined;
-		*/
-		return null;
+	}
+	
+	private QueryResult getAppointmentsMatching(Appointment appt) throws SQLException {
+		
+		SqlTuple tuple = SqlGetter.getFrom(appt);
+		StringBuilder query = new StringBuilder("SELECT * FROM Appointment WHERE ");
+		for (SqlAttribute attribute : tuple) {
+			if (attribute.getValue() == null) {
+				continue;
+			}
+			query.append(attribute.getAttribute()).append(" = ? AND ");
+		}
+		
+		if(!query.toString().contains("?")) {
+			return null;
+		}
+		query.setLength(query.lastIndexOf("?")+1);
+
+		SqlManager manager = new SqlManager();
+		try (Connection con = DriverManager.getConnection(this.dbUrl);
+			 PreparedStatement stmt = con.prepareStatement(query.toString());
+		) {
+			int j = 1;
+			for(SqlAttribute attr : tuple) {
+				if (attr.getValue() == null) {
+					continue;
+				}
+				stmt.setObject(j, attr.getValue());
+				j++;
+			}
+			//System.out.println(stmt);
+			ResultSet rs = stmt.executeQuery();
+			manager.readTuples(rs);
+		}
+
+		return new QueryResult(manager.getTuples());
 	}
 	
 }
