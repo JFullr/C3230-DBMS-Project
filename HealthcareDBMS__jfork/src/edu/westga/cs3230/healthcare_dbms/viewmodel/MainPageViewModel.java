@@ -47,6 +47,7 @@ public class MainPageViewModel {
 	private HealthcareDatabase database;
 	
 	private ObservableList<TupleEmbed> tuples;
+	private ObservableList<TupleEmbed> tuplesShadow;
 	private QueryResult lastResults;
 
 	/**
@@ -69,6 +70,7 @@ public class MainPageViewModel {
 		this.selectedTupleObject = new SimpleObjectProperty<Object>(null);
 		
 		this.tuples = FXCollections.observableArrayList();
+		this.tuplesShadow = FXCollections.observableArrayList();
 		this.lastResults = null;
 		
 		this.addListeners();
@@ -404,29 +406,41 @@ public class MainPageViewModel {
 		this.queryResults.add(results);
 		
 		this.tuples.clear();
+		this.tuplesShadow.clear();
 		
 		TupleEmbed embed = null;
+		TupleEmbed shadow = null;
 		for(QueryResult result : results) {
 			SqlTuple tup = result.getTuple();
 			if(result.getAssociated() == null) {
-				embed = new TupleEmbed(operatedOn, display, tup);
+				embed =  this.createEmbed(operatedOn, display, tup);
+				shadow =  this.createEmbed(operatedOn, display, tup);
 			} else {
-				embed = new TupleEmbed(result.getAssociated(), result.getAssociated(), tup);
+				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup);
+				shadow =  this.createEmbed(operatedOn, display, tup);
 			}
 			
-			final TupleEmbed xbed = embed;
-			xbed.getPressedPropertyAction().addListener((evt)->{
-				this.selectedTupleObject.setValue(xbed.getPressedPropertyAction().getValue());
-			});
-			this.tuples.add(xbed);
+			this.tuples.add(embed);
+			this.tuplesShadow.add(shadow);
 		}
 		
+	}
+	
+	private TupleEmbed createEmbed(Object operatesOn, Object display, SqlTuple attributes) {
+		TupleEmbed embed = new TupleEmbed(operatesOn, display, attributes);
+			
+		final TupleEmbed xbed = embed;
+		xbed.getPressedPropertyAction().addListener((evt)->{
+			this.selectedTupleObject.setValue(xbed.getPressedPropertyAction().getValue());
+		});
+		
+		return embed;
 	}
 	
 	private ObservableList<TupleEmbed> getTuplesByAssociated(Class<?> classAssociated){
 		ObservableList<TupleEmbed> found = FXCollections.observableArrayList();
 		
-		for(TupleEmbed embed : this.tuples) {
+		for(TupleEmbed embed : this.tuplesShadow) {
 			Object obj = embed.getOperatedObject();
 			if(obj != null && obj.getClass() == classAssociated) {
 				found.add(embed);

@@ -89,6 +89,9 @@ public class AppointmentViewModel {
 
 	public void populateFrom(ObservableList<TupleEmbed> tuplesByAssociated) {
 		this.tupleList.clear();
+		for(TupleEmbed embed : tuplesByAssociated) {
+			embed.setMouseTransparent(true);
+		}
 		this.tupleList.addAll(tuplesByAssociated);
 	}
 
