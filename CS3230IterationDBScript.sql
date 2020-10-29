@@ -98,8 +98,9 @@ CREATE TABLE Appointment(
 	appointment_id INTEGER NOT NULL AUTO_INCREMENT,
 	person_id INTEGER NOT NULL,
 	date_time TIMESTAMP NOT NULL,
+	UNIQUE(date_time),
 	PRIMARY KEY(appointment_id),
-	FOREIGN KEY(patient_id) REFERENCES Person(person_id) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(person_id) REFERENCES Person(person_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE FinalDiagnosis(
@@ -208,7 +209,26 @@ CREATE TABLE UpdateQuery(
 	FOREIGN KEY(query_id) REFERENCES Query(query_id)
 );
 
-INSERT INTO Address VALUES(1,'hamburger 42', null, 'Bunderful Yum', 'WA', 66666);
+INSERT INTO Address VALUES
+(1,'hamburger 42', null, 'Bunderful Yum', 'Washington', 66666),
+(2,'road 42', null, 'City a', 'Alaska', 54654),
+(3,'circle 42', null, 'City b', 'Ohio', 56765),
+(4,'street 42', null, 'City c', 'Hawaii', 98778),
+(5,'triangle 42', null, 'City d', 'Alabama', 12323),
+(6,'alley 42', null, 'City e', 'Georgia', 12345),
+(7,'boardwalk 42', null, 'City f', 'New York', 54321);
+
 INSERT INTO Person VALUES(1,'frank', 'burg', 'f', 'Male', '2020-5-5', 123456789, "0123456789", "uieh@grjnrg.eee", 1);
 INSERT INTO RegisteredUser VALUES(1, 'aa bb', 1);
 INSERT INTO UserPasswordStore VALUES(1, "123", "hash");
+;
+
+INSERT INTO `Person` (`person_id`, `fname`, `lname`, `middle_initial`, `gender`, `DOB`, `SSN`, `contact_phone`, `contact_email`, `mailing_address_id`) VALUES
+(2, 'Jane', 'Doe', 'M', 'Female', '1997-01-22', 11111111, '1111111111', 'jane@example.com', 2),
+(3, 'John', 'Doe', 'M', 'Female', '1994-05-04', 111111111, '1111111112', 'anothercontactemail@example.com', 3),
+(4, 'John', 'Doe', 'F', 'Male', '1999-03-04', 999999991, '4444444444', 'johnf@example.com', 4),
+(5, 'Frank', 'Beans', 'q', 'Other', '2020-11-07', 344634463, '5465656451', 'beans@beans.beans', 5),
+(6, 'test', 'add', 'a', 'Other', '2020-11-06', 545454634, '4865865865', 'a@a.com', 6),
+(7, 'test', '1', 'a', 'Other', '2020-10-07', 786786787, '7865685678', 'a@a.com', 7);
+
+
