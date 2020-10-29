@@ -9,6 +9,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Code-behind file for the main page for the Healthcare DBMS
@@ -68,6 +70,7 @@ public class MainPageCodeBehind {
 		this.logoutButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 		this.patientSearchButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 		this.appointSearchButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
+		this.createAppointButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 
 		this.addListeners();
 		
@@ -127,8 +130,22 @@ public class MainPageCodeBehind {
 			}
 			if (newValue != null) {
 				newValue.setMouseTransparent(false);
+				//System.out.println("CHANGED");
 			}
 		});
+		/*
+		this.queryListView.addEventHandler(MouseEvent.MOUSE_PRESSED, (e)->{
+			System.out.println("MOUSE "+e.getTarget());
+			if(this.queryListView.getSelectionModel().getSelectedItem() != null) {
+				
+				this.queryListView.getScene().getRoot().fireEvent(
+						new MouseEvent(MouseEvent.MOUSE_PRESSED, e.getX(),
+	                e.getY(), e.getSceneX(), e.getSceneY(), MouseButton.PRIMARY, 1, true, true, true, true,
+	                true, true, true, true, true, true, null)
+				);
+			}
+		});
+		*/
 	}
 	
 	private void setupTupleView() {

@@ -79,6 +79,10 @@ public class TupleEmbed extends ListView<Node> {
 		
 	}
 	
+	public void simulateEdit() {
+		this.postTupleObject();
+	}
+	
 	private void postTupleObject() {
 		this.selectedObjectProperty.setValue(this.operatesOn);
 		this.selectedObjectProperty.setValue(null);

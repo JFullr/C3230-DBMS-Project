@@ -51,8 +51,8 @@ public class SqlTypeConverter {
 		
 		convertFromSqlMethod.put("DATE", ResultSet.class.getMethod("getDate", String.class));
 		convertFromSqlMethod.put("TIME", ResultSet.class.getMethod("getDate", String.class));
-		convertFromSqlMethod.put("DATETIME", ResultSet.class.getMethod("getDate", String.class));
-		convertFromSqlMethod.put("TIMESTAMP", ResultSet.class.getMethod("getDate", String.class));
+		convertFromSqlMethod.put("DATETIME", ResultSet.class.getMethod("getTimestamp", String.class));
+		convertFromSqlMethod.put("TIMESTAMP", ResultSet.class.getMethod("getTimestamp", String.class));
 		
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();

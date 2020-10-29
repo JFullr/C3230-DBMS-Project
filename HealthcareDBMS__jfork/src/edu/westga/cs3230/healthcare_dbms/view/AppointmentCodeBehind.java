@@ -90,6 +90,8 @@ public class AppointmentCodeBehind {
 
 	private void bindProperties() {
 		
+		this.viewModel.getTupleSelectionProperty().bindBidirectional(this.tupleDisplay.selectionModelProperty());
+		
 		this.viewModel.getActionTextProperty().bindBidirectional(this.actionButton.textProperty());
 		
 		this.viewModel.getDateProperty().bindBidirectional(this.datePicker.valueProperty());
