@@ -119,8 +119,10 @@ CREATE TABLE Diagnosis(
 
 CREATE TABLE AppointmentCheckup(
 	appointment_id INTEGER NOT NULL,
-	checkup_status VARCHAR(30) NOT NULL,
-	checkup_details TEXT NOT NULL,
+	systolic_pressure INTEGER NOT NULL,
+	diastolic_pressure INTEGER NOT NULL,
+	pulse INTEGER NOT NULL,
+	weight DECIMAL(4, 2) NOT NULL,
 	PRIMARY KEY(appointment_id),
 	FOREIGN KEY(appointment_id) REFERENCES Appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
