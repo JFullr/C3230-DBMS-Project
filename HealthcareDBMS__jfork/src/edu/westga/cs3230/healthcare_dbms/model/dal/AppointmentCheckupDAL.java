@@ -22,11 +22,22 @@ public class AppointmentCheckupDAL {
 		this.updateDal = new UpdateDAL(dbUrl);
 	}
 	
-	public void attemptAddAppointmentCheckup(AppointmentCheckup checkup) throws SQLException {
-		this.postDal.postTuple(checkup);
+	public QueryResult attemptAddAppointmentCheckup(AppointmentCheckup checkup) throws SQLException {
+		try {
+			this.postDal.postTuple(checkup);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return this.getAppointmentCheckupForAppointment(checkup.getAppointment_id());
 	}
 	
 	public QueryResult getAppointmentCheckupForAppointment(Appointment appointment) throws SQLException {
+		return getAppointmentCheckupForAppointment(appointment.getAppointment_id());
+	}
+
+	public QueryResult getAppointmentCheckupForAppointment(int appointmentId) throws SQLException {
 		String prepared = "select * "
 				+ "from AppointmentCheckup "
 				+ "where appointment_id = ? "
@@ -34,14 +45,14 @@ public class AppointmentCheckupDAL {
 
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				PreparedStatement stmt = con.prepareStatement(prepared);
-				) {
-			stmt.setObject(1, appointment.getAppointment_id());
+			 PreparedStatement stmt = con.prepareStatement(prepared);
+		) {
+			stmt.setObject(1, appointmentId);
 			//System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
 		}
-		
+
 		return new QueryResult(manager.getTuples());
 	}
 }

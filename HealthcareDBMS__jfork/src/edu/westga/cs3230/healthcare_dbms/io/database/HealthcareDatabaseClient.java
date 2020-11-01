@@ -5,16 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
-import edu.westga.cs3230.healthcare_dbms.model.Login;
-import edu.westga.cs3230.healthcare_dbms.model.PatientData;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
-import edu.westga.cs3230.healthcare_dbms.model.dal.AppointmentDAL;
-import edu.westga.cs3230.healthcare_dbms.model.dal.LoginDAL;
-import edu.westga.cs3230.healthcare_dbms.model.dal.PatientDAL;
-import edu.westga.cs3230.healthcare_dbms.model.dal.PersonDAL;
-import edu.westga.cs3230.healthcare_dbms.model.dal.PostDAL;
-import edu.westga.cs3230.healthcare_dbms.model.dal.UserTypeDAL;
+import edu.westga.cs3230.healthcare_dbms.model.*;
+import edu.westga.cs3230.healthcare_dbms.model.dal.*;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 
 /**
@@ -29,6 +21,7 @@ public class HealthcareDatabaseClient {
 	private PersonDAL personDal;
 	private PatientDAL patientDal;
 	private AppointmentDAL appointmentDal;
+	private AppointmentCheckupDAL appointmentCheckupDal;
 	
 	private QueryResult lastResult;
 	private String dbUrl;
@@ -47,6 +40,7 @@ public class HealthcareDatabaseClient {
 		this.userDal = new UserTypeDAL(dbUrl);
 		this.patientDal = new PatientDAL(dbUrl);
 		this.appointmentDal = new AppointmentDAL(dbUrl);
+		this.appointmentCheckupDal = new AppointmentCheckupDAL(dbUrl);
 	}
 	
 	public boolean callQuery(String query) throws Exception {
@@ -121,6 +115,17 @@ public class HealthcareDatabaseClient {
 	
 	public QueryResult getInvalidAppointmentsMatching(PatientData patient) throws SQLException {
 		this.lastResult = this.appointmentDal.getInvalidAppointmentsMatching(patient);
+		return this.lastResult;
+	}
+
+	public QueryResult getAppointmentCheckupForAppointment(Appointment appointment) throws SQLException {
+		this.lastResult = this.appointmentCheckupDal.getAppointmentCheckupForAppointment(appointment);
+		return this.lastResult;
+	}
+
+	public QueryResult attemptAddAppointmentCheckup(AppointmentCheckup appointmentData) throws SQLException {
+		this.lastResult = this.appointmentCheckupDal.attemptAddAppointmentCheckup(appointmentData);
+		//this.lastResult.setAssociated(appointmentData);
 		return this.lastResult;
 	}
 }

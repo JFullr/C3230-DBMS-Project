@@ -4,10 +4,7 @@ import java.time.chrono.Chronology;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
-import edu.westga.cs3230.healthcare_dbms.model.Login;
-import edu.westga.cs3230.healthcare_dbms.model.PatientData;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
+import edu.westga.cs3230.healthcare_dbms.model.*;
 
 /**
  * Responsible for handling connections to the remote server and local database.
@@ -163,6 +160,26 @@ public class HealthcareDatabase {
 		try {
 
 			QueryResult result = this.client.getInvalidAppointmentsMatching(patient);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public QueryResult getAppointmentCheckupForAppointment(Appointment appointment) {
+		try {
+			QueryResult result = this.client.getAppointmentCheckupForAppointment(appointment);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public QueryResult attemptAddAppointmentCheckup(AppointmentCheckup checkup) {
+		try {
+			QueryResult result = this.client.attemptAddAppointmentCheckup(checkup);
 			return result;
 		} catch(Exception e) {
 			e.printStackTrace();
