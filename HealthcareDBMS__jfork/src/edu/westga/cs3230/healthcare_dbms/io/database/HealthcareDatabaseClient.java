@@ -118,6 +118,12 @@ public class HealthcareDatabaseClient {
 		return this.lastResult;
 	}
 
+	public QueryResult attemptUpdateAppointment(Appointment appointment, Appointment newAppointment) throws SQLException {
+		this.lastResult = this.appointmentDal.attemptUpdateAppointment(appointment, newAppointment);
+		//this.lastResult.setAssociated(appointmentData);
+		return this.lastResult;
+	}
+
 	public QueryResult getAppointmentCheckupForAppointment(Appointment appointment) throws SQLException {
 		this.lastResult = this.appointmentCheckupDal.getAppointmentCheckupForAppointment(appointment);
 		return this.lastResult;

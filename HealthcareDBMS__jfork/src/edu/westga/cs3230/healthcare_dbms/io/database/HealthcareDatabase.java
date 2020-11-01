@@ -1,5 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.io.database;
 
+import java.sql.SQLException;
 import java.time.chrono.Chronology;
 import java.util.LinkedList;
 import java.util.List;
@@ -160,6 +161,17 @@ public class HealthcareDatabase {
 		try {
 
 			QueryResult result = this.client.getInvalidAppointmentsMatching(patient);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public QueryResult attemptUpdateAppointment(Appointment appointment, Appointment newAppointment) throws SQLException {
+		try {
+
+			QueryResult result = this.client.attemptUpdateAppointment(appointment, newAppointment);
 			return result;
 		} catch(Exception e) {
 			e.printStackTrace();

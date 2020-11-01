@@ -29,10 +29,12 @@ public class AppointmentDAL {
 	private String dbUrl;
 	
 	private PostDAL postDal;
+	private UpdateDAL updateDal;
 
 	public AppointmentDAL(String dbUrl) {
 		this.dbUrl = dbUrl;
 		this.postDal = new PostDAL(dbUrl);
+		this.updateDal = new UpdateDAL(dbUrl);
 	}
 
 	public QueryResult attemptAddAppointment(AppointmentData appointment) throws SQLException {
@@ -200,6 +202,10 @@ public class AppointmentDAL {
 		}
 		
 		return combined;
+	}
+
+	public QueryResult attemptUpdateAppointment(Appointment appointment, Appointment newAppointment) throws SQLException {
+		return this.updateDal.updateTuple(newAppointment, appointment);
 	}
 	
 }
