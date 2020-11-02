@@ -1,5 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
@@ -354,27 +355,25 @@ public class MainPageViewModel {
 	}
 	
 	public void showUpdateAppointment(Appointment appt) {
-		// TODO Auto-generated method stub
 		try {
 			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_GUI_URL, "Update Appointment", true);
 			AppointmentCodeBehind codeBehind = (AppointmentCodeBehind) window.getController();
 			AppointmentViewModel viewModel = codeBehind.getViewModel();
 			//viewModel.initFrom(patient);
 			viewModel.initFrom(appt);
+			viewModel.populateFrom(this.getTuplesByAssociated(PatientData.class));
 			viewModel.setActionButtonText("Update Appointment");
 
 			viewModel.getActionPressedProperty().addListener((evt) -> {
-				/*
 				if (viewModel.getActionPressedProperty().getValue()) {
-					if (!this.attemptAddAppointment(viewModel.getAppointment())) {
-						FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
+					if (!this.attemptUpdateAppointment(viewModel.getAppointment(), appt)) {
+						FXMLAlert.statusAlert("Update Appointment Failed", "The appointment did not update successfully.", "Update Appointment failed", AlertType.ERROR);
 						viewModel.getActionPressedProperty().setValue(false);
 					} else {
-						FXMLAlert.statusAlert("Add Appointment Success", "The appointment added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
+						FXMLAlert.statusAlert("Update Appointment Success", "The appointment updated successfully.", "Update Appointment Success", AlertType.INFORMATION);
 						codeBehind.closeWindow(null);
 					}
 				}
-				*/
 				codeBehind.closeWindow(null);
 			});
 			window.pack();
@@ -384,7 +383,17 @@ public class MainPageViewModel {
 			e.printStackTrace();
 		}
 	}
-	
+
+	private boolean attemptUpdateAppointment(AppointmentData appointment, Appointment appt) {
+		try {
+			QueryResult results = this.database.attemptUpdateAppointment(appt, appointment.getAppointment());
+			return true; // TODO: Needs to return the true result! Currently we are just hoping things went right...
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public void showPatientAppointmentSearch() {
 		// TODO Auto-generated method stub
 		try {

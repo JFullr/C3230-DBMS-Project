@@ -93,7 +93,7 @@ public class AppointmentViewModel {
 			hour = 0;
 		}
 		
-		Timestamp stamp = this.makeTimestampFrom(date, hour, hour, pm);
+		Timestamp stamp = this.makeTimestampFrom(date, hour, minutes, pm);
 		
 		Appointment appt = new Appointment(person_id, stamp);
 		
@@ -208,9 +208,9 @@ public class AppointmentViewModel {
 		StringBuilder build = new StringBuilder(base.toString());
 		
 		build.append(" ");
-		build.append(hour);
+		build.append(String.format("%02d", hour));
 		build.append(":");
-		build.append(minutes);
+		build.append(String.format("%02d", minutes));
 		build.append(":00");
 		
 		try {
