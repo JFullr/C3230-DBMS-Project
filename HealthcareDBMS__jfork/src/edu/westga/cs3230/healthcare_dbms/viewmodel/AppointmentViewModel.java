@@ -10,12 +10,8 @@ import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
@@ -31,6 +27,7 @@ public class AppointmentViewModel {
 	private final ObjectProperty<SingleSelectionModel<String>> hourProperty;
 	private final ObjectProperty<SingleSelectionModel<String>> minuteProperty;
 	private final ObjectProperty<SingleSelectionModel<String>> diurnalProperty;
+	private final ObjectProperty<Appointment> existingAppointmentProperty;
 	
 	private final BooleanProperty actionEventPressed;
 	private final StringProperty actionTextProperty;
@@ -47,6 +44,7 @@ public class AppointmentViewModel {
 		this.hourProperty = new SimpleObjectProperty<SingleSelectionModel<String>>(null);
 		this.minuteProperty = new SimpleObjectProperty<SingleSelectionModel<String>>(null);
 		this.diurnalProperty = new SimpleObjectProperty<SingleSelectionModel<String>>(null);
+		this.existingAppointmentProperty = new SimpleObjectProperty<>();
 		
 		this.actionEventPressed = new SimpleBooleanProperty(false);
 		this.actionTextProperty = new SimpleStringProperty(null);
@@ -119,6 +117,14 @@ public class AppointmentViewModel {
 	}
 
 
+	public BooleanBinding getIsUpdateProperty() {
+		return this.existingAppointmentProperty.isNotNull();
+	}
+
+	public ObjectProperty<Appointment> getExistingAppointmentProperty() {
+		return this.existingAppointmentProperty;
+	}
+
 	public ObjectProperty<LocalDate> getDateProperty() {
 		return this.dateProperty;
 	}
@@ -175,6 +181,7 @@ public class AppointmentViewModel {
 		} else {
 			this.diurnalProperty.getValue().select("AM");
 		}
+		this.existingAppointmentProperty.set(appt);
 	}
 	
 	private String nullString(String check) {

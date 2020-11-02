@@ -6,9 +6,12 @@ public class AppointmentCheckup {
 	private int diastolic_pressure;
 	private int pulse;
 	private double weight;
-	
+
+	public AppointmentCheckup() {
+	}
+
 	public AppointmentCheckup(int appointment_id, int systolic_pressure, int diastolic_pressure, int pulse,
-			double weight) {
+							  double weight) {
 		this.appointment_id = appointment_id;
 		this.systolic_pressure = systolic_pressure;
 		this.diastolic_pressure = diastolic_pressure;

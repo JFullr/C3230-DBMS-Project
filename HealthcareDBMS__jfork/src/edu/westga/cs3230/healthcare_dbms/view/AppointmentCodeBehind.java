@@ -1,32 +1,19 @@
 package edu.westga.cs3230.healthcare_dbms.view;
 
 import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
-import edu.westga.cs3230.healthcare_dbms.utils.Genders;
-import edu.westga.cs3230.healthcare_dbms.utils.States;
+import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
+import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.utils.TimeSelections;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
+import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLWindow;
+import edu.westga.cs3230.healthcare_dbms.viewmodel.AppointmentCheckupViewModel;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.AppointmentViewModel;
-import edu.westga.cs3230.healthcare_dbms.viewmodel.LoginViewModel;
-import edu.westga.cs3230.healthcare_dbms.viewmodel.PatientViewModel;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.FocusModel;
-import javafx.scene.control.ListView;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class AppointmentCodeBehind {
@@ -52,7 +39,11 @@ public class AppointmentCodeBehind {
 	@FXML
 	private ListView<TupleEmbed> tupleDisplay;
 
+	@FXML
+	private Button addCheckupDetailsButton;
+
 	private AppointmentViewModel viewModel;
+	private HealthcareDatabase database;
 
 	public AppointmentCodeBehind() {
 		this.viewModel = new AppointmentViewModel();
@@ -68,6 +59,7 @@ public class AppointmentCodeBehind {
 		this.hourPicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_HOURS));
 		this.minutePicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_MINUTES));
 		this.diurnalPicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_DIURNALS));
+		this.addCheckupDetailsButton.disableProperty().bind(this.viewModel.getIsUpdateProperty().not());
 		
 		this.setupTupleView();
 	}
@@ -133,4 +125,37 @@ public class AppointmentCodeBehind {
 		//this.tupleDisplay.setFocusModel(new FocusModel());
 	}
 
+	public void onAddCheckupDetails(ActionEvent actionEvent) {
+		// TODO Auto-generated method stub
+		try {
+			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_CHECKUP_URL, "Add Checkup Details", true);
+			AppointmentCheckupGuiCodeBehind codeBehind = (AppointmentCheckupGuiCodeBehind) window.getController();
+			AppointmentCheckupViewModel viewModel = codeBehind.getViewModel();
+			viewModel.setAppointment(this.viewModel.getExistingAppointmentProperty().get());
+
+			viewModel.getActionPressedProperty().addListener((evt) -> {
+
+				if (viewModel.getActionPressedProperty().getValue()) {
+					QueryResult result = this.database.attemptAddAppointmentCheckup(viewModel.getObject());
+					if (result != null && !result.getTuple().getAttributes().isEmpty()) {
+						FXMLAlert.statusAlert("Added Checkup Status", "Checkup status added", "Added Checkup Status", Alert.AlertType.INFORMATION);
+						viewModel.getActionPressedProperty().setValue(false);
+					} else {
+						FXMLAlert.statusAlert("Checkup Status Failed", "Checkup status could not be added", "Checkup Status Failed", Alert.AlertType.ERROR);
+						codeBehind.closeWindow();
+					}
+				}
+
+			});
+			window.pack();
+			window.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setDatabase(HealthcareDatabase database) {
+		this.database = database;
+	}
 }

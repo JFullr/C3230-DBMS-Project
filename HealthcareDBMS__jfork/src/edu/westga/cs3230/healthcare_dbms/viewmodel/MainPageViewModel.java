@@ -361,6 +361,7 @@ public class MainPageViewModel {
 			AppointmentViewModel viewModel = codeBehind.getViewModel();
 			//viewModel.initFrom(patient);
 			viewModel.initFrom(appt);
+			codeBehind.setDatabase(this.database);
 			viewModel.populateFrom(this.getTuplesByAssociated(PatientData.class));
 			viewModel.setActionButtonText("Update Appointment");
 
