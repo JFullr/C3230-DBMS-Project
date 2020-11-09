@@ -1,28 +1,48 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
+import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
+
 public class AppointmentCheckup {
-	private int appointment_id;
-	private int systolic_pressure;
-	private int diastolic_pressure;
-	private int pulse;
-	private double weight;
+	
+	@SqlGenerated
+	private Integer appointment_id;
+	private Integer systolic_pressure;
+	private Integer diastolic_pressure;
+	private Integer pulse;
+	private Double weight;
+	private Double temperature;
 
 	public AppointmentCheckup() {
+		this.appointment_id = null;
+		this.systolic_pressure = null;
+		this.diastolic_pressure = null;
+		this.pulse = null;
+		this.weight = null;
+		this.setTemperature(null);
 	}
 
-	public AppointmentCheckup(int appointment_id, int systolic_pressure, int diastolic_pressure, int pulse,
-							  double weight) {
-		this.appointment_id = appointment_id;
+	public AppointmentCheckup(Integer systolic_pressure, Integer diastolic_pressure, Integer pulse,
+			Double weight, Double temperature) {
 		this.systolic_pressure = systolic_pressure;
 		this.diastolic_pressure = diastolic_pressure;
 		this.pulse = pulse;
 		this.weight = weight;
+		this.setTemperature(temperature);
+	}
+	
+	public AppointmentCheckup(String systolic_pressure, String diastolic_pressure, String pulse,
+			String weight, String temperature) throws Exception {
+		this.systolic_pressure = Integer.parseInt(systolic_pressure);
+		this.diastolic_pressure = Integer.parseInt(diastolic_pressure);
+		this.pulse = Integer.parseInt(pulse);
+		this.weight = Double.parseDouble(weight);
+		this.setTemperature(Double.parseDouble(temperature));
 	}
 
 	/**
 	 * @return the appointment_id
 	 */
-	public int getAppointment_id() {
+	public Integer getAppointment_id() {
 		return appointment_id;
 	}
 
@@ -50,7 +70,7 @@ public class AppointmentCheckup {
 	/**
 	 * @return the diastolic_pressure
 	 */
-	public int getDiastolic_pressure() {
+	public Integer getDiastolic_pressure() {
 		return diastolic_pressure;
 	}
 
@@ -64,7 +84,7 @@ public class AppointmentCheckup {
 	/**
 	 * @return the pulse
 	 */
-	public int getPulse() {
+	public Integer getPulse() {
 		return pulse;
 	}
 
@@ -78,7 +98,7 @@ public class AppointmentCheckup {
 	/**
 	 * @return the weight
 	 */
-	public double getWeight() {
+	public Double getWeight() {
 		return weight;
 	}
 
@@ -87,5 +107,13 @@ public class AppointmentCheckup {
 	 */
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+
+	public Double getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(Double temperature) {
+		this.temperature = temperature;
 	}
 }

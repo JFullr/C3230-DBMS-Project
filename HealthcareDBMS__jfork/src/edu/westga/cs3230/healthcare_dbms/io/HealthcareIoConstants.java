@@ -4,6 +4,7 @@ import java.net.URL;
 
 import edu.westga.cs3230.healthcare_dbms.view.AppointmentCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.AppointmentSearchCodeBehind;
+import edu.westga.cs3230.healthcare_dbms.view.FullPatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLWindow;
@@ -35,4 +36,7 @@ public class HealthcareIoConstants {
 	public static final URL APPOINTMENT_GUI_URL = AppointmentCodeBehind.class.getResource(APPOINTMENT_GUI);
 	public static final URL APPOINTMENT_SEARCH_GUI_URL = AppointmentSearchCodeBehind.class.getResource(APPOINTMENT_SEARCH_GUI);
 	public static final URL APPOINTMENT_CHECKUP_URL = AppointmentCodeBehind.class.getResource(APPOINTMENT_CHECKUP_GUI);
+	
+	private static final String FULL_PATIENT_GUI = "FullPatientGui.fxml";
+	public static final URL FULL_PATIENT_URL = FullPatientCodeBehind.class.getResource(FULL_PATIENT_GUI);
 }

@@ -120,6 +120,11 @@ public class MainPageCodeBehind {
 		this.viewModel.showPatientAppointmentSearch();
 	}
 	
+	@FXML
+	public void handlePsuedoPatientMod(ActionEvent event) {
+		this.viewModel.handlePsuedoPatientMod();
+	}
+	
 	public void updateLoginDisplay() {
 		this.viewModel.updateLoginDisplay();
 	}

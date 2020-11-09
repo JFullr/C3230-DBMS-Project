@@ -1,12 +1,14 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
+import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
@@ -16,6 +18,7 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
 import edu.westga.cs3230.healthcare_dbms.view.AppointmentCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.AppointmentSearchCodeBehind;
+import edu.westga.cs3230.healthcare_dbms.view.FullPatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
@@ -426,7 +429,55 @@ public class MainPageViewModel {
 			e.printStackTrace();
 		}
 	}
+	
+	public void handlePsuedoPatientMod() {
+		
+		Person person = new Person("email@email.email", "1111111111", java.sql.Date.valueOf(LocalDate.now()), "firstName", "lastName", "Q", "Gender", "999999999");
+		Address address = new Address("Address 1", "Address 2", "City", "State", 66666);
+		PatientData patientData = new PatientData(person, address);
+		this.handlePatientMod(patientData);
+	}
+	
+	public void handlePatientMod(PatientData patient) {
+		try {
+			
+			Person person = patient.getPerson();
+			if(person == null) {
+				//TODO error message
+				return;
+			}
+			
+			String fullName = person.getFname()+" "+person.getLname();
+			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.FULL_PATIENT_URL, "Modify Patient: "+fullName, true);
+			FullPatientCodeBehind codeBehind = (FullPatientCodeBehind) window.getController();
+			FullPatientViewModel viewModel = codeBehind.getViewModel();
+			viewModel.initFrom(patient);
+			//viewModel.setDatabaseAccess(this.database, this.selectedTupleObject);
+			//viewModel.populatePatientsFrom(this.getTuplesByAssociated(PatientData.class));
+			viewModel.setActionButtonText("Finish");
 
+			viewModel.getActionPressedProperty().addListener((evt) -> {
+				
+				if (viewModel.getActionPressedProperty().getValue()) {
+					/*if (!this.attemptAddAppointment(viewModel.getAppointment())) {
+						FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
+						viewModel.getActionPressedProperty().setValue(false);
+					} else {
+						FXMLAlert.statusAlert("Add Appointment Success", "The appointment added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
+						codeBehind.closeWindow(null);
+					}*/
+					codeBehind.closeWindow(null);
+				}
+
+			});
+			window.pack();
+			window.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private boolean attemptUpdatePatient(PatientData patientData, PatientData existing) {
 
 		QueryResult results = this.database.attemptUpdatePatient(patientData, existing);

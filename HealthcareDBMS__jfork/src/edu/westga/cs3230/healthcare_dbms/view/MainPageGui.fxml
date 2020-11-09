@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind">
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
@@ -108,6 +108,7 @@
                         <Insets left="10.0" top="10.0" />
                      </padding>
                   </FlowPane>
+                  <Button mnemonicParsing="false" onAction="#handlePsuedoPatientMod" text="PsuedoPatientGui" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </center>
