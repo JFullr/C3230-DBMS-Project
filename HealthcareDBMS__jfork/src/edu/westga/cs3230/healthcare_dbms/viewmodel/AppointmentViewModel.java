@@ -93,7 +93,7 @@ public class AppointmentViewModel {
 		
 		Timestamp stamp = this.makeTimestampFrom(date, hour, minutes, pm);
 		
-		Appointment appt = new Appointment(person_id, stamp);
+		Appointment appt = new Appointment(person_id, stamp, null, null);
 		
 		return new AppointmentData(appt, patient);
 	}

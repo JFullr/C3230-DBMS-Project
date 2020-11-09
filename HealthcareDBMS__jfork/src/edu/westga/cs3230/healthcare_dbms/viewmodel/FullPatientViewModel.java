@@ -40,8 +40,6 @@ public class FullPatientViewModel {
 	private FullPatientViewModelSubAppt viewModelAppt;
 	private FullPatientViewModelSubFinal viewModelFinal;
 	private FullPatientViewModelSubTest viewModelTest;
-	
-	private PatientData usingPatient;
 
 	private final StringProperty firstNameProperty;
 	private final StringProperty lastNameProperty;
@@ -67,12 +65,12 @@ public class FullPatientViewModel {
 	///TODO repurpose to multile object properties in codebehind
 	private final StringProperty validationProperty;
 	private final BooleanProperty finalizedAppointment;
-	private final ObjectProperty<PatientData> selectedPatientProperty;
+	private final ObjectProperty<PatientData> selectedDoctorProperty;
 	private final ObjectProperty<AppointmentData> selectedAppointmentProperty;
 	private final ObjectProperty<AppointmentCheckup> selectedCheckupProperty;
 	private final ObjectProperty<FinalDiagnosis> selectedFinalDiagnosisProperty;
 	private final ObjectProperty<SingleSelectionModel<?>> testOrderListProperty;
-	private final ObjectProperty<PatientData> selectedPatient;
+	private final ObjectProperty<PatientData> selectedPatientProperty;
 	
 	private HealthcareDatabase givenDB;
 	private ObjectProperty<Object> givenStore;
@@ -97,19 +95,19 @@ public class FullPatientViewModel {
 		this.closeDisableProperty = new SimpleBooleanProperty(false);
 		
 		this.finalizedAppointment = new SimpleBooleanProperty(false);
-		this.selectedPatientProperty = new SimpleObjectProperty<PatientData>();
 		this.selectedCheckupProperty = new SimpleObjectProperty<AppointmentCheckup>();
 		this.selectedFinalDiagnosisProperty = new SimpleObjectProperty<FinalDiagnosis>();
 		this.testOrderListProperty = new SimpleObjectProperty<SingleSelectionModel<?>>();
 		this.selectedAppointmentProperty = new SimpleObjectProperty<AppointmentData>();
 		
-		this.selectedPatient = new SimpleObjectProperty<PatientData>();
+		this.selectedPatientProperty = new SimpleObjectProperty<PatientData>();
+		this.selectedDoctorProperty = new SimpleObjectProperty<PatientData>();
 		
 		this.viewModelControl = new FullPatientViewModelSubControl();
 		this.viewModelCheckup = new FullPatientViewModelSubCheck();
-		this.viewModelAppt = new FullPatientViewModelSubAppt();
+		this.viewModelAppt = new FullPatientViewModelSubAppt(this.selectedPatientProperty);
 		this.viewModelFinal = new FullPatientViewModelSubFinal();
-		this.viewModelTest = new FullPatientViewModelSubTest(this.selectedPatient, this.selectedAppointmentProperty);
+		this.viewModelTest = new FullPatientViewModelSubTest(this.selectedPatientProperty, this.selectedAppointmentProperty);
 	}
 	
 	public FullPatientViewModelSubControl getViewModelControl() {
@@ -244,7 +242,7 @@ public class FullPatientViewModel {
 		this.genderProperty.getValue().select(person.getGender());
 		this.stateProperty.getValue().select(addr.getState());
 		
-		this.usingPatient = data;
+		this.selectedPatientProperty.setValue(data);
 		
 	}
 
@@ -307,10 +305,6 @@ public class FullPatientViewModel {
 
 	public ObjectProperty<SingleSelectionModel<?>> getTestOrderListProperty() {
 		return testOrderListProperty;
-	}
-	
-	public ObjectProperty<PatientData> getSelectedPatient() {
-		return selectedPatient;
 	}
 	
 	

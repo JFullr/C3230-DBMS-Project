@@ -74,13 +74,13 @@ public class AppointmentDAL {
     }
 	
 	public QueryResult getAppointmentsMatching(PatientData patient) throws SQLException {
-		Appointment appt = new Appointment(null,null);
+		Appointment appt = new Appointment(null,null,null,null);
 		appt.setPerson_id(patient.getPerson().getPerson_id());
 		return getAppointmentsMatching(new AppointmentData(appt));
 	}
 	
 	public QueryResult getValidAppointmentsMatching(PatientData patient) throws SQLException {
-		Appointment appt = new Appointment(null,null);
+		Appointment appt = new Appointment(null,null,null,null);
 		appt.setPerson_id(patient.getPerson().getPerson_id());
 		Timestamp time = Timestamp.valueOf(LocalDateTime.now());
 		appt.setDate_time(time);
@@ -91,7 +91,7 @@ public class AppointmentDAL {
 	}
 	
 	public QueryResult getInvalidAppointmentsMatching(PatientData patient) throws SQLException {
-		Appointment appt = new Appointment(null,null);
+		Appointment appt = new Appointment(null,null,null,null);
 		appt.setPerson_id(patient.getPerson().getPerson_id());
 		Timestamp time = Timestamp.valueOf(LocalDateTime.now());
 		appt.setDate_time(time);
@@ -182,7 +182,7 @@ public class AppointmentDAL {
 		QueryResult combined = null;
 		for(QueryResult appt : results.getBatch()) {
 			
-			Appointment found = new Appointment(null, null);
+			Appointment found = new Appointment(null, null,null,null);
 			
 			if(appt.getTuple() == null) {
 				//System.out.println("INVALID APPOINTMENT TUPLE");

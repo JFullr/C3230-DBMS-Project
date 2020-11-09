@@ -1,17 +1,21 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
+import edu.westga.cs3230.healthcare_dbms.model.Doctor;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
@@ -29,34 +33,35 @@ public class FullPatientViewModelSubAppt {
 	private final ObjectProperty<SingleSelectionModel<String>> diurnalProperty;
 	private final ObjectProperty<Appointment> existingAppointmentProperty;
 	
-	private final BooleanProperty actionEventPressed;
-	private final StringProperty actionTextProperty;
-	
 	private ObservableList<String> doctorList;
+	private ArrayList<Doctor> availableDoctors;
 	
-	private ObjectProperty<MultipleSelectionModel<TupleEmbed>> tupleSelectionProperty;
+	private ObjectProperty<SingleSelectionModel<String>> doctorSelectionProperty;
+	
+	private final StringProperty reasonProperty;
+	
+	private final ObjectProperty<PatientData> givenPatientProperty;
 
 	/**
 	 * Instantiates a new AppointmentViewModel.
 	 */
-	public FullPatientViewModelSubAppt() {		
+	public FullPatientViewModelSubAppt(ObjectProperty<PatientData> givenPatientProperty) {
+		
+		this.givenPatientProperty = givenPatientProperty;
 		
 		this.dateProperty = new SimpleObjectProperty<LocalDate>(null);
+		
 		this.hourProperty = new SimpleObjectProperty<SingleSelectionModel<String>>(null);
 		this.minuteProperty = new SimpleObjectProperty<SingleSelectionModel<String>>(null);
 		this.diurnalProperty = new SimpleObjectProperty<SingleSelectionModel<String>>(null);
 		this.existingAppointmentProperty = new SimpleObjectProperty<>();
 		
 		this.doctorList = FXCollections.observableArrayList();
+		this.availableDoctors = new ArrayList<Doctor>();
 		
-		this.actionEventPressed = new SimpleBooleanProperty(false);
-		this.actionTextProperty = new SimpleStringProperty(null);
+		this.reasonProperty = new SimpleStringProperty();
 		
-		this.tupleSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
-	}
-
-	public BooleanProperty getActionPressedProperty() {
-		return this.actionEventPressed;
+		this.doctorSelectionProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
 	}
 
 	public ObjectProperty<SingleSelectionModel<String>> getHourProperty() {
@@ -83,21 +88,13 @@ public class FullPatientViewModelSubAppt {
 	public ObjectProperty<LocalDate> getDateProperty() {
 		return this.dateProperty;
 	}
-	
-	public StringProperty getActionTextProperty() {
-		return actionTextProperty;
-	}
-
-	public void setActionButtonText(String string) {
-		this.actionTextProperty.setValue(string);
-	}
 
 	public ObservableList<?> getDoctorList() {
 		return this.doctorList;
 	}
 
-	public ObjectProperty<MultipleSelectionModel<TupleEmbed>>  getTupleSelectionProperty() {
-		return this.tupleSelectionProperty;
+	public ObjectProperty<SingleSelectionModel<String>> getDoctorSelectionProperty() {
+		return this.doctorSelectionProperty;
 	}
 
 
@@ -140,15 +137,7 @@ public class FullPatientViewModelSubAppt {
 			date = Date.valueOf(time);
 		}
 		
-		TupleEmbed embed = this.tupleSelectionProperty.getValue().getSelectedItem();
-		if(embed == null) {
-			return null;
-		}
-		
-		if(embed.getOperatedObject() == null || embed.getOperatedObject().getClass() != PatientData.class) {
-			return null;
-		}
-		PatientData patient = ((PatientData) embed.getOperatedObject());
+		PatientData patient = this.givenPatientProperty.getValue();
 		if(patient == null || patient.getPerson() == null || patient.getPerson().getPerson_id() == null) {
 			return null;
 		}
@@ -158,6 +147,11 @@ public class FullPatientViewModelSubAppt {
 		Integer hour = this.nullInteger(this.hourProperty.getValue().getSelectedItem());
 		Integer minutes =  this.nullInteger(this.minuteProperty.getValue().getSelectedItem());
 		String diurnal =  this.nullString(this.diurnalProperty.getValue().getSelectedItem());
+		
+		int index = this.doctorSelectionProperty.getValue().getSelectedIndex();
+		if(index < 1) {
+			return null;
+		}
 		
 		if(hour == null || minutes == null || diurnal == null) {
 			return null;
@@ -170,7 +164,7 @@ public class FullPatientViewModelSubAppt {
 		
 		Timestamp stamp = this.makeTimestampFrom(date, hour, minutes, pm);
 		
-		Appointment appt = new Appointment(person_id, stamp);
+		Appointment appt = new Appointment(person_id, stamp, this.availableDoctors.get(index).getPerson_id(), this.reasonProperty.getValue());
 		
 		return new AppointmentData(appt, patient);
 	}
@@ -219,5 +213,9 @@ public class FullPatientViewModelSubAppt {
 			return null;
 		}
 		
+	}
+
+	public StringProperty getReasonProperty() {
+		return this.reasonProperty;
 	}
 }
