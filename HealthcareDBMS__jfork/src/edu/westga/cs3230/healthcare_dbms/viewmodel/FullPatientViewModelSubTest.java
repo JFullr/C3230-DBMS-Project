@@ -1,8 +1,18 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
+import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
+import edu.westga.cs3230.healthcare_dbms.model.LabTest;
+import edu.westga.cs3230.healthcare_dbms.model.LabTestOrder;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import javafx.beans.property.BooleanProperty;
@@ -14,188 +24,239 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
+import javafx.scene.control.SingleSelectionModel;
 
 /**
  * Viewmodel class for the Appointment window.
  */
 public class FullPatientViewModelSubTest {
-	
-	private final BooleanProperty actionEventPressed;
-	private final StringProperty actionTextProperty;
-	
-	private ObservableList<TupleEmbed> patientList;
-	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> patientSelectionProperty;
-	
-	private ObservableList<TupleEmbed> availableList;
-	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> availableSelectionProperty;
-	
-	private ObservableList<TupleEmbed> pastList;
-	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> pastSelectionProperty;
-	
+
+	private final BooleanProperty queueTestEventProperty;
+	private final BooleanProperty orderTestsEventProperty;
+	private final BooleanProperty removeTestEventProperty;
+	private final BooleanProperty removeAllTestsEventProperty;
+
+	private final StringProperty testCostProperty;
+	private final StringProperty testDescProperty;
+	private final ObjectProperty<LocalDate> testDateProperty;
+
+	private ArrayList<LabTest> availableTests;
+	private ObservableList<String> testsList;
+	private ObservableList<TupleEmbed> testsOrderList;
+	private ObservableList<TupleEmbed> testStatusList;
+
+	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> testListOrderSelectionProperty;
+	private final ObjectProperty<SingleSelectionModel<String>> testDropSelectionProperty;
+
 	private HealthcareDatabase givenDB;
 	private ObjectProperty<Object> givenStore;
+	
+	private final ObjectProperty<PatientData> givenPatientProperty;
+	private final ObjectProperty<AppointmentData> givenAppointmentProperty;
 
 	/**
 	 * Instantiates a new AppointmentViewModel.
 	 */
-	public FullPatientViewModelSubTest() {		
-		
-		this.actionEventPressed = new SimpleBooleanProperty(false);
-		this.actionTextProperty = new SimpleStringProperty(null);
-		
-		this.patientList = FXCollections.observableArrayList();
-		this.patientSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
-		
-		this.availableList = FXCollections.observableArrayList();
-		this.availableSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
-		
-		this.pastList = FXCollections.observableArrayList();
-		this.pastSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
-	}
-	
-	/*
-	public AppointmentData getAppointment() {
+	public FullPatientViewModelSubTest(ObjectProperty<PatientData> patientProperty, ObjectProperty<AppointmentData> appointmentProperty) {
 
+		this.givenAppointmentProperty = appointmentProperty;
+		this.givenPatientProperty = patientProperty;
 		
-		Date date = null;
-		LocalDate time = this.dateProperty.getValue();
-		if(time != null) {
-			date = Date.valueOf(time);
-		}
-		
-		TupleEmbed embed = this.patientSelectionProperty.getValue().getSelectedItem();
-		if(embed == null) {
-			return null;
-		}
-		
-		
-		return new AppointmentData(appt, patient);
-	}
-	*/
+		this.queueTestEventProperty = new SimpleBooleanProperty(false);
+		this.orderTestsEventProperty = new SimpleBooleanProperty(false);
+		this.removeTestEventProperty = new SimpleBooleanProperty(false);
+		this.removeAllTestsEventProperty = new SimpleBooleanProperty(false);
 
-	public BooleanProperty getActionPressedProperty() {
-		return this.actionEventPressed;
-	}
-	
-	public StringProperty getActionTextProperty() {
-		return actionTextProperty;
+		this.testListOrderSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
+		this.testDropSelectionProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
+
+		this.testsList = FXCollections.observableArrayList();
+		this.testsOrderList = FXCollections.observableArrayList();
+		this.testStatusList = FXCollections.observableArrayList();
+
+		this.testCostProperty = new SimpleStringProperty();
+		this.testDescProperty = new SimpleStringProperty();
+		this.testDateProperty = new SimpleObjectProperty<LocalDate>();
+		
+		this.availableTests = new ArrayList<LabTest>();
+
+		this.addActionHandlers();
+
+		/*
+		 * this.testPicker.setItems(this.viewModel.getViewModelTest().getTestsList());
+		 * this.testPicker.selectionModelProperty().bindBidirectional(this.viewModel.
+		 * getViewModelTest().getTestDropSelectionProperty());
+		 * 
+		 * this.testOrderViewList.selectionModelProperty().bindBidirectional(this.
+		 * viewModel.getViewModelTest().getTestOrderSelectionProperty());
+		 * this.testCostField.textProperty().bindBidirectional(this.viewModel.
+		 * getViewModelTest().getActionTextProperty() this.testDescField
+		 * this.testDatePicker this.testPicker this.testOrderList
+		 * this.testRemoveSelButton this.testRemoveAllButton this.testOrderButton
+		 * this.addTestButton
+		 */
+
 	}
 
-	public void setActionButtonText(String string) {
-		this.actionTextProperty.setValue(string);
+	// *
+	public ArrayList<LabTestOrder> getLabTestOrders() {
+		ArrayList<LabTestOrder> orderedTests = new ArrayList<LabTestOrder>();
+		// TODO reconstruct from tuple list of orders
+		return orderedTests;
 	}
-	
+	// */
+
 	public void setDatabaseAccess(HealthcareDatabase givenDB, ObjectProperty<Object> selectedTupleObject) {
 		this.givenDB = givenDB;
 		this.givenStore = selectedTupleObject;
 	}
 
-	public void populatePatientsFrom(ObservableList<TupleEmbed> tuplesByAssociated) {
-		this.patientList.clear();
-		this.patientList.addAll(tuplesByAssociated);
-		this.availableList.clear();
-		this.pastList.clear();
+	public ObservableList<String> getTestsList() {
+		return this.testsList;
 	}
 
-
-	public ObservableList<TupleEmbed> getPatientList() {
-		return this.patientList;
+	public ObservableList<TupleEmbed> getTestStatusList() {
+		return this.testStatusList;
 	}
 	
-	public ObservableList<TupleEmbed> getAvailableList() {
-		return this.availableList;
-	}
-	
-	public ObservableList<TupleEmbed> getPastList() {
-		return this.pastList;
+	public ObservableList<TupleEmbed> getTestsOrderList() {
+		return this.testsOrderList;
 	}
 
-	public ObjectProperty<MultipleSelectionModel<TupleEmbed>>  getPatientSelectionProperty() {
-		return this.patientSelectionProperty;
+	public ObjectProperty<MultipleSelectionModel<TupleEmbed>> getTestListOrderSelectionProperty() {
+		return this.testListOrderSelectionProperty;
+	}
+
+	public ObjectProperty<SingleSelectionModel<String>> getTestDropSelectionProperty() {
+		return this.testDropSelectionProperty;
+	}
+
+	public StringProperty getTestCostProperty() {
+		return testCostProperty;
+	}
+
+	public StringProperty getTestDescProperty() {
+		return testDescProperty;
+	}
+
+	public ObjectProperty<LocalDate> getTestDateProperty() {
+		return testDateProperty;
+	}
+
+	public BooleanProperty getRemoveAllTestsEventProperty() {
+		return removeAllTestsEventProperty;
+	}
+
+	public BooleanProperty getRemoveTestEventProperty() {
+		return removeTestEventProperty;
+	}
+
+	public BooleanProperty getOrderTestsEventProperty() {
+		return orderTestsEventProperty;
+	}
+
+	public BooleanProperty getQueueTestEventProperty() {
+		return queueTestEventProperty;
 	}
 	
-	public ObjectProperty<MultipleSelectionModel<TupleEmbed>>  getAvailableSelectionProperty() {
-		return this.availableSelectionProperty;
-	}
-	
-	public ObjectProperty<MultipleSelectionModel<TupleEmbed>>  getPastSelectionProperty() {
-		return this.pastSelectionProperty;
-	}
-	
-	public void searchUpdate() {
+	public LabTestOrder getLabTestOrder(){
 		
-		if(this.patientSelectionProperty.getValue() == null || this.givenDB == null) {
+		int index = this.testListOrderSelectionProperty.getValue().getSelectedIndex();
+		if(index < 0) {
+			return null;
+		}
+		Integer testId = this.availableTests.get(index).getLab_test_id();
+		if(testId == null) {
+			return null;
+		}
+		
+		Integer apptId = this.givenAppointmentProperty.getValue().getAppointment().getAppointment_id();
+		if(apptId == null) {
+			return null;
+		}
+		
+		Date dob = null;
+		LocalDate time = this.testDateProperty.getValue();
+		if(time != null) {
+			dob = Date.valueOf(time);
+		}
+		
+		LabTestOrder order = new LabTestOrder(testId, apptId, dob);
+		
+		return order;
+	}
+
+	private void addActionHandlers() {
+		
+		this.queueTestEventProperty.addListener((evt) -> {
+			if (this.queueTestEventProperty.getValue()) {
+				addTestOrder();
+			}
+		});
+		
+		this.orderTestsEventProperty.addListener((evt) -> {
+			if (this.orderTestsEventProperty.getValue()) {
+				
+			}
+		});
+		
+		this.removeTestEventProperty.addListener((evt) -> {
+			if (this.removeTestEventProperty.getValue()) {
+				
+			}
+		});
+		
+		this.removeAllTestsEventProperty.addListener((evt) -> {
+			if (this.removeAllTestsEventProperty.getValue()) {
+				this.testsOrderList.clear();
+			}
+		});
+		
+	}
+	
+	private void addTestOrder() {
+		LabTestOrder order = this.getLabTestOrder();
+		if(order == null) {
 			return;
 		}
 		
-		TupleEmbed embed = this.patientSelectionProperty.getValue().getSelectedItem();
-		if(embed == null || embed.getOperatedObject() == null) {
-			return;
-		}
+		int index = this.testListOrderSelectionProperty.getValue().getSelectedIndex();
+		SqlTuple desc = SqlGetter.getFrom(order);
+		desc.add(new SqlAttribute("description", this.availableTests.get(index).getTest_description()));
 		
-		Object operated = embed.getOperatedObject();
-		if(operated.getClass() != PatientData.class) {
-			return;
-		}
-		
-		this.pastList.clear();
-		this.availableList.clear();
-		
-		QueryResult valid = this.givenDB.getValidAppointmentsByPatient((PatientData)operated);
-		QueryResult invalid = this.givenDB.getInvalidAppointmentsByPatient((PatientData)operated);
-		this.addValidResults(null, null, valid);
-		this.addInvalidResults(null, null, invalid);
+		TupleEmbed embed = this.createEmbed(order, order, desc);
+		this.testsOrderList.add(embed);
 	}
-	
+
 	private void addValidResults(Object operatedOn, Object display, QueryResult results) {
-		
-		if(results == null) {
+
+		if (results == null) {
 			return;
 		}
-		
+
 		TupleEmbed embed = null;
-		for(QueryResult result : results) {
+		for (QueryResult result : results) {
 			SqlTuple tup = result.getTuple();
-			if(result.getAssociated() == null) {
-				embed =  this.createEmbed(operatedOn, display, tup);
+			if (result.getAssociated() == null) {
+				embed = this.createEmbed(operatedOn, display, tup);
 			} else {
 				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup);
 			}
-			
+
 			final TupleEmbed xbed = embed;
-			xbed.getPressedPropertyAction().addListener((evt)->{
+			xbed.getPressedPropertyAction().addListener((evt) -> {
 				this.givenStore.setValue(xbed.getPressedPropertyAction().getValue());
 			});
-			
-			this.availableList.add(embed);
+
+			// this.availableList.add(embed);
 		}
-		
+
 	}
-	
-	private void addInvalidResults(Object operatedOn, Object display, QueryResult results) {
-		
-		if(results == null) {
-			return;
-		}
-		
-		TupleEmbed embed = null;
-		for(QueryResult result : results) {
-			SqlTuple tup = result.getTuple();
-			if(result.getAssociated() == null) {
-				embed =  this.createEmbed(operatedOn, display, tup);
-			} else {
-				embed = this.createEmbed(null, result.getAssociated(), tup);
-			}
-			
-			this.pastList.add(embed);
-		}
-		
-	}
-	
+
+	//TODO use to generate test order embeds
 	private TupleEmbed createEmbed(Object operatesOn, Object display, SqlTuple attributes) {
 		TupleEmbed embed = new TupleEmbed(operatesOn, display, attributes);
 		return embed;
 	}
-	
-	
+
 }

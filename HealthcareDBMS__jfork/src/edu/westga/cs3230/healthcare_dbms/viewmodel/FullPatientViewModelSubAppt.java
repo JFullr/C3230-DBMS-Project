@@ -32,7 +32,8 @@ public class FullPatientViewModelSubAppt {
 	private final BooleanProperty actionEventPressed;
 	private final StringProperty actionTextProperty;
 	
-	private ObservableList<TupleEmbed> tupleList;
+	private ObservableList<String> doctorList;
+	
 	private ObjectProperty<MultipleSelectionModel<TupleEmbed>> tupleSelectionProperty;
 
 	/**
@@ -46,10 +47,11 @@ public class FullPatientViewModelSubAppt {
 		this.diurnalProperty = new SimpleObjectProperty<SingleSelectionModel<String>>(null);
 		this.existingAppointmentProperty = new SimpleObjectProperty<>();
 		
+		this.doctorList = FXCollections.observableArrayList();
+		
 		this.actionEventPressed = new SimpleBooleanProperty(false);
 		this.actionTextProperty = new SimpleStringProperty(null);
 		
-		this.tupleList = FXCollections.observableArrayList();
 		this.tupleSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
 	}
 
@@ -90,16 +92,9 @@ public class FullPatientViewModelSubAppt {
 		this.actionTextProperty.setValue(string);
 	}
 
-	public void populateFrom(ObservableList<TupleEmbed> tuplesByAssociated) {
-		this.tupleList.clear();
-		this.tupleList.addAll(tuplesByAssociated);
+	public ObservableList<?> getDoctorList() {
+		return this.doctorList;
 	}
-
-
-	public ObservableList<TupleEmbed> getTupleList() {
-		return this.tupleList;
-	}
-
 
 	public ObjectProperty<MultipleSelectionModel<TupleEmbed>>  getTupleSelectionProperty() {
 		return this.tupleSelectionProperty;

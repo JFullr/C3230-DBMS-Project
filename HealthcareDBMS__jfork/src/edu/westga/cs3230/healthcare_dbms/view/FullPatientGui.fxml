@@ -268,7 +268,7 @@
                                                                         <Label text="Test Description" GridPane.rowIndex="2" />
                                                                         <TextField fx:id="testCostField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                         <TextField fx:id="testDescField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                        <Button fx:id="addTestButton" mnemonicParsing="false" text="Add Lab Test Order" GridPane.rowIndex="4" />
+                                                                        <Button fx:id="addTestButton" mnemonicParsing="false" onAction="#testQueueAdd" text="Add Lab Test Order" GridPane.rowIndex="4" />
                                                                         <Label text="Date to Perform" GridPane.rowIndex="3" />
                                                                         <DatePicker fx:id="testDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                                         <ComboBox fx:id="testPicker" prefWidth="150.0" GridPane.columnIndex="1" />
@@ -291,8 +291,8 @@
                                                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                           </rowConstraints>
                                                                            <children>
-                                                                              <Button fx:id="testRemoveSelButton" mnemonicParsing="false" text="Remove Selected" />
-                                                                              <Button fx:id="testRemoveAllButton" mnemonicParsing="false" text="Remove All" GridPane.columnIndex="1" />
+                                                                              <Button fx:id="testRemoveSelButton" mnemonicParsing="false" onAction="#testRemoveSelected" text="Remove Selected" />
+                                                                              <Button fx:id="testRemoveAllButton" mnemonicParsing="false" onAction="#testRemoveAll" text="Remove All" GridPane.columnIndex="1" />
                                                                               <Button fx:id="testOrderButton" mnemonicParsing="false" onAction="#addLabTests" prefHeight="25.0" prefWidth="130.0" text="Place Lab Test Orders" GridPane.columnIndex="2" />
                                                                            </children>
                                                                         </GridPane>

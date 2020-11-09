@@ -8,6 +8,7 @@ import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentCheckup;
+import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.FinalDiagnosis;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
@@ -38,6 +39,7 @@ public class FullPatientViewModel {
 	private FullPatientViewModelSubCheck viewModelCheckup;
 	private FullPatientViewModelSubAppt viewModelAppt;
 	private FullPatientViewModelSubFinal viewModelFinal;
+	private FullPatientViewModelSubTest viewModelTest;
 	
 	private PatientData usingPatient;
 
@@ -61,17 +63,16 @@ public class FullPatientViewModel {
 	private final ObjectProperty<SingleSelectionModel<String>> stateProperty;
 	private final ObjectProperty<SingleSelectionModel<String>> genderProperty;
 	
+	
 	///TODO repurpose to multile object properties in codebehind
 	private final StringProperty validationProperty;
 	private final BooleanProperty finalizedAppointment;
 	private final ObjectProperty<PatientData> selectedPatientProperty;
+	private final ObjectProperty<AppointmentData> selectedAppointmentProperty;
 	private final ObjectProperty<AppointmentCheckup> selectedCheckupProperty;
 	private final ObjectProperty<FinalDiagnosis> selectedFinalDiagnosisProperty;
 	private final ObjectProperty<SingleSelectionModel<?>> testOrderListProperty;
-	
-	
-	
-	
+	private final ObjectProperty<PatientData> selectedPatient;
 	
 	private HealthcareDatabase givenDB;
 	private ObjectProperty<Object> givenStore;
@@ -100,12 +101,15 @@ public class FullPatientViewModel {
 		this.selectedCheckupProperty = new SimpleObjectProperty<AppointmentCheckup>();
 		this.selectedFinalDiagnosisProperty = new SimpleObjectProperty<FinalDiagnosis>();
 		this.testOrderListProperty = new SimpleObjectProperty<SingleSelectionModel<?>>();
+		this.selectedAppointmentProperty = new SimpleObjectProperty<AppointmentData>();
 		
+		this.selectedPatient = new SimpleObjectProperty<PatientData>();
 		
 		this.viewModelControl = new FullPatientViewModelSubControl();
 		this.viewModelCheckup = new FullPatientViewModelSubCheck();
 		this.viewModelAppt = new FullPatientViewModelSubAppt();
 		this.viewModelFinal = new FullPatientViewModelSubFinal();
+		this.viewModelTest = new FullPatientViewModelSubTest(this.selectedPatient, this.selectedAppointmentProperty);
 	}
 	
 	public FullPatientViewModelSubControl getViewModelControl() {
@@ -122,6 +126,10 @@ public class FullPatientViewModel {
 	
 	public FullPatientViewModelSubFinal getViewModelFinal() {
 		return viewModelFinal;
+	}
+	
+	public FullPatientViewModelSubTest getViewModelTest() {
+		return viewModelTest;
 	}
 	
 	public StringProperty getFirstNameProperty() {
@@ -274,6 +282,45 @@ public class FullPatientViewModel {
 		return new PatientData(person, addr);
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	public BooleanProperty getFinalizedAppointment() {
+		return finalizedAppointment;
+	}
+
+	public ObjectProperty<PatientData> getSelectedPatientProperty() {
+		return selectedPatientProperty;
+	}
+
+	public ObjectProperty<AppointmentCheckup> getSelectedCheckupProperty() {
+		return selectedCheckupProperty;
+	}
+
+	public ObjectProperty<FinalDiagnosis> getSelectedFinalDiagnosisProperty() {
+		return selectedFinalDiagnosisProperty;
+	}
+
+	public ObjectProperty<SingleSelectionModel<?>> getTestOrderListProperty() {
+		return testOrderListProperty;
+	}
+	
+	public ObjectProperty<PatientData> getSelectedPatient() {
+		return selectedPatient;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private String nullToEmpty(String str) {
 		return str == null ? "" : str;
 	}
@@ -285,6 +332,13 @@ public class FullPatientViewModel {
 		return check.isEmpty() ? null : check;
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -332,5 +386,6 @@ public class FullPatientViewModel {
 	public void loadAssociatedData() {
 		//this.searchUpdate();
 	}
+
 	
 }

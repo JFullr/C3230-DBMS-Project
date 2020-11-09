@@ -115,14 +115,10 @@ public class FullPatientCodeBehind {
 
 	private FullPatientViewModel viewModel;
 	
-	private ObjectProperty<PatientData> selectedPatient;
-	private BooleanProperty finalizedAppointment;
 	
 	public FullPatientCodeBehind() {
 		this.viewModel = new FullPatientViewModel();
 		this.isEmailValid = new SimpleBooleanProperty(false);
-		this.selectedPatient = new  SimpleObjectProperty<PatientData>();
-		this.finalizedAppointment = new SimpleBooleanProperty(false);
 	}
 
 	/**
@@ -347,16 +343,7 @@ public class FullPatientCodeBehind {
 		this.viewModel.getViewModelAppt().getMinuteProperty().bindBidirectional(this.apptMinutePicker.selectionModelProperty());
 		this.viewModel.getViewModelAppt().getDiurnalProperty().bindBidirectional(this.apptDiuralPicker.selectionModelProperty());
 		
-		this.updateApptButton.disableProperty().bind(this.finalizedAppointment);
-		/* Must be enabled for adding appointments
-			this.apptDatePicker.disableProperty().bind(this.finalizedAppointment);
-			this.apptHourPicker.disableProperty().bind(this.finalizedAppointment);
-			this.apptMinutePicker.disableProperty().bind(this.finalizedAppointment);
-			this.apptDiuralPicker.disableProperty().bind(this.finalizedAppointment);
-			//TODO add other bindings for doctor and reason
-			this.apptDoctorPicker.disableProperty().bind(this.finalizedAppointment);
-			this.apptReasonField.disableProperty().bind(this.finalizedAppointment);
-		//*/
+		this.updateApptButton.disableProperty().bind(this.viewModel.getSelectedPatientProperty().isNull().or(this.viewModel.getFinalizedAppointment()));
 		
 	}
 
@@ -385,12 +372,12 @@ public class FullPatientCodeBehind {
 	
 	private void setupSubCheckup() {
 		
-		this.systolicPressureField.disableProperty().bind(this.finalizedAppointment.or(this.selectedPatient.isNull()));
-		this.diastolicPressureField.disableProperty().bind(this.finalizedAppointment.or(this.selectedPatient.isNull()));
-		this.pulseField.disableProperty().bind(this.finalizedAppointment.or(this.selectedPatient.isNull()));
-		this.weightField.disableProperty().bind(this.finalizedAppointment.or(this.selectedPatient.isNull()));
-		this.temperatureField.disableProperty().bind(this.finalizedAppointment.or(this.selectedPatient.isNull()));
-		this.pushCheckupButton.disableProperty().bind(this.finalizedAppointment.or(this.selectedPatient.isNull()));
+		this.systolicPressureField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatient().isNull()));
+		this.diastolicPressureField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatient().isNull()));
+		this.pulseField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatient().isNull()));
+		this.weightField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatient().isNull()));
+		this.temperatureField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatient().isNull()));
+		this.pushCheckupButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatient().isNull()));
 		
 		this.viewModel.getViewModelCheckup().getDiatolicPressureProperty().bindBidirectional(this.diastolicPressureField.textProperty());
 		this.viewModel.getViewModelCheckup().getPulseProperty().bindBidirectional(this.pulseField.textProperty());
@@ -411,7 +398,7 @@ public class FullPatientCodeBehind {
 	}
 
 	@FXML
-	private ListView<?> testOrderViewList;
+	private ListView<TupleEmbed> testOrderViewList;
 
 	@FXML
 	private TextField testCostField;
@@ -426,10 +413,10 @@ public class FullPatientCodeBehind {
 	private DatePicker testDatePicker;
 
 	@FXML
-	private ComboBox<?> testPicker;
+	private ComboBox<String> testPicker;
 
 	@FXML
-	private ListView<?> testOrderList;
+	private ListView<TupleEmbed> testOrderList;
 
 	@FXML
 	private Button testRemoveSelButton;
@@ -441,22 +428,54 @@ public class FullPatientCodeBehind {
 	private Button testOrderButton;
 	
 	private void setupSubTest() {
-		this.testOrderViewList.disableProperty().bind(this.finalizedAppointment);
-		this.testCostField.disableProperty().bind(this.finalizedAppointment);
-		this.testDescField.disableProperty().bind(this.finalizedAppointment);
-		this.testDatePicker.disableProperty().bind(this.finalizedAppointment);
-		this.testPicker.disableProperty().bind(this.finalizedAppointment);
-		this.testOrderList.disableProperty().bind(this.finalizedAppointment);
-		this.testRemoveSelButton.disableProperty().bind(this.finalizedAppointment);
-		this.testRemoveAllButton.disableProperty().bind(this.finalizedAppointment);
-		this.testOrderButton.disableProperty().bind(this.finalizedAppointment);
-		this.addTestButton.disableProperty().bind(this.finalizedAppointment);
+		/*
+		this.testOrderViewList.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.testCostField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.testDescField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.testDatePicker.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.testPicker.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.testOrderList.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.testRemoveSelButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.testRemoveAllButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.testOrderButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.addTestButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		//*/
+		
+		//TODO FIXME populate
+		this.testPicker.setItems(this.viewModel.getViewModelTest().getTestsList());
+		
+		this.viewModel.getViewModelTest().getTestDropSelectionProperty().bindBidirectional(this.testPicker.selectionModelProperty());
+		
+		this.testOrderViewList.selectionModelProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestListOrderSelectionProperty());
+		this.testCostField.textProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestCostProperty());
+		this.testDescField.textProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestDescProperty());
+		this.testDatePicker.valueProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestDateProperty());
+		
+		this.testOrderList.setItems(this.viewModel.getViewModelTest().getTestsOrderList());
+		this.viewModel.getViewModelTest().getTestListOrderSelectionProperty().bindBidirectional(this.testOrderList.selectionModelProperty());
 		
 	}
-
+	
+	@FXML
+	void testQueueAdd(ActionEvent event) {
+		this.viewModel.getViewModelTest().getQueueTestEventProperty().setValue(true);
+		this.viewModel.getViewModelTest().getQueueTestEventProperty().setValue(false);
+	}
+	
+	@FXML
+	void testRemoveSelected(ActionEvent event) {
+		
+	}
+	
+	@FXML
+	void testRemoveAll(ActionEvent event) {
+		
+	}
+	
 	@FXML
 	void addLabTests(ActionEvent event) {
-
+		this.viewModel.getViewModelTest().getQueueTestEventProperty().setValue(true);
+		this.viewModel.getViewModelTest().getQueueTestEventProperty().setValue(false);
 	}
 
 	@FXML
@@ -467,8 +486,8 @@ public class FullPatientCodeBehind {
 	
 	private void setupSubFinal() {
 		
-		this.finalDiagnosisField.disableProperty().bind(this.finalizedAppointment.or(this.selectedPatient.isNull()));
-		this.submitFinalDiagnosisButton.disableProperty().bind(this.finalizedAppointment.or(this.selectedPatient.isNull()));
+		this.finalDiagnosisField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatient().isNull()));
+		this.submitFinalDiagnosisButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatient().isNull()));
 		
 		this.finalDiagnosisField.textProperty().bindBidirectional(this.viewModel.getViewModelFinal().getFinalDiagnosisProperty());
 		

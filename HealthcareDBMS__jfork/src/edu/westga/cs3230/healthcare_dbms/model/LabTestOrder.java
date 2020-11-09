@@ -12,8 +12,8 @@ public class LabTestOrder {
 	private Integer lab_test_id;
 	private Date date_to_perform;
 	
-	public LabTestOrder(Integer lab_test_order_id, Integer appointment_id, Integer lab_test_id, Date date_to_perform) {
-		this.lab_test_order_id = lab_test_order_id;
+	public LabTestOrder(Integer appointment_id, Integer lab_test_id, Date date_to_perform) {
+		this.lab_test_order_id = null;
 		this.appointment_id = appointment_id;
 		this.lab_test_id = lab_test_id;
 		this.date_to_perform = date_to_perform;

@@ -16,6 +16,14 @@ public class LabTest {
 		this.test_cost = test_cost;
 		this.test_description = test_description;
 	}
+	
+	public Integer getLab_test_id() {
+		return lab_test_id;
+	}
+
+	public void setLab_test_id(Integer lab_test_id) {
+		this.lab_test_id = lab_test_id;
+	}
 
 	public String getTest_description() {
 		return test_description;
