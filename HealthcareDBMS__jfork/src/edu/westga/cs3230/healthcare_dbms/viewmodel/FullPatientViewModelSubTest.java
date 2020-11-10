@@ -184,7 +184,7 @@ public class FullPatientViewModelSubTest {
 			dob = Date.valueOf(time);
 		}
 		
-		LabTestOrder order = new LabTestOrder(testId, apptId, dob);
+		LabTestOrder order = new LabTestOrder(apptId, testId, dob);
 		
 		return order;
 	}
@@ -273,7 +273,7 @@ public class FullPatientViewModelSubTest {
 		SqlTuple desc = SqlGetter.getFrom(order);
 		desc.add(new SqlAttribute("description", this.availableTests.get(index).getTest_description()));
 		
-		TupleEmbed embed = this.createEmbed(order, order, desc);
+		TupleEmbed embed = new TupleEmbed(order, order, desc);
 		this.testsOrderList.add(embed);
 	}
 	
@@ -285,12 +285,6 @@ public class FullPatientViewModelSubTest {
 		}
 		this.testsOrderList.remove(index);
 		
-	}
-
-	//TODO use to generate test order embeds
-	private TupleEmbed createEmbed(Object operatesOn, Object display, SqlTuple attributes) {
-		TupleEmbed embed = new TupleEmbed(operatesOn, display, attributes);
-		return embed;
 	}
 
 }

@@ -26,6 +26,7 @@ public class HealthcareDatabaseClient {
 	private AppointmentCheckupDAL appointmentCheckupDal;
 	private DoctorDAL doctorDal;
 	private LabTestDAL labTestDal;
+	private UpdateDAL updateDal;
 	
 	private QueryResult lastResult;
 	private String dbUrl;
@@ -46,6 +47,8 @@ public class HealthcareDatabaseClient {
 		this.appointmentDal = new AppointmentDAL(dbUrl);
 		this.appointmentCheckupDal = new AppointmentCheckupDAL(dbUrl);
 		this.doctorDal = new DoctorDAL(dbUrl);
+		this.updateDal = new UpdateDAL(dbUrl);
+		
 		this.labTestDal = new LabTestDAL(dbUrl);
 	}
 	
@@ -83,6 +86,12 @@ public class HealthcareDatabaseClient {
 		result = new QueryResult(gen);
 		this.lastResult = result;
 		return result;
+	}
+	
+	public QueryResult attemptUpdateTuple(Object newTupleData, Object oldTupleData) throws SQLException {
+		
+		this.lastResult = this.updateDal.updateTuple(newTupleData, oldTupleData);
+		return this.lastResult;
 	}
 
 	public QueryResult attemptAddPatient(PatientData patientData) throws SQLException {

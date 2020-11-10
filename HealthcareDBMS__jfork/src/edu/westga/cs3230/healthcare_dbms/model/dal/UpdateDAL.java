@@ -78,9 +78,7 @@ public class UpdateDAL {
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
-			//System.out.println(stmt);
 			stmt.executeUpdate();
-			//ResultSet rs = stmt.executeQuery();
 			manager.readTuples(stmt.getGeneratedKeys());
 		}
 

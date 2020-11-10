@@ -157,9 +157,6 @@ public class FullPatientViewModelSubCheckup {
 		
 		this.givenCheckupProperty.setValue(checkupData);
 		
-		//TODO pull back checkup data to get checkup id
-		//results = this.givenDB.getAppointmentBy(appointmentData);
-		
 		return true;
 	}
 	
@@ -173,7 +170,7 @@ public class FullPatientViewModelSubCheckup {
 			this.temperatureProperty.setValue("");
 			this.weightProperty.setValue("");
 			
-		}else {
+		} else {
 			
 			this.diatolicPressureProperty.setValue(""+checkup.getDiastolic_pressure());
 			this.pulseProperty.setValue(""+checkup.getPulse());
@@ -197,6 +194,7 @@ public class FullPatientViewModelSubCheckup {
 		this.updateEventProperty.addListener((evt)->{
 			if(this.updateEventProperty.getValue()) {
 				//TODO do update as normal with existing DAL
+				//this.given
 			}
 		});
 	}
