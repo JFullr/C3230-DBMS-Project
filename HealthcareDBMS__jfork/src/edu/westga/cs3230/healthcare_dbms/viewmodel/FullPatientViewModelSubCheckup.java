@@ -26,6 +26,7 @@ public class FullPatientViewModelSubCheckup {
 	private final StringProperty weightProperty;
 	private final StringProperty temperatureProperty;
 	
+	private final ObjectProperty<AppointmentCheckup> givenCheckupProperty;
 	private final ObjectProperty<PatientData> givenPatientProperty;
 	private final ObjectProperty<AppointmentData> givenAppointmentProperty;
 	
@@ -34,8 +35,9 @@ public class FullPatientViewModelSubCheckup {
 	
 	private HealthcareDatabase givenDB;
 	
-	public FullPatientViewModelSubCheckup(ObjectProperty<PatientData> givenPatientProperty, ObjectProperty<AppointmentData> givenAppointmentProperty) {
+	public FullPatientViewModelSubCheckup(ObjectProperty<PatientData> givenPatientProperty, ObjectProperty<AppointmentData> givenAppointmentProperty, ObjectProperty<AppointmentCheckup> givenCheckupProperty) {
 		
+		this.givenCheckupProperty = givenCheckupProperty;
 		this.givenPatientProperty = givenPatientProperty;
 		this.givenAppointmentProperty = givenAppointmentProperty;
 		
@@ -148,6 +150,8 @@ public class FullPatientViewModelSubCheckup {
 			return false;
 		}
 		
+		this.givenCheckupProperty.setValue(checkupData);
+		
 		//TODO pull back checkup data to get checkup id
 		//results = this.givenDB.getAppointmentBy(appointmentData);
 		
@@ -174,6 +178,7 @@ public class FullPatientViewModelSubCheckup {
 			
 		}
 		
+		this.givenCheckupProperty.setValue(checkup);
 		
 	}
 	
@@ -194,7 +199,6 @@ public class FullPatientViewModelSubCheckup {
 	private void addCheckup() {
 		
 		AppointmentCheckup checkup = this.getCheckup();
-		System.out.println(checkup);
 		if(checkup == null) {
 			FXMLAlert.statusAlert("Add Checkup Failed", "The checkup was malformed.", "Add Checkup failed", AlertType.ERROR);
 			return;

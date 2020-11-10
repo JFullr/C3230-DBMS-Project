@@ -106,9 +106,9 @@ public class FullPatientViewModel {
 		
 		this.initialDataLoad = false;
 		
-		this.viewModelCheckup = new FullPatientViewModelSubCheckup(this.selectedPatientProperty, this.selectedAppointmentProperty);
+		this.viewModelCheckup = new FullPatientViewModelSubCheckup(this.selectedPatientProperty, this.selectedAppointmentProperty, this.selectedCheckupProperty);
 		this.viewModelAppt = new FullPatientViewModelSubAppt(this.selectedPatientProperty, this.selectedAppointmentProperty);
-		this.viewModelFinal = new FullPatientViewModelSubFinal();
+		this.viewModelFinal = new FullPatientViewModelSubFinal(this.selectedAppointmentProperty, this.selectedFinalDiagnosisProperty);
 		this.viewModelTest = new FullPatientViewModelSubTest(this.selectedPatientProperty, this.selectedAppointmentProperty);
 	}
 	
@@ -329,7 +329,7 @@ public class FullPatientViewModel {
 	
 	//TODO query DB for necessary related data -- doctors, appointments, lab tests
 	public void loadData() {
-		//*
+		/*
 		//TODO REMOVE AFTER TESTING
 		this.initialDataLoad = true;
 		//*/

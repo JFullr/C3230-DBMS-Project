@@ -133,7 +133,7 @@ public class FullPatientCodeBehind {
 		this.setupAvailableList();
 		this.setupPastList();
 		
-		/*
+		//*
 		//TODO uncomment after tests are complete
 		//only necessary when no appointment is selected
 		
@@ -431,6 +431,7 @@ public class FullPatientCodeBehind {
 				.or(this.diastolicPressureField.textProperty().isEmpty())
 				.or(this.pulseField.textProperty().isEmpty())
 				.or(this.weightField.textProperty().isEmpty())
+				.or(this.viewModel.getSelectedCheckupProperty().isNull())
 		);
 		
 		
@@ -449,12 +450,14 @@ public class FullPatientCodeBehind {
 	
 	@FXML
 	void updateCheckup(ActionEvent event) {
-		
+		this.viewModel.getViewModelCheckup().getUpdateEventProperty().setValue(true);
+		this.viewModel.getViewModelCheckup().getUpdateEventProperty().setValue(false);
 	}
 	
 	@FXML
 	void addCheckup(ActionEvent event) {
-		
+		this.viewModel.getViewModelCheckup().getCreateEventProperty().setValue(true);
+		this.viewModel.getViewModelCheckup().getCreateEventProperty().setValue(false);
 	}
 
 	@FXML
