@@ -23,8 +23,8 @@ public class DoctorDAL {
 	}
 	
 	public QueryResult getDoctors() throws SQLException {
-		String query = "select p.* "
-						+ "from Person p, Doctor d"
+		String query = "select p.*  "
+						+ "from Person p, Doctor d "
 						+ "where p.person_id = d.person_id";
 		
 		SqlManager manager = new SqlManager();

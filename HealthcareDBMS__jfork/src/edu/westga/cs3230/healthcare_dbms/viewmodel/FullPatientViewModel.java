@@ -3,32 +3,25 @@ package edu.westga.cs3230.healthcare_dbms.viewmodel;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Address;
+import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentCheckup;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.FinalDiagnosis;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
-import edu.westga.cs3230.healthcare_dbms.view.AppointmentCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
-import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
-import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLWindow;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Viewmodel class for the Login window.
@@ -57,11 +50,11 @@ public class FullPatientViewModel {
 	
 	private final BooleanProperty closeDisableProperty;
 	
+	private final BooleanProperty editableAppointmentProperty;
+	
 	private final ObjectProperty<SingleSelectionModel<String>> stateProperty;
 	private final ObjectProperty<SingleSelectionModel<String>> genderProperty;
 	
-	
-	///TODO repurpose to multile object properties in codebehind
 	private final StringProperty validationProperty;
 	private final BooleanProperty finalizedAppointment;
 	private final ObjectProperty<PatientData> selectedDoctorProperty;
@@ -95,6 +88,8 @@ public class FullPatientViewModel {
 		this.validationProperty = new SimpleStringProperty(null);
 		this.closeDisableProperty = new SimpleBooleanProperty(false);
 		
+		this.editableAppointmentProperty = new SimpleBooleanProperty(true);
+		
 		this.finalizedAppointment = new SimpleBooleanProperty(false);
 		this.selectedCheckupProperty = new SimpleObjectProperty<AppointmentCheckup>();
 		this.selectedFinalDiagnosisProperty = new SimpleObjectProperty<FinalDiagnosis>();
@@ -110,6 +105,8 @@ public class FullPatientViewModel {
 		this.viewModelAppt = new FullPatientViewModelSubAppt(this.selectedPatientProperty, this.selectedAppointmentProperty);
 		this.viewModelFinal = new FullPatientViewModelSubFinal(this.selectedAppointmentProperty, this.selectedFinalDiagnosisProperty);
 		this.viewModelTest = new FullPatientViewModelSubTest(this.selectedPatientProperty, this.selectedAppointmentProperty);
+	
+		this.addActionHandlers();
 	}
 	
 	public FullPatientViewModelSubCheckup getViewModelCheckup() {
@@ -220,7 +217,9 @@ public class FullPatientViewModel {
 		return this.closeDisableProperty;
 	}
 
-	
+	public BooleanProperty getEditableAppointmentProperty() {
+		return editableAppointmentProperty;
+	}
 	
 	public BooleanProperty getFinalizedAppointment() {
 		return finalizedAppointment;
@@ -272,6 +271,22 @@ public class FullPatientViewModel {
 		this.selectedPatientProperty.setValue(data);
 		
 	}
+	
+	public void setSelectedAppointment(Appointment appt, boolean canEdit) {
+		this.editableAppointmentProperty.setValue(canEdit);
+		this.setSelectedAppointment(appt);
+	}
+	
+	public void setSelectedAppointment(Appointment appt) {
+		if(this.selectedAppointmentProperty.getValue() == null) {
+			this.selectedAppointmentProperty.setValue(new AppointmentData(appt,null));
+		} else {
+			this.selectedAppointmentProperty.setValue(new AppointmentData(appt,
+					this.selectedAppointmentProperty.getValue().getPatient()));
+		}
+		this.viewModelAppt.initFrom(appt);
+		this.viewModelCheckup.loadCheckupData();
+	}
 
 	public PatientData getPatient() {
 		
@@ -307,6 +322,30 @@ public class FullPatientViewModel {
 		return new PatientData(person, addr);
 	}
 	
+	//TODO query DB for necessary related data -- doctors, appointments, lab tests
+	public void loadData() {
+		if(!this.initialDataLoad) {
+			this.viewModelAppt.updateAvailableAppointments();
+			this.viewModelAppt.loadDoctors();
+			this.viewModelTest.loadLabTests();
+			this.initialDataLoad = true;
+		}
+	}
+	
+	
+	private boolean attemptUpdatePatient(PatientData patientData, PatientData existing) {
+
+		QueryResult results = this.givenDB.attemptUpdatePatient(patientData, existing);
+		if (results == null) {
+			return false;
+		}
+
+		return true;
+	}
+	
+	
+	
+	
 	private String nullToEmpty(String str) {
 		return str == null ? "" : str;
 	}
@@ -319,27 +358,30 @@ public class FullPatientViewModel {
 	}
 
 	
+	private void addActionHandlers() {
+		this.actionPressedProperty.addListener((e)->{
+			if(this.actionPressedProperty.getValue()) {
+				this.updatePatient();
+			}
+		});
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	//TODO query DB for necessary related data -- doctors, appointments, lab tests
-	public void loadData() {
-		/*
-		//TODO REMOVE AFTER TESTING
-		this.initialDataLoad = true;
-		//*/
-		if(!this.initialDataLoad) {
-			this.viewModelAppt.updateAvailableAppointments();
-			this.viewModelAppt.loadDoctors();
-			
-			this.initialDataLoad = true;
+	private void updatePatient() {
+		PatientData newData = this.getPatient();
+		PatientData cur = this.selectedPatientProperty.getValue();
+		
+		if(cur == null) {
+			FXMLAlert.statusAlert("Update Patient Failed", "The patient was malformed.", "Update Patient failed", AlertType.ERROR);
+			return;
+		}
+		
+		if (!this.attemptUpdatePatient(newData, cur)) {
+			FXMLAlert.statusAlert("Update Patient Failed", "The patient was not updated successfully.", "Update Patient failed", AlertType.ERROR);
+		} else {
+			FXMLAlert.statusAlert("Update Patient Success", "The patient was updated successfully.", "Update Patient Success", AlertType.INFORMATION);
+			//TODO propagate main display on close of window instead of forced propagation, maybe use old search query
+			//this.updateAvailableAppointments();
 		}
 	}
-
 	
 }

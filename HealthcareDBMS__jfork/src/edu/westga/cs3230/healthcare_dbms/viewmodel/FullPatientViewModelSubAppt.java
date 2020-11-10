@@ -14,7 +14,6 @@ import edu.westga.cs3230.healthcare_dbms.model.Doctor;
 import edu.westga.cs3230.healthcare_dbms.model.DoctorData;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
@@ -27,9 +26,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.Alert.AlertType;
 
 /**
  * Viewmodel class for the Appointment window.
@@ -180,6 +179,17 @@ public class FullPatientViewModelSubAppt {
 	}
 
 	public void initFrom(Appointment appt) {
+		
+		if(appt == null) {
+			this.minuteProperty.getValue().select("");
+			this.hourProperty.getValue().select("");
+			this.diurnalProperty.getValue().select("");
+			this.dateProperty.setValue(null);
+			this.reasonProperty.setValue("");
+			this.doctorSelectionProperty.getValue().select("");
+			return;
+		}
+		
 		Timestamp time = appt.getDate_time();
 		Date date = new Date(time.getTime());
 		LocalDate ldate = date.toLocalDate();
@@ -212,6 +222,16 @@ public class FullPatientViewModelSubAppt {
 		} else {
 			this.diurnalProperty.getValue().select("AM");
 		}
+		
+		for(int i = 0; i < this.availableDoctors.size(); i++) {
+			Doctor d = this.availableDoctors.get(i).getDoctor();
+			if(d.getPerson_id() == appt.getDoctor_id()) {
+				DoctorData p = this.availableDoctors.get(i);
+				this.doctorSelectionProperty.getValue().select(p.getPerson().getFname()+" "+p.getPerson().getLname());
+				break;
+			}
+		}
+		this.reasonProperty.setValue(appt.getAppointment_reason());
 		
 		this.updateUsingAppointment(appt);
 		
@@ -352,6 +372,11 @@ public class FullPatientViewModelSubAppt {
 				//TODO do update as normal with existing DAL
 			}
 		});
+		/*
+		this.givenAppointmentProperty.addListener((evt)->{
+			this.initFrom(this.givenAppointmentProperty.getValue().getAppointment());
+		});
+		*/
 	}
 	
 	private void addAppointment() {
@@ -367,7 +392,7 @@ public class FullPatientViewModelSubAppt {
 			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
 		} else {
 			FXMLAlert.statusAlert("Add Appointment Success", "The appointment was added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
-			//TODO REFRESH APPOINTMENTS;
+			this.updateAvailableAppointments();
 		}
 	}
 	
@@ -379,9 +404,6 @@ public class FullPatientViewModelSubAppt {
 		}
 		
 		results = this.givenDB.getAppointmentBy(appointmentData);
-		//TODO set value to gotten generated appointment
-		
-		//this.addResults(patientData, patientData.getPerson(), results);
 		return true;
 	}
 	
@@ -422,7 +444,7 @@ public class FullPatientViewModelSubAppt {
 			if(result.getAssociated() == null) {
 				embed =  this.createEmbed(operatedOn, display, tup);
 			} else {
-				embed = this.createEmbed(null, result.getAssociated(), tup);
+				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup);
 			}
 			
 			this.pastList.add(embed);

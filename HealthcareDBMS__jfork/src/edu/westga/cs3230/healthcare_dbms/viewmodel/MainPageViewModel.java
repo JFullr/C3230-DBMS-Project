@@ -91,9 +91,9 @@ public class MainPageViewModel {
 			
 			
 			Class<?> mutateClass = obj.getClass();
-			//TODO add more classes to editt
+			//TODO add more classes to edit
 			if(mutateClass == PatientData.class) {
-				this.showUpdatePatient((PatientData)obj);
+				this.handlePatientMod((PatientData)obj);
 			}
 			else if(mutateClass == Appointment.class) {
 				this.showUpdateAppointment((Appointment)obj);
@@ -326,37 +326,6 @@ public class MainPageViewModel {
 		}
 	}
 	
-	public void showCreateAppointment() {
-		// TODO Auto-generated method stub
-		try {
-			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_GUI_URL, "Create Appointment", true);
-			AppointmentCodeBehind codeBehind = (AppointmentCodeBehind) window.getController();
-			AppointmentViewModel viewModel = codeBehind.getViewModel();
-			//viewModel.initFrom(patient);
-			viewModel.populateFrom(this.getTuplesByAssociated(PatientData.class));
-			viewModel.setActionButtonText("Create Appointment");
-
-			viewModel.getActionPressedProperty().addListener((evt) -> {
-				
-				if (viewModel.getActionPressedProperty().getValue()) {
-					if (!this.attemptAddAppointment(viewModel.getAppointment())) {
-						FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
-						viewModel.getActionPressedProperty().setValue(false);
-					} else {
-						FXMLAlert.statusAlert("Add Appointment Success", "The appointment added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
-						codeBehind.closeWindow(null);
-					}
-				}
-
-			});
-			window.pack();
-			window.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public void showUpdateAppointment(Appointment appt) {
 		try {
 			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_GUI_URL, "Update Appointment", true);
@@ -455,24 +424,21 @@ public class MainPageViewModel {
 			viewModel.initFrom(patient);
 			viewModel.setDatabase(this.database);
 			//viewModel.populatePatientsFrom(this.getTuplesByAssociated(PatientData.class));
-			viewModel.setActionButtonText("Finish");
-
+			
+			/*
 			viewModel.getActionPressedProperty().addListener((evt) -> {
 				
 				if (viewModel.getActionPressedProperty().getValue()) {
-					/*if (!this.attemptAddAppointment(viewModel.getAppointment())) {
-						FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
-						viewModel.getActionPressedProperty().setValue(false);
-					} else {
-						FXMLAlert.statusAlert("Add Appointment Success", "The appointment added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
-						codeBehind.closeWindow(null);
-					}*/
+					
 					codeBehind.closeWindow(null);
 				}
 
 			});
+			*/
 			window.pack();
 			window.show();
+			
+			//TODO refresh patients here
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -8,11 +8,15 @@ import java.util.HashMap;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
+import edu.westga.cs3230.healthcare_dbms.model.Doctor;
+import edu.westga.cs3230.healthcare_dbms.model.DoctorData;
 import edu.westga.cs3230.healthcare_dbms.model.LabTest;
 import edu.westga.cs3230.healthcare_dbms.model.LabTestOrder;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
+import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
@@ -158,30 +162,21 @@ public class FullPatientViewModelSubTest {
 		
 		int index = this.testDropSelectionProperty.getValue().getSelectedIndex();
 		if(index < 0) {
-			//System.out.println("FAILED TEST SELECTION");
 			return null;
 		}
 		Integer testId = this.availableTests.get(index).getLab_test_id();
 		if(testId == null) {
-			//System.out.println("FAILED AVAILABLE TEST");
 			return null;
 		}
 		
-		//*
 		if(this.givenAppointmentProperty.getValue() == null) {
-			//System.out.println("FAILED NON NULL APPOINTMENT PROPERYT");
 			return null;
 		}
 		
 		Integer apptId = this.givenAppointmentProperty.getValue().getAppointment().getAppointment_id();
 		if(apptId == null) {
-			//System.out.println("FAILED APPOINTMENT ID");
 			return null;
 		}
-		/*/
-		//test
-		Integer apptId = 42;
-		//*/
 		
 		Date dob = null;
 		LocalDate time = this.testDateProperty.getValue();
@@ -192,6 +187,25 @@ public class FullPatientViewModelSubTest {
 		LabTestOrder order = new LabTestOrder(testId, apptId, dob);
 		
 		return order;
+	}
+	
+	public void loadLabTests() {
+		
+		this.availableTests.clear();
+		this.testsList.clear();
+		
+		QueryResult tests = this.givenDB.attemptGetLabTests();
+		
+		for(QueryResult result : tests) {
+			if(result.getTuple() != null) {
+				
+				LabTest test = new LabTest(null, null, null, null);
+				SqlSetter.fillWith(test, result.getTuple());
+				
+				this.availableTests.add(test);
+				this.testsList.add(test.getTest_name());
+			}
+		}
 	}
 
 	private void addActionHandlers() {

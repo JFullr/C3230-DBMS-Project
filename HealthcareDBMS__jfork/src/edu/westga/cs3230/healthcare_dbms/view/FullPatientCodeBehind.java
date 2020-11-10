@@ -3,17 +3,15 @@ package edu.westga.cs3230.healthcare_dbms.view;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
-import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
-import edu.westga.cs3230.healthcare_dbms.model.PatientData;
+import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.utils.Genders;
 import edu.westga.cs3230.healthcare_dbms.utils.States;
 import edu.westga.cs3230.healthcare_dbms.utils.TimeSelections;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.FullPatientViewModel;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -133,7 +131,7 @@ public class FullPatientCodeBehind {
 		this.setupAvailableList();
 		this.setupPastList();
 		
-		//*
+		/*
 		//TODO uncomment after tests are complete
 		//only necessary when no appointment is selected
 		
@@ -275,13 +273,13 @@ public class FullPatientCodeBehind {
 		this.availableList.setFixedCellSize(100.0);
 		
 		this.availableList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-			this.viewModel.getSelectedAppointmentProperty().setValue((AppointmentData)newValue.getOperatedObject());
 			if (oldValue != newValue && oldValue != null) {
 				oldValue.setMouseTransparent(true);
 			}
 			if (newValue != null) {
 				newValue.setMouseTransparent(false);
 			}
+			this.viewModel.setSelectedAppointment((Appointment)newValue.getOperatedObject(), true);
 		});
 	}
 	
@@ -295,14 +293,13 @@ public class FullPatientCodeBehind {
 		this.pastList.setFixedCellSize(100.0);
 		
 		this.pastList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-			this.viewModel.getSelectedAppointmentProperty().setValue((AppointmentData)newValue.getOperatedObject());
 			if (oldValue != newValue && oldValue != null) {
 				oldValue.setMouseTransparent(true);
 			}
 			if (newValue != null) {
 				newValue.setMouseTransparent(false);
 			}
-			this.viewModel.getViewModelCheckup().loadCheckupData();
+			this.viewModel.setSelectedAppointment((Appointment)newValue.getOperatedObject(), false);
 		});
 	}
 	
@@ -366,6 +363,7 @@ public class FullPatientCodeBehind {
 				.or(this.apptMinutePicker.getSelectionModel().selectedItemProperty().isNull())
 				.or(this.apptDoctorPicker.getSelectionModel().selectedItemProperty().isNull())
 				.or(this.apptReasonField.textProperty().isEmpty())
+				.or(Bindings.not(this.viewModel.getEditableAppointmentProperty()))
 		);
 		
 	}
@@ -492,16 +490,14 @@ public class FullPatientCodeBehind {
 	
 	private void setupSubTest() {
 		//*
-		this.testOrderViewList.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.testCostField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.testDescField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.testDatePicker.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.testPicker.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.testOrderList.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.testRemoveSelButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.testRemoveAllButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.testOrderButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.addTestButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.testOrderViewList.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
+		this.testCostField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
+		this.testDescField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
+		this.testDatePicker.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
+		this.testPicker.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
+		this.testRemoveSelButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
+		this.testRemoveAllButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
+		this.testOrderButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
 		//*/
 		
 		this.testPicker.setItems(this.viewModel.getViewModelTest().getTestsList());
@@ -528,8 +524,15 @@ public class FullPatientCodeBehind {
 		this.testOrderList.setPadding(new Insets(0,0,0,0));
 		this.testOrderList.setFixedCellSize(100.0);
 		
+		this.testOrderList.disableProperty().bind(
+				this.viewModel.getFinalizedAppointment()
+				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
+		);
+		
 		this.addTestButton.disableProperty().bind(
-				this.testDatePicker.valueProperty().isNull()
+				this.viewModel.getFinalizedAppointment()
+				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
+				.or(this.testDatePicker.valueProperty().isNull())
 				.or(this.testPicker.getSelectionModel().selectedItemProperty().isNull())
 		);
 		

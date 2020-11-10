@@ -98,18 +98,15 @@ public class FullPatientViewModelSubCheckup {
 		AppointmentCheckup checkup = null;
 		
 		if(this.givenAppointmentProperty.getValue() != null) {
-			
 			Appointment appt = this.givenAppointmentProperty.getValue().getAppointment();
-			
 			if(appt != null){
 				
 				QueryResult result = this.givenDB.getAppointmentCheckupForAppointment(appt);
-				if(result == null || result.getTuple() == null) {
-					return;
+				if(result != null && result.getTuple() != null) {
+					checkup = new AppointmentCheckup();
+					SqlSetter.fillWith(checkup, result.getTuple());
 				}
 				
-				checkup = new AppointmentCheckup();
-				SqlSetter.fillWith(checkup, result.getTuple());
 				
 			}
 		}
@@ -121,6 +118,14 @@ public class FullPatientViewModelSubCheckup {
 		
 		AppointmentCheckup checkupData = null;
 		try {
+			System.out.println(this.givenAppointmentProperty.getValue().getAppointment());
+			System.out.println(this.systolicPressureProperty.getValue());
+			System.out.println(this.diatolicPressureProperty.getValue());
+			System.out.println(this.pulseProperty.getValue());
+			System.out.println(this.weightProperty.getValue());
+			System.out.println(this.temperatureProperty.getValue());
+			System.out.println();
+			
 			checkupData = new AppointmentCheckup(
 				""+this.givenAppointmentProperty.getValue().getAppointment().getAppointment_id(),
 				this.systolicPressureProperty.getValue(),

@@ -38,15 +38,9 @@ public class MainPageCodeBehind {
 
     @FXML
     private Label userIdLabel;
-
+    
     @FXML
     private Button addPatientButton;
-    
-    @FXML
-    private Button appointSearchButton;
-    
-    @FXML
-    private Button createAppointButton;
 
 	@FXML
 	private ListView<TupleEmbed> queryListView;
@@ -60,17 +54,14 @@ public class MainPageCodeBehind {
 	@FXML
 	public void initialize() {
 
-		// TODO embed for tuples for future iterations
-		//this.queryListView.itemsProperty().bindBidirectional(this.embedHandler.getDisplayedQueryEmbeds());
 		this.usernameLabel.textProperty().bindBidirectional(this.viewModel.getUserNameProperty());
 		this.nameLabel.textProperty().bindBidirectional(this.viewModel.getNameProperty());
 		this.userIdLabel.textProperty().bindBidirectional(this.viewModel.getUserIdProperty());
 		
-		this.addPatientButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 		this.logoutButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 		this.patientSearchButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
-		this.appointSearchButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
-		this.createAppointButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
+		
+		this.addPatientButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 
 		this.addListeners();
 		
@@ -99,11 +90,6 @@ public class MainPageCodeBehind {
     }
 	
 	@FXML
-    void handleCreateAppointment(ActionEvent event) {
-		this.viewModel.showCreateAppointment();
-    }
-	
-	@FXML
 	public void handleOpenLoginView(ActionEvent event) {
 		this.viewModel.showLogin();
 	}
@@ -112,17 +98,6 @@ public class MainPageCodeBehind {
 	public void handleAddPatient(ActionEvent event) {
 
 		this.viewModel.showAddPatient();
-	}
-	
-	@FXML
-	public void handlePatientAppointmentSearch(ActionEvent event) {
-
-		this.viewModel.showPatientAppointmentSearch();
-	}
-	
-	@FXML
-	public void handlePsuedoPatientMod(ActionEvent event) {
-		this.viewModel.handlePsuedoPatientMod();
 	}
 	
 	public void updateLoginDisplay() {
@@ -135,28 +110,13 @@ public class MainPageCodeBehind {
 	
 	private void addListeners() {
 		this.queryListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-			//TODO custom actions on selections
 			if (oldValue != newValue && oldValue != null) {
 				oldValue.setMouseTransparent(true);
 			}
 			if (newValue != null) {
 				newValue.setMouseTransparent(false);
-				//System.out.println("CHANGED");
 			}
 		});
-		/*
-		this.queryListView.addEventHandler(MouseEvent.MOUSE_PRESSED, (e)->{
-			System.out.println("MOUSE "+e.getTarget());
-			if(this.queryListView.getSelectionModel().getSelectedItem() != null) {
-				
-				this.queryListView.getScene().getRoot().fireEvent(
-						new MouseEvent(MouseEvent.MOUSE_PRESSED, e.getX(),
-	                e.getY(), e.getSceneX(), e.getSceneY(), MouseButton.PRIMARY, 1, true, true, true, true,
-	                true, true, true, true, true, true, null)
-				);
-			}
-		});
-		*/
 	}
 	
 	private void setupTupleView() {

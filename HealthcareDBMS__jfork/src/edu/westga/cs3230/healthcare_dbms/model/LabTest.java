@@ -9,11 +9,13 @@ public class LabTest {
 	private Boolean is_available;
 	private Double test_cost;
 	private String test_description;
+	private String test_name;
 	
-	public LabTest(Boolean is_available, Double test_cost, String test_description) {
+	public LabTest(Boolean is_available, Double test_cost, String test_name, String test_description) {
 		this.lab_test_id = null;
 		this.is_available = is_available;
 		this.test_cost = test_cost;
+		this.test_name = test_name;
 		this.test_description = test_description;
 	}
 	
@@ -47,6 +49,14 @@ public class LabTest {
 
 	public void setIs_available(Boolean is_available) {
 		this.is_available = is_available;
+	}
+
+	public String getTest_name() {
+		return test_name;
+	}
+
+	public void setTest_name(String test_name) {
+		this.test_name = test_name;
 	}
 
 }

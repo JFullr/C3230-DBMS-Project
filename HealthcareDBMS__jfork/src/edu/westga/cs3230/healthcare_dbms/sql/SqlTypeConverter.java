@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class SqlTypeConverter {
 	
-	//https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-type-conversions.html
+	//
 /*	
 	private static HashMap<String, Class<?>> nullMappings;
 	static {
@@ -54,6 +54,8 @@ public class SqlTypeConverter {
 		convertFromSqlMethod.put("DATETIME", ResultSet.class.getMethod("getTimestamp", String.class));
 		convertFromSqlMethod.put("TIMESTAMP", ResultSet.class.getMethod("getTimestamp", String.class));
 		
+		convertFromSqlMethod.put("BIT", ResultSet.class.getMethod("getBoolean", String.class));
+		
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 		} catch (SecurityException e) {
@@ -67,12 +69,8 @@ public class SqlTypeConverter {
 				typename = typename.substring(0, typename.length()-"unsigned".length()).trim();
 			}
 			
-			Object obj = convertFromSqlMethod.get(typename).invoke(rs, label);
+			Object obj =  convertFromSqlMethod.get(typename).invoke(rs, label);
 
-			/* TODO Add back in for character handling
-			if(precision == 1 && obj != null && obj.getClass() == String.class) {
-				obj = (Character)((String)obj).charAt(0);
-			}*/
 			return obj;
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();

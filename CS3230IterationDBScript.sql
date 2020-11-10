@@ -126,6 +126,7 @@ CREATE TABLE AppointmentCheckup(
 	diastolic_pressure INTEGER NOT NULL,
 	pulse INTEGER NOT NULL,
 	weight DECIMAL(4, 2) NOT NULL,
+	temperature DECIMAL(4, 2) NOT NULL,
 	PRIMARY KEY(appointment_id),
 	FOREIGN KEY(appointment_id) REFERENCES Appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -134,7 +135,8 @@ CREATE TABLE LabTest(
 	lab_test_id INTEGER NOT NULL AUTO_INCREMENT,
 	is_available BOOL NOT NULL,
 	test_cost DECIMAL(10, 2) NOT NULL,
-	test_description VARCHAR(255) NOT NULL,
+	test_name VARCHAR(255) NOT NULL,
+	test_description TEXT NOT NULL,
 	PRIMARY KEY(lab_test_id)
 );
 
@@ -245,9 +247,9 @@ INSERT INTO Patient VALUES
 (7);
 
 INSERT INTO LabTest VALUES
-(1, TRUE,  666.66, 'Lab Test 1 -- does blood test'),
-(2, FALSE, 777.77, 'Lab Test 2 -- does appedix test'),
-(3, TRUE,  888.88, 'Lab Test 3 -- does kidney test');
+(1, TRUE,  666.66, 'Blood Test', 'Lab Test 1 -- does blood test'),
+(2, FALSE, 777.77, 'Appendix Test', 'Lab Test 2 -- does appedix test'),
+(3, TRUE,  888.88, 'Kidney Test', 'Lab Test 3 -- does kidney test');
 
 INSERT INTO `Appointment` (`appointment_id`, `person_id`, `date_time`, `doctor_id`, `appointment_reason`) VALUES
 (6, 6, '2019-10-03 21:15:00', 1, 'Repeat Checkup'),

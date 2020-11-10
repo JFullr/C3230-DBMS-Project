@@ -221,4 +221,14 @@ public class HealthcareDatabase {
 		return null;
 	}
 	
+	public QueryResult attemptGetLabTests() {
+		try {
+			QueryResult result = this.client.attemptGetLabTests();
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }
