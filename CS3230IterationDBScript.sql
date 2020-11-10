@@ -98,9 +98,12 @@ CREATE TABLE Appointment(
 	appointment_id INTEGER NOT NULL AUTO_INCREMENT,
 	person_id INTEGER NOT NULL,
 	date_time TIMESTAMP NOT NULL,
-	UNIQUE(date_time),
+	doctor_id INTEGER NOT NULL,
+	appointment_reason VARCHAR(255) NOT NULL,
+	UNIQUE(date_time, doctor_id),
 	PRIMARY KEY(appointment_id),
-	FOREIGN KEY(person_id) REFERENCES Person(person_id) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(person_id) REFERENCES Person(person_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(doctor_id) REFERENCES Doctor(person_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE FinalDiagnosis(
@@ -140,7 +143,6 @@ CREATE TABLE LabTestOrder(
 	appointment_id INTEGER NOT NULL,
 	lab_test_id INTEGER NOT NULL,
 	date_to_perform DATE NOT NULL,
-	test_description VARCHAR(255) NOT NULL,
 	PRIMARY KEY(lab_test_order_id),
 	FOREIGN KEY(lab_test_id) REFERENCES LabTest(lab_test_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(appointment_id) REFERENCES Appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE
@@ -242,3 +244,19 @@ INSERT INTO Patient VALUES
 (6),
 (7);
 
+INSERT INTO LabTest VALUES
+(1, TRUE,  666.66, 'Lab Test 1 -- does blood test'),
+(2, FALSE, 777.77, 'Lab Test 2 -- does appedix test'),
+(3, TRUE,  888.88, 'Lab Test 3 -- does kidney test');
+
+INSERT INTO `Appointment` (`appointment_id`, `person_id`, `date_time`, `doctor_id`, `appointment_reason`) VALUES
+(6, 6, '2019-10-03 21:15:00', 1, 'Repeat Checkup'),
+(7, 6, '2020-10-01 16:45:00', 1, 'Repeat Checkup'),
+(8, 6, '2021-10-01 11:15:00', 1, 'Repeat Checkup'),
+(9, 6, '2020-10-31 15:00:00', 1, 'Repeat Checkup'),
+(10, 6, '2020-12-15 05:00:00', 1, 'Repeat Checkup'),
+(11, 2, '2020-11-10 11:30:00', 1, 'Repeat Checkup'),
+(12, 2, '2020-11-21 19:02:00', 1, 'Repeat Checkup'),
+(13, 2, '2020-11-07 18:01:00', 1, 'Repeat Checkup'),
+(14, 2, '2020-10-30 13:02:00', 1, 'Repeat Checkup'),
+(15, 2, '2020-11-05 11:00:00', 1, 'Repeat Checkup');

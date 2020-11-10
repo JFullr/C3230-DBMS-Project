@@ -11,15 +11,14 @@ public class Appointment {
 	private Integer person_id;
 	private Timestamp date_time;
 	
-	//TODO update and fix db sql for values
 	private Integer doctor_id;
-	private String visit_reason;
+	private String appointment_reason;
 	
-	public Appointment(Integer person_id, Timestamp date_time, Integer doctor_id, String visit_reason) {
+	public Appointment(Integer person_id, Timestamp date_time, Integer doctor_id, String appointment_reason) {
 		this.setPerson_id(person_id);
 		this.setDate_time(date_time);
 		this.setDoctor_id(doctor_id);
-		this.setVisit_reason(visit_reason);
+		this.setAppointment_reason(appointment_reason);
 	}
 
 	public Integer getAppointment_id() {
@@ -54,12 +53,12 @@ public class Appointment {
 		this.doctor_id = doctor_id;
 	}
 
-	public String getVisit_reason() {
-		return visit_reason;
+	public String getAppointment_reason() {
+		return appointment_reason;
 	}
 
-	public void setVisit_reason(String visit_reason) {
-		this.visit_reason = visit_reason;
+	public void setAppointment_reason(String appointment_reason) {
+		this.appointment_reason = appointment_reason;
 	}
 
 }

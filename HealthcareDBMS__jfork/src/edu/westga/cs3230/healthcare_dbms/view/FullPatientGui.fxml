@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="884.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.cs3230.healthcare_dbms.view.FullPatientCodeBehind">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="473.0" prefWidth="1027.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.cs3230.healthcare_dbms.view.FullPatientCodeBehind">
    <center>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -203,10 +203,10 @@
                                                 </Label>
                                              </top>
                                              <center>
-                                                <GridPane BorderPane.alignment="CENTER">
+                                                <GridPane prefWidth="549.0" BorderPane.alignment="CENTER">
                                                   <columnConstraints>
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="269.0" minWidth="10.0" prefWidth="186.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="363.0" minWidth="10.0" prefWidth="363.0" />
                                                   </columnConstraints>
                                                   <rowConstraints>
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -230,7 +230,19 @@
                                                 </GridPane>
                                              </center>
                                              <bottom>
-                                                <Button fx:id="pushCheckupButton" mnemonicParsing="false" onAction="#pushCheckup" text="Add/Update Checkup" BorderPane.alignment="CENTER" />
+                                                <GridPane BorderPane.alignment="CENTER">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Button fx:id="updateCheckupButton" mnemonicParsing="false" onAction="#updateCheckup" text="Update Checkup" GridPane.columnIndex="1" />
+                                                      <Button fx:id="addCheckupButton" mnemonicParsing="false" onAction="#addCheckup" text="Add Checkup" />
+                                                   </children>
+                                                </GridPane>
                                              </bottom>
                                           </BorderPane>
                                        </content>

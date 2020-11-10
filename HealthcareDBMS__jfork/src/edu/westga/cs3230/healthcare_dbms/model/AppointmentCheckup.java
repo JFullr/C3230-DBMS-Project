@@ -4,7 +4,6 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 
 public class AppointmentCheckup {
 	
-	@SqlGenerated
 	private Integer appointment_id;
 	private Integer systolic_pressure;
 	private Integer diastolic_pressure;
@@ -21,8 +20,9 @@ public class AppointmentCheckup {
 		this.setTemperature(null);
 	}
 
-	public AppointmentCheckup(Integer systolic_pressure, Integer diastolic_pressure, Integer pulse,
+	public AppointmentCheckup(Integer appointment_id, Integer systolic_pressure, Integer diastolic_pressure, Integer pulse,
 			Double weight, Double temperature) {
+		this.appointment_id = appointment_id;
 		this.systolic_pressure = systolic_pressure;
 		this.diastolic_pressure = diastolic_pressure;
 		this.pulse = pulse;
@@ -30,8 +30,9 @@ public class AppointmentCheckup {
 		this.setTemperature(temperature);
 	}
 	
-	public AppointmentCheckup(String systolic_pressure, String diastolic_pressure, String pulse,
+	public AppointmentCheckup(String appointment_id, String systolic_pressure, String diastolic_pressure, String pulse,
 			String weight, String temperature) throws Exception {
+		this.appointment_id = Integer.parseInt(appointment_id);
 		this.systolic_pressure = Integer.parseInt(systolic_pressure);
 		this.diastolic_pressure = Integer.parseInt(diastolic_pressure);
 		this.pulse = Integer.parseInt(pulse);

@@ -52,51 +52,6 @@ public class AppointmentViewModel {
 		this.tupleList = FXCollections.observableArrayList();
 		this.tupleSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
 	}
-	
-	
-	public AppointmentData getAppointment() {
-
-
-		Date date = null;
-		LocalDate time = this.dateProperty.getValue();
-		if(time != null) {
-			date = Date.valueOf(time);
-		}
-		
-		TupleEmbed embed = this.tupleSelectionProperty.getValue().getSelectedItem();
-		if(embed == null) {
-			return null;
-		}
-		
-		if(embed.getOperatedObject() == null || embed.getOperatedObject().getClass() != PatientData.class) {
-			return null;
-		}
-		PatientData patient = ((PatientData) embed.getOperatedObject());
-		if(patient == null || patient.getPerson() == null || patient.getPerson().getPerson_id() == null) {
-			return null;
-		}
-		
-		Integer person_id = patient.getPerson().getPerson_id();
-		
-		Integer hour = this.nullInteger(this.hourProperty.getValue().getSelectedItem());
-		Integer minutes =  this.nullInteger(this.minuteProperty.getValue().getSelectedItem());
-		String diurnal =  this.nullString(this.diurnalProperty.getValue().getSelectedItem());
-		
-		if(hour == null || minutes == null || diurnal == null) {
-			return null;
-		}
-		
-		boolean pm = "pm".equalsIgnoreCase(diurnal);
-		if(hour == 12 && !pm) {
-			hour = 0;
-		}
-		
-		Timestamp stamp = this.makeTimestampFrom(date, hour, minutes, pm);
-		
-		Appointment appt = new Appointment(person_id, stamp, null, null);
-		
-		return new AppointmentData(appt, patient);
-	}
 
 	public BooleanProperty getActionPressedProperty() {
 		return this.actionEventPressed;
@@ -151,6 +106,51 @@ public class AppointmentViewModel {
 
 	public ObjectProperty<MultipleSelectionModel<TupleEmbed>>  getTupleSelectionProperty() {
 		return this.tupleSelectionProperty;
+	}
+	
+	
+	
+	public AppointmentData getAppointment() {
+
+		Date date = null;
+		LocalDate time = this.dateProperty.getValue();
+		if(time != null) {
+			date = Date.valueOf(time);
+		}
+		
+		TupleEmbed embed = this.tupleSelectionProperty.getValue().getSelectedItem();
+		if(embed == null) {
+			return null;
+		}
+		
+		if(embed.getOperatedObject() == null || embed.getOperatedObject().getClass() != PatientData.class) {
+			return null;
+		}
+		PatientData patient = ((PatientData) embed.getOperatedObject());
+		if(patient == null || patient.getPerson() == null || patient.getPerson().getPerson_id() == null) {
+			return null;
+		}
+		
+		Integer person_id = patient.getPerson().getPerson_id();
+		
+		Integer hour = this.nullInteger(this.hourProperty.getValue().getSelectedItem());
+		Integer minutes =  this.nullInteger(this.minuteProperty.getValue().getSelectedItem());
+		String diurnal =  this.nullString(this.diurnalProperty.getValue().getSelectedItem());
+		
+		if(hour == null || minutes == null || diurnal == null) {
+			return null;
+		}
+		
+		boolean pm = "pm".equalsIgnoreCase(diurnal);
+		if(hour == 12 && !pm) {
+			hour = 0;
+		}
+		
+		Timestamp stamp = this.makeTimestampFrom(date, hour, minutes, pm);
+		
+		Appointment appt = new Appointment(person_id, stamp, null, null);
+		
+		return new AppointmentData(appt, patient);
 	}
 
 

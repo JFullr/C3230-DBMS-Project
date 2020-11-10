@@ -1,5 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.io.database;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.List;
 import edu.westga.cs3230.healthcare_dbms.model.*;
 import edu.westga.cs3230.healthcare_dbms.model.dal.*;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 /**
  * Description
@@ -22,6 +24,7 @@ public class HealthcareDatabaseClient {
 	private PatientDAL patientDal;
 	private AppointmentDAL appointmentDal;
 	private AppointmentCheckupDAL appointmentCheckupDal;
+	private DoctorDAL doctorDal;
 	
 	private QueryResult lastResult;
 	private String dbUrl;
@@ -41,6 +44,7 @@ public class HealthcareDatabaseClient {
 		this.patientDal = new PatientDAL(dbUrl);
 		this.appointmentDal = new AppointmentDAL(dbUrl);
 		this.appointmentCheckupDal = new AppointmentCheckupDAL(dbUrl);
+		this.doctorDal = new DoctorDAL(dbUrl);
 	}
 	
 	public boolean callQuery(String query) throws Exception {
@@ -62,6 +66,21 @@ public class HealthcareDatabaseClient {
 	
 	public QueryResult getLastQueryResult() {
 		return this.lastResult;
+	}
+	
+	public QueryResult attemptPostTuple(Object tuple) throws SQLException {
+		
+		QueryResult result = null; //this.postDal.getGeneratedIds();
+		
+		ArrayList<BigDecimal> tups = this.postDal.getGeneratedIds(this.postDal.postTuple(tuple));
+		if(tups == null) {
+			return null;
+		}
+		
+		SqlTuple gen = new SqlTuple(new SqlAttribute(SqlTuple.SQL_GENERATED_ID, tups.get(0)));
+		result = new QueryResult(gen);
+		this.lastResult = result;
+		return result;
 	}
 
 	public QueryResult attemptAddPatient(PatientData patientData) throws SQLException {
@@ -132,6 +151,11 @@ public class HealthcareDatabaseClient {
 	public QueryResult attemptAddAppointmentCheckup(AppointmentCheckup appointmentData) throws SQLException {
 		this.lastResult = this.appointmentCheckupDal.attemptAddAppointmentCheckup(appointmentData);
 		//this.lastResult.setAssociated(appointmentData);
+		return this.lastResult;
+	}
+	
+	public QueryResult attemptGetDoctors() throws SQLException {
+		this.lastResult = this.doctorDal.getDoctors();
 		return this.lastResult;
 	}
 }

@@ -68,6 +68,18 @@ public class HealthcareDatabase {
 		}
 		return null;
 	}
+	
+	
+	public QueryResult attemptPostTuple(Object tuple) {
+		try {
+			QueryResult result = this.client.attemptPostTuple(tuple);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 
 	public QueryResult attemptAddPatient(PatientData patientData) {
 		try {
@@ -192,6 +204,16 @@ public class HealthcareDatabase {
 	public QueryResult attemptAddAppointmentCheckup(AppointmentCheckup checkup) {
 		try {
 			QueryResult result = this.client.attemptAddAppointmentCheckup(checkup);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public QueryResult attemptGetDoctors() {
+		try {
+			QueryResult result = this.client.attemptGetDoctors();
 			return result;
 		} catch(Exception e) {
 			e.printStackTrace();

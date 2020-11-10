@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 
 public class SqlTuple implements Iterable<SqlAttribute> {
 	
+	public static final String SQL_GENERATED_ID = "GEN_ID";
+	
 	private HashMap<String, SqlAttribute> attrs;
 	
 	public SqlTuple(SqlAttribute attr) {

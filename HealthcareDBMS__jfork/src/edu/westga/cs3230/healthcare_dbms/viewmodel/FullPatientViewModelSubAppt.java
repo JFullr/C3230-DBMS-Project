@@ -6,13 +6,22 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
+import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.Doctor;
+import edu.westga.cs3230.healthcare_dbms.model.DoctorData;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
+import edu.westga.cs3230.healthcare_dbms.model.Person;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
-import javafx.beans.binding.BooleanBinding;
+import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -20,6 +29,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Viewmodel class for the Appointment window.
@@ -31,37 +41,90 @@ public class FullPatientViewModelSubAppt {
 	private final ObjectProperty<SingleSelectionModel<String>> hourProperty;
 	private final ObjectProperty<SingleSelectionModel<String>> minuteProperty;
 	private final ObjectProperty<SingleSelectionModel<String>> diurnalProperty;
-	private final ObjectProperty<Appointment> existingAppointmentProperty;
 	
 	private ObservableList<String> doctorList;
-	private ArrayList<Doctor> availableDoctors;
+	private ArrayList<DoctorData> availableDoctors;
 	
 	private ObjectProperty<SingleSelectionModel<String>> doctorSelectionProperty;
 	
+	private ObservableList<TupleEmbed> availableList;
+	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> availableSelectionProperty;
+	
+	private ObservableList<TupleEmbed> pastList;
+	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> pastSelectionProperty;
+	
 	private final StringProperty reasonProperty;
 	
+	private final BooleanProperty createEventProperty;
+	private final BooleanProperty updateEventProperty;
+	
 	private final ObjectProperty<PatientData> givenPatientProperty;
+	private final ObjectProperty<AppointmentData> givenAppointmentProperty;
+	
+	private HealthcareDatabase givenDB;
 
 	/**
 	 * Instantiates a new AppointmentViewModel.
 	 */
-	public FullPatientViewModelSubAppt(ObjectProperty<PatientData> givenPatientProperty) {
+	public FullPatientViewModelSubAppt(ObjectProperty<PatientData> givenPatientProperty, ObjectProperty<AppointmentData> givenAppointmentProperty) {
 		
 		this.givenPatientProperty = givenPatientProperty;
+		this.givenAppointmentProperty = givenAppointmentProperty;
+		
+		this.createEventProperty = new SimpleBooleanProperty(false);
+		this.updateEventProperty = new SimpleBooleanProperty(false);
 		
 		this.dateProperty = new SimpleObjectProperty<LocalDate>(null);
 		
 		this.hourProperty = new SimpleObjectProperty<SingleSelectionModel<String>>(null);
 		this.minuteProperty = new SimpleObjectProperty<SingleSelectionModel<String>>(null);
 		this.diurnalProperty = new SimpleObjectProperty<SingleSelectionModel<String>>(null);
-		this.existingAppointmentProperty = new SimpleObjectProperty<>();
 		
 		this.doctorList = FXCollections.observableArrayList();
-		this.availableDoctors = new ArrayList<Doctor>();
+		this.availableDoctors = new ArrayList<DoctorData>();
+		
+		this.availableList = FXCollections.observableArrayList();
+		this.availableSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
+		
+		this.pastList = FXCollections.observableArrayList();
+		this.pastSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
+		
+		/*
+		//TEST
+		Doctor test = new Doctor(42);
+		this.availableDoctors.add(test);
+		this.doctorList.add("Test Doctor Name");
+		//*/
 		
 		this.reasonProperty = new SimpleStringProperty();
 		
 		this.doctorSelectionProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
+		
+		this.addActionHandlers();
+		
+		
+		
+		
+	}
+	
+	public void setDatabase(HealthcareDatabase givenDB) {
+		this.givenDB = givenDB;
+	}
+
+	public ObservableList<TupleEmbed> getAvailableList() {
+		return availableList;
+	}
+
+	public ObjectProperty<MultipleSelectionModel<TupleEmbed>> getAvailableSelectionProperty() {
+		return availableSelectionProperty;
+	}
+
+	public ObservableList<TupleEmbed> getPastList() {
+		return pastList;
+	}
+
+	public ObjectProperty<MultipleSelectionModel<TupleEmbed>> getPastSelectionProperty() {
+		return pastSelectionProperty;
 	}
 
 	public ObjectProperty<SingleSelectionModel<String>> getHourProperty() {
@@ -77,26 +140,44 @@ public class FullPatientViewModelSubAppt {
 		return this.diurnalProperty;
 	}
 
-	public BooleanBinding getIsUpdateProperty() {
-		return this.existingAppointmentProperty.isNotNull();
-	}
-
-	public ObjectProperty<Appointment> getExistingAppointmentProperty() {
-		return this.existingAppointmentProperty;
-	}
-
 	public ObjectProperty<LocalDate> getDateProperty() {
 		return this.dateProperty;
 	}
 
-	public ObservableList<?> getDoctorList() {
+	public ObservableList<String> getDoctorList() {
 		return this.doctorList;
 	}
 
 	public ObjectProperty<SingleSelectionModel<String>> getDoctorSelectionProperty() {
 		return this.doctorSelectionProperty;
 	}
+	
+	public StringProperty getReasonProperty() {
+		return this.reasonProperty;
+	}
 
+	public BooleanProperty getCreateEventProperty() {
+		return createEventProperty;
+	}
+
+	public BooleanProperty getUpdateEventProperty() {
+		return updateEventProperty;
+	}
+	
+	public void updateAvailableAppointments() {
+		
+		if(this.givenPatientProperty.getValue() == null || this.givenDB == null) {
+			return;
+		}
+		
+		this.pastList.clear();
+		this.availableList.clear();
+		
+		QueryResult valid = this.givenDB.getValidAppointmentsByPatient(this.givenPatientProperty.getValue());
+		QueryResult invalid = this.givenDB.getInvalidAppointmentsByPatient(this.givenPatientProperty.getValue());
+		this.addValidResults(null, null, valid);
+		this.addInvalidResults(null, null, invalid);
+	}
 
 	public void initFrom(Appointment appt) {
 		Timestamp time = appt.getDate_time();
@@ -119,13 +200,21 @@ public class FullPatientViewModelSubAppt {
 			hour = 12;
 		}
 		this.hourProperty.getValue().select(""+hour);
-		this.minuteProperty.getValue().select(""+ltime.getMinute());
+		
+		if(ltime.getMinute() == 0) {
+			this.minuteProperty.getValue().select("00");
+		}else {
+			this.minuteProperty.getValue().select(""+ltime.getMinute());
+		}
+		
 		if(pm) {
 			this.diurnalProperty.getValue().select("PM");
 		} else {
 			this.diurnalProperty.getValue().select("AM");
 		}
-		this.existingAppointmentProperty.set(appt);
+		
+		this.updateUsingAppointment(appt);
+		
 	}
 	
 	public AppointmentData getAppointment() {
@@ -139,6 +228,7 @@ public class FullPatientViewModelSubAppt {
 		
 		PatientData patient = this.givenPatientProperty.getValue();
 		if(patient == null || patient.getPerson() == null || patient.getPerson().getPerson_id() == null) {
+			System.out.println("FAILED PATIENT");
 			return null;
 		}
 		
@@ -148,12 +238,18 @@ public class FullPatientViewModelSubAppt {
 		Integer minutes =  this.nullInteger(this.minuteProperty.getValue().getSelectedItem());
 		String diurnal =  this.nullString(this.diurnalProperty.getValue().getSelectedItem());
 		
+		//*
 		int index = this.doctorSelectionProperty.getValue().getSelectedIndex();
-		if(index < 1) {
+		if(index < 0) {
 			return null;
 		}
+		Integer doctorId = this.availableDoctors.get(index).getPerson().getPerson_id();
+		/*/
+		//TEST
+		Integer doctorId = 42;
+		//*/
 		
-		if(hour == null || minutes == null || diurnal == null) {
+		if(hour == null || minutes == null || diurnal == null || doctorId == null) {
 			return null;
 		}
 		
@@ -164,9 +260,29 @@ public class FullPatientViewModelSubAppt {
 		
 		Timestamp stamp = this.makeTimestampFrom(date, hour, minutes, pm);
 		
-		Appointment appt = new Appointment(person_id, stamp, this.availableDoctors.get(index).getPerson_id(), this.reasonProperty.getValue());
+		Appointment appt = new Appointment(person_id, stamp, doctorId, this.reasonProperty.getValue());
 		
 		return new AppointmentData(appt, patient);
+	}
+	
+	public void loadDoctors() {
+		
+		this.availableDoctors.clear();
+		this.doctorList.clear();
+		
+		QueryResult doctors = this.givenDB.attemptGetDoctors();
+		
+		for(QueryResult result : doctors) {
+			if(result.getTuple() != null) {
+				Person person = new Person(null, null, null, null, null, null, null, null);
+				SqlSetter.fillWith(person, result.getTuple());
+				Doctor doctor = new Doctor(person.getPerson_id());
+				
+				DoctorData docData = new DoctorData(person, doctor);
+				this.availableDoctors.add(docData);
+				this.doctorList.add(person.getFname()+" "+person.getLname());
+			}
+		}
 	}
 	
 	private String nullString(String check) {
@@ -214,8 +330,109 @@ public class FullPatientViewModelSubAppt {
 		}
 		
 	}
-
-	public StringProperty getReasonProperty() {
-		return this.reasonProperty;
+	
+	private void updateUsingAppointment(Appointment appt) {
+		if(this.givenAppointmentProperty.getValue() != null) {
+			AppointmentData mod = this.givenAppointmentProperty.getValue();
+			this.givenAppointmentProperty.setValue(new AppointmentData(appt, mod.getPatient()));
+		}else {
+			this.givenAppointmentProperty.setValue(new AppointmentData(appt, this.givenPatientProperty.getValue()));
+		}
 	}
+	
+	private void addActionHandlers() {
+		this.createEventProperty.addListener((evt)->{
+			if(this.createEventProperty.getValue()) {
+				this.addAppointment();
+			}
+		});
+		
+		this.updateEventProperty.addListener((evt)->{
+			if(this.updateEventProperty.getValue()) {
+				//TODO do update as normal with existing DAL
+			}
+		});
+	}
+	
+	private void addAppointment() {
+		
+		AppointmentData appt = this.getAppointment();
+		System.out.println(appt);
+		if(appt == null) {
+			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment was malformed.", "Add Appointment failed", AlertType.ERROR);
+			return;
+		}
+		
+		if (!this.attemptAddAppointment(appt)) {
+			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
+		} else {
+			FXMLAlert.statusAlert("Add Appointment Success", "The appointment was added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
+			//TODO REFRESH APPOINTMENTS;
+		}
+	}
+	
+	private boolean attemptAddAppointment(AppointmentData appointmentData) {
+		
+		QueryResult results = this.givenDB.attemptAddAppointment(appointmentData);
+		if (results == null || results.getTuple()== null) {
+			return false;
+		}
+		
+		results = this.givenDB.getAppointmentBy(appointmentData);
+		//TODO set value to gotten generated appointment
+		
+		//this.addResults(patientData, patientData.getPerson(), results);
+		return true;
+	}
+	
+	private void addValidResults(Object operatedOn, Object display, QueryResult results) {
+		
+		if(results == null) {
+			return;
+		}
+		
+		TupleEmbed embed = null;
+		for(QueryResult result : results) {
+			SqlTuple tup = result.getTuple();
+			if(result.getAssociated() == null) {
+				embed =  this.createEmbed(operatedOn, display, tup);
+			} else {
+				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup);
+			}
+			/*
+			final TupleEmbed xbed = embed;
+			xbed.getPressedPropertyAction().addListener((evt)->{
+				this.givenStore.setValue(xbed.getPressedPropertyAction().getValue());
+			});
+			*/
+			this.availableList.add(embed);
+		}
+		
+	}
+	
+	private void addInvalidResults(Object operatedOn, Object display, QueryResult results) {
+		
+		if(results == null) {
+			return;
+		}
+		
+		TupleEmbed embed = null;
+		for(QueryResult result : results) {
+			SqlTuple tup = result.getTuple();
+			if(result.getAssociated() == null) {
+				embed =  this.createEmbed(operatedOn, display, tup);
+			} else {
+				embed = this.createEmbed(null, result.getAssociated(), tup);
+			}
+			
+			this.pastList.add(embed);
+		}
+		
+	}
+	
+	private TupleEmbed createEmbed(Object operatesOn, Object display, SqlTuple attributes) {
+		TupleEmbed embed = new TupleEmbed(operatesOn, display, attributes);
+		return embed;
+	}
+	
 }

@@ -3,6 +3,7 @@ package edu.westga.cs3230.healthcare_dbms.view;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
+import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.utils.Genders;
 import edu.westga.cs3230.healthcare_dbms.utils.States;
@@ -133,13 +134,12 @@ public class FullPatientCodeBehind {
 		this.setupPastList();
 		
 		/*
-		TODO uncomment after tests are complete
-		only necessary when no appointment is selected
+		//TODO uncomment after tests are complete
+		//only necessary when no appointment is selected
 		
-		this.subCheckupTab.disableProperty().bind(this.selectedPatient.isNull());
-		this.subFinalTab.disableProperty().bind(this.selectedPatient.isNull());
-		this.subTestTab.disableProperty().bind(this.selectedPatient.isNull());
-		this.updateApptButton.disableProperty().bind(this.selectedPatient.isNull());
+		this.subCheckupTab.disableProperty().bind(this.viewModel.getSelectedAppointmentProperty().isNull());
+		this.subFinalTab.disableProperty().bind(this.viewModel.getSelectedAppointmentProperty().isNull());
+		this.subTestTab.disableProperty().bind(this.viewModel.getSelectedAppointmentProperty().isNull());
 		//*/
 		
 		this.setupApptTab();
@@ -255,15 +255,12 @@ public class FullPatientCodeBehind {
 
 	@FXML
 	private ListView<TupleEmbed> availableList;
-
-	@FXML
-	void addAppointment(ActionEvent event) {
-		this.viewModel.showCreateAppointment();
-	}
 	
 	private void setupApptTab() {
 		this.apptTab.selectedProperty().addListener((evt)->{
-			this.viewModel.loadAssociatedData();
+			if(this.apptTab.isSelected()) {
+				this.viewModel.loadData();
+			}
 		});
 		
 	}
@@ -273,11 +270,12 @@ public class FullPatientCodeBehind {
 		this.availableList.selectionModelProperty().addListener((evt)->{
 			this.availableList.refresh();
 		});
-		this.availableList.setItems(this.viewModel.getViewModelControl().getAvailableList());
+		this.availableList.setItems(this.viewModel.getViewModelAppt().getAvailableList());
 		this.availableList.setPadding(new Insets(0,0,0,0));
 		this.availableList.setFixedCellSize(100.0);
 		
 		this.availableList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			this.viewModel.getSelectedAppointmentProperty().setValue((AppointmentData)newValue.getOperatedObject());
 			if (oldValue != newValue && oldValue != null) {
 				oldValue.setMouseTransparent(true);
 			}
@@ -292,17 +290,19 @@ public class FullPatientCodeBehind {
 		this.pastList.selectionModelProperty().addListener((evt)->{
 			this.pastList.refresh();
 		});
-		this.pastList.setItems(this.viewModel.getViewModelControl().getPastList());
+		this.pastList.setItems(this.viewModel.getViewModelAppt().getPastList());
 		this.pastList.setPadding(new Insets(0,0,0,0));
 		this.pastList.setFixedCellSize(100.0);
 		
 		this.pastList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			this.viewModel.getSelectedAppointmentProperty().setValue((AppointmentData)newValue.getOperatedObject());
 			if (oldValue != newValue && oldValue != null) {
 				oldValue.setMouseTransparent(true);
 			}
 			if (newValue != null) {
 				newValue.setMouseTransparent(false);
 			}
+			this.viewModel.getViewModelCheckup().loadCheckupData();
 		});
 	}
 	
@@ -347,11 +347,41 @@ public class FullPatientCodeBehind {
 		
 		this.updateApptButton.disableProperty().bind(this.viewModel.getSelectedPatientProperty().isNull().or(this.viewModel.getFinalizedAppointment()));
 		
+		this.apptDoctorPicker.setItems(this.viewModel.getViewModelAppt().getDoctorList());
+		this.viewModel.getViewModelAppt().getDoctorSelectionProperty().bindBidirectional(this.apptDoctorPicker.selectionModelProperty());
+		
+		this.newApptButton.disableProperty().bind(
+				this.apptDatePicker.valueProperty().isNull()
+				.or(this.apptDiuralPicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.apptHourPicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.apptMinutePicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.apptDoctorPicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.apptReasonField.textProperty().isEmpty())
+		);
+		
+		this.updateApptButton.disableProperty().bind(
+				this.apptDatePicker.valueProperty().isNull()
+				.or(this.apptDiuralPicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.apptHourPicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.apptMinutePicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.apptDoctorPicker.getSelectionModel().selectedItemProperty().isNull())
+				.or(this.apptReasonField.textProperty().isEmpty())
+		);
+		
 	}
 
 	@FXML
 	public void updateAppointment(ActionEvent event) {
 		//this.viewModel.app
+		this.viewModel.getViewModelAppt().getUpdateEventProperty().setValue(true);
+		this.viewModel.getViewModelAppt().getUpdateEventProperty().setValue(false);
+	}
+	
+	@FXML
+	void addAppointment(ActionEvent event) {
+		//this.viewModel.showCreateAppointment();
+		this.viewModel.getViewModelAppt().getCreateEventProperty().setValue(true);
+		this.viewModel.getViewModelAppt().getCreateEventProperty().setValue(false);
 	}
 
 	@FXML
@@ -370,7 +400,10 @@ public class FullPatientCodeBehind {
 	private TextField temperatureField;
 
 	@FXML
-	private Button pushCheckupButton;
+	private Button addCheckupButton;
+	
+	@FXML
+	private Button updateCheckupButton;
 	
 	private void setupSubCheckup() {
 		
@@ -379,7 +412,27 @@ public class FullPatientCodeBehind {
 		this.pulseField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
 		this.weightField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
 		this.temperatureField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.pushCheckupButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		
+		this.addCheckupButton.disableProperty().bind(
+				this.viewModel.getFinalizedAppointment()
+				.or(this.viewModel.getSelectedPatientProperty().isNull())
+				.or(this.temperatureField.textProperty().isEmpty())
+				.or(this.systolicPressureField.textProperty().isEmpty())
+				.or(this.diastolicPressureField.textProperty().isEmpty())
+				.or(this.pulseField.textProperty().isEmpty())
+				.or(this.weightField.textProperty().isEmpty())
+		);
+		
+		this.updateCheckupButton.disableProperty().bind(
+				this.viewModel.getFinalizedAppointment()
+				.or(this.viewModel.getSelectedPatientProperty().isNull())
+				.or(this.temperatureField.textProperty().isEmpty())
+				.or(this.systolicPressureField.textProperty().isEmpty())
+				.or(this.diastolicPressureField.textProperty().isEmpty())
+				.or(this.pulseField.textProperty().isEmpty())
+				.or(this.weightField.textProperty().isEmpty())
+		);
+		
 		
 		this.viewModel.getViewModelCheckup().getDiatolicPressureProperty().bindBidirectional(this.diastolicPressureField.textProperty());
 		this.viewModel.getViewModelCheckup().getPulseProperty().bindBidirectional(this.pulseField.textProperty());
@@ -395,8 +448,13 @@ public class FullPatientCodeBehind {
 	}
 	
 	@FXML
-	void pushCheckup(ActionEvent event) {
-
+	void updateCheckup(ActionEvent event) {
+		
+	}
+	
+	@FXML
+	void addCheckup(ActionEvent event) {
+		
 	}
 
 	@FXML
@@ -453,6 +511,37 @@ public class FullPatientCodeBehind {
 		
 		this.testOrderList.setItems(this.viewModel.getViewModelTest().getTestsOrderList());
 		this.viewModel.getViewModelTest().getTestListOrderSelectionProperty().bindBidirectional(this.testOrderList.selectionModelProperty());
+		
+		
+		this.testOrderViewList.selectionModelProperty().addListener((evt)->{
+			this.testOrderViewList.refresh();
+		});
+		this.testOrderViewList.setPadding(new Insets(0,0,0,0));
+		this.testOrderViewList.setFixedCellSize(100.0);
+		
+		this.testOrderList.selectionModelProperty().addListener((evt)->{
+			this.testOrderList.refresh();
+		});
+		this.testOrderList.setPadding(new Insets(0,0,0,0));
+		this.testOrderList.setFixedCellSize(100.0);
+		
+		this.addTestButton.disableProperty().bind(
+				this.testDatePicker.valueProperty().isNull()
+				.or(this.testPicker.getSelectionModel().selectedItemProperty().isNull())
+		);
+		
+		this.testRemoveSelButton.disableProperty().bind(
+				this.testOrderList.getSelectionModel().selectedItemProperty().isNull()
+		);
+		
+		this.testCostField.setEditable(false);
+		this.testDescField.setEditable(false);
+		
+		/*
+		this.testRemoveAllButton.disableProperty().bind(
+				this.testOrderList.selectionModelProperty().
+		);
+		*/
 		
 	}
 	

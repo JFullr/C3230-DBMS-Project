@@ -18,7 +18,7 @@ public class DoctorData {
 		return person;
 	}
 
-	public Doctor getDocor() {
+	public Doctor getDoctor() {
 		return doctor;
 	}
 }

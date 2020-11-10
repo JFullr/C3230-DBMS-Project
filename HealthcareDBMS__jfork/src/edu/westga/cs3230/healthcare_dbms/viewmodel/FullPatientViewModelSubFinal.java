@@ -24,6 +24,10 @@ public class FullPatientViewModelSubFinal {
 		return finalDiagnosisProperty;
 	}
 	
+	public void setDatabase(HealthcareDatabase givenDB) {
+		this.givenDB = givenDB;
+	}
+	
 	public void initFrom(FinalDiagnosis diagnosis) {
 		this.finalDiagnosisProperty.setValue(diagnosis.getDiagnosis_result());
 	}
@@ -44,11 +48,9 @@ public class FullPatientViewModelSubFinal {
 			return false;
 		}
 		
-		/*
-		TODO create FinalDiagnosisDAL
-		QueryResult results = this.givenDB.attemptAddAppointmentCheckup(checkupData);
+		QueryResult results = this.givenDB.attemptPostTuple(finalDiagnosis);
 		
-		if (results == null || results.getTuple()== null) {
+		if (results == null || results.getTuple() == null) {
 			return false;
 		}
 		
@@ -56,8 +58,6 @@ public class FullPatientViewModelSubFinal {
 		//results = this.givenDB.getAppointmentBy(appointmentData);
 		
 		return true;
-		//*/
-		return false;
 	}
 	
 }

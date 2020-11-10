@@ -35,8 +35,7 @@ import javafx.scene.control.SingleSelectionModel;
  */
 public class FullPatientViewModel {
 	
-	private FullPatientViewModelSubControl viewModelControl;
-	private FullPatientViewModelSubCheck viewModelCheckup;
+	private FullPatientViewModelSubCheckup viewModelCheckup;
 	private FullPatientViewModelSubAppt viewModelAppt;
 	private FullPatientViewModelSubFinal viewModelFinal;
 	private FullPatientViewModelSubTest viewModelTest;
@@ -74,6 +73,8 @@ public class FullPatientViewModel {
 	
 	private HealthcareDatabase givenDB;
 	private ObjectProperty<Object> givenStore;
+	
+	private boolean initialDataLoad;
 
 	public FullPatientViewModel() {
 		this.firstNameProperty = new SimpleStringProperty();
@@ -103,18 +104,15 @@ public class FullPatientViewModel {
 		this.selectedPatientProperty = new SimpleObjectProperty<PatientData>();
 		this.selectedDoctorProperty = new SimpleObjectProperty<PatientData>();
 		
-		this.viewModelControl = new FullPatientViewModelSubControl();
-		this.viewModelCheckup = new FullPatientViewModelSubCheck();
-		this.viewModelAppt = new FullPatientViewModelSubAppt(this.selectedPatientProperty);
+		this.initialDataLoad = false;
+		
+		this.viewModelCheckup = new FullPatientViewModelSubCheckup(this.selectedPatientProperty, this.selectedAppointmentProperty);
+		this.viewModelAppt = new FullPatientViewModelSubAppt(this.selectedPatientProperty, this.selectedAppointmentProperty);
 		this.viewModelFinal = new FullPatientViewModelSubFinal();
 		this.viewModelTest = new FullPatientViewModelSubTest(this.selectedPatientProperty, this.selectedAppointmentProperty);
 	}
 	
-	public FullPatientViewModelSubControl getViewModelControl() {
-		return this.viewModelControl;
-	}
-	
-	public FullPatientViewModelSubCheck getViewModelCheckup() {
+	public FullPatientViewModelSubCheckup getViewModelCheckup() {
 		return this.viewModelCheckup;
 	}
 	
@@ -182,6 +180,10 @@ public class FullPatientViewModel {
 		return dobProperty;
 	}
 	
+	public ObjectProperty<AppointmentData> getSelectedAppointmentProperty() {
+		return selectedAppointmentProperty;
+	}
+	
 	public void setCloseButtonDisabled() {
 		this.closeDisableProperty.setValue(true);
 	}
@@ -218,9 +220,34 @@ public class FullPatientViewModel {
 		return this.closeDisableProperty;
 	}
 
-	public void setDatabaseAccess(HealthcareDatabase givenDB, ObjectProperty<Object> selectedTupleObject) {
+	
+	
+	public BooleanProperty getFinalizedAppointment() {
+		return finalizedAppointment;
+	}
+
+	public ObjectProperty<PatientData> getSelectedPatientProperty() {
+		return selectedPatientProperty;
+	}
+
+	public ObjectProperty<AppointmentCheckup> getSelectedCheckupProperty() {
+		return selectedCheckupProperty;
+	}
+
+	public ObjectProperty<FinalDiagnosis> getSelectedFinalDiagnosisProperty() {
+		return selectedFinalDiagnosisProperty;
+	}
+
+	public ObjectProperty<SingleSelectionModel<?>> getTestOrderListProperty() {
+		return testOrderListProperty;
+	}
+	
+	public void setDatabase(HealthcareDatabase givenDB) {
 		this.givenDB = givenDB;
-		this.givenStore = selectedTupleObject;
+		this.viewModelAppt.setDatabase(givenDB);
+		this.viewModelCheckup.setDatabase(givenDB);
+		this.viewModelFinal.setDatabase(givenDB);
+		this.viewModelTest.setDatabase(givenDB);
 	}
 	
 	public void initFrom(PatientData data) {
@@ -280,41 +307,6 @@ public class FullPatientViewModel {
 		return new PatientData(person, addr);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	public BooleanProperty getFinalizedAppointment() {
-		return finalizedAppointment;
-	}
-
-	public ObjectProperty<PatientData> getSelectedPatientProperty() {
-		return selectedPatientProperty;
-	}
-
-	public ObjectProperty<AppointmentCheckup> getSelectedCheckupProperty() {
-		return selectedCheckupProperty;
-	}
-
-	public ObjectProperty<FinalDiagnosis> getSelectedFinalDiagnosisProperty() {
-		return selectedFinalDiagnosisProperty;
-	}
-
-	public ObjectProperty<SingleSelectionModel<?>> getTestOrderListProperty() {
-		return testOrderListProperty;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	private String nullToEmpty(String str) {
 		return str == null ? "" : str;
 	}
@@ -335,50 +327,18 @@ public class FullPatientViewModel {
 	
 	
 	
-	
-	public boolean showCreateAppointment() {
-		try {
-			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_GUI_URL, "Create Appointment", true);
-			AppointmentCodeBehind codeBehind = (AppointmentCodeBehind) window.getController();
-			AppointmentViewModel viewModel = codeBehind.getViewModel();
-			//viewModel.initFrom(patient);
-			//viewModel.populateFrom(this.getTuplesByAssociated(PatientData.class));
-			viewModel.setActionButtonText("Create Appointment");
-
-			viewModel.getActionPressedProperty().addListener((evt) -> {
-				
-				if (viewModel.getActionPressedProperty().getValue()) {
-					if (!this.viewModelControl.attemptAddAppointment(viewModel.getAppointment())) {
-						FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
-						viewModel.getActionPressedProperty().setValue(false);
-					} else {
-						FXMLAlert.statusAlert("Add Appointment Success", "The appointment added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
-						//TODO REFRESH APPOINTMENTS
-						codeBehind.closeWindow(null);
-					}
-				}
-
-			});
-			window.pack();
-			window.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
+	//TODO query DB for necessary related data -- doctors, appointments, lab tests
+	public void loadData() {
+		//*
+		//TODO REMOVE AFTER TESTING
+		this.initialDataLoad = true;
+		//*/
+		if(!this.initialDataLoad) {
+			this.viewModelAppt.updateAvailableAppointments();
+			this.viewModelAppt.loadDoctors();
+			
+			this.initialDataLoad = true;
 		}
-		
-		return false;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public void loadAssociatedData() {
-		//this.searchUpdate();
 	}
 
 	

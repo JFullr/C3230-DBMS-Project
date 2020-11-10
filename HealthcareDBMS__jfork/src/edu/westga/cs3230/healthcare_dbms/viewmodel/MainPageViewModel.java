@@ -433,6 +433,7 @@ public class MainPageViewModel {
 	public void handlePsuedoPatientMod() {
 		
 		Person person = new Person("email@email.email", "1111111111", java.sql.Date.valueOf(LocalDate.now()), "firstName", "lastName", "Q", "Gender", "999999999");
+		person.setPerson_id(777);
 		Address address = new Address("Address 1", "Address 2", "City", "State", 66666);
 		PatientData patientData = new PatientData(person, address);
 		this.handlePatientMod(patientData);
@@ -452,7 +453,7 @@ public class MainPageViewModel {
 			FullPatientCodeBehind codeBehind = (FullPatientCodeBehind) window.getController();
 			FullPatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.initFrom(patient);
-			//viewModel.setDatabaseAccess(this.database, this.selectedTupleObject);
+			viewModel.setDatabase(this.database);
 			//viewModel.populatePatientsFrom(this.getTuplesByAssociated(PatientData.class));
 			viewModel.setActionButtonText("Finish");
 
