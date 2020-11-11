@@ -2,8 +2,6 @@ package edu.westga.cs3230.healthcare_dbms.io;
 
 import java.net.URL;
 
-import edu.westga.cs3230.healthcare_dbms.view.AppointmentCodeBehind;
-import edu.westga.cs3230.healthcare_dbms.view.AppointmentSearchCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.FullPatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
@@ -27,15 +25,9 @@ public class HealthcareIoConstants {
 	
 	private static final String PATIENT_GUI = "PatientGui.fxml";
 	private static final String LOGIN_GUI = "LoginGui.fxml";
-	private static final String APPOINTMENT_GUI = "AppointmentGui.fxml";
-	private static final String APPOINTMENT_SEARCH_GUI = "AppointmentSearchGui.fxml";
-	private static final String APPOINTMENT_CHECKUP_GUI = "AppointmentCheckupGui.fxml";
 	
 	public static final URL PATIENT_GUI_URL = PatientCodeBehind.class.getResource(PATIENT_GUI);
 	public static final URL LOGIN_GUI_URL = LoginCodeBehind.class.getResource(LOGIN_GUI);
-	public static final URL APPOINTMENT_GUI_URL = AppointmentCodeBehind.class.getResource(APPOINTMENT_GUI);
-	public static final URL APPOINTMENT_SEARCH_GUI_URL = AppointmentSearchCodeBehind.class.getResource(APPOINTMENT_SEARCH_GUI);
-	public static final URL APPOINTMENT_CHECKUP_URL = AppointmentCodeBehind.class.getResource(APPOINTMENT_CHECKUP_GUI);
 	
 	private static final String FULL_PATIENT_GUI = "FullPatientGui.fxml";
 	public static final URL FULL_PATIENT_URL = FullPatientCodeBehind.class.getResource(FULL_PATIENT_GUI);

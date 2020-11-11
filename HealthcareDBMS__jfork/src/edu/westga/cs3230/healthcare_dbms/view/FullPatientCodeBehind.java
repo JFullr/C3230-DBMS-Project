@@ -358,6 +358,7 @@ public class FullPatientCodeBehind {
 		
 		this.updateApptButton.disableProperty().bind(
 				this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull()
+				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
 				.or(this.apptDatePicker.valueProperty().isNull())
 				.or(this.apptDiuralPicker.getSelectionModel().selectedItemProperty().isNull())
 				.or(this.apptHourPicker.getSelectionModel().selectedItemProperty().isNull())
@@ -414,7 +415,7 @@ public class FullPatientCodeBehind {
 		
 		this.addCheckupButton.disableProperty().bind(
 				this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull()
-				.or(this.viewModel.getSelectedPatientProperty().isNull())
+				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
 				.or(this.temperatureField.textProperty().isEmpty())
 				.or(this.systolicPressureField.textProperty().isEmpty())
 				.or(this.diastolicPressureField.textProperty().isEmpty())
@@ -424,7 +425,7 @@ public class FullPatientCodeBehind {
 		
 		this.updateCheckupButton.disableProperty().bind(
 				this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull()
-				.or(this.viewModel.getSelectedPatientProperty().isNull())
+				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
 				.or(this.temperatureField.textProperty().isEmpty())
 				.or(this.systolicPressureField.textProperty().isEmpty())
 				.or(this.diastolicPressureField.textProperty().isEmpty())

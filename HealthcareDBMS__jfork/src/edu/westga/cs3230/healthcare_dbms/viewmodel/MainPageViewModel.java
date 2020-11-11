@@ -1,23 +1,16 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
-import edu.westga.cs3230.healthcare_dbms.model.Address;
-import edu.westga.cs3230.healthcare_dbms.model.Appointment;
-import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
-import edu.westga.cs3230.healthcare_dbms.view.AppointmentCodeBehind;
-import edu.westga.cs3230.healthcare_dbms.view.AppointmentSearchCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.FullPatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
@@ -95,9 +88,6 @@ public class MainPageViewModel {
 			if(mutateClass == PatientData.class) {
 				this.handlePatientMod((PatientData)obj);
 			}
-			else if(mutateClass == Appointment.class) {
-				this.showUpdateAppointment((Appointment)obj);
-			}
 			
 			else {
 				FXMLAlert.statusAlert("Cannot Edit "+mutateClass.getSimpleName(), AlertType.WARNING);
@@ -114,7 +104,7 @@ public class MainPageViewModel {
 	public void loadDataFromDatabase() {
 		for (QueryResult result : this.database.getQueryResults()) {
 			try {
-				/// TODO
+				/// TODO admin interface, rename later
 				// this.frontpanel.add(result);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -297,117 +287,7 @@ public class MainPageViewModel {
 			e.printStackTrace();
 		}
 	}
-	
-	public void showUpdatePatient(PatientData patient) {
-		try {
-			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.PATIENT_GUI_URL, "Update Patient", true);
-			PatientCodeBehind codeBehind = (PatientCodeBehind) window.getController();
-			PatientViewModel viewModel = codeBehind.getViewModel();
-			viewModel.initFrom(patient);
-			viewModel.setActionButtonText("Update Patient");
-
-			viewModel.getActionPressedProperty().addListener((evt) -> {
-				
-				if (viewModel.getActionPressedProperty().getValue()) {
-					if (!this.attemptUpdatePatient(viewModel.getPatient(), patient)) {
-						FXMLAlert.statusAlert("Update Failed", "The patient update did not complete successfully.", "Patient Update failed", AlertType.ERROR);
-						viewModel.getActionPressedProperty().setValue(false);
-					} else {
-						FXMLAlert.statusAlert("Update Success", "The patient update completed Successfully.", "Patient Update Success", AlertType.INFORMATION);
-						codeBehind.closeWindow(null);
-					}
-				}
-
-			});
-			window.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void showUpdateAppointment(Appointment appt) {
-		try {
-			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_GUI_URL, "Update Appointment", true);
-			AppointmentCodeBehind codeBehind = (AppointmentCodeBehind) window.getController();
-			AppointmentViewModel viewModel = codeBehind.getViewModel();
-			//viewModel.initFrom(patient);
-			viewModel.initFrom(appt);
-			codeBehind.setDatabase(this.database);
-			viewModel.populateFrom(this.getTuplesByAssociated(PatientData.class));
-			viewModel.setActionButtonText("Update Appointment");
-
-			viewModel.getActionPressedProperty().addListener((evt) -> {
-				if (viewModel.getActionPressedProperty().getValue()) {
-					if (!this.attemptUpdateAppointment(viewModel.getAppointment(), appt)) {
-						FXMLAlert.statusAlert("Update Appointment Failed", "The appointment did not update successfully.", "Update Appointment failed", AlertType.ERROR);
-						viewModel.getActionPressedProperty().setValue(false);
-					} else {
-						FXMLAlert.statusAlert("Update Appointment Success", "The appointment updated successfully.", "Update Appointment Success", AlertType.INFORMATION);
-						codeBehind.closeWindow(null);
-					}
-				}
-				codeBehind.closeWindow(null);
-			});
-			window.pack();
-			window.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private boolean attemptUpdateAppointment(AppointmentData appointment, Appointment appt) {
-		try {
-			QueryResult results = this.database.attemptUpdateAppointment(appt, appointment.getAppointment());
-			return true; // TODO: Needs to return the true result! Currently we are just hoping things went right...
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	public void showPatientAppointmentSearch() {
-		// TODO Auto-generated method stub
-		try {
-			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.APPOINTMENT_SEARCH_GUI_URL, "Search Appointments by Patient", true);
-			AppointmentSearchCodeBehind codeBehind = (AppointmentSearchCodeBehind) window.getController();
-			AppointmentSearchViewModel viewModel = codeBehind.getViewModel();
-			viewModel.setDatabaseAccess(this.database, this.selectedTupleObject);
-			viewModel.populatePatientsFrom(this.getTuplesByAssociated(PatientData.class));
-			viewModel.setActionButtonText("Finish");
-
-			viewModel.getActionPressedProperty().addListener((evt) -> {
-				
-				if (viewModel.getActionPressedProperty().getValue()) {
-					/*if (!this.attemptAddAppointment(viewModel.getAppointment())) {
-						FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
-						viewModel.getActionPressedProperty().setValue(false);
-					} else {
-						FXMLAlert.statusAlert("Add Appointment Success", "The appointment added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
-						codeBehind.closeWindow(null);
-					}*/
-					codeBehind.closeWindow(null);
-				}
-
-			});
-			window.pack();
-			window.show();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void handlePsuedoPatientMod() {
 		
-		Person person = new Person("email@email.email", "1111111111", java.sql.Date.valueOf(LocalDate.now()), "firstName", "lastName", "Q", "Gender", "999999999");
-		person.setPerson_id(777);
-		Address address = new Address("Address 1", "Address 2", "City", "State", 66666);
-		PatientData patientData = new PatientData(person, address);
-		this.handlePatientMod(patientData);
-	}
-	
 	public void handlePatientMod(PatientData patient) {
 		try {
 			
@@ -423,18 +303,7 @@ public class MainPageViewModel {
 			FullPatientViewModel viewModel = codeBehind.getViewModel();
 			viewModel.initFrom(patient);
 			viewModel.setDatabase(this.database);
-			//viewModel.populatePatientsFrom(this.getTuplesByAssociated(PatientData.class));
 			
-			/*
-			viewModel.getActionPressedProperty().addListener((evt) -> {
-				
-				if (viewModel.getActionPressedProperty().getValue()) {
-					
-					codeBehind.closeWindow(null);
-				}
-
-			});
-			*/
 			window.pack();
 			window.show();
 			
@@ -445,20 +314,6 @@ public class MainPageViewModel {
 		}
 	}
 	
-	private boolean attemptUpdatePatient(PatientData patientData, PatientData existing) {
-
-		QueryResult results = this.database.attemptUpdatePatient(patientData, existing);
-		if (results == null) {
-			return false;
-		}
-		
-		results = this.database.getPatientBySSN(patientData);
-		PatientData updatedPatient = (PatientData)results.getAssociated();
-		this.addResults(updatedPatient, updatedPatient.getPerson(), results);
-
-		return true;
-	}
-
 	public boolean attemptAddPatient(PatientData patientData) {
 		
 		QueryResult results = this.database.attemptAddPatient(patientData);
@@ -469,19 +324,6 @@ public class MainPageViewModel {
 		results = this.database.getPatientBySSN(patientData);
 		
 		this.addResults(patientData, patientData.getPerson(), results);
-		return true;
-	}
-	
-	public boolean attemptAddAppointment(AppointmentData appointmentData) {
-		
-		QueryResult results = this.database.attemptAddAppointment(appointmentData);
-		if (results == null || results.getTuple()== null) {
-			return false;
-		}
-		
-		results = this.database.getAppointmentBy(appointmentData);
-		
-		//this.addResults(patientData, patientData.getPerson(), results);
 		return true;
 	}
 
@@ -515,15 +357,12 @@ public class MainPageViewModel {
 		this.tuples.clear();
 		
 		TupleEmbed embed = null;
-		TupleEmbed shadow = null;
 		for(QueryResult result : results) {
 			SqlTuple tup = result.getTuple();
 			if(result.getAssociated() == null) {
 				embed =  this.createEmbed(operatedOn, display, tup);
-				shadow =  this.createEmbed(operatedOn, display, tup);
 			} else {
 				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup);
-				shadow =  this.createEmbed(operatedOn, display, tup);
 			}
 			
 			this.tuples.add(embed);
@@ -541,7 +380,7 @@ public class MainPageViewModel {
 		
 		return embed;
 	}
-	
+	/*
 	private ObservableList<TupleEmbed> getTuplesByAssociated(Class<?> classAssociated){
 		ObservableList<TupleEmbed> found = FXCollections.observableArrayList();
 		
@@ -559,5 +398,6 @@ public class MainPageViewModel {
 		
 		return found;
 	}
+	*/
 	
 }
