@@ -274,6 +274,7 @@ public class FullPatientViewModel {
 	
 	public void setSelectedAppointment(Appointment appt, boolean canEdit) {
 		this.editableAppointmentProperty.setValue(canEdit);
+		this.selectedFinalDiagnosisProperty.setValue(null);
 		this.setSelectedAppointment(appt);
 	}
 	
