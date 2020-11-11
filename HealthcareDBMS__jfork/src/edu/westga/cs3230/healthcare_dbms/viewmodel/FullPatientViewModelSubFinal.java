@@ -1,5 +1,7 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
+import java.util.Optional;
+
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
@@ -11,6 +13,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 
 /**
  * Viewmodel class for the Login window.
@@ -83,11 +87,24 @@ public class FullPatientViewModelSubFinal {
 	
 	private void addActionHandlers() {
 		this.submitEventProperty.addListener((evt)->{
-			this.submitFInalDiagnosis();
+			if(this.submitEventProperty.getValue()) {
+				this.submitFinalDiagnosis();
+			}
 		});
 	}
 	
-	private void submitFInalDiagnosis() {
+	private boolean confirmSubmit() {
+		
+		Optional<ButtonType> result = FXMLAlert.statusAlert("Final Diagnosis Confirmation", 
+										"Confirm DIagnosis", "Submitting a final diagnosis prevents further editing and must be removed by an administrator.", AlertType.CONFIRMATION);
+		return result.get().getButtonData().equals(ButtonData.OK_DONE);
+	}
+	
+	private void submitFinalDiagnosis() {
+		
+		if(!this.confirmSubmit()) {
+			return;
+		}
 		
 		FinalDiagnosis diagnosis = this.getFinalDiagnosis();
 		

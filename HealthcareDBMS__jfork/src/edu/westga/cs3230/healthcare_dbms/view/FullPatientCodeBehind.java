@@ -586,7 +586,8 @@ public class FullPatientCodeBehind {
 
 	@FXML
 	void submitFinalDiagnosis(ActionEvent event) {
-
+		this.viewModel.getViewModelFinal().getSubmitEventProperty().setValue(true);
+		this.viewModel.getViewModelFinal().getSubmitEventProperty().setValue(false);
 	}
 
 }
