@@ -240,4 +240,14 @@ public class HealthcareDatabase {
 		return null;
 	}
 	
+	public QueryResult attemptGetFinalDiagnois(Appointment appt) {
+		try {
+			QueryResult result = this.client.attemptGetFinalDiagnosisOf(appt);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

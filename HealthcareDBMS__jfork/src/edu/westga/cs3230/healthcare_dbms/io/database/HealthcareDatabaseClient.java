@@ -27,6 +27,7 @@ public class HealthcareDatabaseClient {
 	private DoctorDAL doctorDal;
 	private LabTestDAL labTestDal;
 	private UpdateDAL updateDal;
+	private FinalDiagnosisDAL finalDiagnosisDal;
 	
 	private QueryResult lastResult;
 	private String dbUrl;
@@ -48,7 +49,7 @@ public class HealthcareDatabaseClient {
 		this.appointmentCheckupDal = new AppointmentCheckupDAL(dbUrl);
 		this.doctorDal = new DoctorDAL(dbUrl);
 		this.updateDal = new UpdateDAL(dbUrl);
-		
+		this.finalDiagnosisDal = new FinalDiagnosisDAL(dbUrl);
 		this.labTestDal = new LabTestDAL(dbUrl);
 	}
 	
@@ -82,8 +83,13 @@ public class HealthcareDatabaseClient {
 			return null;
 		}
 		
-		SqlTuple gen = new SqlTuple(new SqlAttribute(SqlTuple.SQL_GENERATED_ID, tups.get(0)));
-		result = new QueryResult(gen);
+		
+		if(tups.size() > 0) {
+			SqlTuple gen = new SqlTuple(new SqlAttribute(SqlTuple.SQL_GENERATED_ID, tups.get(0)));
+			result = new QueryResult(gen);
+		}else {
+			result = new QueryResult((SqlTuple)null);
+		}
 		this.lastResult = result;
 		return result;
 	}
@@ -162,6 +168,11 @@ public class HealthcareDatabaseClient {
 	public QueryResult attemptAddAppointmentCheckup(AppointmentCheckup appointmentData) throws SQLException {
 		this.lastResult = this.appointmentCheckupDal.attemptAddAppointmentCheckup(appointmentData);
 		//this.lastResult.setAssociated(appointmentData);
+		return this.lastResult;
+	}
+	
+	public QueryResult attemptGetFinalDiagnosisOf(Appointment appt) throws SQLException {
+		this.lastResult = this.finalDiagnosisDal.getFinalDiagnosisOf(appt);
 		return this.lastResult;
 	}
 	

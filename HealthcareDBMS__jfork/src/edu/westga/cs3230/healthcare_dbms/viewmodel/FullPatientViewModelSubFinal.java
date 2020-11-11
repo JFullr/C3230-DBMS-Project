@@ -6,6 +6,7 @@ import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.FinalDiagnosis;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -53,20 +54,37 @@ public class FullPatientViewModelSubFinal {
 		this.givenDB = givenDB;
 	}
 	
+	public void loadFinalDiagnosis() {
+		
+		QueryResult result = this.givenDB.attemptGetFinalDiagnois(this.givenAppointmentProperty.getValue().getAppointment());
+		
+		if(result == null || result.getTuple() == null) {
+			return;
+		}
+		
+		FinalDiagnosis diagnosis = new FinalDiagnosis();
+		SqlSetter.fillWith(diagnosis, result.getTuple());
+		
+		this.initFrom(diagnosis);
+		
+	}
+	
 	public void initFrom(FinalDiagnosis diagnosis) {
+		
 		this.finalDiagnosisProperty.setValue(diagnosis.getDiagnosis_result());
+		this.givenFinalDiagnosisProperty.setValue(diagnosis);
 	}
 
 	public FinalDiagnosis getFinalDiagnosis() {
 		
-		FinalDiagnosis checkupData = new FinalDiagnosis(this.finalDiagnosisProperty.getValue());
+		FinalDiagnosis checkupData = new FinalDiagnosis(
+				this.givenAppointmentProperty.getValue().getAppointment().getAppointment_id(),
+				this.finalDiagnosisProperty.getValue());
 		
 		return checkupData;
 	}
 	
 	public boolean attemptPushFinalDiagnosis() {
-		
-		//TODO check if exists, if not add checkup, else update
 		
 		FinalDiagnosis finalDiagnosis = this.getFinalDiagnosis();
 		if(finalDiagnosis == null) {
@@ -75,12 +93,9 @@ public class FullPatientViewModelSubFinal {
 		
 		QueryResult results = this.givenDB.attemptPostTuple(finalDiagnosis);
 		
-		if (results == null || results.getTuple() == null) {
+		if (results == null) {
 			return false;
 		}
-		
-		//TODO pull back appointment data mabye
-		//results = this.givenDB.getAppointmentBy(appointmentData);
 		
 		return true;
 	}
@@ -96,7 +111,7 @@ public class FullPatientViewModelSubFinal {
 	private boolean confirmSubmit() {
 		
 		Optional<ButtonType> result = FXMLAlert.statusAlert("Final Diagnosis Confirmation", 
-										"Confirm DIagnosis", "Submitting a final diagnosis prevents further editing and must be removed by an administrator.", AlertType.CONFIRMATION);
+										"Confirm Final Diagnosis", "Submitting a final diagnosis prevents further editing and must be removed by an administrator.", AlertType.CONFIRMATION);
 		return result.get().getButtonData().equals(ButtonData.OK_DONE);
 	}
 	

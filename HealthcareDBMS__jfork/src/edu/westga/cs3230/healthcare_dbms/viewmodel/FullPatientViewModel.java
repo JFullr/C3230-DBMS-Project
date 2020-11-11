@@ -286,6 +286,7 @@ public class FullPatientViewModel {
 		}
 		this.viewModelAppt.initFrom(appt);
 		this.viewModelCheckup.loadCheckupData();
+		this.viewModelFinal.loadFinalDiagnosis();
 	}
 
 	public PatientData getPatient() {

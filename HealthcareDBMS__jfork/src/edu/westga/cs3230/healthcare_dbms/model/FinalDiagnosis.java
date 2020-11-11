@@ -10,8 +10,8 @@ public class FinalDiagnosis {
 		this.diagnosis_result = null;
 	}
 	
-	public FinalDiagnosis(String result) {
-		this.appointment_id = null;
+	public FinalDiagnosis(Integer appointment_id, String result) {
+		this.appointment_id = appointment_id;
 		this.diagnosis_result = result;
 	}
 

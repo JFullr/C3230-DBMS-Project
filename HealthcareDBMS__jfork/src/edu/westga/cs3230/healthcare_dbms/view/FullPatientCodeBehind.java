@@ -578,9 +578,14 @@ public class FullPatientCodeBehind {
 	private void setupSubFinal() {
 		
 		this.finalDiagnosisField.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
-		this.submitFinalDiagnosisButton.disableProperty().bind(this.viewModel.getFinalizedAppointment().or(this.viewModel.getSelectedPatientProperty().isNull()));
+		this.submitFinalDiagnosisButton.disableProperty().bind(
+				this.viewModel.getFinalizedAppointment()
+				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
+			);
 		
-		this.finalDiagnosisField.textProperty().bindBidirectional(this.viewModel.getViewModelFinal().getFinalDiagnosisProperty());
+		this.finalDiagnosisField.textProperty().bindBidirectional(
+			this.viewModel.getViewModelFinal().getFinalDiagnosisProperty()
+		);
 		
 	}
 
