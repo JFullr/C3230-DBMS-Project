@@ -44,7 +44,6 @@ public class UpdateDAL {
 		}
 		query.setLength(query.lastIndexOf(","));
 		
-		///TODO create WHERE discriminator from selection values
 		query.append(" WHERE ");
 		for (SqlAttribute attribute : oldTuple) {
 			if (attribute.getValue() == null) {
@@ -78,6 +77,8 @@ public class UpdateDAL {
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
+			
+			//System.out.println(stmt);
 			stmt.executeUpdate();
 			manager.readTuples(stmt.getGeneratedKeys());
 		}

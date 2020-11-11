@@ -543,12 +543,6 @@ public class FullPatientCodeBehind {
 		this.testCostField.setEditable(false);
 		this.testDescField.setEditable(false);
 		
-		/*
-		this.testRemoveAllButton.disableProperty().bind(
-				this.testOrderList.selectionModelProperty().
-		);
-		*/
-		
 	}
 	
 	@FXML

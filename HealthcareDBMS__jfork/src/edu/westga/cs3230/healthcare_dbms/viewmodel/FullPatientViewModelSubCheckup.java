@@ -1,5 +1,7 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
+import java.sql.SQLException;
+
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
@@ -118,13 +120,6 @@ public class FullPatientViewModelSubCheckup {
 		
 		AppointmentCheckup checkupData = null;
 		try {
-			System.out.println(this.givenAppointmentProperty.getValue().getAppointment());
-			System.out.println(this.systolicPressureProperty.getValue());
-			System.out.println(this.diatolicPressureProperty.getValue());
-			System.out.println(this.pulseProperty.getValue());
-			System.out.println(this.weightProperty.getValue());
-			System.out.println(this.temperatureProperty.getValue());
-			System.out.println();
 			
 			checkupData = new AppointmentCheckup(
 				""+this.givenAppointmentProperty.getValue().getAppointment().getAppointment_id(),
@@ -142,14 +137,12 @@ public class FullPatientViewModelSubCheckup {
 	
 	public boolean attemptAddCheckup() {
 		
-		//TODO check if exists, if not add checkup, else update
-		
 		AppointmentCheckup checkupData = this.getCheckup();
 		if(checkupData == null) {
 			return false;
 		}
 		
-		QueryResult results = this.givenDB.attemptAddAppointmentCheckup(checkupData);
+		QueryResult results = this.givenDB.attemptPostTuple(checkupData);
 		
 		if (results == null || results.getTuple() == null) {
 			return false;
@@ -193,8 +186,7 @@ public class FullPatientViewModelSubCheckup {
 		
 		this.updateEventProperty.addListener((evt)->{
 			if(this.updateEventProperty.getValue()) {
-				//TODO do update as normal with existing DAL
-				//this.given
+				this.updateCheckup();
 			}
 		});
 	}
@@ -213,6 +205,26 @@ public class FullPatientViewModelSubCheckup {
 			FXMLAlert.statusAlert("Add Checkup Success", "The checkup was added Successfully.", "Add Checkup Success", AlertType.INFORMATION);
 			//TODO REFRESH APPOINTMENTS;
 		}
+	}
+	
+	private void updateCheckup() {
+		if (!this.attemptUpdateCheckup(this.givenCheckupProperty.getValue(), this.getCheckup())) {
+			FXMLAlert.statusAlert("Update Checkup Failed", "The checkup did not update successfully.", "Update Checkup failed", AlertType.ERROR);
+		} else {
+			FXMLAlert.statusAlert("Update Checkup Success", "The checkup updated successfully.", "Update Checkup Success", AlertType.INFORMATION);
+			///TODO update Appointments
+		}
+	}
+	
+	private boolean attemptUpdateCheckup(AppointmentCheckup existingData, AppointmentCheckup newData) {
+		//*
+		QueryResult results = this.givenDB.attemptUpdateTuple(newData, existingData);
+		if(results == null) {
+			return false;
+		}
+		this.givenCheckupProperty.setValue(newData);
+		return true; 
+		//*/
 	}
 	
 }

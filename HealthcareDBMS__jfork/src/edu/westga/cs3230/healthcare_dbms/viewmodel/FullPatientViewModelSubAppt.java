@@ -1,6 +1,7 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -369,20 +370,14 @@ public class FullPatientViewModelSubAppt {
 		
 		this.updateEventProperty.addListener((evt)->{
 			if(this.updateEventProperty.getValue()) {
-				//TODO do update as normal with existing DAL
+				this.updateAppointment();
 			}
 		});
-		/*
-		this.givenAppointmentProperty.addListener((evt)->{
-			this.initFrom(this.givenAppointmentProperty.getValue().getAppointment());
-		});
-		*/
 	}
 	
 	private void addAppointment() {
 		
 		AppointmentData appt = this.getAppointment();
-		System.out.println(appt);
 		if(appt == null) {
 			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment was malformed.", "Add Appointment failed", AlertType.ERROR);
 			return;
@@ -417,16 +412,10 @@ public class FullPatientViewModelSubAppt {
 		for(QueryResult result : results) {
 			SqlTuple tup = result.getTuple();
 			if(result.getAssociated() == null) {
-				embed =  this.createEmbed(operatedOn, display, tup);
+				embed =  new TupleEmbed(operatedOn, display, tup);
 			} else {
-				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup);
+				embed = new TupleEmbed(result.getAssociated(), result.getAssociated(), tup);
 			}
-			/*
-			final TupleEmbed xbed = embed;
-			xbed.getPressedPropertyAction().addListener((evt)->{
-				this.givenStore.setValue(xbed.getPressedPropertyAction().getValue());
-			});
-			*/
 			this.availableList.add(embed);
 		}
 		
@@ -442,9 +431,9 @@ public class FullPatientViewModelSubAppt {
 		for(QueryResult result : results) {
 			SqlTuple tup = result.getTuple();
 			if(result.getAssociated() == null) {
-				embed =  this.createEmbed(operatedOn, display, tup);
+				embed =  new TupleEmbed(operatedOn, display, tup);
 			} else {
-				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup);
+				embed = new TupleEmbed(result.getAssociated(), result.getAssociated(), tup);
 			}
 			
 			this.pastList.add(embed);
@@ -452,9 +441,30 @@ public class FullPatientViewModelSubAppt {
 		
 	}
 	
-	private TupleEmbed createEmbed(Object operatesOn, Object display, SqlTuple attributes) {
-		TupleEmbed embed = new TupleEmbed(operatesOn, display, attributes);
-		return embed;
+	
+	private void updateAppointment() {
+		if (!this.attemptUpdateAppointment(this.givenAppointmentProperty.get().getAppointment(), this.getAppointment().getAppointment())) {
+			FXMLAlert.statusAlert("Update Appointment Failed", "The appointment did not update successfully.", "Update Appointment failed", AlertType.ERROR);
+		} else {
+			FXMLAlert.statusAlert("Update Appointment Success", "The appointment updated successfully.", "Update Appointment Success", AlertType.INFORMATION);
+			///TODO update Appointments
+		}
+	}
+	
+	private boolean attemptUpdateAppointment(Appointment existingData, Appointment newData) {
+		
+		QueryResult results;
+		try {
+			results = this.givenDB.attemptUpdateAppointment(existingData, newData);
+		} catch (SQLException e) {
+			return false;
+		}
+		
+		if (results == null || results.getTuple()== null) {
+			return false;
+		}
+		results = this.givenDB.getAppointmentBy(new AppointmentData(newData,null));
+		return true;
 	}
 	
 }

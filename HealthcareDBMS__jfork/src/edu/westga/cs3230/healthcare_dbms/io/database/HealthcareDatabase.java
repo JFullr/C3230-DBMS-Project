@@ -79,7 +79,16 @@ public class HealthcareDatabase {
 		}
 		return null;
 	}
-
+	
+	public QueryResult attemptUpdateTuple(Object newTupleData, Object oldTupleData) {
+		try {
+			QueryResult result = this.client.attemptUpdateTuple(newTupleData, oldTupleData);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public QueryResult attemptAddPatient(PatientData patientData) {
 		try {
