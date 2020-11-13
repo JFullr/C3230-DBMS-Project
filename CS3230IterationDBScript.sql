@@ -226,7 +226,7 @@ INSERT INTO Address VALUES
 
 INSERT INTO Person VALUES(1,'frank', 'burg', 'f', 'Male', '2020-5-5', 123456789, "0123456789", "uieh@grjnrg.eee", 1);
 INSERT INTO RegisteredUser VALUES(1, 'aa bb', 1);
-INSERT INTO UserPasswordStore VALUES(1, "123", "hash");
+INSERT INTO UserPasswordStore VALUES(1, "40bd001563085fc35165329ea1ff5c5ecbdbbeef", "hash");
 
 INSERT INTO Doctor VALUES(1);
 
