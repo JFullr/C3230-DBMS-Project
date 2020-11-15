@@ -19,7 +19,7 @@ import javafx.scene.input.MouseEvent;
  */
 public class MainPageCodeBehind {
 
-	private static final String DB_URL = "jdbc:mysql://160.10.25.16:3306/cs3230f20i?user=jfulle11&password=9j.3pwB@B4&serverTimezone=EST";
+	private static final String DB_URL = "jdbc:mysql://160.10.25.16:3306/cs3230f20i?user=jfulle11&password=9j.3pwB@B4&serverTimezone=EST&noAccessToProcedureBodies=true";
 	
 	@FXML
     private Button patientSearchButton;
