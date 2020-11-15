@@ -144,7 +144,7 @@ public class FullPatientViewModelSubCheckup {
 		
 		QueryResult results = this.givenDB.attemptPostTuple(checkupData);
 		
-		if (results == null || results.getTuple() == null) {
+		if (results == null) {
 			return false;
 		}
 		
@@ -222,6 +222,7 @@ public class FullPatientViewModelSubCheckup {
 		if(results == null) {
 			return false;
 		}
+		
 		this.givenCheckupProperty.setValue(newData);
 		return true; 
 		//*/

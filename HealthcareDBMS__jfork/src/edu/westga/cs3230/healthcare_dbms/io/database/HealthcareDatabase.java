@@ -259,4 +259,14 @@ public class HealthcareDatabase {
 		}
 		return null;
 	}
+
+	public QueryResult attemptGetDiagnois(Appointment appointment) {
+		try {
+			QueryResult result = this.client.attemptGetDiagnosisOf(appointment);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

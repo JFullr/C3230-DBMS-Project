@@ -29,6 +29,7 @@ public class HealthcareDatabaseClient {
 	private LabTestOrderDAL labTestOrderDal;
 	private UpdateDAL updateDal;
 	private FinalDiagnosisDAL finalDiagnosisDal;
+	private DiagnosisDAL diagnosisDal;
 	
 	private QueryResult lastResult;
 	private String dbUrl;
@@ -53,6 +54,7 @@ public class HealthcareDatabaseClient {
 		this.finalDiagnosisDal = new FinalDiagnosisDAL(dbUrl);
 		this.labTestDal = new LabTestDAL(dbUrl);
 		this.labTestOrderDal = new LabTestOrderDAL(dbUrl);
+		this.diagnosisDal = new DiagnosisDAL(dbUrl);
 	}
 	
 	public boolean callQuery(String query) throws Exception {
@@ -190,6 +192,11 @@ public class HealthcareDatabaseClient {
 
 	public QueryResult attemptAddTestOrder(LabTestOrder order) throws SQLException {
 		this.lastResult = this.labTestOrderDal.addLabTestOrder(order);
+		return this.lastResult;
+	}
+
+	public QueryResult attemptGetDiagnosisOf(Appointment appointment) throws SQLException {
+		this.lastResult = this.diagnosisDal.getDiagnosisOf(appointment);
 		return this.lastResult;
 	}
 }

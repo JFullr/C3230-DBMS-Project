@@ -320,6 +320,30 @@
                                           </BorderPane>
                                        </content>
                                     </Tab>
+                                    <Tab text="Diagnosis">
+                                       <content>
+                                          <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                             <center>
+                                                <TextArea fx:id="diagnosisField" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                             </center>
+                                             <bottom>
+                                                <GridPane BorderPane.alignment="CENTER">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <Button fx:id="addDiagnosisButton" mnemonicParsing="false" onAction="#addDiagnosisHandler" text="Add Diagnosis" />
+                                                      <Button fx:id="updateDiagnosisButton" mnemonicParsing="false" onAction="#updateDiagnosisHandler" text="Update Diagnosis" GridPane.columnIndex="1" />
+                                                   </children>
+                                                </GridPane>
+                                             </bottom>
+                                          </BorderPane>
+                                       </content>
+                                    </Tab>
                                     <Tab fx:id="subFinalTab" text="Final Diagnosis">
                                        <content>
                                           <BorderPane prefHeight="200.0" prefWidth="200.0">
@@ -327,7 +351,7 @@
                                                 <TextArea fx:id="finalDiagnosisField" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                                              </center>
                                              <bottom>
-                                                <Button fx:id="submitFinalDiagnosisButton" mnemonicParsing="false" onAction="#submitFinalDiagnosis" text="Submit Final Result" BorderPane.alignment="CENTER" />
+                                                <Button fx:id="submitFinalDiagnosisButton" mnemonicParsing="false" onAction="#submitFinalDiagnosis" text="Submit Final Diagnosis" BorderPane.alignment="CENTER" />
                                              </bottom>
                                           </BorderPane>
                                        </content>

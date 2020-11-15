@@ -464,6 +464,7 @@ public class FullPatientViewModelSubAppt {
 			return false;
 		}
 		results = this.givenDB.getAppointmentBy(new AppointmentData(newData,null));
+		///TODO update appointment lists
 		return true;
 	}
 	

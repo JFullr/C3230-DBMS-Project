@@ -58,12 +58,11 @@ public class FullPatientViewModelSubFinal {
 		
 		QueryResult result = this.givenDB.attemptGetFinalDiagnois(this.givenAppointmentProperty.getValue().getAppointment());
 		
-		if(result == null || result.getTuple() == null) {
-			return;
+		FinalDiagnosis diagnosis = null;
+		if(result != null && result.getTuple() != null) {
+			diagnosis = new FinalDiagnosis();
+			SqlSetter.fillWith(diagnosis, result.getTuple());
 		}
-		
-		FinalDiagnosis diagnosis = new FinalDiagnosis();
-		SqlSetter.fillWith(diagnosis, result.getTuple());
 		
 		this.initFrom(diagnosis);
 		
@@ -71,7 +70,11 @@ public class FullPatientViewModelSubFinal {
 	
 	public void initFrom(FinalDiagnosis diagnosis) {
 		
-		this.finalDiagnosisProperty.setValue(diagnosis.getDiagnosis_result());
+		if(diagnosis == null) {
+			this.finalDiagnosisProperty.setValue("");
+		}else {
+			this.finalDiagnosisProperty.setValue(diagnosis.getDiagnosis_result());
+		}
 		this.givenFinalDiagnosisProperty.setValue(diagnosis);
 	}
 

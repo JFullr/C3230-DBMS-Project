@@ -145,6 +145,7 @@ public class FullPatientCodeBehind {
 		this.setupSubCheckup();
 		this.setupSubTest();
 		this.setupSubFinal();
+		this.setupSubDiag();
 	}
 
 	@FXML
@@ -272,6 +273,21 @@ public class FullPatientCodeBehind {
 		this.availableList.setPadding(new Insets(0,0,0,0));
 		this.availableList.setFixedCellSize(100.0);
 		
+		this.availableList.focusedProperty().addListener((e, oldVal, newVal)->{
+			if(newVal) {
+				TupleEmbed emb = (TupleEmbed)this.availableList.getSelectionModel().getSelectedItem();
+				if(emb!= null){
+					emb.setMouseTransparent(false);
+				}
+				this.viewModel.setSelectedAppointment((Appointment)emb.getOperatedObject(), false);
+			} else {
+				TupleEmbed emb = (TupleEmbed)this.availableList.getSelectionModel().getSelectedItem();
+				if(emb != null) {
+					emb.setMouseTransparent(true);
+				}
+			}
+		});
+		
 		this.availableList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (oldValue != newValue && oldValue != null) {
 				oldValue.setMouseTransparent(true);
@@ -291,6 +307,21 @@ public class FullPatientCodeBehind {
 		this.pastList.setItems(this.viewModel.getViewModelAppt().getPastList());
 		this.pastList.setPadding(new Insets(0,0,0,0));
 		this.pastList.setFixedCellSize(100.0);
+		
+		this.pastList.focusedProperty().addListener((e, oldVal, newVal)->{
+			if(newVal) {
+				TupleEmbed emb = (TupleEmbed)this.pastList.getSelectionModel().getSelectedItem();
+				if(emb!= null){
+					emb.setMouseTransparent(false);
+				}
+				this.viewModel.setSelectedAppointment((Appointment)emb.getOperatedObject(), false);
+			} else {
+				TupleEmbed emb = (TupleEmbed)this.pastList.getSelectionModel().getSelectedItem();
+				if(emb != null) {
+					emb.setMouseTransparent(true);
+				}
+			}
+		});
 		
 		this.pastList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (oldValue != newValue && oldValue != null) {
@@ -598,5 +629,53 @@ public class FullPatientCodeBehind {
 		this.viewModel.getViewModelFinal().getSubmitEventProperty().setValue(true);
 		this.viewModel.getViewModelFinal().getSubmitEventProperty().setValue(false);
 	}
+	
+	
+	@FXML
+	private TextArea diagnosisField;
 
+	@FXML
+	private Button addDiagnosisButton;
+	
+	@FXML
+	private Button updateDiagnosisButton;
+	
+	private void setupSubDiag() {
+		
+		this.diagnosisField.disableProperty().bind(
+				this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull()
+				.or(this.viewModel.getSelectedPatientProperty().isNull())
+				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
+		);
+		this.addDiagnosisButton.disableProperty().bind(
+				this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull()
+				.or(this.viewModel.getSelectedPatientProperty().isNull())
+				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
+				.or(this.viewModel.getSelectedDiagnosisProperty().isNotNull())
+		);
+		this.updateDiagnosisButton.disableProperty().bind(
+				this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull()
+				.or(this.viewModel.getSelectedPatientProperty().isNull())
+				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
+				.or(this.viewModel.getSelectedDiagnosisProperty().isNull())
+		);
+		
+		this.diagnosisField.textProperty().bindBidirectional(
+			this.viewModel.getViewModelDiag().getDiagnosisProperty()
+		);
+		
+	}
+	
+	@FXML
+	void addDiagnosisHandler(ActionEvent event) {
+		this.viewModel.getViewModelDiag().getAddEventProperty().setValue(true);
+		this.viewModel.getViewModelDiag().getAddEventProperty().setValue(false);
+	}
+	
+	@FXML
+	void updateDiagnosisHandler(ActionEvent event) {
+		this.viewModel.getViewModelDiag().getUpdateEventProperty().setValue(true);
+		this.viewModel.getViewModelDiag().getUpdateEventProperty().setValue(false);
+	}
+	
 }

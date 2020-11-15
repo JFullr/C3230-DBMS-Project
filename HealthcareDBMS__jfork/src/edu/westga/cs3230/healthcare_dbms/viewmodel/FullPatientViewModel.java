@@ -9,6 +9,7 @@ import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentCheckup;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
+import edu.westga.cs3230.healthcare_dbms.model.Diagnosis;
 import edu.westga.cs3230.healthcare_dbms.model.FinalDiagnosis;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
@@ -32,6 +33,7 @@ public class FullPatientViewModel {
 	private FullPatientViewModelSubAppt viewModelAppt;
 	private FullPatientViewModelSubFinal viewModelFinal;
 	private FullPatientViewModelSubTest viewModelTest;
+	private FullPatientViewModelSubDiag viewModelDiag;
 
 	private final StringProperty firstNameProperty;
 	private final StringProperty lastNameProperty;
@@ -57,12 +59,12 @@ public class FullPatientViewModel {
 	
 	private final StringProperty validationProperty;
 	private final BooleanProperty finalizedAppointment;
-	private final ObjectProperty<PatientData> selectedDoctorProperty;
 	private final ObjectProperty<AppointmentData> selectedAppointmentProperty;
 	private final ObjectProperty<AppointmentCheckup> selectedCheckupProperty;
 	private final ObjectProperty<FinalDiagnosis> selectedFinalDiagnosisProperty;
 	private final ObjectProperty<SingleSelectionModel<?>> testOrderListProperty;
 	private final ObjectProperty<PatientData> selectedPatientProperty;
+	private final ObjectProperty<Diagnosis> selectedDiagnosisProperty;
 	
 	private HealthcareDatabase givenDB;
 	private ObjectProperty<Object> givenStore;
@@ -95,9 +97,9 @@ public class FullPatientViewModel {
 		this.selectedFinalDiagnosisProperty = new SimpleObjectProperty<FinalDiagnosis>();
 		this.testOrderListProperty = new SimpleObjectProperty<SingleSelectionModel<?>>();
 		this.selectedAppointmentProperty = new SimpleObjectProperty<AppointmentData>();
+		this.selectedDiagnosisProperty = new SimpleObjectProperty<Diagnosis>();
 		
 		this.selectedPatientProperty = new SimpleObjectProperty<PatientData>();
-		this.selectedDoctorProperty = new SimpleObjectProperty<PatientData>();
 		
 		this.initialDataLoad = false;
 		
@@ -105,8 +107,14 @@ public class FullPatientViewModel {
 		this.viewModelAppt = new FullPatientViewModelSubAppt(this.selectedPatientProperty, this.selectedAppointmentProperty);
 		this.viewModelFinal = new FullPatientViewModelSubFinal(this.selectedAppointmentProperty, this.selectedFinalDiagnosisProperty);
 		this.viewModelTest = new FullPatientViewModelSubTest(this.selectedPatientProperty, this.selectedAppointmentProperty);
-	
+		this.viewModelDiag = new FullPatientViewModelSubDiag(this.selectedAppointmentProperty, this.selectedDiagnosisProperty);
+		
 		this.addActionHandlers();
+	}
+	
+	
+	public FullPatientViewModelSubDiag getViewModelDiag() {
+		return viewModelDiag;
 	}
 	
 	public FullPatientViewModelSubCheckup getViewModelCheckup() {
@@ -236,6 +244,10 @@ public class FullPatientViewModel {
 	public ObjectProperty<FinalDiagnosis> getSelectedFinalDiagnosisProperty() {
 		return selectedFinalDiagnosisProperty;
 	}
+	
+	public ObjectProperty<Diagnosis> getSelectedDiagnosisProperty() {
+		return selectedDiagnosisProperty;
+	}
 
 	public ObjectProperty<SingleSelectionModel<?>> getTestOrderListProperty() {
 		return testOrderListProperty;
@@ -247,6 +259,7 @@ public class FullPatientViewModel {
 		this.viewModelCheckup.setDatabase(givenDB);
 		this.viewModelFinal.setDatabase(givenDB);
 		this.viewModelTest.setDatabase(givenDB);
+		this.viewModelDiag.setDatabase(givenDB);
 	}
 	
 	public void initFrom(PatientData data) {
@@ -288,6 +301,7 @@ public class FullPatientViewModel {
 		this.viewModelAppt.initFrom(appt);
 		this.viewModelCheckup.loadCheckupData();
 		this.viewModelFinal.loadFinalDiagnosis();
+		this.viewModelDiag.loadDiagnosis();
 	}
 
 	public PatientData getPatient() {
@@ -385,5 +399,7 @@ public class FullPatientViewModel {
 			//this.updateAvailableAppointments();
 		}
 	}
+
+	
 	
 }
