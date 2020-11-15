@@ -268,7 +268,12 @@ public class FullPatientViewModelSubTest {
 				return;
 			}
 		}
-		
+
+		if (givenDB.attemptAddTestOrder(order) == null) {
+			FXMLAlert.statusAlert("Unable to add lab test order");
+			return;
+		}
+
 		int index = this.testDropSelectionProperty.getValue().getSelectedIndex();
 		SqlTuple desc = SqlGetter.getFrom(order);
 		desc.add(new SqlAttribute("description", this.availableTests.get(index).getTest_description()));

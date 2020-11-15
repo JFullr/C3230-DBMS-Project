@@ -249,5 +249,14 @@ public class HealthcareDatabase {
 		}
 		return null;
 	}
-	
+
+	public QueryResult attemptAddTestOrder(LabTestOrder order) {
+		try {
+			QueryResult result = this.client.attemptAddTestOrder(order);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
