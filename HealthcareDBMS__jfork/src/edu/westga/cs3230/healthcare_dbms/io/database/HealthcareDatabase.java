@@ -240,6 +240,16 @@ public class HealthcareDatabase {
 		return null;
 	}
 	
+	public QueryResult attemptGetTestOrdersOf(Appointment appointment) {
+		try {
+			QueryResult result = this.client.attemptGetTestOrdersOf(appointment);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public QueryResult attemptGetFinalDiagnois(Appointment appt) {
 		try {
 			QueryResult result = this.client.attemptGetFinalDiagnosisOf(appt);

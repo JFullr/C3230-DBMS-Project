@@ -207,6 +207,29 @@ public class FullPatientViewModelSubTest {
 			}
 		}
 	}
+	
+	public void loadLabTestOrders() {
+		
+		this.testStatusList.clear();
+		//TODO
+		QueryResult orders = this.givenDB.attemptGetTestOrdersOf(this.givenAppointmentProperty.getValue().getAppointment());
+		
+		if(orders == null) {
+			return;
+		}
+		
+		for(QueryResult result : orders) {
+			if(result.getTuple() != null) {
+				
+				LabTestOrder test = new LabTestOrder(null, null, null);
+				SqlSetter.fillWith(test, result.getTuple());
+				
+				TupleEmbed embed = new TupleEmbed(test,test,result.getTuple());
+				
+				this.testStatusList.add(embed);
+			}
+		}
+	}
 
 	private void addActionHandlers() {
 		

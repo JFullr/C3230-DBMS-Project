@@ -302,6 +302,7 @@ public class FullPatientViewModel {
 		this.viewModelCheckup.loadCheckupData();
 		this.viewModelFinal.loadFinalDiagnosis();
 		this.viewModelDiag.loadDiagnosis();
+		this.viewModelTest.loadLabTestOrders();
 	}
 
 	public PatientData getPatient() {
