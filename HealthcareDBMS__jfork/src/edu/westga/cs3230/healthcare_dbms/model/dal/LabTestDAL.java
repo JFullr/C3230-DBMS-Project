@@ -18,8 +18,7 @@ public class LabTestDAL {
 	}
 	
 	public QueryResult getLabTests() throws SQLException {
-		String query = "select * "
-						+ "from LabTest";
+		String query = "select * from LabTest";
 		
 		SqlManager manager = new SqlManager();
 		try (Connection con = DriverManager.getConnection(this.dbUrl);
