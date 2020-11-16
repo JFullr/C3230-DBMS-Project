@@ -13,7 +13,7 @@ public class LabTestOrder {
 	private Date date_to_perform;
 	
 	public LabTestOrder(Integer appointment_id, Integer lab_test_id, Date date_to_perform) {
-		this.lab_test_order_id = null;
+		this.setLab_test_order_id(null);
 		this.appointment_id = appointment_id;
 		this.lab_test_id = lab_test_id;
 		this.date_to_perform = date_to_perform;
@@ -41,6 +41,14 @@ public class LabTestOrder {
 
 	public void setAppointment_id(Integer appointment_id) {
 		this.appointment_id = appointment_id;
+	}
+
+	public Integer getLab_test_order_id() {
+		return lab_test_order_id;
+	}
+
+	public void setLab_test_order_id(Integer lab_test_order_id) {
+		this.lab_test_order_id = lab_test_order_id;
 	}
 
 }

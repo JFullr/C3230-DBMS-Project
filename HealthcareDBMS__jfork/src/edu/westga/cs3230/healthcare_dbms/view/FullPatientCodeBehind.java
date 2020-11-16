@@ -536,7 +536,6 @@ public class FullPatientCodeBehind {
 		this.testPicker.setItems(this.viewModel.getViewModelTest().getTestsList());
 		this.viewModel.getViewModelTest().getTestDropSelectionProperty().bindBidirectional(this.testPicker.selectionModelProperty());
 		
-		this.testOrderStatusList.selectionModelProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestListOrderSelectionProperty());
 		this.testCostField.textProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestCostProperty());
 		this.testDescField.textProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestDescProperty());
 		this.testDatePicker.valueProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestDateProperty());
@@ -545,11 +544,22 @@ public class FullPatientCodeBehind {
 		this.viewModel.getViewModelTest().getTestListOrderSelectionProperty().bindBidirectional(this.testOrderList.selectionModelProperty());
 		
 		this.testOrderStatusList.setItems(this.viewModel.getViewModelTest().getTestStatusList());
+		this.viewModel.getViewModelTest().getTestListStatusSelectionProperty().bind(this.testOrderStatusList.selectionModelProperty());
 		this.testOrderStatusList.selectionModelProperty().addListener((evt)->{
 			this.testOrderStatusList.refresh();
 		});
 		this.testOrderStatusList.setPadding(new Insets(0,0,0,0));
 		this.testOrderStatusList.setFixedCellSize(100.0);
+		
+		this.testOrderStatusList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue != newValue && oldValue != null) {
+				oldValue.setMouseTransparent(true);
+			}
+			if (newValue != null) {
+				newValue.setMouseTransparent(false);
+			}
+		});
+		
 		
 		this.testOrderList.selectionModelProperty().addListener((evt)->{
 			this.testOrderList.refresh();

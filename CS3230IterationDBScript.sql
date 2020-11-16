@@ -145,6 +145,7 @@ CREATE TABLE LabTestOrder(
 	appointment_id INTEGER NOT NULL,
 	lab_test_id INTEGER NOT NULL,
 	date_to_perform DATE NOT NULL,
+	UNIQUE(appointment_id,lab_test_id),
 	PRIMARY KEY(lab_test_order_id),
 	FOREIGN KEY(lab_test_id) REFERENCES LabTest(lab_test_id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY(appointment_id) REFERENCES Appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE

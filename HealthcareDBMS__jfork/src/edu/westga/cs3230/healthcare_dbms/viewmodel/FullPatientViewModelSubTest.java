@@ -3,21 +3,17 @@ package edu.westga.cs3230.healthcare_dbms.viewmodel;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Optional;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
-import edu.westga.cs3230.healthcare_dbms.model.Doctor;
-import edu.westga.cs3230.healthcare_dbms.model.DoctorData;
 import edu.westga.cs3230.healthcare_dbms.model.LabTest;
 import edu.westga.cs3230.healthcare_dbms.model.LabTestOrder;
+import edu.westga.cs3230.healthcare_dbms.model.LabTestResult;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import javafx.beans.property.BooleanProperty;
@@ -28,9 +24,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SingleSelectionModel;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextInputDialog;
 
 /**
  * Viewmodel class for the Appointment window.
@@ -51,6 +48,7 @@ public class FullPatientViewModelSubTest {
 	private ObservableList<TupleEmbed> testsOrderList;
 	private ObservableList<TupleEmbed> testStatusList;
 
+	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> testListStatusSelectionProperty;
 	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> testListOrderSelectionProperty;
 	private final ObjectProperty<SingleSelectionModel<String>> testDropSelectionProperty;
 
@@ -73,6 +71,7 @@ public class FullPatientViewModelSubTest {
 		this.removeAllTestsEventProperty = new SimpleBooleanProperty(false);
 
 		this.testListOrderSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
+		this.testListStatusSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
 		this.testDropSelectionProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
 
 		this.testsList = FXCollections.observableArrayList();
@@ -99,12 +98,8 @@ public class FullPatientViewModelSubTest {
 
 	}
 
-	public ArrayList<LabTestOrder> getLabTestOrders() {
-		ArrayList<LabTestOrder> orderedTests = new ArrayList<LabTestOrder>();
-		for(int i = 0; i < this.testsOrderList.size(); i++) {
-			orderedTests.add((LabTestOrder)this.testsOrderList.get(i).getOperatedObject());
-		}
-		return orderedTests;
+	public ObjectProperty<MultipleSelectionModel<TupleEmbed>> getTestListStatusSelectionProperty() {
+		return testListStatusSelectionProperty;
 	}
 
 	public void setDatabase(HealthcareDatabase givenDB) {
@@ -226,12 +221,69 @@ public class FullPatientViewModelSubTest {
 				SqlSetter.fillWith(test, result.getTuple());
 				
 				TupleEmbed embed = new TupleEmbed(test,test,result.getTuple());
+				embed.getPressedPropertyAction().addListener((evt)->{
+					if(embed.getPressedPropertyAction().getValue() != null) {
+						this.showResultUpdatePanel();
+					}
+				});
 				
 				this.testStatusList.add(embed);
 			}
 		}
 	}
-
+	
+	private LabTestResult getLabTestResult(LabTestOrder order){
+		QueryResult queryResult = this.givenDB.attemptGetTestResultOf(order);
+		
+		if(queryResult == null) {
+			return null;
+		}
+		
+		LabTestResult result = new LabTestResult(null, null);
+		SqlSetter.fillWith(result, queryResult.getTuple());
+		
+		return result;
+	}
+	
+	private void showResultUpdatePanel() {
+		TupleEmbed emb = this.testListStatusSelectionProperty.getValue().getSelectedItem();
+		if(emb != null) {
+			
+			LabTestResult result = this.getLabTestResult((LabTestOrder) emb.getOperatedObject());
+			
+			String prompt = "";
+			if(result != null) {
+				prompt = result.getTest_result();
+			}
+			
+			TextInputDialog edit = new TextInputDialog(prompt);
+			edit.setTitle("Lab Result");
+			edit.setHeaderText("Enter Lab Result");
+			edit.setContentText("Result: ");
+			
+			Optional<String> val = edit.showAndWait();
+			if(!val.equals(Optional.empty())) {
+				LabTestResult newResult = new LabTestResult(
+						((LabTestOrder) emb.getOperatedObject()).getLab_test_order_id(), 
+						val.get());
+				if(result != null) {
+					if(this.givenDB.attemptUpdateTuple(newResult, result) == null) {
+						FXMLAlert.statusAlert("Failed to update lab test result");
+					}else {
+						FXMLAlert.statusAlert("Successfully updated lab test result");
+					}
+				} else {
+					if(this.givenDB.attemptPostTuple(newResult) == null) {
+						FXMLAlert.statusAlert("Failed to create lab test result");
+					}else {
+						FXMLAlert.statusAlert("Successfully create lab test result");
+					}
+				}
+			}
+		}
+	}
+	
+	
 	private void addActionHandlers() {
 		
 		this.queueTestEventProperty.addListener((evt) -> {
@@ -267,6 +319,15 @@ public class FullPatientViewModelSubTest {
 			}
 		});
 		
+		/*
+		this.testListStatusSelectionProperty.addListener((evt)->{
+			if(this.testListStatusSelectionProperty.getValue()!=null) {
+				this.testListStatusSelectionProperty.getValue().selectedItemProperty().addListener((eevt)->{
+					this.showResultUpdatePanel();
+				});
+			}
+		});
+		*/
 	}
 	
 	private void addAllTestOrders() {
@@ -308,6 +369,13 @@ public class FullPatientViewModelSubTest {
 			}
 		}
 		
+		for(int i = 0; i < this.testStatusList.size(); i++) {
+			if(((LabTestOrder)this.testStatusList.get(i).getOperatedObject()).getLab_test_id() == order.getLab_test_id()) {
+				FXMLAlert.statusAlert("The specified lab test has already been ordered, cannot order again.");
+				return;
+			}
+		}
+		
 		TupleEmbed embed = new TupleEmbed(order, order, SqlGetter.getFrom(order));
 		this.testsOrderList.add(embed);
 	}
@@ -321,5 +389,7 @@ public class FullPatientViewModelSubTest {
 		this.testsOrderList.remove(index);
 		
 	}
+
+	
 
 }

@@ -12,6 +12,22 @@ public class LabTestResultDAL {
     public LabTestResultDAL(String dbUrl) {
         this.dbUrl = dbUrl;
     }
+    
+    public QueryResult getLabTestOrderResultFor(int labTestOrderId) throws SQLException {
+        String query = "SELECT * FROM LabTestResult "
+        				+ "WHERE lab_test_order_id = ?";
+
+        SqlManager manager = new SqlManager();
+        try (Connection con = DriverManager.getConnection(this.dbUrl);
+             PreparedStatement stmt = con.prepareStatement(query)
+        ) {
+            stmt.setInt(1, labTestOrderId);
+            ResultSet rs = stmt.executeQuery();
+            manager.readTuples(rs);
+        }
+
+        return new QueryResult(manager.getTuples());
+    }
 
     public QueryResult getLabTestOrderResultsForAppointment(int appointmentId) throws SQLException {
         String query = "SELECT r.* from LabTestResult r, LabTestOrder o "

@@ -1,11 +1,11 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-public class LabTestOrderResult {
+public class LabTestResult {
 
 	private Integer lab_test_order_id;
 	private String test_result;
 
-	public LabTestOrderResult(Integer lab_test_order_id, String test_result) {
+	public LabTestResult(Integer lab_test_order_id, String test_result) {
 		this.lab_test_order_id = lab_test_order_id;
 		this.test_result = test_result;
 	}
