@@ -235,7 +235,7 @@ public class FullPatientViewModelSubTest {
 	private LabTestResult getLabTestResult(LabTestOrder order){
 		QueryResult queryResult = this.givenDB.attemptGetTestResultOf(order);
 		
-		if(queryResult == null) {
+		if(queryResult == null || queryResult.getTuple() == null) {
 			return null;
 		}
 		
