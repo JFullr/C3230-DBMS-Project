@@ -272,8 +272,4 @@ drop procedure if exists `try_login`;
 CREATE PROCEDURE `try_login`(IN `username` VARCHAR(255), IN `password` VARCHAR(255)) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER select distinct r.user_name, r.user_id, p.fname, p.lname from Person p, RegisteredUser r, UserPasswordStore ups where p.person_id = r.person_id and r.user_name = username and ups.password_salted_hashed = SHA1(password);
 
 drop procedure if exists `get_lab_result`;
-CREATE PROCEDURE `get_lab_result`(IN `lab_test_order_id` INTEGER) NOT DETERMINISTIC NO SQL SQL 
-BEGIN
-	SELECT * FROM LabTestResult
-    WHERE lab_test_order_id = ?
-END
+CREATE PROCEDURE `get_lab_result`(IN `lab_test_order_id__` INTEGER) SELECT * FROM LabTestResult WHERE lab_test_order_id = lab_test_order_id__;
