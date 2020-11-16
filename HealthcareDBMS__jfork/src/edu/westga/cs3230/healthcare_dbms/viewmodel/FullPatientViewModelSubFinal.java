@@ -135,7 +135,7 @@ public class FullPatientViewModelSubFinal {
 			FXMLAlert.statusAlert("Add Final Diagnosis Failed", "The appointment did not add successfully.", "Add Final Diagnosis failed", AlertType.ERROR);
 		} else {
 			FXMLAlert.statusAlert("Add Final Diagnosis Success", "The appointment was added Successfully.", "Add Final Diagnosis Success", AlertType.INFORMATION);
-			//TODO activate anything needed -- properties bound should nullify anything already though
+			this.givenFinalDiagnosisProperty.setValue(diagnosis);
 		}
 	}
 

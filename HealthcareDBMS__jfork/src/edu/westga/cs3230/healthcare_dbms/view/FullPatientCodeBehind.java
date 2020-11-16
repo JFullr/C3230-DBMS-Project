@@ -278,8 +278,8 @@ public class FullPatientCodeBehind {
 				TupleEmbed emb = (TupleEmbed)this.availableList.getSelectionModel().getSelectedItem();
 				if(emb!= null){
 					emb.setMouseTransparent(false);
+					this.viewModel.setSelectedAppointment((Appointment)emb.getOperatedObject(), false);
 				}
-				this.viewModel.setSelectedAppointment((Appointment)emb.getOperatedObject(), false);
 			} else {
 				TupleEmbed emb = (TupleEmbed)this.availableList.getSelectionModel().getSelectedItem();
 				if(emb != null) {
@@ -313,8 +313,8 @@ public class FullPatientCodeBehind {
 				TupleEmbed emb = (TupleEmbed)this.pastList.getSelectionModel().getSelectedItem();
 				if(emb!= null){
 					emb.setMouseTransparent(false);
+					this.viewModel.setSelectedAppointment((Appointment)emb.getOperatedObject(), false);
 				}
-				this.viewModel.setSelectedAppointment((Appointment)emb.getOperatedObject(), false);
 			} else {
 				TupleEmbed emb = (TupleEmbed)this.pastList.getSelectionModel().getSelectedItem();
 				if(emb != null) {

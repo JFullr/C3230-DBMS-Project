@@ -223,21 +223,36 @@ INSERT INTO Address VALUES
 (4,'street 42', null, 'City c', 'Hawaii', 98778),
 (5,'triangle 42', null, 'City d', 'Alabama', 12323),
 (6,'alley 42', null, 'City e', 'Georgia', 12345),
-(7,'boardwalk 42', null, 'City f', 'New York', 54321);
+(7,'boardwalk 42', null, 'City f', 'New York', 54321),
+(8,'boardwalk 42', null, 'City f', 'New York', 56566),
+(9,'dogwalk 345', null, 'City g', 'Oregon', 44444),
+(10,'thrth 77', null, 'City h', 'Connecticut', 33333),
+(11,'pot ato 420', null, 'City i', 'Mississippi', 222222),
+(12,'grwgwgweg 37667', null, 'City j', 'Idaho', 11111);
+
 
 INSERT INTO Person VALUES(1,'frank', 'burg', 'f', 'Male', '2020-5-5', 123456789, "0123456789", "uieh@grjnrg.eee", 1);
 INSERT INTO RegisteredUser VALUES(1, 'aa bb', 1);
 INSERT INTO UserPasswordStore VALUES(1, "40bd001563085fc35165329ea1ff5c5ecbdbbeef", "hash");
 
-INSERT INTO Doctor VALUES(1);
-
 INSERT INTO `Person` (`person_id`, `fname`, `lname`, `middle_initial`, `gender`, `DOB`, `SSN`, `contact_phone`, `contact_email`, `mailing_address_id`) VALUES
-(2, 'Jane', 'Doe', 'M', 'Female', '1997-01-22', 11111111, '1111111111', 'jane@example.com', 2),
+(2, 'Jane', 'Doe', 'M', 'Female', '1997-01-22', 111111112, '1111111111', 'jane@example.com', 2),
 (3, 'John', 'Doe', 'M', 'Female', '1994-05-04', 111111111, '1111111112', 'anothercontactemail@example.com', 3),
 (4, 'John', 'Doe', 'F', 'Male', '1999-03-04', 999999991, '4444444444', 'johnf@example.com', 4),
 (5, 'Frank', 'Beans', 'q', 'Other', '2020-11-07', 344634463, '5465656451', 'beans@beans.beans', 5),
 (6, 'test', 'add', 'a', 'Other', '2020-11-06', 545454634, '4865865865', 'a@a.com', 6),
-(7, 'test', '1', 'a', 'Other', '2020-10-07', 786786787, '7865685678', 'a@a.com', 7);
+(7, 'test', '1', 'b', 'Other', '2020-10-07', 111111131, '7865685678', 'b@a.com', 7),
+(8, 'The', 'Potato', 'v', 'Other', '2020-10-07', 111311131, '9898989898', 'c@a.com', 8),
+(9, 'Danger', 'Hotdog', 'c', 'Other', '2020-10-07', 111151131, '1212121212', 'd@a.com', 9),
+(10, 'French', 'Caterpillar', 'd', 'Other', '2020-10-07', 111141531, '9999999998', 'e@a.com', 10),
+(11, 'Orange', 'Green', 'h', 'Other', '2020-10-07', 113341531, '0000000008', 'f@a.com', 11);
+
+INSERT INTO Doctor VALUES(1),
+(8),
+(9),
+(10),
+(11);
+
 
 INSERT INTO Patient VALUES
 (2),
@@ -250,19 +265,22 @@ INSERT INTO Patient VALUES
 INSERT INTO LabTest VALUES
 (1, TRUE,  666.66, 'Blood Test', 'Lab Test 1 -- does blood test'),
 (2, FALSE, 777.77, 'Appendix Test', 'Lab Test 2 -- does appedix test'),
-(3, TRUE,  888.88, 'Kidney Test', 'Lab Test 3 -- does kidney test');
+(3, TRUE,  888.88, 'Kidney Test', 'Lab Test 3 -- does kidney test'),
+(4, TRUE,  999.99, 'Brain Test', 'Lab Test 4 -- does brain test'),
+(5, TRUE,  1111.11, 'Backwards Test', 'Lab Test 5 -- does backwards test'),
+(6, TRUE,  2222.22, 'Allergy Test', 'Lab Test 6 -- does allergy test');
 
 INSERT INTO `Appointment` (`appointment_id`, `person_id`, `date_time`, `doctor_id`, `appointment_reason`) VALUES
 (6, 6, '2019-10-03 21:15:00', 1, 'Repeat Checkup'),
-(7, 6, '2020-10-01 16:45:00', 1, 'Repeat Checkup'),
-(8, 6, '2021-10-01 11:15:00', 1, 'Repeat Checkup'),
-(9, 6, '2020-10-31 15:00:00', 1, 'Repeat Checkup'),
+(7, 6, '2020-10-01 16:45:00', 8, 'Repeat Checkup'),
+(8, 6, '2021-10-01 11:15:00', 9, 'Repeat Checkup'),
+(9, 6, '2020-10-31 15:00:00', 8, 'Repeat Checkup'),
 (10, 6, '2020-12-15 05:00:00', 1, 'Repeat Checkup'),
-(11, 2, '2020-11-10 11:30:00', 1, 'Repeat Checkup'),
-(12, 2, '2020-11-21 19:02:00', 1, 'Repeat Checkup'),
-(13, 2, '2020-11-07 18:01:00', 1, 'Repeat Checkup'),
-(14, 2, '2020-10-30 13:02:00', 1, 'Repeat Checkup'),
-(15, 2, '2020-11-05 11:00:00', 1, 'Repeat Checkup');
+(11, 2, '2020-11-10 11:30:00', 9, 'Repeat Checkup'),
+(12, 2, '2020-11-21 19:02:00', 8, 'Repeat Checkup'),
+(13, 2, '2020-11-07 18:01:00', 10, 'Repeat Checkup'),
+(14, 2, '2020-10-30 13:02:00', 11, 'Repeat Checkup'),
+(15, 2, '2020-11-05 11:00:00', 11, 'Repeat Checkup');
 
 
 

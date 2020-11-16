@@ -226,7 +226,7 @@ public class FullPatientViewModelSubAppt {
 		
 		for(int i = 0; i < this.availableDoctors.size(); i++) {
 			Doctor d = this.availableDoctors.get(i).getDoctor();
-			if(d.getPerson_id() == appt.getDoctor_id()) {
+			if((int)d.getPerson_id() == (int)appt.getDoctor_id()) {
 				DoctorData p = this.availableDoctors.get(i);
 				this.doctorSelectionProperty.getValue().select(p.getPerson().getFname()+" "+p.getPerson().getLname());
 				break;
@@ -239,7 +239,6 @@ public class FullPatientViewModelSubAppt {
 	}
 	
 	public AppointmentData getAppointment() {
-
 
 		Date date = null;
 		LocalDate time = this.dateProperty.getValue();
@@ -387,6 +386,7 @@ public class FullPatientViewModelSubAppt {
 			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
 		} else {
 			FXMLAlert.statusAlert("Add Appointment Success", "The appointment was added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
+			this.givenAppointmentProperty.setValue(appt);
 			this.updateAvailableAppointments();
 		}
 	}
@@ -460,7 +460,7 @@ public class FullPatientViewModelSubAppt {
 			return false;
 		}
 		
-		if (results == null || results.getTuple()== null) {
+		if (results == null) {
 			return false;
 		}
 		results = this.givenDB.getAppointmentBy(new AppointmentData(newData,null));

@@ -145,18 +145,21 @@ public class FullPatientViewModelSubDiag {
 			FXMLAlert.statusAlert("Add Diagnosis Failed", "The diagnosis did not add successfully.", "Add Diagnosis failed", AlertType.ERROR);
 		} else {
 			FXMLAlert.statusAlert("Add Diagnosis Success", "The diagnosis was added Successfully.", "Add Diagnosis Success", AlertType.INFORMATION);
-			//TODO activate anything needed -- properties bound should nullify anything already though
+			this.givenDiagnosisProperty.setValue(diagnosis);
 		}
 	}
 	
 	
 	
 	private void updateDiagnosis() {
-		if (!this.attemptUpdateDiagnosis(this.givenDiagnosisProperty.getValue(), this.getDiagnosis())) {
+		
+		Diagnosis diag = this.getDiagnosis();
+		
+		if (!this.attemptUpdateDiagnosis(this.givenDiagnosisProperty.getValue(), diag)) {
 			FXMLAlert.statusAlert("Update Diagnosis Failed", "The diagnosis did not update successfully.", "Update Diagnosis failed", AlertType.ERROR);
 		} else {
 			FXMLAlert.statusAlert("Update Diagnosis Success", "The diagnosis updated successfully.", "Update Diagnosis Success", AlertType.INFORMATION);
-			///TODO update Appointments
+			this.givenDiagnosisProperty.setValue(diag);
 		}
 	}
 	
