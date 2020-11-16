@@ -14,12 +14,13 @@ public class LabTestResultDAL {
     }
     
     public QueryResult getLabTestOrderResultFor(int labTestOrderId) throws SQLException {
-        String query = "SELECT * FROM LabTestResult "
-        				+ "WHERE lab_test_order_id = ?";
+        //String query = "SELECT * FROM LabTestResult "
+        //				+ "WHERE lab_test_order_id = ?";
 
+    	String query = "CALL get_lab_result(?)";
         SqlManager manager = new SqlManager();
         try (Connection con = DriverManager.getConnection(this.dbUrl);
-             PreparedStatement stmt = con.prepareStatement(query)
+             PreparedStatement stmt =  con.prepareCall(query)
         ) {
             stmt.setInt(1, labTestOrderId);
             ResultSet rs = stmt.executeQuery();
