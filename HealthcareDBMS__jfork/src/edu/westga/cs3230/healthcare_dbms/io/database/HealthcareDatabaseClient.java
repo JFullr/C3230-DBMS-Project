@@ -198,6 +198,11 @@ public class HealthcareDatabaseClient {
 	}
 	
 	public QueryResult attemptGetTestOrdersOf(Appointment appointment) throws SQLException {
+		this.lastResult = this.labTestOrderDal.getLabTestOrdersForAppointment(appointment.getAppointment_id());
+		return this.lastResult;
+	}
+	
+	public QueryResult attemptGetTestResultsOf(Appointment appointment) throws SQLException {
 		this.lastResult = this.labTestResultDal.getLabTestOrderResultsForAppointment(appointment.getAppointment_id());
 		return this.lastResult;
 	}

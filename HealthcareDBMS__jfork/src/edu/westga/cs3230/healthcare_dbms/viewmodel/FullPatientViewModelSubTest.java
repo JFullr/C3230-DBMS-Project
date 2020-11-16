@@ -30,6 +30,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Viewmodel class for the Appointment window.
@@ -235,13 +236,14 @@ public class FullPatientViewModelSubTest {
 		
 		this.queueTestEventProperty.addListener((evt) -> {
 			if (this.queueTestEventProperty.getValue()) {
-				this.addTestOrder();
+				this.queueTestOrder();
 			}
 		});
 		
 		this.orderTestsEventProperty.addListener((evt) -> {
 			if (this.orderTestsEventProperty.getValue()) {
 				//TODO DAL push multiple orders
+				this.addAllTestOrders();
 			}
 		});
 		
@@ -267,6 +269,20 @@ public class FullPatientViewModelSubTest {
 		
 	}
 	
+	private void addAllTestOrders() {
+		ArrayList<TupleEmbed> failedOrders = new ArrayList<TupleEmbed>();
+		for(TupleEmbed emb : this.testsOrderList) {
+			QueryResult result = this.givenDB.attemptAddTestOrder((LabTestOrder) emb.getOperatedObject());
+			if(result == null) {
+				failedOrders.add(emb);
+				FXMLAlert.statusAlert("Test Order Failed", "The test order could not be added.", "Add Test Order failed", AlertType.ERROR);
+			}
+		}
+		this.testsOrderList.clear();
+		this.testsOrderList.addAll(failedOrders);
+		this.loadLabTestOrders();
+	}
+
 	private void populateTestData() {
 		SingleSelectionModel<String> sel = this.testDropSelectionProperty.getValue();
 		Integer index = sel.getSelectedIndex();
@@ -279,7 +295,7 @@ public class FullPatientViewModelSubTest {
 		}
 	}
 	
-	private void addTestOrder() {
+	private void queueTestOrder() {
 		LabTestOrder order = this.getLabTestOrder();
 		if(order == null) {
 			return;
@@ -291,17 +307,8 @@ public class FullPatientViewModelSubTest {
 				return;
 			}
 		}
-
-		if (givenDB.attemptAddTestOrder(order) == null) {
-			FXMLAlert.statusAlert("Unable to add lab test order");
-			return;
-		}
-
-		int index = this.testDropSelectionProperty.getValue().getSelectedIndex();
-		SqlTuple desc = SqlGetter.getFrom(order);
-		desc.add(new SqlAttribute("description", this.availableTests.get(index).getTest_description()));
 		
-		TupleEmbed embed = new TupleEmbed(order, order, desc);
+		TupleEmbed embed = new TupleEmbed(order, order, SqlGetter.getFrom(order));
 		this.testsOrderList.add(embed);
 	}
 	

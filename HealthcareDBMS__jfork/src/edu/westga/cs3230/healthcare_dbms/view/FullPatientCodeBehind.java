@@ -492,7 +492,7 @@ public class FullPatientCodeBehind {
 	}
 
 	@FXML
-	private ListView<TupleEmbed> testOrderViewList;
+	private ListView<TupleEmbed> testOrderStatusList;
 
 	@FXML
 	private TextField testCostField;
@@ -523,7 +523,7 @@ public class FullPatientCodeBehind {
 	
 	private void setupSubTest() {
 		//*
-		this.testOrderViewList.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
+		this.testOrderStatusList.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
 		this.testCostField.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
 		this.testDescField.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
 		this.testDatePicker.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
@@ -536,7 +536,7 @@ public class FullPatientCodeBehind {
 		this.testPicker.setItems(this.viewModel.getViewModelTest().getTestsList());
 		this.viewModel.getViewModelTest().getTestDropSelectionProperty().bindBidirectional(this.testPicker.selectionModelProperty());
 		
-		this.testOrderViewList.selectionModelProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestListOrderSelectionProperty());
+		this.testOrderStatusList.selectionModelProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestListOrderSelectionProperty());
 		this.testCostField.textProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestCostProperty());
 		this.testDescField.textProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestDescProperty());
 		this.testDatePicker.valueProperty().bindBidirectional(this.viewModel.getViewModelTest().getTestDateProperty());
@@ -544,12 +544,12 @@ public class FullPatientCodeBehind {
 		this.testOrderList.setItems(this.viewModel.getViewModelTest().getTestsOrderList());
 		this.viewModel.getViewModelTest().getTestListOrderSelectionProperty().bindBidirectional(this.testOrderList.selectionModelProperty());
 		
-		
-		this.testOrderViewList.selectionModelProperty().addListener((evt)->{
-			this.testOrderViewList.refresh();
+		this.testOrderStatusList.setItems(this.viewModel.getViewModelTest().getTestStatusList());
+		this.testOrderStatusList.selectionModelProperty().addListener((evt)->{
+			this.testOrderStatusList.refresh();
 		});
-		this.testOrderViewList.setPadding(new Insets(0,0,0,0));
-		this.testOrderViewList.setFixedCellSize(100.0);
+		this.testOrderStatusList.setPadding(new Insets(0,0,0,0));
+		this.testOrderStatusList.setFixedCellSize(100.0);
 		
 		this.testOrderList.selectionModelProperty().addListener((evt)->{
 			this.testOrderList.refresh();

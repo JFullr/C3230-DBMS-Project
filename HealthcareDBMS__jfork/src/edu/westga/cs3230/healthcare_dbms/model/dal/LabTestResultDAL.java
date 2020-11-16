@@ -14,7 +14,7 @@ public class LabTestResultDAL {
     }
 
     public QueryResult getLabTestOrderResultsForAppointment(int appointmentId) throws SQLException {
-        String query = "SELECT * from LabTestResult r, LabTestOrder o "
+        String query = "SELECT r.* from LabTestResult r, LabTestOrder o "
         				+ "WHERE o.appointment_id = ? AND r.lab_test_order_id = o.lab_test_order_id";
 
         SqlManager manager = new SqlManager();
