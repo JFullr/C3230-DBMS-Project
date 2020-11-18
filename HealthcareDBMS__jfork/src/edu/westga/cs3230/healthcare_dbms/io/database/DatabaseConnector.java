@@ -42,6 +42,10 @@ public class DatabaseConnector {
     }
 
     public <T> T getInTransaction(Callable<T> callable) throws Exception {
+        if (this.inTransaction) {
+            return callable.call();
+        }
+
         // make sure the connection is available
         Connection connection = this.getCurrentConnection();
 
