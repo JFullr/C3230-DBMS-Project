@@ -2,15 +2,11 @@ package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-import edu.westga.cs3230.healthcare_dbms.model.Patient;
+import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
@@ -18,11 +14,11 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class PostDAL {
+
+	private DatabaseConnector connector;
 	
-	private String dbUrl;
-	
-	public PostDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
+	public PostDAL(DatabaseConnector connector) {
+		this.connector = connector;
 	}
 	
 	public ArrayList<SqlTuple> postTuple(Object obj) throws SQLException {
@@ -32,9 +28,8 @@ public class PostDAL {
 		String query = this.buildQueryFrom(obj, tuple, useAttributes);
 		
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				PreparedStatement stmt = con.prepareStatement(query.toString(), PreparedStatement.RETURN_GENERATED_KEYS);
-				) {
+		Connection con = this.connector.getCurrentConnection();
+		try (PreparedStatement stmt = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 			
 			int j = 1;
 			for(String attr : useAttributes) {

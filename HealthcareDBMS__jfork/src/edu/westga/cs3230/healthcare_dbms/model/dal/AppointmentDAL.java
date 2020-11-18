@@ -2,7 +2,6 @@ package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,13 +10,11 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
-import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
-import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
@@ -26,15 +23,15 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class AppointmentDAL {
 
-	private String dbUrl;
+	private DatabaseConnector connector;
 	
 	private PostDAL postDal;
 	private UpdateDAL updateDal;
 
-	public AppointmentDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
-		this.postDal = new PostDAL(dbUrl);
-		this.updateDal = new UpdateDAL(dbUrl);
+	public AppointmentDAL(DatabaseConnector connector) {
+		this.connector = connector;
+		this.postDal = new PostDAL(connector);
+		this.updateDal = new UpdateDAL(connector);
 	}
 
 	public QueryResult attemptAddAppointment(AppointmentData appointment) throws SQLException {
@@ -62,9 +59,8 @@ public class AppointmentDAL {
         String prepared = "select * from Appointment where appointment_id = ?";
 
         SqlManager manager = new SqlManager();
-        try (Connection con = DriverManager.getConnection(this.dbUrl);
-             PreparedStatement stmt = con.prepareStatement(prepared);
-        ) {
+		Connection con = this.connector.getCurrentConnection();
+        try (PreparedStatement stmt = con.prepareStatement(prepared)) {
             stmt.setInt(1, addressId);
             ResultSet rs = stmt.executeQuery();
             manager.readTuples(rs);
@@ -125,9 +121,8 @@ public class AppointmentDAL {
 		query.setLength(query.lastIndexOf("?")+1);
 
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-			 PreparedStatement stmt = con.prepareStatement(query.toString());
-		) {
+		Connection con = this.connector.getCurrentConnection();
+		try (PreparedStatement stmt = con.prepareStatement(query.toString())) {
 			int j = 1;
 			for(SqlAttribute attr : tuple) {
 				if (attr.getValue() == null) {
@@ -149,9 +144,8 @@ public class AppointmentDAL {
 		String query ="SELECT * FROM Appointment WHERE person_id = ? AND date_time < ?";
 
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-			 PreparedStatement stmt = con.prepareStatement(query.toString());
-		) {
+		Connection con = this.connector.getCurrentConnection();
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setObject(1, appt.getPerson_id());
 			stmt.setObject(2, appt.getDate_time());
 			ResultSet rs = stmt.executeQuery();
@@ -166,9 +160,8 @@ public class AppointmentDAL {
 		String query ="SELECT * FROM Appointment WHERE person_id = ? AND date_time > ?";
 
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-			 PreparedStatement stmt = con.prepareStatement(query.toString());
-		) {
+		Connection con = this.connector.getCurrentConnection();
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setObject(1, appt.getPerson_id());
 			stmt.setObject(2, appt.getDate_time());
 			ResultSet rs = stmt.executeQuery();

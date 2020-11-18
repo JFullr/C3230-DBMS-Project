@@ -9,15 +9,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class PullDAL {
 	
-	private String dbUrl;
+	private DatabaseConnector connector;
 	
-	public PullDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
+	public PullDAL(DatabaseConnector connector) {
+		this.connector = connector;
 	}
 	
 	/*

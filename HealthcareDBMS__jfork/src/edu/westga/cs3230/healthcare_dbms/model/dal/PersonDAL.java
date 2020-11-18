@@ -2,32 +2,30 @@ package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
-import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
-import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 
 public class PersonDAL {
 	
 	private PostDAL postDal;
 	private UpdateDAL updateDal;
-	private String dbUrl;
+	private DatabaseConnector connector;
 
-	public PersonDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
-		this.postDal = new PostDAL(dbUrl);
-		this.updateDal = new UpdateDAL(dbUrl);
+	public PersonDAL(DatabaseConnector connector) {
+		this.connector = connector;
+		this.postDal = new PostDAL(connector);
+		this.updateDal = new UpdateDAL(connector);
 	}
 	
 	public QueryResult attemptAddPerson(Person patient) throws SQLException {
@@ -63,9 +61,8 @@ public class PersonDAL {
 						+ "LIMIT 2";
 		
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				PreparedStatement stmt = con.prepareStatement(prepared);
-				) {
+		Connection con = connector.getCurrentConnection();
+		try (PreparedStatement stmt = con.prepareStatement(prepared)) {
 			stmt.setObject(1, person.getSSN());
 			//System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
@@ -93,9 +90,8 @@ public class PersonDAL {
 		//System.out.println(query);
 
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-			 PreparedStatement stmt = con.prepareStatement(query.toString());
-		) {
+		Connection con = connector.getCurrentConnection();
+		try (PreparedStatement stmt = con.prepareStatement(query.toString())) {
 			int j = 1;
 			for(SqlAttribute attr : tuple) {
 				if (attr.getValue() == null) {

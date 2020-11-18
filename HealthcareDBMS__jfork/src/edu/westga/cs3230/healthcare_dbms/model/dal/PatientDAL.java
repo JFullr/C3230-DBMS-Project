@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
@@ -21,19 +22,17 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class PatientDAL {
-	
-	private String dbUrl;
+
 	private PostDAL postDal;
 	private PersonDAL personDal;
 	private AddressDAL addressDal;
 	private UpdateDAL updateDal;
 
-	public PatientDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
-		this.postDal = new PostDAL(dbUrl);
-		this.personDal = new PersonDAL(dbUrl);
-		this.addressDal = new AddressDAL(dbUrl);
-		this.updateDal = new UpdateDAL(dbUrl);
+	public PatientDAL(DatabaseConnector connector) {
+		this.postDal = new PostDAL(connector);
+		this.personDal = new PersonDAL(connector);
+		this.addressDal = new AddressDAL(connector);
+		this.updateDal = new UpdateDAL(connector);
 	}
 	
 	public QueryResult attemptAddPatient(PatientData patient) throws SQLException {

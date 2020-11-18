@@ -33,7 +33,7 @@ public class HealthcareDatabaseClient {
 	private LabTestResultDAL labTestResultDal;
 	
 	private QueryResult lastResult;
-	private String dbUrl;
+	private DatabaseConnector connector;
 	
 	/**
 	 * Instantiates a new healthcare database client.
@@ -42,21 +42,21 @@ public class HealthcareDatabaseClient {
 	 */
 	public HealthcareDatabaseClient(String dbUrl, List<QueryResult> storageForReadQueries) {
 		this.lastResult = null;
-		this.dbUrl = dbUrl;
-		this.postDal = new PostDAL(dbUrl);
-		this.loginDal = new LoginDAL(dbUrl);
-		this.personDal = new PersonDAL(dbUrl);
-		this.userDal = new UserTypeDAL(dbUrl);
-		this.patientDal = new PatientDAL(dbUrl);
-		this.appointmentDal = new AppointmentDAL(dbUrl);
-		this.appointmentCheckupDal = new AppointmentCheckupDAL(dbUrl);
-		this.doctorDal = new DoctorDAL(dbUrl);
-		this.updateDal = new UpdateDAL(dbUrl);
-		this.finalDiagnosisDal = new FinalDiagnosisDAL(dbUrl);
-		this.labTestDal = new LabTestDAL(dbUrl);
-		this.labTestOrderDal = new LabTestOrderDAL(dbUrl);
-		this.diagnosisDal = new DiagnosisDAL(dbUrl);
-		this.labTestResultDal = new LabTestResultDAL(dbUrl);
+		this.connector = new DatabaseConnector(dbUrl);
+		this.postDal = new PostDAL(this.connector);
+		this.loginDal = new LoginDAL(this.connector);
+		this.personDal = new PersonDAL(this.connector);
+		this.userDal = new UserTypeDAL(this.connector);
+		this.patientDal = new PatientDAL(this.connector);
+		this.appointmentDal = new AppointmentDAL(this.connector);
+		this.appointmentCheckupDal = new AppointmentCheckupDAL(this.connector);
+		this.doctorDal = new DoctorDAL(this.connector);
+		this.updateDal = new UpdateDAL(this.connector);
+		this.finalDiagnosisDal = new FinalDiagnosisDAL(this.connector);
+		this.labTestDal = new LabTestDAL(this.connector);
+		this.labTestOrderDal = new LabTestOrderDAL(this.connector);
+		this.diagnosisDal = new DiagnosisDAL(this.connector);
+		this.labTestResultDal = new LabTestResultDAL(this.connector);
 	}
 	
 	public boolean callQuery(String query) throws Exception {

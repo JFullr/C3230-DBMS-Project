@@ -1,16 +1,12 @@
 package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
@@ -18,10 +14,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
 public class UpdateDAL {
 	
-	private String dbUrl;
+	private DatabaseConnector connector;
 	
-	public UpdateDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
+	public UpdateDAL(DatabaseConnector connector) {
+		this.connector = connector;
 	}
 	
 	public QueryResult updateTuple(Object newValues, Object oldValues) throws SQLException {
@@ -58,9 +54,8 @@ public class UpdateDAL {
 		query.setLength(query.lastIndexOf("AND"));
 
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-			 PreparedStatement stmt = con.prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS);
-		) {
+		Connection con = this.connector.getCurrentConnection();
+		try (PreparedStatement stmt = con.prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS)) {
 			int j = 1;
 			for(SqlAttribute attr : newTuple) {
 				if (attr.getValue() == null) {

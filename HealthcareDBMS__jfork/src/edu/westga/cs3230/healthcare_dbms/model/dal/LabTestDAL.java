@@ -1,20 +1,20 @@
 package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
 public class LabTestDAL {
-	
-	private String dbUrl;
 
-	public LabTestDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
+	private DatabaseConnector connector;
+
+	public LabTestDAL(DatabaseConnector connector) {
+		this.connector = connector;
 	}
 	
 	public QueryResult getLabTests() throws SQLException {
@@ -22,9 +22,8 @@ public class LabTestDAL {
 						+ "WHERE is_available = TRUE";
 		
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				Statement stmt = con.createStatement()
-				) {
+		Connection con = this.connector.getCurrentConnection();
+		try (Statement stmt = con.createStatement()) {
 			ResultSet rs = stmt.executeQuery(query);
 			manager.readTuples(rs);
 		}

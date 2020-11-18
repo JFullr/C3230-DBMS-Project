@@ -1,25 +1,20 @@
 package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
-import edu.westga.cs3230.healthcare_dbms.model.Address;
-import edu.westga.cs3230.healthcare_dbms.model.Doctor;
-import edu.westga.cs3230.healthcare_dbms.model.PatientData;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 
 public class DoctorDAL {
 	
-	private String dbUrl;
+	private DatabaseConnector connector;
 
-	public DoctorDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
+	public DoctorDAL(DatabaseConnector connector) {
+		this.connector = connector;
 	}
 	
 	public QueryResult getDoctors() throws SQLException {
@@ -28,9 +23,8 @@ public class DoctorDAL {
 						+ "where p.person_id = d.person_id";
 		
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				Statement stmt = con.createStatement()
-				) {
+		Connection con = this.connector.getCurrentConnection();
+		try (Statement stmt = con.createStatement()) {
 			ResultSet rs = stmt.executeQuery(query);
 			manager.readTuples(rs);
 		}

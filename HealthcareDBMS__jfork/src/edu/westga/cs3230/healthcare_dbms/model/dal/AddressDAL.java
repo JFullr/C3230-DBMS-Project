@@ -1,5 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.model.dal;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
@@ -11,23 +12,22 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class AddressDAL {
-    private String dbUrl;
+    private DatabaseConnector connector;
     private PostDAL postDal;
     private UpdateDAL updateDal;
 
-    public AddressDAL(String dbUrl) {
-        this.dbUrl = dbUrl;
-        this.postDal = new PostDAL(dbUrl);
-        this.updateDal = new UpdateDAL(dbUrl);
+    public AddressDAL(DatabaseConnector connector) {
+        this.connector = connector;
+        this.postDal = new PostDAL(connector);
+        this.updateDal = new UpdateDAL(connector);
     }
 
     public QueryResult getAddressById(int addressId) throws SQLException {
         String prepared = "select * from Address where address_id = ?";
 
+        Connection con = connector.getCurrentConnection();
         SqlManager manager = new SqlManager();
-        try (Connection con = DriverManager.getConnection(this.dbUrl);
-             PreparedStatement stmt = con.prepareStatement(prepared);
-        ) {
+        try (PreparedStatement stmt = con.prepareStatement(prepared)) {
             stmt.setInt(1, addressId);
             ResultSet rs = stmt.executeQuery();
             manager.readTuples(rs);
@@ -48,10 +48,9 @@ public class AddressDAL {
         // remove the trailing comma at the end
         query.setLength(query.length() - 2);
 
+        Connection con = connector.getCurrentConnection();
         SqlManager manager = new SqlManager();
-        try (Connection con = DriverManager.getConnection(this.dbUrl);
-             PreparedStatement stmt = con.prepareStatement(query.toString());
-        ) {
+        try (PreparedStatement stmt = con.prepareStatement(query.toString())) {
             int j = 1;
             for(SqlAttribute attr : tuple) {
                 if( attr.getValue() == null) {

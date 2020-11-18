@@ -1,21 +1,21 @@
 package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
 public class DiagnosisDAL {
 	
-	private String dbUrl;
+	private DatabaseConnector connector;
 
-	public DiagnosisDAL(String dbUrl) {
-		this.dbUrl = dbUrl;
+	public DiagnosisDAL(DatabaseConnector connector) {
+		this.connector = connector;
 	}
 	
 	public QueryResult getDiagnosisOf(Appointment appt) throws SQLException {
@@ -31,9 +31,8 @@ public class DiagnosisDAL {
 						+ "where appointment_id = ?";
 		
 		SqlManager manager = new SqlManager();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				PreparedStatement stmt = con.prepareStatement(query)
-				) {
+		Connection con = this.connector.getCurrentConnection();
+		try (PreparedStatement stmt = con.prepareStatement(query)) {
 			stmt.setObject(1, id);
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
