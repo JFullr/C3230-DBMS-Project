@@ -10,13 +10,23 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 	
 	private HashMap<String, SqlAttribute> attrs;
 	
+	public SqlTuple() {
+		this.attrs = new LinkedHashMap<>();
+	}
+	
 	public SqlTuple(SqlAttribute attr) {
 		this.attrs = new LinkedHashMap<>();
-		this.attrs.put(attr.getAttribute(), attr);
+		if(attr != null) {
+			this.attrs.put(attr.getAttribute(), attr);
+		}
 	}
 	
 	public SqlTuple(HashMap<String, SqlAttribute> attrs) {
-		this.attrs = attrs;
+		if(attrs == null) {
+			this.attrs = new HashMap<String, SqlAttribute>();
+		} else {
+			this.attrs = attrs;
+		}
 	}
 	
 	public HashMap<String, SqlAttribute> getAttributes() {
@@ -31,6 +41,11 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 		return this.attrs.put(attribute, value);
 	}
 	
+	public boolean add(String attributeName, Object value) {
+		SqlAttribute attr = new SqlAttribute(attributeName, value);
+		return this.add(attr);
+	}
+	
 	public boolean add(SqlAttribute value) {
 		
 		if(this.attrs.get(value.getAttribute()) == null) {
@@ -40,6 +55,7 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 		
 		StringBuilder builder = new StringBuilder(value.getAttribute());
 		builder.append("_");
+		int defaultLength = builder.length();
 		for(int i = 0; i < Integer.MAX_VALUE; i++) {
 			builder.append(i);
 			
@@ -48,7 +64,7 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 				return true;
 			}
 			
-			builder.setLength(builder.length()-1);
+			builder.setLength(defaultLength);
 		}
 		
 		

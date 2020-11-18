@@ -156,8 +156,8 @@ public class FullPatientCodeBehind {
 
 	@FXML
 	public void actionButtonHandler(ActionEvent event) {
-		this.viewModel.getActionPressedProperty().setValue(true);
-		this.viewModel.getActionPressedProperty().setValue(false);
+		this.viewModel.getViewModelPatient().getActionPressedProperty().setValue(true);
+		this.viewModel.getViewModelPatient().getActionPressedProperty().setValue(false);
 	}
 
 	public FullPatientViewModel getViewModel() {
@@ -187,22 +187,22 @@ public class FullPatientCodeBehind {
 	}
 
 	private void bindProperties() {
-		this.viewModel.getContactEmailProperty().bindBidirectional(this.contactEmailTextField.textProperty());
-		this.viewModel.getContactPhoneProperty().bindBidirectional(this.contactPhoneTextField.textProperty());
-		this.viewModel.getFirstNameProperty().bindBidirectional(this.firstNameTextField.textProperty());
-		this.viewModel.getLastNameProperty().bindBidirectional(this.lastNameTextField.textProperty());
-		this.viewModel.getStreetAddress1Property().bindBidirectional(this.streetAddress1TextField.textProperty());
-		this.viewModel.getStreetAddress2Property().bindBidirectional(this.streetAddress2TextField.textProperty());
-		this.viewModel.getCityProperty().bindBidirectional(this.cityTextField.textProperty());
-		this.viewModel.getGenderProperty().bind(this.genderComboBox.selectionModelProperty());
-		this.viewModel.getStateProperty().bind(this.stateComboBox.selectionModelProperty());
-		this.viewModel.getZipCodePropertyy().bindBidirectional(this.zipCodeTextField.textProperty());
-		this.viewModel.getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
-		this.viewModel.getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
-		this.viewModel.getDobProperty().bindBidirectional(this.dobPicker.valueProperty());
-		this.viewModel.getActionTextProperty().bindBidirectional(this.actionButton.textProperty());
+		this.viewModel.getViewModelPatient().getContactEmailProperty().bindBidirectional(this.contactEmailTextField.textProperty());
+		this.viewModel.getViewModelPatient().getContactPhoneProperty().bindBidirectional(this.contactPhoneTextField.textProperty());
+		this.viewModel.getViewModelPatient().getFirstNameProperty().bindBidirectional(this.firstNameTextField.textProperty());
+		this.viewModel.getViewModelPatient().getLastNameProperty().bindBidirectional(this.lastNameTextField.textProperty());
+		this.viewModel.getViewModelPatient().getStreetAddress1Property().bindBidirectional(this.streetAddress1TextField.textProperty());
+		this.viewModel.getViewModelPatient().getStreetAddress2Property().bindBidirectional(this.streetAddress2TextField.textProperty());
+		this.viewModel.getViewModelPatient().getCityProperty().bindBidirectional(this.cityTextField.textProperty());
+		this.viewModel.getViewModelPatient().getGenderProperty().bind(this.genderComboBox.selectionModelProperty());
+		this.viewModel.getViewModelPatient().getStateProperty().bind(this.stateComboBox.selectionModelProperty());
+		this.viewModel.getViewModelPatient().getZipCodePropertyy().bindBidirectional(this.zipCodeTextField.textProperty());
+		this.viewModel.getViewModelPatient().getMiddleInitialProperty().bindBidirectional(this.middleInitialTextField.textProperty());
+		this.viewModel.getViewModelPatient().getSsnProperty().bindBidirectional(this.ssnTextField.textProperty());
+		this.viewModel.getViewModelPatient().getDobProperty().bindBidirectional(this.dobPicker.valueProperty());
+		this.viewModel.getViewModelPatient().getActionTextProperty().bindBidirectional(this.actionButton.textProperty());
 
-		this.viewModel.getCloseDisableProperty().bindBidirectional(this.cancelButton.disableProperty());
+		this.viewModel.getViewModelPatient().getCloseDisableProperty().bindBidirectional(this.cancelButton.disableProperty());
 
 		this.actionButton.disableProperty()
 			.bind(this.dobPicker.valueProperty().isNull().or(this.contactEmailTextField.textProperty().isEmpty())
@@ -278,7 +278,7 @@ public class FullPatientCodeBehind {
 				TupleEmbed emb = (TupleEmbed)this.availableList.getSelectionModel().getSelectedItem();
 				if(emb!= null){
 					emb.setMouseTransparent(false);
-					this.viewModel.setSelectedAppointment((Appointment)emb.getOperatedObject(), false);
+					this.viewModel.setSelectedAppointment((Appointment)emb.getOperatedObject(), true);
 				}
 			} else {
 				TupleEmbed emb = (TupleEmbed)this.availableList.getSelectionModel().getSelectedItem();
@@ -373,8 +373,6 @@ public class FullPatientCodeBehind {
 		
 		this.viewModel.getViewModelAppt().getReasonProperty().bindBidirectional(this.apptReasonField.textProperty());
 		
-		this.updateApptButton.disableProperty().bind(this.viewModel.getSelectedPatientProperty().isNull().or(this.viewModel.getFinalizedAppointment()));
-		
 		this.apptDoctorPicker.setItems(this.viewModel.getViewModelAppt().getDoctorList());
 		this.viewModel.getViewModelAppt().getDoctorSelectionProperty().bindBidirectional(this.apptDoctorPicker.selectionModelProperty());
 		
@@ -447,6 +445,7 @@ public class FullPatientCodeBehind {
 		this.addCheckupButton.disableProperty().bind(
 				this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull()
 				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
+				.or(this.viewModel.getSelectedCheckupProperty().isNotNull())
 				.or(this.temperatureField.textProperty().isEmpty())
 				.or(this.systolicPressureField.textProperty().isEmpty())
 				.or(this.diastolicPressureField.textProperty().isEmpty())

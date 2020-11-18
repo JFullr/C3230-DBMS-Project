@@ -167,10 +167,10 @@ public class FullPatientViewModelSubDiag {
 		
 		QueryResult results = this.givenDB.attemptUpdateTuple(newDiagnosis, currentDiagnosis);
 		
-		if (results == null || results.getTuple()== null) {
+		if (results == null) {
 			return false;
 		}
-		///TODO
+		
 		return true;
 	}
 

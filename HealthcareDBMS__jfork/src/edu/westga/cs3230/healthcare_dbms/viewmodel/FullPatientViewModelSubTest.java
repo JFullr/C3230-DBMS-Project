@@ -3,6 +3,7 @@ package edu.westga.cs3230.healthcare_dbms.viewmodel;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
@@ -14,6 +15,7 @@ import edu.westga.cs3230.healthcare_dbms.model.LabTestResult;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import javafx.beans.property.BooleanProperty;
@@ -44,6 +46,7 @@ public class FullPatientViewModelSubTest {
 	private final ObjectProperty<LocalDate> testDateProperty;
 
 	private ArrayList<LabTest> availableTests;
+	private HashMap<Integer,LabTest> availableTestsLookup;
 	private ObservableList<String> testsList;
 	private ObservableList<TupleEmbed> testsOrderList;
 	private ObservableList<TupleEmbed> testStatusList;
@@ -64,6 +67,8 @@ public class FullPatientViewModelSubTest {
 
 		this.givenAppointmentProperty = givenAppointmentProperty;
 		this.givenPatientProperty = givenPatientProperty;
+		
+		this.availableTestsLookup = new HashMap<Integer,LabTest>();
 		
 		this.queueTestEventProperty = new SimpleBooleanProperty(false);
 		this.orderTestsEventProperty = new SimpleBooleanProperty(false);
@@ -198,6 +203,7 @@ public class FullPatientViewModelSubTest {
 				LabTest test = new LabTest(null, null, null, null);
 				SqlSetter.fillWith(test, result.getTuple());
 				
+				this.availableTestsLookup.put(test.getLab_test_id(), test);
 				this.availableTests.add(test);
 				this.testsList.add(test.getTest_name());
 			}
@@ -220,6 +226,8 @@ public class FullPatientViewModelSubTest {
 				LabTestOrder test = new LabTestOrder(null, null, null);
 				SqlSetter.fillWith(test, result.getTuple());
 				
+				//TODO map
+				//this.availableTests.get() test.getLab_test_id()
 				TupleEmbed embed = new TupleEmbed(test,test,result.getTuple());
 				embed.getPressedPropertyAction().addListener((evt)->{
 					if(embed.getPressedPropertyAction().getValue() != null) {
@@ -230,6 +238,11 @@ public class FullPatientViewModelSubTest {
 				this.testStatusList.add(embed);
 			}
 		}
+	}
+	
+	public void clearOrderQueue() {
+		this.testsOrderList.clear();
+		this.testDateProperty.setValue(null);
 	}
 	
 	private LabTestResult getLabTestResult(LabTestOrder order){
@@ -319,15 +332,6 @@ public class FullPatientViewModelSubTest {
 			}
 		});
 		
-		/*
-		this.testListStatusSelectionProperty.addListener((evt)->{
-			if(this.testListStatusSelectionProperty.getValue()!=null) {
-				this.testListStatusSelectionProperty.getValue().selectedItemProperty().addListener((eevt)->{
-					this.showResultUpdatePanel();
-				});
-			}
-		});
-		*/
 	}
 	
 	private void addAllTestOrders() {
@@ -376,7 +380,19 @@ public class FullPatientViewModelSubTest {
 			}
 		}
 		
-		TupleEmbed embed = new TupleEmbed(order, order, SqlGetter.getFrom(order));
+		TupleEmbed embed = null;
+		LabTest test = this.availableTestsLookup.get(order.getLab_test_id());
+		if(test == null) {
+			embed = new TupleEmbed(order, order, SqlGetter.getFrom(order));
+		}else {
+			SqlTuple view = new SqlTuple();
+			view.add("Name", test.getTest_name());
+			view.add("Description", test.getTest_description());
+			view.add("Cost", test.getTest_cost());
+			view.add("Date To Perform", order.getDate_to_perform());
+			embed = new TupleEmbed(order,order,view);
+		}
+		
 		this.testsOrderList.add(embed);
 	}
 	

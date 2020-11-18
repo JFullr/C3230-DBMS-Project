@@ -127,14 +127,14 @@ public class FullPatientViewModelSubFinal {
 		FinalDiagnosis diagnosis = this.getFinalDiagnosis();
 		
 		if(diagnosis == null) {
-			FXMLAlert.statusAlert("Submit Final Diagnosis Failed", "The fian diagnosis was malformed.", "Add Final Diagnosis failed", AlertType.ERROR);
+			FXMLAlert.statusAlert("Submit Final Diagnosis Failed", "The final diagnosis was malformed.", "Add Final Diagnosis failed", AlertType.ERROR);
 			return;
 		}
 		
 		if (!this.attemptPushFinalDiagnosis()) {
-			FXMLAlert.statusAlert("Add Final Diagnosis Failed", "The appointment did not add successfully.", "Add Final Diagnosis failed", AlertType.ERROR);
+			FXMLAlert.statusAlert("Add Final Diagnosis Failed", "The final diagnosis did not add successfully.", "Add Final Diagnosis failed", AlertType.ERROR);
 		} else {
-			FXMLAlert.statusAlert("Add Final Diagnosis Success", "The appointment was added Successfully.", "Add Final Diagnosis Success", AlertType.INFORMATION);
+			FXMLAlert.statusAlert("Add Final Diagnosis Success", "The final diagnosis was added Successfully.", "Add Final Diagnosis Success", AlertType.INFORMATION);
 			this.givenFinalDiagnosisProperty.setValue(diagnosis);
 		}
 	}

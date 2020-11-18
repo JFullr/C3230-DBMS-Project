@@ -34,35 +34,14 @@ public class FullPatientViewModel {
 	private FullPatientViewModelSubFinal viewModelFinal;
 	private FullPatientViewModelSubTest viewModelTest;
 	private FullPatientViewModelSubDiag viewModelDiag;
-
-	private final StringProperty firstNameProperty;
-	private final StringProperty lastNameProperty;
-	private final StringProperty contactPhoneProperty;
-	private final StringProperty contactEmailProperty;
-	private final StringProperty streetAddress1Property;
-	private final StringProperty streetAddress2Property;
-	private final StringProperty cityProperty;
-	private final StringProperty zipCodeProperty;
-	private final ObjectProperty<LocalDate> dobProperty;
-	private final StringProperty middleInitialProperty;
-	private final StringProperty ssnProperty;
 	
-	private final StringProperty actionTextProperty;
-	private final BooleanProperty actionPressedProperty;
-	
-	private final BooleanProperty closeDisableProperty;
+	private FullPatientViewModelSubPatient viewModelPatient;
 	
 	private final BooleanProperty editableAppointmentProperty;
 	
-	private final ObjectProperty<SingleSelectionModel<String>> stateProperty;
-	private final ObjectProperty<SingleSelectionModel<String>> genderProperty;
-	
-	private final StringProperty validationProperty;
-	private final BooleanProperty finalizedAppointment;
 	private final ObjectProperty<AppointmentData> selectedAppointmentProperty;
 	private final ObjectProperty<AppointmentCheckup> selectedCheckupProperty;
 	private final ObjectProperty<FinalDiagnosis> selectedFinalDiagnosisProperty;
-	private final ObjectProperty<SingleSelectionModel<?>> testOrderListProperty;
 	private final ObjectProperty<PatientData> selectedPatientProperty;
 	private final ObjectProperty<Diagnosis> selectedDiagnosisProperty;
 	
@@ -72,33 +51,14 @@ public class FullPatientViewModel {
 	private boolean initialDataLoad;
 
 	public FullPatientViewModel() {
-		this.firstNameProperty = new SimpleStringProperty();
-		this.lastNameProperty = new SimpleStringProperty();
-		this.contactPhoneProperty = new SimpleStringProperty();
-		this.contactEmailProperty = new SimpleStringProperty();
-		this.streetAddress1Property = new SimpleStringProperty();
-		this.streetAddress2Property = new SimpleStringProperty();
-		this.cityProperty = new SimpleStringProperty();
-		this.zipCodeProperty = new SimpleStringProperty();
-		this.dobProperty = new SimpleObjectProperty<LocalDate>();
-		this.middleInitialProperty = new SimpleStringProperty();
-		this.ssnProperty = new SimpleStringProperty();
-		this.actionPressedProperty = new SimpleBooleanProperty(false);
-		this.actionTextProperty = new SimpleStringProperty();
-		this.stateProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
-		this.genderProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
-		this.validationProperty = new SimpleStringProperty(null);
-		this.closeDisableProperty = new SimpleBooleanProperty(false);
 		
 		this.editableAppointmentProperty = new SimpleBooleanProperty(true);
 		
-		this.finalizedAppointment = new SimpleBooleanProperty(false);
 		this.selectedCheckupProperty = new SimpleObjectProperty<AppointmentCheckup>();
 		this.selectedFinalDiagnosisProperty = new SimpleObjectProperty<FinalDiagnosis>();
-		this.testOrderListProperty = new SimpleObjectProperty<SingleSelectionModel<?>>();
+		
 		this.selectedAppointmentProperty = new SimpleObjectProperty<AppointmentData>();
 		this.selectedDiagnosisProperty = new SimpleObjectProperty<Diagnosis>();
-		
 		this.selectedPatientProperty = new SimpleObjectProperty<PatientData>();
 		
 		this.initialDataLoad = false;
@@ -109,12 +69,12 @@ public class FullPatientViewModel {
 		this.viewModelTest = new FullPatientViewModelSubTest(this.selectedPatientProperty, this.selectedAppointmentProperty);
 		this.viewModelDiag = new FullPatientViewModelSubDiag(this.selectedAppointmentProperty, this.selectedDiagnosisProperty);
 		
-		this.addActionHandlers();
+		this.viewModelPatient = new FullPatientViewModelSubPatient(this.selectedPatientProperty);
+		
 	}
 	
-	
 	public FullPatientViewModelSubDiag getViewModelDiag() {
-		return viewModelDiag;
+		return this.viewModelDiag;
 	}
 	
 	public FullPatientViewModelSubCheckup getViewModelCheckup() {
@@ -126,113 +86,25 @@ public class FullPatientViewModel {
 	}
 	
 	public FullPatientViewModelSubFinal getViewModelFinal() {
-		return viewModelFinal;
+		return this.viewModelFinal;
 	}
 	
 	public FullPatientViewModelSubTest getViewModelTest() {
-		return viewModelTest;
+		return this.viewModelTest;
 	}
 	
-	public StringProperty getFirstNameProperty() {
-		return firstNameProperty;
+	public FullPatientViewModelSubPatient getViewModelPatient() {
+		return this.viewModelPatient;
 	}
-
-	public StringProperty getContactPhoneProperty() {
-		return contactPhoneProperty;
-	}
-
-	public StringProperty getLastNameProperty() {
-		return lastNameProperty;
-	}
-
-	public ObjectProperty<SingleSelectionModel<String>> getGenderProperty() {
-		return genderProperty;
-	}
-
-	public StringProperty getStreetAddress1Property() {
-		return streetAddress1Property;
-	}
-
-	public StringProperty getStreetAddress2Property() {
-		return streetAddress2Property;
-	}
-
-	public StringProperty getCityProperty() {
-		return cityProperty;
-	}
-
-	public ObjectProperty<SingleSelectionModel<String>> getStateProperty() {
-		return stateProperty;
-	}
-
-	public StringProperty getZipCodePropertyy() {
-		return zipCodeProperty;
-	}
-
-	public StringProperty getContactEmailProperty() {
-		return contactEmailProperty;
-	}
-
-	public StringProperty getMiddleInitialProperty() {
-		return middleInitialProperty;
-	}
-
-	public StringProperty getSsnProperty() {
-		return ssnProperty;
-	}
-
-	public ObjectProperty<LocalDate> getDobProperty() {
-		return dobProperty;
+	
+	public BooleanProperty getEditableAppointmentProperty() {
+		return editableAppointmentProperty;
 	}
 	
 	public ObjectProperty<AppointmentData> getSelectedAppointmentProperty() {
 		return selectedAppointmentProperty;
 	}
 	
-	public void setCloseButtonDisabled() {
-		this.closeDisableProperty.setValue(true);
-	}
-	
-	public void setActionButtonText(String text) {
-		this.getActionTextProperty().setValue(text);
-	}
-	
-	public void setActionButtonValidationNone() {
-		this.validationProperty.setValue(PatientCodeBehind.ACTION_VALID_NONE);
-	}
-	
-	public void setActionButtonValidationMinimal() {
-		this.validationProperty.setValue(PatientCodeBehind.ACTION_VALID_MINIMAL);
-	}
-	
-	public void setActionButtonValidationAll() {
-		this.validationProperty.setValue(PatientCodeBehind.ACTION_VALID_ALL);
-	}
-	
-	public BooleanProperty getActionPressedProperty() {
-		return this.actionPressedProperty;
-	}
-
-	public StringProperty getActionTextProperty() {
-		return actionTextProperty;
-	}
-	
-	public StringProperty getValidationProperty() {
-		return validationProperty;
-	}
-	
-	public BooleanProperty getCloseDisableProperty() {
-		return this.closeDisableProperty;
-	}
-
-	public BooleanProperty getEditableAppointmentProperty() {
-		return editableAppointmentProperty;
-	}
-	
-	public BooleanProperty getFinalizedAppointment() {
-		return finalizedAppointment;
-	}
-
 	public ObjectProperty<PatientData> getSelectedPatientProperty() {
 		return selectedPatientProperty;
 	}
@@ -248,10 +120,6 @@ public class FullPatientViewModel {
 	public ObjectProperty<Diagnosis> getSelectedDiagnosisProperty() {
 		return selectedDiagnosisProperty;
 	}
-
-	public ObjectProperty<SingleSelectionModel<?>> getTestOrderListProperty() {
-		return testOrderListProperty;
-	}
 	
 	public void setDatabase(HealthcareDatabase givenDB) {
 		this.givenDB = givenDB;
@@ -260,29 +128,6 @@ public class FullPatientViewModel {
 		this.viewModelFinal.setDatabase(givenDB);
 		this.viewModelTest.setDatabase(givenDB);
 		this.viewModelDiag.setDatabase(givenDB);
-	}
-	
-	public void initFrom(PatientData data) {
-		Person person = data.getPerson();
-		this.contactEmailProperty.setValue(this.nullToEmpty(person.getContact_email()));
-		this.contactPhoneProperty.setValue(this.nullToEmpty(person.getContact_phone()));
-		this.dobProperty.setValue(person.getDOB().toLocalDate());
-		this.firstNameProperty.setValue(this.nullToEmpty(person.getFname()));
-		this.lastNameProperty.setValue(this.nullToEmpty(person.getLname()));
-		this.middleInitialProperty.setValue(this.nullToEmpty(person.getMiddle_initial()));
-		this.ssnProperty.setValue(String.format("%09d", person.getSSN()));
-
-		Address addr = data.getAddress();
-		this.streetAddress1Property.setValue(this.nullToEmpty(addr.getStreet_address1()));
-		this.streetAddress2Property.setValue(this.nullToEmpty(addr.getStreet_address2()));
-		this.cityProperty.setValue(this.nullToEmpty(addr.getCity()));
-		this.zipCodeProperty.setValue(String.format("%05d", addr.getZip_code()));
-		
-		this.genderProperty.getValue().select(person.getGender());
-		this.stateProperty.getValue().select(addr.getState());
-		
-		this.selectedPatientProperty.setValue(data);
-		
 	}
 	
 	public void setSelectedAppointment(Appointment appt, boolean canEdit) {
@@ -303,43 +148,9 @@ public class FullPatientViewModel {
 		this.viewModelFinal.loadFinalDiagnosis();
 		this.viewModelDiag.loadDiagnosis();
 		this.viewModelTest.loadLabTestOrders();
-	}
-
-	public PatientData getPatient() {
-		
-		Date dob = null;
-		LocalDate time = this.dobProperty.getValue();
-		if(time != null) {
-			dob = Date.valueOf(time);
-		}
-		
-		String email = this.nullString(this.contactEmailProperty.getValue());
-		String phone =  this.nullString(this.contactPhoneProperty.getValue());
-		String fname =  this.nullString(this.firstNameProperty.getValue());
-		String lname =  this.nullString(this.lastNameProperty.getValue());
-		String middleInitial =  this.nullString(this.middleInitialProperty.getValue());
-		String ssn =  this.nullString(this.ssnProperty.getValue());
-		String gender =  this.nullString(this.genderProperty.getValue().getSelectedItem());
-		
-		String street1 = this.nullString(this.streetAddress1Property.getValue());
-		String street2 = this.nullString(this.streetAddress2Property.getValue());
-		String state = this.nullString(this.stateProperty.getValue().getSelectedItem());
-		String city = this.nullString(this.cityProperty.getValue());
-		
-		Integer zip = null;
-		try {
-			zip = Integer.parseInt(this.zipCodeProperty.getValue());
-		}catch(Exception e) {}
-		
-		Person person = new Person(email, phone, dob != null ? new java.sql.Date(dob.getTime()) : null, fname, lname, middleInitial, gender, ssn);
-		person.setPerson_id(null);
-		
-		Address addr = new Address(street1, street2, city, state, zip);
-		
-		return new PatientData(person, addr);
+		this.viewModelTest.clearOrderQueue();
 	}
 	
-	//TODO query DB for necessary related data -- doctors, appointments, lab tests
 	public void loadData() {
 		if(!this.initialDataLoad) {
 			this.viewModelAppt.updateAvailableAppointments();
@@ -348,59 +159,5 @@ public class FullPatientViewModel {
 			this.initialDataLoad = true;
 		}
 	}
-	
-	
-	private boolean attemptUpdatePatient(PatientData patientData, PatientData existing) {
-
-		QueryResult results = this.givenDB.attemptUpdatePatient(patientData, existing);
-		if (results == null) {
-			return false;
-		}
-
-		return true;
-	}
-	
-	
-	
-	
-	private String nullToEmpty(String str) {
-		return str == null ? "" : str;
-	}
-	
-	private String nullString(String check) {
-		if(check == null) {
-			return null;
-		}
-		return check.isEmpty() ? null : check;
-	}
-
-	
-	private void addActionHandlers() {
-		this.actionPressedProperty.addListener((e)->{
-			if(this.actionPressedProperty.getValue()) {
-				this.updatePatient();
-			}
-		});
-	}
-	
-	private void updatePatient() {
-		PatientData newData = this.getPatient();
-		PatientData cur = this.selectedPatientProperty.getValue();
-		
-		if(cur == null) {
-			FXMLAlert.statusAlert("Update Patient Failed", "The patient was malformed.", "Update Patient failed", AlertType.ERROR);
-			return;
-		}
-		
-		if (!this.attemptUpdatePatient(newData, cur)) {
-			FXMLAlert.statusAlert("Update Patient Failed", "The patient was not updated successfully.", "Update Patient failed", AlertType.ERROR);
-		} else {
-			FXMLAlert.statusAlert("Update Patient Success", "The patient was updated successfully.", "Update Patient Success", AlertType.INFORMATION);
-			//TODO propagate main display on close of window instead of forced propagation, maybe use old search query
-			//this.updateAvailableAppointments();
-		}
-	}
-
-	
 	
 }

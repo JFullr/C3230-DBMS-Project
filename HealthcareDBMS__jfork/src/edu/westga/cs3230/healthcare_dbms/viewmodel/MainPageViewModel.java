@@ -301,7 +301,7 @@ public class MainPageViewModel {
 			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.FULL_PATIENT_URL, "Modify Patient: "+fullName, true);
 			FullPatientCodeBehind codeBehind = (FullPatientCodeBehind) window.getController();
 			FullPatientViewModel viewModel = codeBehind.getViewModel();
-			viewModel.initFrom(patient);
+			viewModel.getViewModelPatient().initFrom(patient);
 			viewModel.setDatabase(this.database);
 			
 			window.pack();

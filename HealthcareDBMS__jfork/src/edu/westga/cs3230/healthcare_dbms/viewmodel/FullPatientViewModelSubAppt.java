@@ -448,6 +448,7 @@ public class FullPatientViewModelSubAppt {
 		} else {
 			FXMLAlert.statusAlert("Update Appointment Success", "The appointment updated successfully.", "Update Appointment Success", AlertType.INFORMATION);
 			///TODO update Appointments
+			this.givenAppointmentProperty.setValue(this.getAppointment());
 		}
 	}
 	
@@ -464,7 +465,7 @@ public class FullPatientViewModelSubAppt {
 			return false;
 		}
 		results = this.givenDB.getAppointmentBy(new AppointmentData(newData,null));
-		///TODO update appointment lists
+		///TODO update appointment list possibly
 		return true;
 	}
 	
