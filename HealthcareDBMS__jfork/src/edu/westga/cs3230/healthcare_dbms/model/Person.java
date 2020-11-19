@@ -119,4 +119,8 @@ public class Person {
 		return
 	}
 	*/
+
+	public String fullName() {
+		return this.fname + " " + this.lname;
+	}
 }

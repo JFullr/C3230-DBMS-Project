@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
@@ -15,6 +16,7 @@ import edu.westga.cs3230.healthcare_dbms.model.Doctor;
 import edu.westga.cs3230.healthcare_dbms.model.DoctorData;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
+import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
@@ -175,8 +177,8 @@ public class FullPatientViewModelSubAppt {
 		
 		QueryResult valid = this.givenDB.getValidAppointmentsByPatient(this.givenPatientProperty.getValue());
 		QueryResult invalid = this.givenDB.getInvalidAppointmentsByPatient(this.givenPatientProperty.getValue());
-		this.addValidResults(null, null, valid);
-		this.addInvalidResults(null, null, invalid);
+		this.addValidResults(valid);
+		this.addInvalidResults(invalid);
 	}
 
 	public void initFrom(Appointment appt) {
@@ -402,44 +404,36 @@ public class FullPatientViewModelSubAppt {
 		return true;
 	}
 	
-	private void addValidResults(Object operatedOn, Object display, QueryResult results) {
-		
-		if(results == null) {
-			return;
-		}
-		
-		TupleEmbed embed = null;
-		for(QueryResult result : results) {
-			SqlTuple tup = result.getTuple();
-			// TODO: Map doctor_id => doctor name?!?
-			if(result.getAssociated() == null) {
-				embed = new TupleEmbed(operatedOn, display, tup);
-			} else {
-				embed = new TupleEmbed(result.getAssociated(), result.getAssociated(), tup);
-			}
-			this.availableList.add(embed);
-		}
-		
+	private void addValidResults(QueryResult results) {
+		addAppointmentResults(results, this.availableList);
 	}
 	
-	private void addInvalidResults(Object operatedOn, Object display, QueryResult results) {
-		
+	private void addInvalidResults(QueryResult results) {
+		addAppointmentResults(results, this.pastList);
+	}
+
+	private void addAppointmentResults(QueryResult results, ObservableList<TupleEmbed> destination) {
 		if(results == null) {
 			return;
 		}
-		
-		TupleEmbed embed = null;
 		for(QueryResult result : results) {
-			SqlTuple tup = result.getTuple();
-			if(result.getAssociated() == null) {
-				embed =  new TupleEmbed(operatedOn, display, tup);
-			} else {
-				embed = new TupleEmbed(result.getAssociated(), result.getAssociated(), tup);
-			}
-			
-			this.pastList.add(embed);
+			SqlTuple tup = result.getTuple().transform(tuples -> {
+				// Grab the doctor ID
+				int doctorId = (int) tuples.get("doctor_id").getValue();
+
+				// Remove all the IDs
+				tuples.keySet().removeIf(key -> key.endsWith("_id"));
+
+				Optional<String> doctorName = this.availableDoctors.stream()
+						.filter(doctorData -> doctorData.getDoctor().getPerson_id() == doctorId)
+						.map(doctorData -> doctorData.getPerson().fullName()).findFirst();
+				if (doctorName.isPresent()) {
+					tuples.put("doctor", new SqlAttribute("doctor", doctorName.get()));
+				}
+			});
+			TupleEmbed embed = new TupleEmbed(result.getAssociated(), result.getAssociated(), tup);
+			destination.add(embed);
 		}
-		
 	}
 	
 	

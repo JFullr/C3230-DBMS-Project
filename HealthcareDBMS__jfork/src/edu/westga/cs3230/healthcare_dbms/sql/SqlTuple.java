@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 
 public class SqlTuple implements Iterable<SqlAttribute> {
 	
@@ -98,6 +99,12 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 			}
 		}
 		return new SqlTuple(filterCopy);
+	}
+
+	public SqlTuple transform(Consumer<Map<String, SqlAttribute>> transformer) {
+		HashMap<String, SqlAttribute> transformed = new LinkedHashMap<>(this.attrs);
+		transformer.accept(transformed);
+		return new SqlTuple(transformed);
 	}
 
 }

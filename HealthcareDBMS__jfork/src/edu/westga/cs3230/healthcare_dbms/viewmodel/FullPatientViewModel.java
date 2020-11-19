@@ -153,8 +153,8 @@ public class FullPatientViewModel {
 	
 	public void loadData() {
 		if(!this.initialDataLoad) {
-			this.viewModelAppt.updateAvailableAppointments();
 			this.viewModelAppt.loadDoctors();
+			this.viewModelAppt.updateAvailableAppointments();
 			this.viewModelTest.loadLabTests();
 			this.initialDataLoad = true;
 		}
