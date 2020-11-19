@@ -3,13 +3,21 @@ package edu.westga.cs3230.healthcare_dbms.model;
 import java.sql.Date;
 
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
+import edu.westga.cs3230.healthcare_dbms.sql.UiHide;
 
 public class LabTestOrder {
 
 	@SqlGenerated
+	@UiHide
 	private Integer lab_test_order_id;
+
+	@UiHide
 	private Integer appointment_id;
+
+	@UiHide
 	private Integer lab_test_id;
+
+	@UiHide
 	private Date date_to_perform;
 	
 	public LabTestOrder(Integer appointment_id, Integer lab_test_id, Date date_to_perform) {

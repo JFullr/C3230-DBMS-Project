@@ -360,9 +360,9 @@ public class MainPageViewModel {
 		for(QueryResult result : results) {
 			SqlTuple tup = result.getTuple();
 			if(result.getAssociated() == null) {
-				embed =  this.createEmbed(operatedOn, display, tup);
+				embed =  this.createEmbed(operatedOn, display, tup.hideBasedOn(display));
 			} else {
-				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup);
+				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup.hideBasedOn(result.getAssociated()));
 			}
 			
 			this.tuples.add(embed);

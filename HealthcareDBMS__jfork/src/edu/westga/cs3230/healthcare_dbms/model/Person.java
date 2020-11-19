@@ -3,10 +3,12 @@ package edu.westga.cs3230.healthcare_dbms.model;
 import java.sql.Date;
 
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
+import edu.westga.cs3230.healthcare_dbms.sql.UiHide;
 
 public class Person {
 	
 	@SqlGenerated
+	@UiHide
 	private Integer person_id;
 	private String fname;
 	private String lname;
@@ -16,6 +18,7 @@ public class Person {
 	private Integer SSN;
 	private String contact_phone;
 	private String contact_email;
+	@UiHide
 	private Integer mailing_address_id;
 	
 	public Person(String email, String phone, Date dob, String fname, String lname, String middleInitial, String gender, String ssn) {

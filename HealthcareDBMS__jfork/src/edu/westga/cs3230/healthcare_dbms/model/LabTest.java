@@ -1,10 +1,12 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
+import edu.westga.cs3230.healthcare_dbms.sql.UiHide;
 
 public class LabTest {
 
 	@SqlGenerated
+	@UiHide
 	private Integer lab_test_id;
 	private Boolean is_available;
 	private Double test_cost;

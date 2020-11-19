@@ -2,6 +2,7 @@ package edu.westga.cs3230.healthcare_dbms.sql;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SqlGetter {
 	
@@ -43,7 +44,7 @@ public class SqlGetter {
 			return;
 		}
 
-		HashMap<String, Method> getters = new HashMap<String, Method>();
+		HashMap<String, Method> getters = new LinkedHashMap<String, Method>();
 
 		for (Method m : of.getClass().getMethods()) {
 			if (m.getName().startsWith("get") && m.getParameterCount() == 0 && m.getName().length() > 3) {

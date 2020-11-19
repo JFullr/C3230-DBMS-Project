@@ -3,14 +3,18 @@ package edu.westga.cs3230.healthcare_dbms.model;
 import java.sql.Timestamp;
 
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
+import edu.westga.cs3230.healthcare_dbms.sql.UiHide;
 
 public class Appointment {
 	
 	@SqlGenerated
+	@UiHide
 	private Integer appointment_id;
+	@UiHide
 	private Integer person_id;
 	private Timestamp date_time;
-	
+
+	@UiHide
 	private Integer doctor_id;
 	private String appointment_reason;
 	

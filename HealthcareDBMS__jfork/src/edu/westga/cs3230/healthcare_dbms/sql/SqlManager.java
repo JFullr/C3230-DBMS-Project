@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class SqlManager {
 	
@@ -34,7 +35,7 @@ public class SqlManager {
 	public void readTuples(ResultSet rs) throws SQLException {
 		
 		while (rs.next()) {
-			HashMap<String, SqlAttribute> attributes = new HashMap<String, SqlAttribute>();
+			HashMap<String, SqlAttribute> attributes = new LinkedHashMap<String, SqlAttribute>();
 			ResultSetMetaData meta = rs.getMetaData();
 			
 			for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
@@ -57,7 +58,7 @@ public class SqlManager {
 	public void setTuple(ResultSet rs) throws SQLException {
 		
 		while (rs.next()) {
-			HashMap<String, SqlAttribute> attributes = new HashMap<String, SqlAttribute>();
+			HashMap<String, SqlAttribute> attributes = new LinkedHashMap<String, SqlAttribute>();
 			ResultSetMetaData meta = rs.getMetaData();
 			
 			for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {

@@ -1,8 +1,11 @@
 package edu.westga.cs3230.healthcare_dbms.sql;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.BiPredicate;
 
 public class SqlTuple implements Iterable<SqlAttribute> {
 	
@@ -23,7 +26,7 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 	
 	public SqlTuple(HashMap<String, SqlAttribute> attrs) {
 		if(attrs == null) {
-			this.attrs = new HashMap<String, SqlAttribute>();
+			this.attrs = new LinkedHashMap<String, SqlAttribute>();
 		} else {
 			this.attrs = attrs;
 		}
@@ -78,6 +81,23 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 		return this.attrs.values().iterator();
 	}
 	
-	
+	public SqlTuple filter(BiPredicate<String, SqlAttribute> keep) {
+		HashMap<String, SqlAttribute> filterCopy = new LinkedHashMap<>(this.attrs);
+		filterCopy.entrySet().removeIf(entry -> !keep.test(entry.getKey(), entry.getValue()));
+		return new SqlTuple(filterCopy);
+	}
+
+	public SqlTuple hideBasedOn(Object object) {
+		if (object instanceof AssociatedHider) {
+			return filter((key, value) -> !((AssociatedHider) object).hideFunction().test(key));
+		}
+		HashMap<String, SqlAttribute> filterCopy = new LinkedHashMap<>(this.attrs);
+		for (Field field : object.getClass().getFields()) {
+			if (field.isAnnotationPresent(UiHide.class)) {
+				filterCopy.remove(field.getName());
+			}
+		}
+		return new SqlTuple(filterCopy);
+	}
 
 }

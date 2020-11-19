@@ -1,6 +1,10 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-public class PatientData {
+import edu.westga.cs3230.healthcare_dbms.sql.AssociatedHider;
+
+import java.util.function.Predicate;
+
+public class PatientData implements AssociatedHider {
 	
 	private Person person;
 	private Address address;
@@ -20,5 +24,10 @@ public class PatientData {
 
 	public Address getAddress() {
 		return address;
+	}
+
+	@Override
+	public Predicate<String> hideFunction() {
+		return key -> key.endsWith("_id");
 	}
 }

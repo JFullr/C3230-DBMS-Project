@@ -411,8 +411,9 @@ public class FullPatientViewModelSubAppt {
 		TupleEmbed embed = null;
 		for(QueryResult result : results) {
 			SqlTuple tup = result.getTuple();
+			// TODO: Map doctor_id => doctor name?!?
 			if(result.getAssociated() == null) {
-				embed =  new TupleEmbed(operatedOn, display, tup);
+				embed = new TupleEmbed(operatedOn, display, tup);
 			} else {
 				embed = new TupleEmbed(result.getAssociated(), result.getAssociated(), tup);
 			}

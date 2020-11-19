@@ -228,7 +228,7 @@ public class FullPatientViewModelSubTest {
 				
 				//TODO map
 				//this.availableTests.get() test.getLab_test_id()
-				TupleEmbed embed = new TupleEmbed(test,test,result.getTuple());
+				TupleEmbed embed = new TupleEmbed(test, test, result.getTuple().hideBasedOn(test));
 				embed.getPressedPropertyAction().addListener((evt)->{
 					if(embed.getPressedPropertyAction().getValue() != null) {
 						this.showResultUpdatePanel();
@@ -383,7 +383,7 @@ public class FullPatientViewModelSubTest {
 		TupleEmbed embed = null;
 		LabTest test = this.availableTestsLookup.get(order.getLab_test_id());
 		if(test == null) {
-			embed = new TupleEmbed(order, order, SqlGetter.getFrom(order));
+			embed = new TupleEmbed(order, order, SqlGetter.getFrom(order).hideBasedOn(order));
 		}else {
 			SqlTuple view = new SqlTuple();
 			view.add("Name", test.getTest_name());
