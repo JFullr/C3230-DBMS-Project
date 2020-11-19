@@ -67,14 +67,14 @@ public class AddressDAL {
     }
 
     public QueryResult attemptAddAddress(Address address) throws SQLException {
-        QueryResult attemptedMatch = this.matchAddress(address);
-        if (attemptedMatch.getBatch().size() > 0) {
-            return attemptedMatch;
-        }
-
-        // TODO: Transaction support, uniqueness of address
-        ArrayList<SqlTuple> result = this.postDal.postTuple(SqlGetter.getFrom(address));
-        return new QueryResult(result);
+        return this.connector.getInTransaction(() -> {
+            QueryResult attemptedMatch = this.matchAddress(address);
+            if (attemptedMatch.getBatch().size() > 0) {
+                return attemptedMatch;
+            }
+            ArrayList<SqlTuple> result = this.postDal.postTuple(SqlGetter.getFrom(address));
+            return new QueryResult(result);
+        });
     }
 
     public QueryResult attemptUpdateAddress(Address oldAddress, Address newAddress) throws SQLException {

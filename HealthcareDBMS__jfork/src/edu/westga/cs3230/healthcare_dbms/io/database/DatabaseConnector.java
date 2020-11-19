@@ -41,9 +41,9 @@ public class DatabaseConnector {
         this.inTransaction = inTransaction;
     }
 
-    public <T> T getInTransaction(Callable<T> callable) throws Exception {
+    public <T> T getInTransaction(Callable<T> callable) throws SQLException {
         if (this.inTransaction) {
-            return callable.call();
+            return doCallRunnableWithThrowingSqlException(callable);
         }
 
         // make sure the connection is available
@@ -52,7 +52,7 @@ public class DatabaseConnector {
         try {
             this.setInTransaction(true);
             connection.setAutoCommit(false);
-            T result = callable.call();
+            T result = doCallRunnableWithThrowingSqlException(callable);
             connection.commit();
             return result;
         } catch (Exception e) {
@@ -60,6 +60,16 @@ public class DatabaseConnector {
             throw e;
         } finally {
             this.setInTransaction(false);
+        }
+    }
+
+    private <T> T doCallRunnableWithThrowingSqlException(Callable<T> callable) throws SQLException {
+        try {
+            return callable.call();
+        } catch (SQLException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

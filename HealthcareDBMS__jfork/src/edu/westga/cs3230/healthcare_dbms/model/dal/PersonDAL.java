@@ -29,29 +29,28 @@ public class PersonDAL {
 	}
 	
 	public QueryResult attemptAddPerson(Person patient) throws SQLException {
-		
-		///TODO use transactions
-		
-		QueryResult result = this.getPersonBySSN(patient);
-		
-		if(result == null || result.getTuple() == null) {
-			ArrayList<SqlTuple> current = this.postDal.postTuple(patient);
-			Integer id = null;
-			if(current == null || current.size() == 0) {
-				//TODO DELETE
-				//return result;
+		return this.connector.getInTransaction(() -> {
+			QueryResult result = this.getPersonBySSN(patient);
+
+			if (result == null || result.getTuple() == null) {
+				ArrayList<SqlTuple> current = this.postDal.postTuple(patient);
+				Integer id = null;
+				if (current == null || current.size() == 0) {
+					//TODO DELETE
+					//return result;
+				}
+				SqlAttribute attr = current.get(0).get("GENERATED_KEY");
+				if (attr != null) {
+					id = ((BigDecimal) attr.getValue()).intValue();
+					this.postDal.postTuple(new Patient(id));
+				} else {
+					//TODO DELETE
+				}
+
 			}
-			SqlAttribute attr = current.get(0).get("GENERATED_KEY");
-			if(attr != null) {
-				id = ((BigDecimal)attr.getValue()).intValue();
-				this.postDal.postTuple(new Patient(id));
-			} else {
-				//TODO DELETE
-			}
-			
-		}
-		
-		return result;
+
+			return result;
+		});
 	}
 	
 	public QueryResult getPersonBySSN(Person person) throws SQLException {

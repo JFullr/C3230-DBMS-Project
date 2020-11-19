@@ -35,24 +35,25 @@ public class AppointmentDAL {
 	}
 
 	public QueryResult attemptAddAppointment(AppointmentData appointment) throws SQLException {
-		
-		QueryResult result = null;
-		Integer addressId = null;
-		try {
-			ArrayList<BigDecimal> generated = this.postDal.getGeneratedIds(this.postDal.postTuple(appointment.getAppointment()));
-			if(generated.size() == 0) {
-				System.out.println("ADDRESS FAILED GENERATED CHECK");
+		return this.connector.getInTransaction(() -> {
+			QueryResult result = null;
+			Integer addressId = null;
+			try {
+				ArrayList<BigDecimal> generated = this.postDal.getGeneratedIds(this.postDal.postTuple(appointment.getAppointment()));
+				if (generated.size() == 0) {
+					System.out.println("ADDRESS FAILED GENERATED CHECK");
+					return null;
+				}
+				addressId = generated.get(0).intValue();
+			} catch (Exception e) {
+				e.printStackTrace();
 				return null;
 			}
-			addressId = generated.get(0).intValue();
-		}catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-		result = this.getAppointmentById(addressId);
-		
-		return result;
+
+			result = this.getAppointmentById(addressId);
+
+			return result;
+		});
 	}
 	
 	public QueryResult getAppointmentById(int addressId) throws SQLException {

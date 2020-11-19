@@ -23,14 +23,10 @@ public class AppointmentCheckupDAL {
 	}
 	
 	public QueryResult attemptAddAppointmentCheckup(AppointmentCheckup checkup) throws SQLException {
-		try {
+		return this.connector.getInTransaction(() -> {
 			this.postDal.postTuple(checkup);
-		}catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		return this.getAppointmentCheckupForAppointment(checkup.getAppointment_id());
+			return this.getAppointmentCheckupForAppointment(checkup.getAppointment_id());
+		});
 	}
 	
 	public QueryResult getAppointmentCheckupForAppointment(Appointment appointment) throws SQLException {

@@ -27,8 +27,10 @@ public class PatientDAL {
 	private PersonDAL personDal;
 	private AddressDAL addressDal;
 	private UpdateDAL updateDal;
+	private DatabaseConnector connector;
 
 	public PatientDAL(DatabaseConnector connector) {
+		this.connector = connector;
 		this.postDal = new PostDAL(connector);
 		this.personDal = new PersonDAL(connector);
 		this.addressDal = new AddressDAL(connector);
@@ -36,39 +38,41 @@ public class PatientDAL {
 	}
 	
 	public QueryResult attemptAddPatient(PatientData patient) throws SQLException {
-		
-		QueryResult result = null;
-		Integer addressId = null;
-		try {
-			ArrayList<BigDecimal> generated = this.postDal.getGeneratedIds(this.postDal.postTuple(patient.getAddress()));
-			if(generated.size() == 0) {
-				System.out.println("ADDRESS FAILED GENERATED CHECK");
+		return connector.getInTransaction(() -> {
+
+			QueryResult result = null;
+			Integer addressId = null;
+			try {
+				ArrayList<BigDecimal> generated = this.postDal.getGeneratedIds(this.postDal.postTuple(patient.getAddress()));
+				if (generated.size() == 0) {
+					System.out.println("ADDRESS FAILED GENERATED CHECK");
+					return null;
+				}
+				addressId = generated.get(0).intValue();
+			} catch (Exception e) {
+				e.printStackTrace();
 				return null;
 			}
-			addressId = generated.get(0).intValue();
-		}catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-		result = this.addressDal.getAddressById(addressId);
-		
-		if(result == null) {
-			System.out.println("ADDRESS FAILED TO BE FOUND");
-			return null;
-		}
-		
-		patient.getPerson().setMailing_address_id(addressId);
-		
-		QueryResult person = this.personDal.attemptAddPerson(patient.getPerson());
-		
-		if(person == null) {
-			System.out.println("PERSON FAILED TO ADD");
-			//TODO delete person
-			return null;
-		}
-		
-		return result.combine(person);
+
+			result = this.addressDal.getAddressById(addressId);
+
+			if (result == null) {
+				System.out.println("ADDRESS FAILED TO BE FOUND");
+				return null;
+			}
+
+			patient.getPerson().setMailing_address_id(addressId);
+
+			QueryResult person = this.personDal.attemptAddPerson(patient.getPerson());
+
+			if (person == null) {
+				System.out.println("PERSON FAILED TO ADD");
+				//TODO delete person
+				return null;
+			}
+
+			return result.combine(person);
+		});
 	}
 	
 	public QueryResult attemptUpdatePatient(PatientData updateData, PatientData existingData) throws SQLException {
