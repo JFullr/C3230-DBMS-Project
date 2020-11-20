@@ -6,6 +6,7 @@ import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
+import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
@@ -36,6 +37,8 @@ public class MainPageViewModel {
 	
 	private final BooleanProperty loggedInProperty;
 	private final BooleanProperty attemptingLoginProperty;
+	
+	private final BooleanProperty adminLoggedInProperty;
 
 	private final StringProperty nameProperty;
 	private final StringProperty userIdProperty;
@@ -64,6 +67,7 @@ public class MainPageViewModel {
 		this.userIdProperty = new SimpleStringProperty();
 		this.userNameProperty = new SimpleStringProperty();
 		this.loggedInProperty = new SimpleBooleanProperty(false);
+		this.adminLoggedInProperty = new SimpleBooleanProperty(false);
 		this.attemptingLoginProperty  = new SimpleBooleanProperty(false);
 		
 		this.selectedTupleObject = new SimpleObjectProperty<Object>(null);
@@ -84,12 +88,9 @@ public class MainPageViewModel {
 			
 			
 			Class<?> mutateClass = obj.getClass();
-			//TODO add more classes to edit
 			if(mutateClass == PatientData.class) {
 				this.handlePatientMod((PatientData)obj);
-			}
-			
-			else {
+			} else {
 				FXMLAlert.statusAlert("Cannot Edit "+mutateClass.getSimpleName(), AlertType.WARNING);
 			}
 		});
@@ -130,6 +131,7 @@ public class MainPageViewModel {
 	
 	public void handleLogOut() {
 		this.loggedInProperty.setValue(false);
+		this.adminLoggedInProperty.setValue(false);
 		this.userIdProperty.setValue("");
 		this.userNameProperty.setValue("");
 		this.nameProperty.setValue("");
@@ -167,23 +169,27 @@ public class MainPageViewModel {
 	}
 
 	public StringProperty getNameProperty() {
-		return nameProperty;
+		return this.nameProperty;
 	}
 
 	public StringProperty getUserIdProperty() {
-		return userIdProperty;
+		return this.userIdProperty;
 	}
 
 	public StringProperty getUserNameProperty() {
-		return userNameProperty;
+		return this.userNameProperty;
 	}
 
 	public BooleanProperty getLoggedInProperty() {
-		return loggedInProperty;
+		return this.loggedInProperty;
+	}
+	
+	public BooleanProperty getAdminLoggedInProperty() {
+		return this.adminLoggedInProperty;
 	}
 	
 	public BooleanProperty getAttemptingLoginProperty() {
-		return attemptingLoginProperty;
+		return this.attemptingLoginProperty;
 	}
 	
 	public ObservableList<TupleEmbed> getTupleList() {
@@ -191,7 +197,7 @@ public class MainPageViewModel {
 	}
 	
 	public ObjectProperty<Object> getSelectedTupleObject() {
-		return selectedTupleObject;
+		return this.selectedTupleObject;
 	}
 	
 	public void showLogin() {
@@ -221,12 +227,19 @@ public class MainPageViewModel {
 	
 	public boolean attemptLogin(Login login) {
 		
-		QueryResult result = this.database.attemptLogin(login);
+		QueryResult result = this.database.attemptAdminLogin(login);
+		if (result != null) {
+			this.adminLoggedInProperty.setValue(true);
+			this.queryResults.add(result);
+			return true;
+		}
+		
+		result = this.database.attemptLogin(login);
 		if (result == null || result.getTuple() == null) {
 			return false;
 		}
 		
-		this.addResults(login, result);
+		this.queryResults.add(result);
 
 		return true;
 	}
@@ -327,10 +340,6 @@ public class MainPageViewModel {
 		return true;
 	}
 
-	public String getUserType(Person patient) {
-		return this.getUserType(patient);
-	}
-
 	private boolean attemptPatientSearch(PatientData patientData) {
 		QueryResult result = this.database.attemptSearchPatient(patientData);
 		if (result == null || result.getTuple() == null) {
@@ -340,10 +349,6 @@ public class MainPageViewModel {
 		PatientData patientFound = (PatientData) result.getAssociated();
 		this.addResults(patientFound, patientFound.getPerson(), result);
 		return true;
-	}
-	
-	private void addResults(Object operatedOn, QueryResult results) {
-		this.addResults(operatedOn, operatedOn, results);
 	}
 	
 	private void addResults(Object operatedOn, Object display, QueryResult results) {
@@ -365,12 +370,61 @@ public class MainPageViewModel {
 				embed = this.createEmbed(result.getAssociated(), result.getAssociated(), tup.hideBasedOn(result.getAssociated()));
 			}
 			
-			this.tuples.add(embed);
+			if(embed != null) {
+				this.tuples.add(embed);
+			}
 		}
 		
 	}
 	
 	private TupleEmbed createEmbed(Object operatesOn, Object display, SqlTuple attributes) {
+		if(attributes == null) {
+			return null;
+		}
+		if(operatesOn != null && operatesOn.getClass() == PatientData.class) {
+			return this.createPatientEmbed(operatesOn, display, attributes);
+		}
+		
+		return this.createGenericEmbed(operatesOn, display, attributes);
+	}
+	
+	private TupleEmbed createPatientEmbed(Object operatesOn, Object display, SqlTuple attributes) {
+		
+		PatientData patient = (PatientData)operatesOn;
+		Person person = patient.getPerson();
+		Address addr = patient.getAddress();
+		
+		SqlTuple made = new SqlTuple();
+		
+		made.add("FirstName", person.getFname());
+		made.add("MidInit", person.getMiddle_initial());
+		made.add("LastName", person.getLname());
+		made.add("SSN", person.getSSN());
+		made.add("DateOfBirth", person.getDOB());
+		made.add("Gender", person.getGender());
+		made.add("Contact Email", person.getContact_email());
+		made.add("Contact Phone", person.getContact_phone());
+		
+		made.add("State", addr.getState());
+		made.add("City", addr.getCity());
+		made.add("ZipCode", addr.getZip_code());
+		made.add("Address 1", addr.getStreet_address1());
+		if(addr.getStreet_address2() != null) {
+			made.add("Address 2", addr.getStreet_address2());
+		}
+		
+		
+		TupleEmbed embed = new TupleEmbed(operatesOn, display, made);
+		
+		final TupleEmbed xbed = embed;
+		xbed.getPressedPropertyAction().addListener((evt)->{
+			this.selectedTupleObject.setValue(xbed.getPressedPropertyAction().getValue());
+		});
+		
+		return embed;
+	}
+	
+	private TupleEmbed createGenericEmbed(Object operatesOn, Object display, SqlTuple attributes) {
 		TupleEmbed embed = new TupleEmbed(operatesOn, display, attributes);
 			
 		final TupleEmbed xbed = embed;
@@ -380,24 +434,4 @@ public class MainPageViewModel {
 		
 		return embed;
 	}
-	/*
-	private ObservableList<TupleEmbed> getTuplesByAssociated(Class<?> classAssociated){
-		ObservableList<TupleEmbed> found = FXCollections.observableArrayList();
-		
-		for(TupleEmbed embed : this.tuples) {
-			Object obj = embed.getOperatedObject();
-			if(obj != null && obj.getClass() == classAssociated) {
-				//embed.setMouseTransparent(true);
-				TupleEmbed copy = embed.getCopy();
-				copy.getPressedPropertyAction().addListener((evt)->{
-					this.selectedTupleObject.setValue(copy.getPressedPropertyAction().getValue());
-				});
-				found.add(copy);
-			}
-		}
-		
-		return found;
-	}
-	*/
-	
 }

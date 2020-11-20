@@ -9,8 +9,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 
 /**
  * Code-behind file for the main page for the Healthcare DBMS
@@ -66,6 +66,8 @@ public class MainPageCodeBehind {
 		this.addListeners();
 		
 		this.setupTupleView();
+		
+		this.setupAdminTab();
 		
 	}
 
@@ -126,6 +128,42 @@ public class MainPageCodeBehind {
 		this.queryListView.selectionModelProperty().addListener((evt)->{
 			this.queryListView.refresh();
 		});
+	}
+	
+	
+	
+	
+	@FXML
+    private Tab adminTab;
+
+	@FXML
+    private Tab defaultTab;
+	
+	@FXML
+    private TabPane userPane;
+	
+    @FXML
+    private Label adminUsernameLabel;
+
+    @FXML
+    private Label adminNameLablel;
+
+    @FXML
+    private Label adminUserIdLabel;
+    
+    private void setupAdminTab() {
+    	this.adminTab.disableProperty().bind(this.viewModel.getAdminLoggedInProperty().not());
+    	this.adminUsernameLabel.textProperty().bindBidirectional(this.viewModel.getUserNameProperty());
+		this.adminNameLablel.textProperty().bindBidirectional(this.viewModel.getNameProperty());
+		this.adminUserIdLabel.textProperty().bindBidirectional(this.viewModel.getUserIdProperty());
+		
+    }
+    
+    @FXML
+    public void handleAdminLogOut(ActionEvent event) {
+		
+    	this.userPane.getSelectionModel().select(0);
+		this.viewModel.handleLogOut();	
 	}
 
 }

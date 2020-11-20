@@ -75,6 +75,14 @@ public class TupleEmbed extends ListView<Node> {
 		return this.attributes;
 	}
 	
+	public void updateAttribute(String attribute, Object result) {
+		this.attributes.set(attribute, new SqlAttribute(attribute, result));
+		Node header = this.items.get(0);
+		this.items.clear();
+		this.items.add(header);
+		this.generateFieldForms();
+	}
+	
 	private void generateControlHeader() {
 		
 		Button postEdits = new Button("Edit");

@@ -63,7 +63,7 @@ public class FullPatientViewModel {
 		
 		this.initialDataLoad = false;
 		
-		this.viewModelCheckup = new FullPatientViewModelSubCheckup(this.selectedPatientProperty, this.selectedAppointmentProperty, this.selectedCheckupProperty);
+		this.viewModelCheckup = new FullPatientViewModelSubCheckup(this.selectedAppointmentProperty, this.selectedCheckupProperty);
 		this.viewModelAppt = new FullPatientViewModelSubAppt(this.selectedPatientProperty, this.selectedAppointmentProperty);
 		this.viewModelFinal = new FullPatientViewModelSubFinal(this.selectedAppointmentProperty, this.selectedFinalDiagnosisProperty);
 		this.viewModelTest = new FullPatientViewModelSubTest(this.selectedPatientProperty, this.selectedAppointmentProperty);

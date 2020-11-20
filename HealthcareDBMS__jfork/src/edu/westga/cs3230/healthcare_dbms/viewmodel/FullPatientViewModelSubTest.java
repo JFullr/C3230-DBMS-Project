@@ -47,6 +47,7 @@ public class FullPatientViewModelSubTest {
 
 	private ArrayList<LabTest> availableTests;
 	private HashMap<Integer,LabTest> availableTestsLookup;
+	private HashMap<Integer,LabTestResult> availableResultsLookup;
 	private ObservableList<String> testsList;
 	private ObservableList<TupleEmbed> testsOrderList;
 	private ObservableList<TupleEmbed> testStatusList;
@@ -69,6 +70,7 @@ public class FullPatientViewModelSubTest {
 		this.givenPatientProperty = givenPatientProperty;
 		
 		this.availableTestsLookup = new HashMap<Integer,LabTest>();
+		this.availableResultsLookup = new HashMap<Integer,LabTestResult>();
 		
 		this.queueTestEventProperty = new SimpleBooleanProperty(false);
 		this.orderTestsEventProperty = new SimpleBooleanProperty(false);
@@ -88,16 +90,6 @@ public class FullPatientViewModelSubTest {
 		this.testDateProperty = new SimpleObjectProperty<LocalDate>();
 		
 		this.availableTests = new ArrayList<LabTest>();
-		
-		/*
-		//TESTS
-		LabTest test = new LabTest(true, 666.0, "Test Lab Test");test.setLab_test_id(666);
-		this.availableTests.add(test);
-		this.testsList.add(test.getTest_description());
-		test = new LabTest(true, 235.0, "Test sg Test");test.setLab_test_id(662356);
-		this.availableTests.add(test);
-		this.testsList.add(test.getTest_description());
-		//**/
 		
 		this.addActionHandlers();
 
@@ -220,15 +212,29 @@ public class FullPatientViewModelSubTest {
 			return;
 		}
 		
+		this.getAllLabTestResults();
+		
 		for(QueryResult result : orders) {
 			if(result.getTuple() != null) {
 				
 				LabTestOrder test = new LabTestOrder(null, null, null);
 				SqlSetter.fillWith(test, result.getTuple());
 				
-				//TODO map
-				//this.availableTests.get() test.getLab_test_id()
-				TupleEmbed embed = new TupleEmbed(test, test, result.getTuple().hideBasedOn(test));
+				LabTest found = this.availableTestsLookup.get(test.getLab_test_id());
+				SqlTuple display = new SqlTuple();
+				display.add("TestName", found.getTest_name());
+				display.add("DateToPerform", test.getDate_to_perform());
+				
+				LabTestResult labResult = this.availableResultsLookup.get(test.getLab_test_order_id());
+				
+				if(labResult != null) {
+					display.add("Result", labResult.getTest_result());
+				}else {
+					display.add("Result", "");
+				}
+				
+				
+				TupleEmbed embed = new TupleEmbed(test, test, display);
 				embed.getPressedPropertyAction().addListener((evt)->{
 					if(embed.getPressedPropertyAction().getValue() != null) {
 						this.showResultUpdatePanel();
@@ -258,6 +264,23 @@ public class FullPatientViewModelSubTest {
 		return result;
 	}
 	
+	private void getAllLabTestResults(){
+		QueryResult queryResult = this.givenDB.attemptGetTestResultsOf(this.givenAppointmentProperty.get().getAppointment());
+		
+		if(queryResult == null) {
+			return;
+		}
+		
+		this.availableResultsLookup.clear();
+		for(QueryResult qResult: queryResult) {
+			LabTestResult result = new LabTestResult(null, null);
+			SqlSetter.fillWith(result, qResult.getTuple());
+			
+			this.availableResultsLookup.put(result.getLab_test_order_id(), result);
+		}
+		
+	}
+	
 	private void showResultUpdatePanel() {
 		TupleEmbed emb = this.testListStatusSelectionProperty.getValue().getSelectedItem();
 		if(emb != null) {
@@ -284,12 +307,14 @@ public class FullPatientViewModelSubTest {
 						FXMLAlert.statusAlert("Failed to update lab test result");
 					}else {
 						FXMLAlert.statusAlert("Successfully updated lab test result");
+						emb.updateAttribute("Result", val.get());
 					}
 				} else {
 					if(this.givenDB.attemptPostTuple(newResult) == null) {
 						FXMLAlert.statusAlert("Failed to create lab test result");
 					}else {
 						FXMLAlert.statusAlert("Successfully create lab test result");
+						emb.updateAttribute("Result", val.get());
 					}
 				}
 			}
@@ -307,7 +332,6 @@ public class FullPatientViewModelSubTest {
 		
 		this.orderTestsEventProperty.addListener((evt) -> {
 			if (this.orderTestsEventProperty.getValue()) {
-				//TODO DAL push multiple orders
 				this.addAllTestOrders();
 			}
 		});

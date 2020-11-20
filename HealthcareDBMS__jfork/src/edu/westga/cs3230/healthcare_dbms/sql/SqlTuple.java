@@ -76,6 +76,15 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 		return false;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder build = new StringBuilder("");
+		for(SqlAttribute attr : this) {
+			build.append(attr.getValue());
+			build.append(" ; ");
+		}
+		return build.toString();
+	}
 
 	@Override
 	public Iterator<SqlAttribute> iterator() {

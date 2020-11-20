@@ -29,7 +29,6 @@ public class FullPatientViewModelSubCheckup {
 	private final StringProperty temperatureProperty;
 	
 	private final ObjectProperty<AppointmentCheckup> givenCheckupProperty;
-	private final ObjectProperty<PatientData> givenPatientProperty;
 	private final ObjectProperty<AppointmentData> givenAppointmentProperty;
 	
 	private final BooleanProperty createEventProperty;
@@ -37,10 +36,9 @@ public class FullPatientViewModelSubCheckup {
 	
 	private HealthcareDatabase givenDB;
 	
-	public FullPatientViewModelSubCheckup(ObjectProperty<PatientData> givenPatientProperty, ObjectProperty<AppointmentData> givenAppointmentProperty, ObjectProperty<AppointmentCheckup> givenCheckupProperty) {
+	public FullPatientViewModelSubCheckup(ObjectProperty<AppointmentData> givenAppointmentProperty, ObjectProperty<AppointmentCheckup> givenCheckupProperty) {
 		
 		this.givenCheckupProperty = givenCheckupProperty;
-		this.givenPatientProperty = givenPatientProperty;
 		this.givenAppointmentProperty = givenAppointmentProperty;
 		
 		this.createEventProperty = new SimpleBooleanProperty(false);

@@ -76,6 +76,13 @@ public class HealthcareDatabaseClient {
 		return this.lastResult;
 	}
 	
+	public QueryResult attemptAdminLogin(Login login) throws SQLException {
+		
+		this.lastResult = this.loginDal.attemptAdminLogin(login);
+		this.lastResult.setAssociated(login);
+		return this.lastResult;
+	}
+	
 	public QueryResult getLastQueryResult() {
 		return this.lastResult;
 	}

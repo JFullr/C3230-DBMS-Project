@@ -1,12 +1,3 @@
-drop table if exists UpdateQuery;
-drop table if exists SearchQuery;
-drop table if exists DeleteQuery;
-drop table if exists SearchQuery;
-drop table if exists CreateQuery;
-drop table if exists ReadQuery;
-drop table if exists AdminQuery;
-drop table if exists Query;
-
 drop table if exists UserPasswordStore;
 drop table if exists RegisteredUser;
 
@@ -158,63 +149,6 @@ CREATE TABLE LabTestResult(
 	FOREIGN KEY(lab_test_order_id) REFERENCES LabTestOrder(lab_test_order_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE Query(
-	query_id INTEGER NOT NULL AUTO_INCREMENT,
-	user_id INTEGER NOT NULL,
-	query_type ENUM('admin', 'create', 'read', 'delete', 'search', 'update') NOT NULL,
-	PRIMARY KEY(query_id),
-	FOREIGN KEY(user_id) REFERENCES RegisteredUser(user_id)
-);
-
-CREATE TABLE AdminQuery(
-	query_id INTEGER NOT NULL,
-	raw_query TEXT NOT NULL,
-	PRIMARY KEY(query_id),
-	FOREIGN KEY(query_id) REFERENCES Query(query_id)
-);
-
-CREATE TABLE CreateQuery(
-	query_id INTEGER NOT NULL,
-	table_name VARCHAR(255) NOT NULL,
-	csv_attribute_values TEXT NOT NULL,
-	PRIMARY KEY(query_id),
-	FOREIGN KEY(query_id) REFERENCES Query(query_id)
-);
-
-CREATE TABLE ReadQuery(
-	query_id INTEGER NOT NULL,
-	table_name VARCHAR(255) NOT NULL,
-	csv_key_s TEXT NOT NULL,
-	PRIMARY KEY(query_id),
-	FOREIGN KEY(query_id) REFERENCES Query(query_id)
-);
-
-CREATE TABLE DeleteQuery(
-	query_id INTEGER NOT NULL,
-	table_name VARCHAR(255) NOT NULL,
-	csv_key_s TEXT NOT NULL,
-	PRIMARY KEY(query_id),
-	FOREIGN KEY(query_id) REFERENCES Query(query_id)
-);
-
-CREATE TABLE SearchQuery(
-	query_id INTEGER NOT NULL,
-	table_name VARCHAR(255) NOT NULL,
-	csv_attributes TEXT NOT NULL,
-	csv_params TEXT NOT NULL,
-	PRIMARY KEY(query_id),
-	FOREIGN KEY(query_id) REFERENCES Query(query_id)
-);
-
-CREATE TABLE UpdateQuery(
-	query_id INTEGER NOT NULL,
-	table_name VARCHAR(255) NOT NULL,
-	csv_key_s TEXT NOT NULL,
-	csv_attributes TEXT NOT NULL,
-	csv_values TEXT NOT NULL,
-	PRIMARY KEY(query_id),
-	FOREIGN KEY(query_id) REFERENCES Query(query_id)
-);
 
 INSERT INTO Address VALUES
 (1,'hamburger 42', null, 'Bunderful Yum', 'Washington', 66666),

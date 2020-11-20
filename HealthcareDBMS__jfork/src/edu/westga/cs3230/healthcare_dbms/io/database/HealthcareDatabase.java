@@ -69,6 +69,15 @@ public class HealthcareDatabase {
 		return null;
 	}
 	
+	public QueryResult attemptAdminLogin(Login login) {
+		try {
+			QueryResult result = this.client.attemptAdminLogin(login);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	public QueryResult attemptPostTuple(Object tuple) {
 		try {
@@ -299,4 +308,5 @@ public class HealthcareDatabase {
 		}
 		return null;
 	}
+
 }

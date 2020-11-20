@@ -4,111 +4,216 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1178.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind">
    <center>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <center>
-            <ListView fx:id="queryListView" prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
-         </center>
-      </BorderPane>
-   </center>
-   <top>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <right>
-            <BorderPane prefHeight="200.0" prefWidth="129.0" BorderPane.alignment="CENTER">
-               <top>
-                  <GridPane prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+      <TabPane fx:id="userPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab fx:id="defaultTab" text="Nurse/Doctor Interface">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <top>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <right>
+                                    <BorderPane prefHeight="200.0" prefWidth="129.0" BorderPane.alignment="CENTER">
+                                       <top>
+                                          <GridPane prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                                   <center>
+                                                      <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleOpenLoginView" text="Login" BorderPane.alignment="CENTER" />
+                                                   </center>
+                                                </BorderPane>
+                                                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogOut" text="Logout" GridPane.columnIndex="1" />
+                                             </children>
+                                          </GridPane>
+                                       </top>
+                                       <bottom>
+                                          <GridPane BorderPane.alignment="CENTER">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="123.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="64.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="0.0" prefWidth="64.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="0.0" prefWidth="68.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="89.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="67.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="10.0" prefWidth="126.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                          </GridPane>
+                                       </bottom>
+                                       <right>
+                                          <GridPane prefHeight="73.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Label text="Username:" />
+                                                <Label fx:id="usernameLabel" text="{username}" GridPane.columnIndex="1" />
+                                                <Label text="Name:" GridPane.rowIndex="1" />
+                                                <Label fx:id="nameLabel" text="{name}" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label text="UserId:" GridPane.rowIndex="2" />
+                                                <Label fx:id="userIdLabel" text="{userId}" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                             </children>
+                                          </GridPane>
+                                       </right>
+                                    </BorderPane>
+                                 </right>
+                                 <center>
+                                    <GridPane BorderPane.alignment="CENTER">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <FlowPane prefHeight="100.0" prefWidth="420.0">
+                                             <children>
+                                                <Button fx:id="addPatientButton" mnemonicParsing="false" onAction="#handleAddPatient" text="Add Patient" />
+                                                <Button fx:id="patientSearchButton" mnemonicParsing="false" onAction="#handlePatientSearch" text="Patient Search" />
+                                             </children>
+                                             <padding>
+                                                <Insets left="10.0" top="10.0" />
+                                             </padding>
+                                          </FlowPane>
+                                          <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                             <padding>
+                                                <Insets left="10.0" top="10.0" />
+                                             </padding>
+                                          </FlowPane>
+                                       </children>
+                                    </GridPane>
+                                 </center>
+                              </BorderPane>
+                           </top>
                            <center>
-                              <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleOpenLoginView" text="Login" BorderPane.alignment="CENTER" />
+                              <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <center>
+                                    <ListView fx:id="queryListView" prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
                            </center>
                         </BorderPane>
-                        <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogOut" text="Logout" GridPane.columnIndex="1" />
-                     </children>
-                  </GridPane>
-               </top>
-               <bottom>
-                  <GridPane BorderPane.alignment="CENTER">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="123.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="64.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="0.0" prefWidth="64.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="0.0" prefWidth="68.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="89.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="67.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="10.0" prefWidth="126.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                  </GridPane>
-               </bottom>
-               <right>
-                  <GridPane prefHeight="73.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label text="Username:" />
-                        <Label fx:id="usernameLabel" text="{username}" GridPane.columnIndex="1" />
-                        <Label text="Name:" GridPane.rowIndex="1" />
-                        <Label fx:id="nameLabel" text="{name}" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="UserId:" GridPane.rowIndex="2" />
-                        <Label fx:id="userIdLabel" text="{userId}" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                     </children>
-                  </GridPane>
-               </right>
-            </BorderPane>
-         </right>
-         <center>
-            <GridPane BorderPane.alignment="CENTER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <FlowPane prefHeight="100.0" prefWidth="420.0">
-                     <children>
-                        <Button fx:id="addPatientButton" mnemonicParsing="false" onAction="#handleAddPatient" text="Add Patient" />
-                        <Button fx:id="patientSearchButton" mnemonicParsing="false" onAction="#handlePatientSearch" text="Patient Search" />
-                     </children>
-                     <padding>
-                        <Insets left="10.0" top="10.0" />
-                     </padding>
-                  </FlowPane>
-                  <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-                     <padding>
-                        <Insets left="10.0" top="10.0" />
-                     </padding>
-                  </FlowPane>
-               </children>
-            </GridPane>
-         </center>
-      </BorderPane>
-   </top>
+                     </center>
+                  </BorderPane>
+               </content>
+          </Tab>
+          <Tab fx:id="adminTab" text="Administrator Interface">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <top>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <center>
+                              <TextArea prefHeight="200.0" prefWidth="497.0" BorderPane.alignment="CENTER" />
+                           </center>
+                           <right>
+                              <BorderPane prefHeight="200.0" prefWidth="320.0" BorderPane.alignment="CENTER">
+							  <center>
+							  <BorderPane prefHeight="200.0" prefWidth="129.0" BorderPane.alignment="CENTER">
+                                       <top>
+                                          <GridPane prefHeight="52.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <BorderPane prefHeight="200.0" prefWidth="200.0" />
+                                                <Button mnemonicParsing="false" onAction="#handleAdminLogOut" text="Logout" GridPane.columnIndex="1" />
+                                             </children>
+                                          </GridPane>
+                                       </top>
+                                       <bottom>
+                                          <GridPane BorderPane.alignment="CENTER">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="123.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="160.0" minWidth="10.0" prefWidth="64.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="0.0" prefWidth="64.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="138.0" minWidth="0.0" prefWidth="68.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="147.0" minWidth="10.0" prefWidth="89.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="67.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="10.0" prefWidth="126.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                          </GridPane>
+                                       </bottom>
+                                       <center>
+                                          <GridPane prefHeight="73.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <Label text="Username:" />
+                                                <Label fx:id="adminUsernameLabel" text="{username}" GridPane.columnIndex="1" />
+                                                <Label text="Name:" GridPane.rowIndex="1" />
+                                                <Label fx:id="adminNameLablel" text="{name}" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label text="UserId:" GridPane.rowIndex="2" />
+                                                <Label fx:id="adminUserIdLabel" text="{userId}" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                             </children>
+                                          </GridPane>
+                                       </center>
+                                    </BorderPane>
+							  </center>
+							  </BorderPane>
+                           </right>
+                           <bottom>
+                              <FlowPane prefHeight="25.0" prefWidth="0.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button mnemonicParsing="false" text="Results By Appointment Dates" />
+                                    <Separator prefWidth="200.0" />
+                                    <Button mnemonicParsing="false" text="Call Query" />
+                                 </children>
+                              </FlowPane>
+                           </bottom>
+                        </BorderPane>
+                     </top>
+                     <center>
+                        <ListView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </center>
 </BorderPane>
