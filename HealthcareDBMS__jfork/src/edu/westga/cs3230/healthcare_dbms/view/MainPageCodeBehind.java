@@ -7,10 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 
 /**
  * Code-behind file for the main page for the Healthcare DBMS
@@ -76,7 +78,6 @@ public class MainPageCodeBehind {
 	 */
 	public MainPageCodeBehind() {
 		this.viewModel = new MainPageViewModel(DB_URL);
-		this.viewModel.loadDataFromDatabase();
 		this.embedHandler = new EmbedHandler(this.viewModel.getQueryStorage());
 	}
 	
@@ -151,12 +152,36 @@ public class MainPageCodeBehind {
     @FXML
     private Label adminUserIdLabel;
     
+    @FXML
+    private Button adminCallQueryButton;
+    
+    @FXML
+    private Button adminDateSearchButton;
+
+    @FXML
+    private DatePicker adminStartDate;
+
+    @FXML
+    private DatePicker adminEndDate;
+
+    @FXML
+    private ListView<?> adminResultList;
+    
+    @FXML
+    private TextArea adminQueryArea;
+    
     private void setupAdminTab() {
     	this.adminTab.disableProperty().bind(this.viewModel.getAdminLoggedInProperty().not());
     	this.adminUsernameLabel.textProperty().bindBidirectional(this.viewModel.getUserNameProperty());
 		this.adminNameLablel.textProperty().bindBidirectional(this.viewModel.getNameProperty());
 		this.adminUserIdLabel.textProperty().bindBidirectional(this.viewModel.getUserIdProperty());
 		
+		this.adminDateSearchButton.disableProperty().bind(
+			this.adminStartDate.valueProperty().isNull()
+			.or(this.adminEndDate.valueProperty().isNull())
+		);
+		
+		this.adminCallQueryButton.disableProperty().bind(this.adminQueryArea.textProperty().isEmpty());
     }
     
     @FXML
@@ -165,5 +190,16 @@ public class MainPageCodeBehind {
     	this.userPane.getSelectionModel().select(0);
 		this.viewModel.handleLogOut();	
 	}
+    
+    @FXML
+    void handleCallQuery(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handleDateSearch(ActionEvent event) {
+
+    }
+
 
 }

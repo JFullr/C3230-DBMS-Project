@@ -97,23 +97,6 @@ public class MainPageViewModel {
 	}
 
 	/**
-	 * Loads Query results from the database into the front panel.
-	 * 
-	 * @precondition none
-	 * @postcondition none
-	 */
-	public void loadDataFromDatabase() {
-		for (QueryResult result : this.database.getQueryResults()) {
-			try {
-				/// TODO admin interface, rename later
-				// this.frontpanel.add(result);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
 	 * Performs a query on the operated database
 	 *
 	 * @param query the query

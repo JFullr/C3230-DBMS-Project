@@ -216,7 +216,7 @@ INSERT INTO `Appointment` (`appointment_id`, `person_id`, `date_time`, `doctor_i
 (14, 2, '2020-10-30 13:02:00', 11, 'Repeat Checkup'),
 (15, 2, '2020-11-05 11:00:00', 11, 'Repeat Checkup');
 
-
+INSERT INTO `Admin` VALUES (1);
 
 
 
