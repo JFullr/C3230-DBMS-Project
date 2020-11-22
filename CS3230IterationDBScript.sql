@@ -250,8 +250,8 @@ CREATE PROCEDURE `get_lab_result`(IN `lab_test_order_id__` INTEGER) SELECT * FRO
 									       
 drop procedure if exists `adminDateQuery`;
 DELIMITER $$
-CREATE PROCEDURE `adminDateQuery`(IN `startDate` DATE, IN `endDate` DATE)
-    NO SQL
+CREATE DEFINER=`jfulle11`@`%` PROCEDURE `adminDateQuery`(IN `startDate` DATE, IN `endDate` DATE)
+    READS SQL DATA
 SELECT ap.date_time, p.person_id PatientID, CONCAT(p_p.lname, ' ', p_p.middle_initial, ' ', p_p.fname) PatientName, CONCAT(d_p.fname, ' ', d_p.middle_initial, ' ', d_p.lname) DoctorName, 
 (SELECT ddd.diagnosis_description FROM Diagnosis ddd WHERE ddd.appointment_id = ap.appointment_id) AS DiagnosisDescription, 
 (SELECT GROUP_CONCAT(lt.test_name)
