@@ -11,9 +11,10 @@ import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class PatientDAL.
+ * A DAL for fetching and manipulating patient data.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class PatientDAL {
 
@@ -46,7 +47,7 @@ public class PatientDAL {
 	}
 	
 	/**
-	 * Attempt add patient.
+	 * Attempts to add a patient to the database.
 	 *
 	 * @param patient the patient
 	 * @return the query result
@@ -89,7 +90,7 @@ public class PatientDAL {
 	}
 	
 	/**
-	 * Attempt update patient.
+	 * Attempts to update a patient in the DB.
 	 *
 	 * @param updateData the update data
 	 * @param existingData the existing data
@@ -103,9 +104,9 @@ public class PatientDAL {
 	}
 
 	/**
-	 * Gets the person matching.
+	 * Gets the DB record matching the given patient data.
 	 *
-	 * @param patient the patient
+	 * @param patient the patient data to match
 	 * @return the person matching
 	 * @throws SQLException the SQL exception
 	 */

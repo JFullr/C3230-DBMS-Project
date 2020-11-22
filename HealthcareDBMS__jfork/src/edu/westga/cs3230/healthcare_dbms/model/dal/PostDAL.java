@@ -13,9 +13,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class PostDAL.
+ * A helper class to add entries into the DB.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class PostDAL {
 

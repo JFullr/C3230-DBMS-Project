@@ -8,6 +8,8 @@ import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
 
 /**
  * Constants for database IO.
+ *
+ * @author Joseph Fuller
  */
 public class HealthcareIoConstants {
 	

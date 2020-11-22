@@ -1,22 +1,18 @@
 package edu.westga.cs3230.healthcare_dbms.io.database;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class QueryResult.
+ * Represents the result of a query.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class QueryResult implements Iterable<QueryResult>{
-	
-	/** The db url. */
-	private String dbUrl;
-	
+
 	/** The tuple. */
 	private SqlTuple tuple;
 	
@@ -24,21 +20,7 @@ public class QueryResult implements Iterable<QueryResult>{
 	private Object associated;
 	
 	/** The batch. */
-	private ArrayList<QueryResult> batch;
-	
-	/**
-	 * Instantiates a new query result.
-	 *
-	 * @param dbUrl the db url
-	 * @param query the query
-	 */
-	public QueryResult(String dbUrl, String query) {
-		this.tuple = null;
-		this.setAssociated(null);
-		this.dbUrl = dbUrl;
-		this.batch = new ArrayList<QueryResult>();
-		this.callQuery(query);
-	}
+	private final ArrayList<QueryResult> batch;
 	
 	/**
 	 * Instantiates a new query result.
@@ -46,7 +28,6 @@ public class QueryResult implements Iterable<QueryResult>{
 	 * @param results the results
 	 */
 	public QueryResult(ArrayList<SqlTuple> results) {
-		this.dbUrl = null;
 		this.setAssociated(null);
 		this.batch = new ArrayList<QueryResult>();
 		this.addTuples(results);
@@ -58,7 +39,6 @@ public class QueryResult implements Iterable<QueryResult>{
 	 * @param result the result
 	 */
 	public QueryResult(SqlTuple result) {
-		this.dbUrl = null;
 		this.setAssociated(null);
 		this.batch = new ArrayList<QueryResult>();
 		this.tuple = result;
@@ -90,10 +70,10 @@ public class QueryResult implements Iterable<QueryResult>{
 	}
 	
 	/**
-	 * Combine merge.
+	 * Combines and merges two query results.
 	 *
-	 * @param other the other
-	 * @return the query result
+	 * @param other the other query result.
+	 * @return the combined and merged query result
 	 */
 	public QueryResult combineMerge(QueryResult other) {
 		if(other == null ) {
@@ -127,9 +107,9 @@ public class QueryResult implements Iterable<QueryResult>{
 	}
 
 	/**
-	 * Gets the associated.
+	 * Gets the object associated with this result.
 	 *
-	 * @return the associated
+	 * @return the associated object
 	 */
 	public Object getAssociated() {
 		return associated;
@@ -152,22 +132,6 @@ public class QueryResult implements Iterable<QueryResult>{
 	@Override
 	public Iterator<QueryResult> iterator() {
 		return this.getBatch().iterator();
-	}
-	
-	/**
-	 * Call query.
-	 *
-	 * @param query the query
-	 */
-	private void callQuery(String query) {
-		
-		SqlManager manager = new SqlManager();
-		try {
-			manager.readTuples(this.dbUrl, query);
-			this.addTuples(manager.getTuples());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**

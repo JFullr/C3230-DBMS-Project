@@ -1,27 +1,28 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AppointmentCheckup.
+ * Represents a checkup for a patient done when they have an appointment.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class AppointmentCheckup {
 	
 	/** The appointment id. */
 	private Integer appointment_id;
 	
-	/** The systolic pressure. */
+	/** The patient's systolic pressure. */
 	private Integer systolic_pressure;
 	
-	/** The diastolic pressure. */
+	/** The patient's diastolic pressure. */
 	private Integer diastolic_pressure;
 	
-	/** The pulse. */
+	/** The patient's pulse. */
 	private Integer pulse;
 	
-	/** The weight. */
+	/** The patient's weight. */
 	private Double weight;
 	
-	/** The temperature. */
+	/** The patient's temperature. */
 	private Double temperature;
 
 	/**
@@ -40,11 +41,11 @@ public class AppointmentCheckup {
 	 * Instantiates a new appointment checkup.
 	 *
 	 * @param appointment_id the appointment id
-	 * @param systolic_pressure the systolic pressure
-	 * @param diastolic_pressure the diastolic pressure
-	 * @param pulse the pulse
-	 * @param weight the weight
-	 * @param temperature the temperature
+	 * @param systolic_pressure the patient's systolic pressure
+	 * @param diastolic_pressure the patient's diastolic pressure
+	 * @param pulse the patient's pulse
+	 * @param weight the patient's weight
+	 * @param temperature the patient's temperature
 	 */
 	public AppointmentCheckup(Integer appointment_id, Integer systolic_pressure, Integer diastolic_pressure, Integer pulse,
 			Double weight, Double temperature) {
@@ -60,15 +61,14 @@ public class AppointmentCheckup {
 	 * Instantiates a new appointment checkup.
 	 *
 	 * @param appointment_id the appointment id
-	 * @param systolic_pressure the systolic pressure
-	 * @param diastolic_pressure the diastolic pressure
-	 * @param pulse the pulse
-	 * @param weight the weight
-	 * @param temperature the temperature
-	 * @throws Exception the exception
+	 * @param systolic_pressure the patient's systolic pressure
+	 * @param diastolic_pressure the patient's diastolic pressure
+	 * @param pulse the patient's pulse
+	 * @param weight the patient's weight
+	 * @param temperature the patient's temperature
 	 */
 	public AppointmentCheckup(String appointment_id, String systolic_pressure, String diastolic_pressure, String pulse,
-			String weight, String temperature) throws Exception {
+			String weight, String temperature) {
 		this.appointment_id = Integer.parseInt(appointment_id);
 		this.systolic_pressure = Integer.parseInt(systolic_pressure);
 		this.diastolic_pressure = Integer.parseInt(diastolic_pressure);
@@ -96,52 +96,52 @@ public class AppointmentCheckup {
 	}
 
 	/**
-	 * Gets the systolic pressure.
+	 * Gets the patient's systolic pressure.
 	 *
-	 * @return the systolic_pressure
+	 * @return the patient's systolic pressure
 	 */
 	public int getSystolic_pressure() {
 		return systolic_pressure;
 	}
 
 	/**
-	 * Sets the systolic pressure.
+	 * Sets the patient's systolic pressure.
 	 *
-	 * @param systolic_pressure the systolic_pressure to set
+	 * @param systolic_pressure the patient's systolic pressure
 	 */
 	public void setSystolic_pressure(int systolic_pressure) {
 		this.systolic_pressure = systolic_pressure;
 	}
 
 	/**
-	 * Gets the diastolic pressure.
+	 * Gets the patient's diastolic pressure.
 	 *
-	 * @return the diastolic_pressure
+	 * @return the patient's diastolic pressure
 	 */
 	public Integer getDiastolic_pressure() {
 		return diastolic_pressure;
 	}
 
 	/**
-	 * Sets the diastolic pressure.
+	 * Sets the patient's diastolic pressure.
 	 *
-	 * @param diastolic_pressure the diastolic_pressure to set
+	 * @param diastolic_pressure the diastolic pressure to set
 	 */
 	public void setDiastolic_pressure(int diastolic_pressure) {
 		this.diastolic_pressure = diastolic_pressure;
 	}
 
 	/**
-	 * Gets the pulse.
+	 * Gets the patient's pulse.
 	 *
-	 * @return the pulse
+	 * @return the patient's pulse
 	 */
 	public Integer getPulse() {
 		return pulse;
 	}
 
 	/**
-	 * Sets the pulse.
+	 * Sets the patient's pulse.
 	 *
 	 * @param pulse the pulse to set
 	 */
@@ -150,16 +150,16 @@ public class AppointmentCheckup {
 	}
 
 	/**
-	 * Gets the weight.
+	 * Gets the patient's weight.
 	 *
-	 * @return the weight
+	 * @return the patient's weight
 	 */
 	public Double getWeight() {
 		return weight;
 	}
 
 	/**
-	 * Sets the weight.
+	 * Sets the patient's weight.
 	 *
 	 * @param weight the weight to set
 	 */
@@ -168,7 +168,7 @@ public class AppointmentCheckup {
 	}
 
 	/**
-	 * Gets the temperature.
+	 * Gets the patient's temperature.
 	 *
 	 * @return the temperature
 	 */
@@ -177,7 +177,7 @@ public class AppointmentCheckup {
 	}
 
 	/**
-	 * Sets the temperature.
+	 * Sets the patient's temperature.
 	 *
 	 * @param temperature the new temperature
 	 */

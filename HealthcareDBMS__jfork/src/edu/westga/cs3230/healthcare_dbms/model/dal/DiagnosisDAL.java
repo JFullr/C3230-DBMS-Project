@@ -10,9 +10,10 @@ import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class DiagnosisDAL.
+ * DAL for diagnoses of a patient.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class DiagnosisDAL {
 	
@@ -29,10 +30,10 @@ public class DiagnosisDAL {
 	}
 	
 	/**
-	 * Gets the diagnosis of.
+	 * Gets the diagnosis presented in a specific appointment.
 	 *
-	 * @param appt the appt
-	 * @return the diagnosis of
+	 * @param appt the appointment to check
+	 * @return the diagnosis stored for the appointment
 	 * @throws SQLException the SQL exception
 	 */
 	public QueryResult getDiagnosisOf(Appointment appt) throws SQLException {

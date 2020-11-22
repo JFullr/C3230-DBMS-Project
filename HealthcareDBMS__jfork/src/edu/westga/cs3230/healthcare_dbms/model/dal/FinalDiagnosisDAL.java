@@ -10,9 +10,10 @@ import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class FinalDiagnosisDAL.
+ * DAL for the final diagnosis of a patient.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class FinalDiagnosisDAL {
 	

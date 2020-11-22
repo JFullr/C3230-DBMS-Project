@@ -6,9 +6,10 @@ import java.sql.SQLException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
-// TODO: Auto-generated Javadoc
 /**
  * Responsible for handling connections to the remote server and local database.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class DatabaseConnector {
 
@@ -18,7 +19,7 @@ public class DatabaseConnector {
     /** The connection. */
     private Connection connection;
     
-    /** The in transaction. */
+    /** Whether the connector is being used in a transaction. */
     private boolean inTransaction;
 
     /**

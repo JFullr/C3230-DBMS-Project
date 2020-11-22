@@ -10,9 +10,10 @@ import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class LoginDAL.
+ * Handles logging in a patient.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class LoginDAL {
 

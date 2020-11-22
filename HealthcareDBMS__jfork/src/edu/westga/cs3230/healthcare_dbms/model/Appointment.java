@@ -5,9 +5,10 @@ import java.sql.Timestamp;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 import edu.westga.cs3230.healthcare_dbms.sql.UiHide;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Appointment.
+ * Represents an appointment for a patient.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class Appointment {
 	

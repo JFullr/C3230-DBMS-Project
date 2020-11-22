@@ -1,11 +1,8 @@
 package edu.westga.cs3230.healthcare_dbms.sql;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -16,8 +13,8 @@ import java.util.LinkedHashMap;
  */
 public class SqlManager {
 	
-	/** The tuples. */
-	private ArrayList<SqlTuple> tuples;
+	/** The tuples returned from a DB call. */
+	private final ArrayList<SqlTuple> tuples;
 	
 	/**
 	 * Instantiates a new sql manager.
@@ -52,23 +49,6 @@ public class SqlManager {
 	public void setRaw(SqlTuple tuple) {
 		this.tuples.clear();
 		this.tuples.add(tuple);
-	}
-	
-	/**
-	 * Read tuples.
-	 *
-	 * @param connectionString the connection string
-	 * @param query the query
-	 * @throws SQLException the SQL exception
-	 */
-	public void readTuples(String connectionString, String query) throws SQLException {
-		
-		try (Connection con = DriverManager.getConnection(connectionString);
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(query)) {
-			this.readTuples(rs);
-		}
-		
 	}
 	
 	/**

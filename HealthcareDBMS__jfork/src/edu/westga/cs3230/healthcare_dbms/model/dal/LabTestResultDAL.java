@@ -6,9 +6,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
 import java.sql.*;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class LabTestResultDAL.
+ * Provides a DAL for accessing and adding lab test results for a given patient.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class LabTestResultDAL {
     

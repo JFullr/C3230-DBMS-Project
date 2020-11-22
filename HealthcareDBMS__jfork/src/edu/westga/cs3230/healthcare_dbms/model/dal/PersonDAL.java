@@ -16,9 +16,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class PersonDAL.
+ * A DAL for fetching and manipulating the personal details of someone.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class PersonDAL {
 	
@@ -43,18 +44,18 @@ public class PersonDAL {
 	}
 	
 	/**
-	 * Attempt add person.
+	 * Attempts to add a person.
 	 *
-	 * @param patient the patient
+	 * @param person the patient
 	 * @return the query result
 	 * @throws SQLException the SQL exception
 	 */
-	public QueryResult attemptAddPerson(Person patient) throws SQLException {
+	public QueryResult attemptAddPerson(Person person) throws SQLException {
 		return this.connector.getInTransaction(() -> {
-			QueryResult result = this.getPersonBySSN(patient);
+			QueryResult result = this.getPersonBySSN(person);
 
 			if (result == null || result.getTuple() == null) {
-				ArrayList<SqlTuple> current = this.postDal.postTuple(patient);
+				ArrayList<SqlTuple> current = this.postDal.postTuple(person);
 				Integer id = null;
 				if (current == null || current.size() == 0) {
 					throw new SQLException("Failed, Delete Patient");
@@ -98,7 +99,7 @@ public class PersonDAL {
 	}
 
 	/**
-	 * Gets the person matching.
+	 * Gets the DB record matching the person object.
 	 *
 	 * @param person the person
 	 * @return the person matching
@@ -138,7 +139,7 @@ public class PersonDAL {
 	}
 
 	/**
-	 * Attempt update person.
+	 * Attempts to update the person in the DB.
 	 *
 	 * @param previous the previous
 	 * @param newValues the new values

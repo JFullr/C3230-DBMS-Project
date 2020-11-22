@@ -20,9 +20,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AppointmentDAL.
+ * DAL object for {@link Appointment} objects.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class AppointmentDAL {
 

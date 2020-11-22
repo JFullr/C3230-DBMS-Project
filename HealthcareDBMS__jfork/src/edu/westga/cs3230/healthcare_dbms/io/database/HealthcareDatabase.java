@@ -2,8 +2,6 @@ package edu.westga.cs3230.healthcare_dbms.io.database;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
 
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentCheckup;
@@ -12,20 +10,15 @@ import edu.westga.cs3230.healthcare_dbms.model.LabTestOrder;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 
-// TODO: Auto-generated Javadoc
 /**
  * Responsible for handling connections to the remote server and local database.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class HealthcareDatabase {
 	
-	/** The loaded queries. */
-	private List<QueryResult> loadedQueries;
-	
 	/** The client. */
-	private HealthcareDatabaseClient client;
-	
-	/** The db url. */
-	private String dbUrl;
+	private final HealthcareDatabaseClient client;
 	
 	/**
 	 * Instantiates a new database.
@@ -33,9 +26,7 @@ public class HealthcareDatabase {
 	 * @param dbUrl the db url
 	 */
 	public HealthcareDatabase(String dbUrl) {
-		this.dbUrl = dbUrl;
-		this.loadedQueries = new LinkedList<QueryResult>();
-		this.client = new HealthcareDatabaseClient(this.dbUrl, this.loadedQueries);
+		this.client = new HealthcareDatabaseClient(dbUrl);
 	}
 	
 	/**
@@ -46,16 +37,7 @@ public class HealthcareDatabase {
 	public QueryResult getResults() {
 		return this.client.getLastQueryResult();
 	}
-	
-	/**
-	 * Gets the queries.
-	 *
-	 * @return the queries
-	 */
-	public List<QueryResult> getQueryResults(){
-		return this.loadedQueries;
-	}
-	
+
 	/**
 	 * calls the specified query by the admin.
 	 *

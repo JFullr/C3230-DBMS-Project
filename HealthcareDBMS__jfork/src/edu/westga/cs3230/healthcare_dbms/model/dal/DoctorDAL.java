@@ -9,9 +9,10 @@ import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class DoctorDAL.
+ * Provides a DAL for accessing doctors in the database.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class DoctorDAL {
 	

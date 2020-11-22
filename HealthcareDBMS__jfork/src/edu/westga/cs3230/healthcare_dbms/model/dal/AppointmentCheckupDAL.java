@@ -14,6 +14,8 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 // TODO: Auto-generated Javadoc
 /**
  * The Class AppointmentCheckupDAL.
+ *
+ * @author Andrew Steinborn
  */
 public class AppointmentCheckupDAL {
 	

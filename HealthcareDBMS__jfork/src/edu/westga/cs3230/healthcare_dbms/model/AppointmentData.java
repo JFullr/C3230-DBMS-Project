@@ -1,8 +1,9 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AppointmentData.
+ * Couples a {@link Appointment} with {@link PatientData}.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class AppointmentData {
 	

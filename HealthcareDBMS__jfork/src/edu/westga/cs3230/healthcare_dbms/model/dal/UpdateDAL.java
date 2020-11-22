@@ -12,9 +12,11 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class UpdateDAL.
+ * A helper class to allow updating records in a DB given part of a person. You can
+ * think of this and {@link PostDAL} as a pseudo-ORM.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class UpdateDAL {
 	
@@ -31,7 +33,7 @@ public class UpdateDAL {
 	}
 	
 	/**
-	 * Update tuple.
+	 * Updates the tuple in the DB matching the {@code oldValues} with the {@code newValues}.
 	 *
 	 * @param newValues the new values
 	 * @param oldValues the old values
@@ -39,19 +41,6 @@ public class UpdateDAL {
 	 * @throws SQLException the SQL exception
 	 */
 	public QueryResult updateTuple(Object newValues, Object oldValues) throws SQLException {
-		return updateTuple(newValues, oldValues, null);
-	}
-	
-	/**
-	 * Update tuple.
-	 *
-	 * @param newValues the new values
-	 * @param oldValues the old values
-	 * @param selection the selection
-	 * @return the query result
-	 * @throws SQLException the SQL exception
-	 */
-	public QueryResult updateTuple(Object newValues, Object oldValues, SqlTuple selection) throws SQLException {
 		SqlTuple oldTuple = SqlGetter.getFrom(oldValues);
 		SqlTuple newTuple = SqlGetter.getFrom(newValues);
 		StringBuilder query = new StringBuilder("UPDATE "+newValues.getClass().getSimpleName()+" SET ");
@@ -99,8 +88,7 @@ public class UpdateDAL {
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
-			
-			//System.out.println(stmt);
+
 			stmt.executeUpdate();
 			manager.readTuples(stmt.getGeneratedKeys());
 		}

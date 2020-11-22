@@ -5,9 +5,10 @@ import java.sql.Date;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 import edu.westga.cs3230.healthcare_dbms.sql.UiHide;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Person.
+ * Represents a person in the database.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class Person {
 	
@@ -16,22 +17,22 @@ public class Person {
 	@UiHide
 	private Integer person_id;
 	
-	/** The fname. */
+	/** The person's first name. */
 	private String fname;
 	
-	/** The lname. */
+	/** The person's last name. */
 	private String lname;
 	
-	/** The middle initial. */
+	/** The person's middle initial. */
 	private String middle_initial;
 	
-	/** The gender. */
+	/** The person's gender. */
 	private String gender;
 	
-	/** The dob. */
+	/** The person's date of birth. */
 	private Date DOB;
 	
-	/** The ssn. */
+	/** The person's SSN. */
 	private Integer SSN;
 	
 	/** The contact phone. */

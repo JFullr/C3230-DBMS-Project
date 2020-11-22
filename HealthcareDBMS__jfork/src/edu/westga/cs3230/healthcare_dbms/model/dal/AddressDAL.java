@@ -11,9 +11,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import java.sql.*;
 import java.util.ArrayList;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AddressDAL.
+ * The DAL for {@link Address} objects.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class AddressDAL {
     
@@ -59,7 +60,7 @@ public class AddressDAL {
     }
 
     /**
-     * Match address.
+     * Matches this address with the first match in the DB.
      *
      * @param address the address
      * @return the query result
@@ -96,7 +97,7 @@ public class AddressDAL {
     }
 
     /**
-     * Attempt add address.
+     * Attempts to add an address.
      *
      * @param address the address
      * @return the query result
@@ -114,7 +115,7 @@ public class AddressDAL {
     }
 
     /**
-     * Attempt update address.
+     * Attempts to update the address.
      *
      * @param oldAddress the old address
      * @param newAddress the new address

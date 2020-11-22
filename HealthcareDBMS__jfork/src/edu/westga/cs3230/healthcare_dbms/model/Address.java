@@ -2,9 +2,10 @@ package edu.westga.cs3230.healthcare_dbms.model;
 
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Address.
+ * Represents a street address.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class Address {
 	

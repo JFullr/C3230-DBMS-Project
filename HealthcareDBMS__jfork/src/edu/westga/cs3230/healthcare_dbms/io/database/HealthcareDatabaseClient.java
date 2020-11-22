@@ -30,9 +30,10 @@ import edu.westga.cs3230.healthcare_dbms.model.dal.UserTypeDAL;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
-// TODO: Auto-generated Javadoc
 /**
- * Description.
+ * Delegates all database calls to the per-object DALs.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class HealthcareDatabaseClient {
 	
@@ -88,9 +89,8 @@ public class HealthcareDatabaseClient {
 	 * Instantiates a new healthcare database client.
 	 *
 	 * @param dbUrl the db url
-	 * @param storageForReadQueries the storage for read queries
 	 */
-	public HealthcareDatabaseClient(String dbUrl, List<QueryResult> storageForReadQueries) {
+	public HealthcareDatabaseClient(String dbUrl) {
 		this.lastResult = null;
 		this.connector = new DatabaseConnector(dbUrl);
 		this.postDal = new PostDAL(this.connector);

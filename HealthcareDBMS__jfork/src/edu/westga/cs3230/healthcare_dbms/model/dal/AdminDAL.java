@@ -12,9 +12,10 @@ import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AdminDAL.
+ *
+ * @author Joseph Fuller
  */
 public class AdminDAL {
 

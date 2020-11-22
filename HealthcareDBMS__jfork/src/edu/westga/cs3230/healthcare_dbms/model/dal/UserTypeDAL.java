@@ -11,7 +11,9 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class UserTypeDAL.
+ * Obtains the user type from the DB.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class UserTypeDAL {
 
