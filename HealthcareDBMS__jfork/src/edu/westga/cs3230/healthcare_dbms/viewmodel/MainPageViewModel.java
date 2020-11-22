@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
+import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
@@ -37,6 +38,9 @@ public class MainPageViewModel {
 	
 	/** The admin logged in property. */
 	private final BooleanProperty adminLoggedInProperty;
+
+	/** The query results. */
+	private QueryResultStorage queryResults;
 	
 	/** The database. */
 	private HealthcareDatabase database;
@@ -47,6 +51,7 @@ public class MainPageViewModel {
 	 * @param dbUrl the db url
 	 */
 	public MainPageViewModel(String dbUrl) {
+		this.queryResults = new QueryResultStorage();
 		this.database = new HealthcareDatabase(dbUrl);
 
 		this.loggedInProperty = new SimpleBooleanProperty(false);
