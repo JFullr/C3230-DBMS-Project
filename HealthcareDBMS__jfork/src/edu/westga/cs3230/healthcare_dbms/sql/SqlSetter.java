@@ -67,9 +67,6 @@ public class SqlSetter {
 					func.invoke(store, attrs.get(attr).getValue());
 				} catch (Exception e) {
 					e.printStackTrace();
-					System.out.println(setters.get(attribute));
-					System.out.println(attribute);
-					System.out.println(attrs.get(attr));
 					return null;
 				}
 			}

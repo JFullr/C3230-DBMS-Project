@@ -121,8 +121,6 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 			builder.setLength(defaultLength);
 		}
 		
-		
-		
 		return false;
 	}
 	

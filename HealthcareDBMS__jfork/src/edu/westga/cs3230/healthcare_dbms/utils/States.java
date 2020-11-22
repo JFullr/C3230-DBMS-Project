@@ -65,7 +65,6 @@ public class States {
         stateList.add("West Virginia");
         stateList.add("Wisconsin");
         stateList.add("Wyoming");
-
         ALL_STATES = Collections.unmodifiableList(stateList);
     }
 

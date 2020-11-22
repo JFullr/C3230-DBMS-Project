@@ -86,10 +86,8 @@ public class SqlManager {
 			for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 				String labelName = meta.getColumnName(i);
 				String typeName = meta.getColumnTypeName(i);
-				//SQL_TYPE type = SqlTypeConverter.convertFrom(typename);
 				
 				Object obj = SqlTypeConverter.convertObject(rs, i, typeName, meta.getPrecision(i));
-				//if(type == SQL_TYPE.STRING && meta.getPrecision(i) == 1) {
 				
 				
 				attributes.put(labelName, new SqlAttribute(labelName, obj));
@@ -115,10 +113,8 @@ public class SqlManager {
 			for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
 				String labelName = meta.getColumnName(i);
 				String typeName = meta.getColumnTypeName(i);
-				//SQL_TYPE type = SqlTypeConverter.convertFrom(typename);
 				
 				Object obj = SqlTypeConverter.convertObject(rs, i, typeName, meta.getPrecision(i));
-				//if(type == SQL_TYPE.STRING && meta.getPrecision(i) == 1) {
 				
 				attributes.put(labelName, new SqlAttribute(labelName, obj));
 			}

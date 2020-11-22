@@ -18,7 +18,6 @@ public class Genders {
         genders.add("Male");
         genders.add("Female");
         genders.add("Other");
-
         ALL_GENDERS = Collections.unmodifiableList(genders);
     }
 }

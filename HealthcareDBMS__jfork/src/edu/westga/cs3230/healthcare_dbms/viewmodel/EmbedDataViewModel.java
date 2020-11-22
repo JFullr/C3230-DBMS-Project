@@ -60,15 +60,4 @@ public class EmbedDataViewModel {
 		return this.valueLabel;
 	}
 	
-	//TODO move to embed action view model
-	//
-	// /**
-	// * Gets the close action property.
-	// *
-	// * @return the close action property
-	// */
-	//public ObjectProperty<EventHandler<ActionEvent>> getCloseActionProperty() {
-	//	return this.closeActionProperty;
-	//}
-
 }

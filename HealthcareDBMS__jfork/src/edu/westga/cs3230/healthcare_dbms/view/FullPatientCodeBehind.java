@@ -168,15 +168,6 @@ public class FullPatientCodeBehind {
 		this.setupAvailableList();
 		this.setupPastList();
 		
-		/*
-		//TODO uncomment after tests are complete
-		//only necessary when no appointment is selected
-		
-		this.subCheckupTab.disableProperty().bind(this.viewModel.getSelectedAppointmentProperty().isNull());
-		this.subFinalTab.disableProperty().bind(this.viewModel.getSelectedAppointmentProperty().isNull());
-		this.subTestTab.disableProperty().bind(this.viewModel.getSelectedAppointmentProperty().isNull());
-		//*/
-		
 		this.setupApptTab();
 		this.setupSubAppt();
 		this.setupSubCheckup();
@@ -268,7 +259,6 @@ public class FullPatientCodeBehind {
 					.or(this.lastNameTextField.textProperty().isEmpty())
 					.or(this.genderComboBox.getSelectionModel().selectedItemProperty().isNull())
 					.or(this.streetAddress1TextField.textProperty().isEmpty())
-					// .or(this.streetAddress2TextField.textProperty().isEmpty())
 					.or(this.cityTextField.textProperty().isEmpty())
 					.or(this.zipCodeTextField.textProperty().length().lessThan(5))
 					.or(this.stateComboBox.getSelectionModel().selectedItemProperty().isNull())
@@ -453,7 +443,6 @@ public class FullPatientCodeBehind {
 		this.apptHourPicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_HOURS));
 		this.apptMinutePicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_MINUTES));
 		this.apptDiuralPicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_DIURNALS));
-		//this.addCheckupDetailsButton.disableProperty().bind(this.viewModel.getIsUpdateProperty().not());
 		
 		this.viewModel.getViewModelAppt().getDoctorSelectionProperty().bindBidirectional(this.apptDoctorPicker.selectionModelProperty());
 		this.viewModel.getViewModelAppt().getDateProperty().bindBidirectional(this.apptDatePicker.valueProperty());
@@ -497,7 +486,6 @@ public class FullPatientCodeBehind {
 	 */
 	@FXML
 	public void updateAppointment(ActionEvent event) {
-		//this.viewModel.app
 		this.viewModel.getViewModelAppt().getUpdateEventProperty().setValue(true);
 		this.viewModel.getViewModelAppt().getUpdateEventProperty().setValue(false);
 	}
@@ -509,7 +497,6 @@ public class FullPatientCodeBehind {
 	 */
 	@FXML
 	void addAppointment(ActionEvent event) {
-		//this.viewModel.showCreateAppointment();
 		this.viewModel.getViewModelAppt().getCreateEventProperty().setValue(true);
 		this.viewModel.getViewModelAppt().getCreateEventProperty().setValue(false);
 	}
@@ -655,7 +642,6 @@ public class FullPatientCodeBehind {
 	 * Setup sub test.
 	 */
 	private void setupSubTest() {
-		//*
 		this.testOrderStatusList.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
 		this.testCostField.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
 		this.testDescField.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
@@ -664,7 +650,6 @@ public class FullPatientCodeBehind {
 		this.testRemoveSelButton.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
 		this.testRemoveAllButton.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
 		this.testOrderButton.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
-		//*/
 		
 		this.testPicker.setItems(this.viewModel.getViewModelTest().getTestsList());
 		this.viewModel.getViewModelTest().getTestDropSelectionProperty().bindBidirectional(this.testPicker.selectionModelProperty());
@@ -727,7 +712,7 @@ public class FullPatientCodeBehind {
 	 * @param event the event
 	 */
 	@FXML
-	void testQueueAdd(ActionEvent event) {
+	public void testQueueAdd(ActionEvent event) {
 		this.viewModel.getViewModelTest().getQueueTestEventProperty().setValue(true);
 		this.viewModel.getViewModelTest().getQueueTestEventProperty().setValue(false);
 	}
@@ -738,7 +723,7 @@ public class FullPatientCodeBehind {
 	 * @param event the event
 	 */
 	@FXML
-	void testRemoveSelected(ActionEvent event) {
+	public void testRemoveSelected(ActionEvent event) {
 		this.viewModel.getViewModelTest().getRemoveTestEventProperty().setValue(true);
 		this.viewModel.getViewModelTest().getRemoveTestEventProperty().setValue(false);
 	}
@@ -749,7 +734,7 @@ public class FullPatientCodeBehind {
 	 * @param event the event
 	 */
 	@FXML
-	void testRemoveAll(ActionEvent event) {
+	public void testRemoveAll(ActionEvent event) {
 		this.viewModel.getViewModelTest().getRemoveAllTestsEventProperty().setValue(true);
 		this.viewModel.getViewModelTest().getRemoveAllTestsEventProperty().setValue(false);
 	}
@@ -760,7 +745,7 @@ public class FullPatientCodeBehind {
 	 * @param event the event
 	 */
 	@FXML
-	void addLabTests(ActionEvent event) {
+	public void addLabTests(ActionEvent event) {
 		this.viewModel.getViewModelTest().getOrderTestsEventProperty().setValue(true);
 		this.viewModel.getViewModelTest().getOrderTestsEventProperty().setValue(false);
 	}
@@ -798,7 +783,7 @@ public class FullPatientCodeBehind {
 	 * @param event the event
 	 */
 	@FXML
-	void submitFinalDiagnosis(ActionEvent event) {
+	public void submitFinalDiagnosis(ActionEvent event) {
 		this.viewModel.getViewModelFinal().getSubmitEventProperty().setValue(true);
 		this.viewModel.getViewModelFinal().getSubmitEventProperty().setValue(false);
 	}
@@ -851,7 +836,7 @@ public class FullPatientCodeBehind {
 	 * @param event the event
 	 */
 	@FXML
-	void addDiagnosisHandler(ActionEvent event) {
+	public void addDiagnosisHandler(ActionEvent event) {
 		this.viewModel.getViewModelDiag().getAddEventProperty().setValue(true);
 		this.viewModel.getViewModelDiag().getAddEventProperty().setValue(false);
 	}
@@ -862,7 +847,7 @@ public class FullPatientCodeBehind {
 	 * @param event the event
 	 */
 	@FXML
-	void updateDiagnosisHandler(ActionEvent event) {
+	public void updateDiagnosisHandler(ActionEvent event) {
 		this.viewModel.getViewModelDiag().getUpdateEventProperty().setValue(true);
 		this.viewModel.getViewModelDiag().getUpdateEventProperty().setValue(false);
 	}

@@ -94,13 +94,6 @@ public class PatientCodeBehind {
 	@FXML
 	private TextField ssnTextField;
 	
-	/*
-	private UnaryOperator<Change> filterDecimals = change -> {
-	    Pattern pattern = Pattern.compile("\\d*|\\d+\\.\\d*");
-	    return pattern.matcher(change.getControlNewText()).matches() ? change : null;
-	};
-	*/
-	
 	/** The filter initial. */
 	private UnaryOperator<Change> filterInitial = change -> {
 		Pattern pattern = Pattern.compile("[a-zA-Z]?");
@@ -195,7 +188,6 @@ public class PatientCodeBehind {
 				.or(this.lastNameTextField.textProperty().isEmpty())
 				.or(this.genderComboBox.getSelectionModel().selectedItemProperty().isNull())
 				.or(this.streetAddress1TextField.textProperty().isEmpty())
-				//.or(this.streetAddress2TextField.textProperty().isEmpty())
 				.or(this.cityTextField.textProperty().isEmpty())
 				.or(this.zipCodeTextField.textProperty().length().lessThan(5))
 				.or(this.stateComboBox.getSelectionModel().selectedItemProperty().isNull())
@@ -219,7 +211,6 @@ public class PatientCodeBehind {
 				.and(this.firstNameTextField.textProperty().isEmpty())
 				.and(this.lastNameTextField.textProperty().isEmpty())
 				.and(this.streetAddress1TextField.textProperty().isEmpty())
-				//.and(this.contactEmailTextField.textProperty().)
 				.and(this.middleInitialTextField.textProperty().isEmpty())
 				.and(this.ssnTextField.textProperty().length().isNotEqualTo(9))
 				.and(this.contactPhoneTextField.textProperty().length().isNotEqualTo(10))
@@ -235,8 +226,6 @@ public class PatientCodeBehind {
 		this.actionButton.disableProperty().unbind();
 		
 	}
-	
-	
 	
 	/**
 	 * Initialize text field formatters.
