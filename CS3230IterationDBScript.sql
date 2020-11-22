@@ -225,3 +225,24 @@ CREATE PROCEDURE `try_login`(IN `username` VARCHAR(255), IN `password` VARCHAR(2
 
 drop procedure if exists `get_lab_result`;
 CREATE PROCEDURE `get_lab_result`(IN `lab_test_order_id__` INTEGER) SELECT * FROM LabTestResult WHERE lab_test_order_id = lab_test_order_id__;
+									       
+							
+									       
+drop procedure if exists `adminDateQuery`;
+DELIMITER $$
+CREATE PROCEDURE `adminDateQuery`(IN `startDate` DATE, IN `endDate` DATE)
+    NO SQL
+SELECT ap.date_time, p.person_id PatientID, CONCAT(p_p.lname, ' ', p_p.middle_initial, ' ', p_p.fname) PatientName, CONCAT(d_p.fname, ' ', d_p.middle_initial, ' ', d_p.lname) DoctorName, 
+(SELECT ddd.diagnosis_description FROM Diagnosis ddd WHERE ddd.appointment_id = ap.appointment_id) AS DiagnosisDescription, 
+(SELECT GROUP_CONCAT(lt.test_name)
+    FROM LabTestOrder lo, LabTest lt 
+    WHERE ap.appointment_id = lo.appointment_id AND lo.lab_test_id = lt.lab_test_id) AS TestsOrdered
+
+FROM Appointment ap, Diagnosis dd, Doctor d, Patient p, Person p_p, Person d_p
+
+WHERE ap.date_time >= startDate AND ap.date_time <= endDate AND ap.doctor_id = d.person_id AND d_p.person_id = d.person_id AND ap.person_id = p.person_id AND p.person_id = p_p.person_id
+
+GROUP BY ap.date_time, d.person_id
+
+ORDER BY ap.date_time ASC, PatientName DESC$$
+DELIMITER ;
