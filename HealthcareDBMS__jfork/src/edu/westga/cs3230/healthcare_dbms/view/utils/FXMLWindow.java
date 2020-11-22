@@ -11,21 +11,20 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-
-// TODO: Auto-generated Javadoc
 /**
- * The Class FXMLWindow.
+ * Manages a window loaded from an FXML file.
+ *
+ * @author Joseph Fuller
  */
 public class FXMLWindow {
 	
-	
-	/** The loader. */
+	/** The FXML loader. */
 	private FXMLLoader loader;
 	
 	/** The stage. */
 	private Stage stage;
 	
-	/** The root. */
+	/** The root component. */
 	private Parent root;
 	
 	/**

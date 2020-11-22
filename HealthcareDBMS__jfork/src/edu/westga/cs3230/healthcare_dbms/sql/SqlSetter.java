@@ -3,9 +3,10 @@ package edu.westga.cs3230.healthcare_dbms.sql;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SqlSetter.
+ * Maps an {@link SqlTuple} into a object.
+ *
+ * @author Joseph Fuller
  */
 public class SqlSetter {
 

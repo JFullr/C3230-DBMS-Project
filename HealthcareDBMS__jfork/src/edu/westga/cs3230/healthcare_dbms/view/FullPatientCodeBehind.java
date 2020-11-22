@@ -27,9 +27,10 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.stage.Stage;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class FullPatientCodeBehind.
+ * Code behind for the patient window code.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class FullPatientCodeBehind {
 

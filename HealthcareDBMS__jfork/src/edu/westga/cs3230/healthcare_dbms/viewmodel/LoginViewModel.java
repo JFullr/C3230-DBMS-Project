@@ -6,9 +6,10 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-// TODO: Auto-generated Javadoc
 /**
  * Viewmodel class for the Login window.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class LoginViewModel {
 	

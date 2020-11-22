@@ -1,8 +1,9 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class LabTestResult.
+ * Represents a lab test order result.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class LabTestResult {
 

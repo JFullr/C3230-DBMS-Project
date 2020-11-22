@@ -1,8 +1,9 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Login.
+ * Represents a login attempt.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class Login {
 

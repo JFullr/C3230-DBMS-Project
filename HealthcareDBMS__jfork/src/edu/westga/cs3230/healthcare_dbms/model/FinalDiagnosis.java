@@ -1,8 +1,9 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class FinalDiagnosis.
+ * Represents a final diagnosis given at an appointment.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class FinalDiagnosis {
 

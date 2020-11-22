@@ -17,9 +17,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 
-// TODO: Auto-generated Javadoc
 /**
- * Viewmodel class for the Login window.
+ * View model class for the final diagnosis pane.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class FullPatientViewModelSubFinal {
 	

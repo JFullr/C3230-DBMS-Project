@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-// TODO: Auto-generated Javadoc
 /**
  * The entry point to launch the JavaFX program.
  * 

@@ -18,9 +18,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class TupleEmbed.
+ * Represents a tuple in a {@link ListView}.
+ *
+ * @author Joseph Fuller
  */
 public class TupleEmbed extends ListView<Node> {
 	

@@ -12,9 +12,10 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-// TODO: Auto-generated Javadoc
 /**
- * Viewmodel class for the Login window.
+ * View model class for the patient window.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class FullPatientViewModel {
 	

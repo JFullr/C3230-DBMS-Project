@@ -16,11 +16,10 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Alert.AlertType;
 
-// TODO: Auto-generated Javadoc
 /**
  * View-model for the MainPageCodeBehind.
  *
- * @author
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class MainPageViewModel {
 	

@@ -17,7 +17,7 @@ import javafx.scene.control.TextArea;
 /**
  * Code-behind file for the main page for the Healthcare DBMS.
  *
- * @author 
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class MainPageCodeBehind {
 

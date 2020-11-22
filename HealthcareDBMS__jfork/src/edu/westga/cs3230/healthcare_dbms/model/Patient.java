@@ -1,8 +1,10 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Patient.
+ * Represents a patient. A patient is merely a specialization of
+ * {@link Person}.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class Patient {
 	

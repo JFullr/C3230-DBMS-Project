@@ -8,9 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SqlTypeConverter.
+ * Maps SQL types to Java types and back.
+ *
+ * @author Joseph Fuller
  */
 public class SqlTypeConverter {
 	

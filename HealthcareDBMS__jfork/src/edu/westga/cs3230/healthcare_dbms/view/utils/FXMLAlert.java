@@ -6,9 +6,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class FXMLAlert.
+ * Shows alerts to the user.
+ *
+ * @author Joseph Fuller
  */
 public class FXMLAlert {
 	

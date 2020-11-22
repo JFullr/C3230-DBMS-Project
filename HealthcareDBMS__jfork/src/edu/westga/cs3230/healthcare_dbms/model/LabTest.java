@@ -3,9 +3,10 @@ package edu.westga.cs3230.healthcare_dbms.model;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 import edu.westga.cs3230.healthcare_dbms.sql.UiHide;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class LabTest.
+ * Represents a lab test.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class LabTest {
 

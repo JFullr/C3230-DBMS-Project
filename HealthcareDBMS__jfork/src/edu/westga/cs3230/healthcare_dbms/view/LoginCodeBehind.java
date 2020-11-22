@@ -8,9 +8,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class LoginCodeBehind.
+ * Code behind of the login window.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class LoginCodeBehind {
 

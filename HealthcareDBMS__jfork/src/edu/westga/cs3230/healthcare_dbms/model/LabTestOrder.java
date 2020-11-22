@@ -5,9 +5,10 @@ import java.sql.Date;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 import edu.westga.cs3230.healthcare_dbms.sql.UiHide;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class LabTestOrder.
+ * Represents a lab test order for an appointment.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class LabTestOrder {
 

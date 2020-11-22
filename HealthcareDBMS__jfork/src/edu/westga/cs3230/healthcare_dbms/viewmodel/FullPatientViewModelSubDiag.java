@@ -13,9 +13,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert.AlertType;
 
-// TODO: Auto-generated Javadoc
 /**
- * Viewmodel class for the Login window.
+ * View model class for the diagnosis pane.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class FullPatientViewModelSubDiag {
 	

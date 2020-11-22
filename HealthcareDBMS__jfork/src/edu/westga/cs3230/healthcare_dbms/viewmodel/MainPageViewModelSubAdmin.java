@@ -14,9 +14,10 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class MainPageViewModelSubAdmin.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class MainPageViewModelSubAdmin {
 	

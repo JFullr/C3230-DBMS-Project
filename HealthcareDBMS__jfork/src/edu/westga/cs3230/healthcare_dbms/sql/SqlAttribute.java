@@ -1,8 +1,9 @@
 package edu.westga.cs3230.healthcare_dbms.sql;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SqlAttribute.
+ * Represents an attribute pair in the DB.
+ *
+ * @author Joseph Fuller
  */
 public class SqlAttribute {
 	
@@ -13,7 +14,7 @@ public class SqlAttribute {
 	private Object value;
 	
 	/**
-	 * Instantiates a new sql attribute.
+	 * Instantiates a new SQL attribute.
 	 *
 	 * @param attribute the attribute
 	 * @param value the value
@@ -24,7 +25,7 @@ public class SqlAttribute {
 	}
 	
 	/**
-	 * Gets the attribute.
+	 * Gets the attribute's name.
 	 *
 	 * @return the attribute
 	 */

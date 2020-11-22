@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Genders.
+ * Represents all genders in the program. This is a touchy political subject, but
+ * as you can tell we went with the "politically correct" choice.
+ *
+ * @author Andrew Steinborn
  */
 public class Genders {
 

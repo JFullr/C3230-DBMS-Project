@@ -1,8 +1,9 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class RegisteredUser.
+ * Represents a login in the database.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class RegisteredUser {
 

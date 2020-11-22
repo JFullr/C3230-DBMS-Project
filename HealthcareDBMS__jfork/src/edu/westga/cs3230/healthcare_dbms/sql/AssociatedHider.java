@@ -2,9 +2,11 @@ package edu.westga.cs3230.healthcare_dbms.sql;
 
 import java.util.function.Predicate;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Interface AssociatedHider.
+ * Implemented on an object to determine what should be hidden from the user
+ * in the UI.
+ *
+ * @author Andrew Steinborn
  */
 public interface AssociatedHider {
     

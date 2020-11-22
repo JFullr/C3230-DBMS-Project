@@ -4,9 +4,10 @@ import edu.westga.cs3230.healthcare_dbms.sql.AssociatedHider;
 
 import java.util.function.Predicate;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class PatientData.
+ * Couples a {@link Person} with {@link Address}.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class PatientData implements AssociatedHider {
 	

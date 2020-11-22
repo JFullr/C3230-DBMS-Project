@@ -30,9 +30,10 @@ import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextInputDialog;
 
-// TODO: Auto-generated Javadoc
 /**
- * Viewmodel class for the Appointment window.
+ * View model class for the lab test pane.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class FullPatientViewModelSubTest {
 

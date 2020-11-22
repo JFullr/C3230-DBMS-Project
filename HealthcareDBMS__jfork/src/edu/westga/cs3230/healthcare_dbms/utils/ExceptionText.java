@@ -4,24 +4,24 @@ package edu.westga.cs3230.healthcare_dbms.utils;
 /**
  * Utility class that stores exception text constants.
  * 
- * @author 
+ * @author Joseph Fuller
  */
 public class ExceptionText {
 	
 	
-	/** The Constant USERNAME_NULL. */
+	/** Username cannot be empty. */
 	public static final String USERNAME_EMPTY = "Username cannot be empty.";
 	
-	/** The Constant PASSWORD. */
+	/** Password cannot be empty. */
 	public static final String PASSWORD_EMPTY = "Password cannot be empty.";
 	
-	/** The Constant FAILED_LOGIN. */
+	/** Login failed. */
 	public static final String FAILED_LOGIN = "Login failed.";
 
-	/** The Constant TEXT_NULL. */
+	/** Text cannot be empty. */
 	public static final String TEXT_NULL = "Text cannot be empty.";
 	
-	/** The Constant FXML_RESOURCE_NOT_LOADED. */
+	/** Specified FXML resource could not be loaded. */
 	public static final String FXML_RESOURCE_NOT_LOADED = "Specified FXML resource could not be loaded";
 	
 }

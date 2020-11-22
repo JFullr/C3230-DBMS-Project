@@ -19,9 +19,10 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.SingleSelectionModel;
 
-// TODO: Auto-generated Javadoc
 /**
- * Viewmodel class for the Login window.
+ * View model class for the patient data pane.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class FullPatientViewModelSubPatient {
 	

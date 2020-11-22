@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class States.
+ * Represents all 50 states of the United States of America in alphabetical
+ * order.
+ *
+ * @author Andrew Steinborn
  */
 public class States {
 
-    /** The Constant ALL_STATES. */
+    /** All the US states in alphabetical order. */
     public static final List<String> ALL_STATES;
 
     static {

@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SqlManager.
+ * Maps an {@link ResultSet} into a list of {@link SqlTuple}s.
+ *
+ * @author Joseph Fuller
  */
 public class SqlManager {
 	

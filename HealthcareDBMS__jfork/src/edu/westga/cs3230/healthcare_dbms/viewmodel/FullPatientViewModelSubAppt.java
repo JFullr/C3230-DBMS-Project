@@ -33,9 +33,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SingleSelectionModel;
 
-// TODO: Auto-generated Javadoc
 /**
- * Viewmodel class for the Appointment window.
+ * Viewmodel class for the Appointment pane.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class FullPatientViewModelSubAppt {
 	

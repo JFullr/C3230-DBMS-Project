@@ -4,9 +4,10 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SqlGetter.
+ * Maps an object into a {@link SqlTuple}.
+ *
+ * @author Joseph Fuller
  */
 public class SqlGetter {
 	

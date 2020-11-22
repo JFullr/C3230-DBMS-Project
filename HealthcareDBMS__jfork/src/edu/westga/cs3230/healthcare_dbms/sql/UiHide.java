@@ -5,6 +5,8 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Specifies that this field should be hidden in the UI.
+ *
+ * @author Andrew Steinborn
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UiHide {

@@ -1,8 +1,10 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class DoctorData.
+ * Couples a {@link Doctor} with {@link Person}. A doctor is just an alias for
+ * a specific person.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class DoctorData {
 	
@@ -23,7 +25,7 @@ public class DoctorData {
 	}
 	
 	/**
-	 * Assign.
+	 * Assigns the given person and doctor.
 	 *
 	 * @param person the person
 	 * @param doctor the doctor

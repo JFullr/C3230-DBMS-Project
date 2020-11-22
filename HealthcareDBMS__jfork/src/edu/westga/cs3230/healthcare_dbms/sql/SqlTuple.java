@@ -8,9 +8,10 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class SqlTuple.
+ * Represents a tuple in the database.
+ *
+ * @author Joseph Fuller
  */
 public class SqlTuple implements Iterable<SqlAttribute> {
 	

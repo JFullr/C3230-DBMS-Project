@@ -15,9 +15,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.SingleSelectionModel;
 
-// TODO: Auto-generated Javadoc
 /**
- * Viewmodel class for the Login window.
+ * View model class for the Login window.
+ *
+ * @author Joseph Fuller and Andrew Steinborn
  */
 public class PatientViewModel {
 
