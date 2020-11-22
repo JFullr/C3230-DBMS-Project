@@ -40,19 +40,15 @@ public class HealthcareDatabase {
 	}
 	
 	/**
-	 * calls the specified query
+	 * calls the specified query by the admin
 	 *
 	 * @param query the query to be executed
 	 * 
-	 * @return if successfully called
+	 * @return != null if successfully called
 	 */
-	public boolean callQuery(String query) {
-		try {
-			return this.client.callQuery(query);
-		}catch(Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+	public QueryResult callAdminQuery(String rawSql)throws Exception {
+		QueryResult results = this.client.callAdminQuery(rawSql);
+		return results;
 	}
 	
 	public QueryResult callAdminDateQuery(Date start, Date end) {

@@ -22,6 +22,15 @@ public class SqlManager {
 		return this.tuples;
 	}
 	
+	public void addRaw(SqlTuple tuple) {
+		this.tuples.add(tuple);
+	}
+	
+	public void setRaw(SqlTuple tuple) {
+		this.tuples.clear();
+		this.tuples.add(tuple);
+	}
+	
 	public void readTuples(String connectionString, String query) throws SQLException {
 		
 		try (Connection con = DriverManager.getConnection(connectionString);

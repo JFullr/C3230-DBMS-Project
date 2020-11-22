@@ -62,9 +62,9 @@ public class HealthcareDatabaseClient {
 		this.adminDal = new AdminDAL(this.connector);
 	}
 	
-	public boolean callQuery(String query) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public QueryResult callAdminQuery(String rawSql) throws Exception {
+		this.lastResult = this.adminDal.callQuery(rawSql);
+		return this.lastResult;
 	}
 
 	public QueryResult callAdminDateQuery(Date start, Date end) throws Exception {

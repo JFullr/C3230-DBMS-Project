@@ -108,22 +108,6 @@ public class MainPageViewModel {
 			}
 		});
 	}
-
-	/**
-	 * Performs a query on the operated database
-	 *
-	 * @param query the query
-	 */
-	public boolean callQuery(String query) {
-		boolean success = false;
-		try {
-			success = this.database.callQuery(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return success;
-	}
 	
 	public void handleLogOut() {
 		this.loggedInProperty.setValue(false);
@@ -439,8 +423,24 @@ public class MainPageViewModel {
 	
 	
 	
-	
-	
+	/**
+	 * Performs a query on the operated database
+	 *
+	 * @param query the query
+	 */
+	public void handleAdminQuery() {
+		String rawSql = this.adminQueryProperty.getValue();
+		
+		QueryResult results = null;
+		try {
+			results = this.database.callAdminQuery(rawSql);
+		} catch (Exception e) {
+			FXMLAlert.statusAlert(e.getMessage());
+			return;
+		}
+		this.setAdminResults(results);
+		this.adminQueryProperty.setValue("");
+	}
 	
 	public void handleAdminDateSearch() {
 		LocalDate start = this.adminStartDateProperty.getValue();

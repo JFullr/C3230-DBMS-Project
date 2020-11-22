@@ -204,7 +204,7 @@ public class MainPageCodeBehind {
     
     @FXML
     void handleCallQuery(ActionEvent event) {
-
+    	this.viewModel.handleAdminQuery();
     }
 
     @FXML
