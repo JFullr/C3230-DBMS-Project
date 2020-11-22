@@ -23,6 +23,10 @@ import javafx.scene.layout.GridPane;
  *
  * @author Joseph Fuller
  */
+/**
+ * @author jfulle11
+ *
+ */
 public class TupleEmbed extends ListView<Node> {
 	
 	/** The operates on. */
@@ -92,6 +96,15 @@ public class TupleEmbed extends ListView<Node> {
 	 */
 	public Object getOperatedObject() {
 		return this.operatesOn;
+	}
+	
+	/**
+	 * Sets the operated object.
+	 *
+	 * @param operatesOn the new operated object
+	 */
+	public void setOperatedObject(Object operatesOn) {
+		this.operatesOn = operatesOn;
 	}
 	
 	/**

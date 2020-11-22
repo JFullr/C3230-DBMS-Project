@@ -291,7 +291,6 @@ public class FullPatientViewModelSubCheckup {
 			FXMLAlert.statusAlert("Add Checkup Failed", "The checkup did not add successfully.", "Add Checkup failed", AlertType.ERROR);
 		} else {
 			FXMLAlert.statusAlert("Add Checkup Success", "The checkup was added Successfully.", "Add Checkup Success", AlertType.INFORMATION);
-			//TODO REFRESH APPOINTMENTS;
 		}
 	}
 	
@@ -303,7 +302,6 @@ public class FullPatientViewModelSubCheckup {
 			FXMLAlert.statusAlert("Update Checkup Failed", "The checkup did not update successfully.", "Update Checkup failed", AlertType.ERROR);
 		} else {
 			FXMLAlert.statusAlert("Update Checkup Success", "The checkup updated successfully.", "Update Checkup Success", AlertType.INFORMATION);
-			///TODO update Appointments
 		}
 	}
 	

@@ -19,6 +19,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.MultipleSelectionModel;
 
 /**
  * The Class MainPageViewModelSubMain.
@@ -38,6 +39,9 @@ public class MainPageViewModelSubMain {
 	
 	/** The selected tuple object. */
 	private final ObjectProperty<Object> selectedTupleObject;
+	
+	/** The query selection property. */
+	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> querySelectionProperty;
 	
 	/** The tuples. */
 	private ObservableList<TupleEmbed> tuples;
@@ -60,6 +64,8 @@ public class MainPageViewModelSubMain {
 		this.selectedTupleObject = new SimpleObjectProperty<Object>(null);
 		
 		this.tuples = FXCollections.observableArrayList();
+		
+		this.querySelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
 		
 		this.addListeners();
 		
@@ -108,6 +114,15 @@ public class MainPageViewModelSubMain {
 	 */
 	public ObservableList<TupleEmbed> getTupleList() {
 		return this.tuples;
+	}
+	
+	/**
+	 * Gets the query selection property.
+	 *
+	 * @return the query selection property
+	 */
+	public ObjectProperty<MultipleSelectionModel<TupleEmbed>> getQuerySelectionProperty() {
+		return this.querySelectionProperty;
 	}
 	
 	/**
@@ -201,10 +216,16 @@ public class MainPageViewModelSubMain {
 			viewModel.getViewModelPatient().initFrom(patient);
 			viewModel.setDatabase(this.givenDB);
 			
+			window.setOnWindowClose((evt)->{
+				TupleEmbed emb = this.querySelectionProperty.getValue().getSelectedItem();
+				if(emb == null) {
+					return;
+				}
+				this.updatePatientEmbed(emb, viewModel.getViewModelPatient().getPatient());
+			});
+			
 			window.pack();
 			window.show();
-			
-			//TODO refresh patients here
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -317,6 +338,36 @@ public class MainPageViewModelSubMain {
 		return this.createGenericEmbed(operatesOn, display, attributes);
 	}
 	
+	private void updatePatientEmbed(TupleEmbed toUpdate, PatientData update) {
+		
+		toUpdate.setOperatedObject(update);
+		
+		Person person = update.getPerson();
+		Address addr = update.getAddress();
+		
+		if(person != null) {
+			toUpdate.updateAttribute("FirstName", person.getFname());
+			toUpdate.updateAttribute("MidInit", person.getMiddle_initial());
+			toUpdate.updateAttribute("LastName", person.getLname());
+			toUpdate.updateAttribute("SSN", person.getSSN());
+			toUpdate.updateAttribute("DateOfBirth", person.getDOB());
+			toUpdate.updateAttribute("Gender", person.getGender());
+			toUpdate.updateAttribute("Contact Email", person.getContact_email());
+			toUpdate.updateAttribute("Contact Phone", person.getContact_phone());
+		}
+		
+		if(addr != null) {
+			toUpdate.updateAttribute("State", addr.getState());
+			toUpdate.updateAttribute("City", addr.getCity());
+			toUpdate.updateAttribute("ZipCode", addr.getZip_code());
+			toUpdate.updateAttribute("Address 1", addr.getStreet_address1());
+			if(addr.getStreet_address2() != null) {
+				toUpdate.updateAttribute("Address 2", addr.getStreet_address2());
+			}
+		}
+		
+	}
+	
 	/**
 	 * Creates the patient embed.
 	 *
@@ -379,5 +430,7 @@ public class MainPageViewModelSubMain {
 		
 		return embed;
 	}
+
+	
 
 }

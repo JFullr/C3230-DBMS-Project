@@ -203,6 +203,7 @@ public class FullPatientViewModel {
 		this.viewModelFinal.setDatabase(givenDB);
 		this.viewModelTest.setDatabase(givenDB);
 		this.viewModelDiag.setDatabase(givenDB);
+		this.viewModelPatient.setDatabase(givenDB);
 	}
 	
 	/**

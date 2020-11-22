@@ -111,7 +111,6 @@ public class HealthcareDatabase {
 			QueryResult result = this.client.attemptAdminLogin(login);
 			return result;
 		} catch(Exception e) {
-			e.printStackTrace();
 		}
 		return null;
 	}

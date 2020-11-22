@@ -363,8 +363,8 @@ public class FullPatientCodeBehind {
 			}
 			if (newValue != null) {
 				newValue.setMouseTransparent(false);
+				this.viewModel.setSelectedAppointment((Appointment)newValue.getOperatedObject(), true);
 			}
-			this.viewModel.setSelectedAppointment((Appointment)newValue.getOperatedObject(), true);
 		});
 	}
 	
@@ -401,8 +401,8 @@ public class FullPatientCodeBehind {
 			}
 			if (newValue != null) {
 				newValue.setMouseTransparent(false);
+				this.viewModel.setSelectedAppointment((Appointment)newValue.getOperatedObject(), false);
 			}
-			this.viewModel.setSelectedAppointment((Appointment)newValue.getOperatedObject(), false);
 		});
 	}
 	

@@ -452,8 +452,7 @@ public class FullPatientViewModelSubPatient {
 			FXMLAlert.statusAlert("Update Patient Failed", "The patient was not updated successfully.", "Update Patient failed", AlertType.ERROR);
 		} else {
 			FXMLAlert.statusAlert("Update Patient Success", "The patient was updated successfully.", "Update Patient Success", AlertType.INFORMATION);
-			//TODO propagate main display on close of window instead of forced propagation, maybe use old search query
-			//this.updateAvailableAppointments();
+			
 		}
 	}
 

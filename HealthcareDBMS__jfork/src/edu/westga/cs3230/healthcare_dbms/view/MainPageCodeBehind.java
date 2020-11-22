@@ -13,7 +13,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 
-// TODO: Auto-generated Javadoc
 /**
  * Code-behind file for the main page for the Healthcare DBMS.
  *
@@ -158,6 +157,7 @@ public class MainPageCodeBehind {
 	 */
 	private void setupTupleView() {
 		this.queryListView.setItems(this.viewModel.getViewModelMain().getTupleList());
+		this.viewModel.getViewModelMain().getQuerySelectionProperty().bindBidirectional(this.queryListView.selectionModelProperty());
 		this.queryListView.setPadding(new Insets(0,0,0,0));
 		this.queryListView.setFixedCellSize(100.0);
 		this.queryListView.selectionModelProperty().addListener((evt)->{

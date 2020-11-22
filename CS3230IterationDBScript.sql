@@ -181,6 +181,9 @@ INSERT INTO `Person` (`person_id`, `fname`, `lname`, `middle_initial`, `gender`,
 (10, 'French', 'Caterpillar', 'd', 'Other', '2020-10-07', 111141531, '9999999998', 'e@a.com', 10),
 (11, 'Orange', 'Green', 'h', 'Other', '2020-10-07', 113341531, '0000000008', 'f@a.com', 11);
 
+INSERT INTO RegisteredUser VALUES(2, '999', 11);
+INSERT INTO UserPasswordStore VALUES(2, "a9993e364706816aba3e25717850c26c9cd0d89d", "hash");
+
 INSERT INTO Doctor VALUES(1),
 (8),
 (9),

@@ -9,7 +9,6 @@ import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
-// TODO: Auto-generated Javadoc
 /**
  * Obtains the user type from the DB.
  *

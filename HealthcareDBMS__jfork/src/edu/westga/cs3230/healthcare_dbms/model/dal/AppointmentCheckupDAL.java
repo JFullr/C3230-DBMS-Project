@@ -11,7 +11,6 @@ import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentCheckup;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AppointmentCheckupDAL.
  *

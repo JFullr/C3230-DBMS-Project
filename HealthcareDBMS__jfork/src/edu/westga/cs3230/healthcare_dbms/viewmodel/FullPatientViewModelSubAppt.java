@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -512,6 +513,12 @@ public class FullPatientViewModelSubAppt {
 		AppointmentData appt = this.getAppointment();
 		if(appt == null) {
 			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment was malformed. Please double check your input and try again.", "Add Appointment failed", AlertType.ERROR);
+			return;
+		}
+		
+		Timestamp time = appt.getAppointment().getDate_time();
+		if(time.before(Timestamp.valueOf(LocalDateTime.now()))) {
+			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment specified is in the past. Please select a time in the future.", "Add Appointment failed due to being in the past", AlertType.ERROR);
 			return;
 		}
 		
