@@ -56,9 +56,9 @@ public class MainPageCodeBehind {
 	@FXML
 	public void initialize() {
 
-		this.usernameLabel.textProperty().bindBidirectional(this.viewModel.getUserNameProperty());
-		this.nameLabel.textProperty().bindBidirectional(this.viewModel.getNameProperty());
-		this.userIdLabel.textProperty().bindBidirectional(this.viewModel.getUserIdProperty());
+		this.usernameLabel.textProperty().bindBidirectional(this.viewModel.getViewModelMain().getUserNameProperty());
+		this.nameLabel.textProperty().bindBidirectional(this.viewModel.getViewModelMain().getNameProperty());
+		this.userIdLabel.textProperty().bindBidirectional(this.viewModel.getViewModelMain().getUserIdProperty());
 		
 		this.logoutButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
 		this.patientSearchButton.disableProperty().bind(this.viewModel.getLoggedInProperty().not());
@@ -89,7 +89,7 @@ public class MainPageCodeBehind {
 	
 	@FXML
     public void handlePatientSearch(ActionEvent event) {
-		this.viewModel.showPatientSearch();
+		this.viewModel.getViewModelMain().showPatientSearch();
     }
 	
 	@FXML
@@ -100,7 +100,7 @@ public class MainPageCodeBehind {
 	@FXML
 	public void handleAddPatient(ActionEvent event) {
 
-		this.viewModel.showAddPatient();
+		this.viewModel.getViewModelMain().showAddPatient();
 	}
 	
 	public void updateLoginDisplay() {
@@ -123,7 +123,7 @@ public class MainPageCodeBehind {
 	}
 	
 	private void setupTupleView() {
-		this.queryListView.setItems(this.viewModel.getTupleList());
+		this.queryListView.setItems(this.viewModel.getViewModelMain().getTupleList());
 		this.queryListView.setPadding(new Insets(0,0,0,0));
 		this.queryListView.setFixedCellSize(100.0);
 		this.queryListView.selectionModelProperty().addListener((evt)->{
@@ -172,9 +172,9 @@ public class MainPageCodeBehind {
     
     private void setupAdminTab() {
     	this.adminTab.disableProperty().bind(this.viewModel.getAdminLoggedInProperty().not());
-    	this.adminUsernameLabel.textProperty().bindBidirectional(this.viewModel.getUserNameProperty());
-		this.adminNameLablel.textProperty().bindBidirectional(this.viewModel.getNameProperty());
-		this.adminUserIdLabel.textProperty().bindBidirectional(this.viewModel.getUserIdProperty());
+    	this.adminUsernameLabel.textProperty().bindBidirectional(this.viewModel.getViewModelMain().getUserNameProperty());
+		this.adminNameLablel.textProperty().bindBidirectional(this.viewModel.getViewModelMain().getNameProperty());
+		this.adminUserIdLabel.textProperty().bindBidirectional(this.viewModel.getViewModelMain().getUserIdProperty());
 		
 		this.adminDateSearchButton.disableProperty().bind(
 			this.adminStartDate.valueProperty().isNull()
@@ -183,10 +183,10 @@ public class MainPageCodeBehind {
 		
 		this.adminCallQueryButton.disableProperty().bind(this.adminQueryArea.textProperty().isEmpty());
 		
-		this.adminQueryArea.textProperty().bindBidirectional(this.viewModel.getAdminQueryProperty());
-		this.adminStartDate.valueProperty().bindBidirectional(this.viewModel.getAdminStartDateProperty());
-		this.adminEndDate.valueProperty().bindBidirectional(this.viewModel.getAdminEndDateProperty());
-		this.adminResultList.setItems(this.viewModel.getAdminResultList());
+		this.adminQueryArea.textProperty().bindBidirectional(this.viewModel.getViewModelAdmin().getAdminQueryProperty());
+		this.adminStartDate.valueProperty().bindBidirectional(this.viewModel.getViewModelAdmin().getAdminStartDateProperty());
+		this.adminEndDate.valueProperty().bindBidirectional(this.viewModel.getViewModelAdmin().getAdminEndDateProperty());
+		this.adminResultList.setItems(this.viewModel.getViewModelAdmin().getAdminResultList());
 		
 		this.adminResultList.setPadding(new Insets(0,0,0,0));
 		this.adminResultList.setFixedCellSize(100.0);
@@ -204,12 +204,12 @@ public class MainPageCodeBehind {
     
     @FXML
     void handleCallQuery(ActionEvent event) {
-    	this.viewModel.handleAdminQuery();
+    	this.viewModel.getViewModelAdmin().handleAdminQuery();
     }
 
     @FXML
     void handleDateSearch(ActionEvent event) {
-    	this.viewModel.handleAdminDateSearch();
+    	this.viewModel.getViewModelAdmin().handleAdminDateSearch();
     }
 
 
