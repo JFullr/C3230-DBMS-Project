@@ -30,31 +30,31 @@ public class SqlTypeConverter {
 	static {
 		try {
 		convertFromSqlMethod = new HashMap<String, Method>();
-		convertFromSqlMethod.put("CHAR", ResultSet.class.getMethod("getString", String.class));
-		convertFromSqlMethod.put("VARCHAR", ResultSet.class.getMethod("getString", String.class));
-		convertFromSqlMethod.put("BLOB", ResultSet.class.getMethod("getString", String.class));
-		convertFromSqlMethod.put("TEXT", ResultSet.class.getMethod("getString", String.class));
-		convertFromSqlMethod.put("ENUM", ResultSet.class.getMethod("getString", String.class));
-		convertFromSqlMethod.put("SET", ResultSet.class.getMethod("getString", String.class));
+		convertFromSqlMethod.put("CHAR", ResultSet.class.getMethod("getString", int.class));
+		convertFromSqlMethod.put("VARCHAR", ResultSet.class.getMethod("getString", int.class));
+		convertFromSqlMethod.put("BLOB", ResultSet.class.getMethod("getString", int.class));
+		convertFromSqlMethod.put("TEXT", ResultSet.class.getMethod("getString", int.class));
+		convertFromSqlMethod.put("ENUM", ResultSet.class.getMethod("getString", int.class));
+		convertFromSqlMethod.put("SET", ResultSet.class.getMethod("getString", int.class));
 		
-		convertFromSqlMethod.put("FLOAT", ResultSet.class.getMethod("getFloat", String.class));
-		convertFromSqlMethod.put("REAL", ResultSet.class.getMethod("getDouble", String.class));
-		convertFromSqlMethod.put("DOUBLE PRECISION", ResultSet.class.getMethod("getDouble", String.class));
-		convertFromSqlMethod.put("NUMERIC", ResultSet.class.getMethod("getInt", String.class));
-		convertFromSqlMethod.put("DECIMAL", ResultSet.class.getMethod("getDouble", String.class));
-		convertFromSqlMethod.put("TINYINT", ResultSet.class.getMethod("getInt", String.class));
-		convertFromSqlMethod.put("SMALLINT", ResultSet.class.getMethod("getInt", String.class));
-		convertFromSqlMethod.put("MEDIUMINT", ResultSet.class.getMethod("getInt", String.class));
-		convertFromSqlMethod.put("INT", ResultSet.class.getMethod("getInt", String.class));
-		convertFromSqlMethod.put("INTEGER", ResultSet.class.getMethod("getInt", String.class));
-		convertFromSqlMethod.put("BIGINT", ResultSet.class.getMethod("getBigDecimal", String.class));
+		convertFromSqlMethod.put("FLOAT", ResultSet.class.getMethod("getFloat", int.class));
+		convertFromSqlMethod.put("REAL", ResultSet.class.getMethod("getDouble", int.class));
+		convertFromSqlMethod.put("DOUBLE PRECISION", ResultSet.class.getMethod("getDouble", int.class));
+		convertFromSqlMethod.put("NUMERIC", ResultSet.class.getMethod("getInt", int.class));
+		convertFromSqlMethod.put("DECIMAL", ResultSet.class.getMethod("getDouble", int.class));
+		convertFromSqlMethod.put("TINYINT", ResultSet.class.getMethod("getInt", int.class));
+		convertFromSqlMethod.put("SMALLINT", ResultSet.class.getMethod("getInt", int.class));
+		convertFromSqlMethod.put("MEDIUMINT", ResultSet.class.getMethod("getInt", int.class));
+		convertFromSqlMethod.put("INT", ResultSet.class.getMethod("getInt", int.class));
+		convertFromSqlMethod.put("INTEGER", ResultSet.class.getMethod("getInt", int.class));
+		convertFromSqlMethod.put("BIGINT", ResultSet.class.getMethod("getBigDecimal", int.class));
 		
-		convertFromSqlMethod.put("DATE", ResultSet.class.getMethod("getDate", String.class));
-		convertFromSqlMethod.put("TIME", ResultSet.class.getMethod("getDate", String.class));
-		convertFromSqlMethod.put("DATETIME", ResultSet.class.getMethod("getTimestamp", String.class));
-		convertFromSqlMethod.put("TIMESTAMP", ResultSet.class.getMethod("getTimestamp", String.class));
+		convertFromSqlMethod.put("DATE", ResultSet.class.getMethod("getDate", int.class));
+		convertFromSqlMethod.put("TIME", ResultSet.class.getMethod("getDate", int.class));
+		convertFromSqlMethod.put("DATETIME", ResultSet.class.getMethod("getTimestamp", int.class));
+		convertFromSqlMethod.put("TIMESTAMP", ResultSet.class.getMethod("getTimestamp", int.class));
 		
-		convertFromSqlMethod.put("BIT", ResultSet.class.getMethod("getBoolean", String.class));
+		convertFromSqlMethod.put("BIT", ResultSet.class.getMethod("getBoolean", int.class));
 		
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -63,13 +63,13 @@ public class SqlTypeConverter {
 		}
 	}
 	
-	public static Object convertObject(ResultSet rs, String label, String typename, int precision) throws SQLException {
+	public static Object convertObject(ResultSet rs, int i, String typename, int precision) throws SQLException {
 		try {
 			if(typename.toLowerCase().endsWith("unsigned")) {
 				typename = typename.substring(0, typename.length()-"unsigned".length()).trim();
 			}
 			
-			Object obj =  convertFromSqlMethod.get(typename).invoke(rs, label);
+			Object obj =  convertFromSqlMethod.get(typename).invoke(rs, i);
 
 			return obj;
 		} catch (IllegalAccessException e) {

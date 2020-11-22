@@ -1,5 +1,7 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
@@ -51,6 +53,12 @@ public class MainPageViewModel {
 	
 	private ObservableList<TupleEmbed> tuples;
 	private QueryResult lastResults;
+	
+	private final ObjectProperty<LocalDate> adminStartDateProperty;
+	private final ObjectProperty<LocalDate> adminEndDateProperty;
+	private final StringProperty adminQueryProperty;
+	private final ObservableList<TupleEmbed> adminResultList;
+	
 
 	/**
 	 * Instantiates a new MainPageViewModel
@@ -76,6 +84,11 @@ public class MainPageViewModel {
 		this.lastResults = null;
 		
 		this.addListeners();
+		
+		this.adminStartDateProperty = new SimpleObjectProperty<LocalDate>();
+		this.adminEndDateProperty = new SimpleObjectProperty<LocalDate>();
+		this.adminQueryProperty = new SimpleStringProperty();
+		this.adminResultList = FXCollections.observableArrayList();
 	}
 	
 	private void addListeners() {
@@ -416,5 +429,52 @@ public class MainPageViewModel {
 		});
 		
 		return embed;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public void handleAdminDateSearch() {
+		LocalDate start = this.adminStartDateProperty.getValue();
+		LocalDate end = this.adminEndDateProperty.getValue();
+		Date dStart = Date.valueOf(start);
+		Date dEnd = Date.valueOf(end);
+		
+		QueryResult results = this.database.callAdminDateQuery(dStart, dEnd);
+		this.setAdminResults(results);
+	}
+
+	public ObservableList<TupleEmbed> getAdminResultList() {
+		return adminResultList;
+	}
+
+	public StringProperty getAdminQueryProperty() {
+		return adminQueryProperty;
+	}
+
+	public ObjectProperty<LocalDate> getAdminEndDateProperty() {
+		return adminEndDateProperty;
+	}
+
+	public ObjectProperty<LocalDate> getAdminStartDateProperty() {
+		return adminStartDateProperty;
+	}
+	
+	private void setAdminResults(QueryResult results) {
+		this.adminResultList.clear();
+		for(QueryResult result : results) {
+			if(result.getTuple() != null) {
+				TupleEmbed embed = new TupleEmbed(null, null, result.getTuple());
+				this.adminResultList.add(embed);
+			}
+		}
 	}
 }

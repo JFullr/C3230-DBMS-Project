@@ -1,6 +1,7 @@
 package edu.westga.cs3230.healthcare_dbms.io.database;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class HealthcareDatabaseClient {
 	private FinalDiagnosisDAL finalDiagnosisDal;
 	private DiagnosisDAL diagnosisDal;
 	private LabTestResultDAL labTestResultDal;
+	private AdminDAL adminDal;
 	
 	private QueryResult lastResult;
 	private DatabaseConnector connector;
@@ -57,6 +59,7 @@ public class HealthcareDatabaseClient {
 		this.labTestOrderDal = new LabTestOrderDAL(this.connector);
 		this.diagnosisDal = new DiagnosisDAL(this.connector);
 		this.labTestResultDal = new LabTestResultDAL(this.connector);
+		this.adminDal = new AdminDAL(this.connector);
 	}
 	
 	public boolean callQuery(String query) throws Exception {
@@ -64,9 +67,9 @@ public class HealthcareDatabaseClient {
 		return false;
 	}
 
-	public ArrayList<HashMap<String, SqlAttribute>> getQueryTuples() {
-		// TODO Auto-generated method stub
-		return null;
+	public QueryResult callAdminDateQuery(Date start, Date end) throws Exception {
+		this.lastResult = this.adminDal.searchByDates(start, end);
+		return this.lastResult;
 	}
 
 	public QueryResult attemptLogin(Login login) throws SQLException {

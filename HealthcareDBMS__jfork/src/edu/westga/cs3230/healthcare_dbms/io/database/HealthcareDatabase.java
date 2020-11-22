@@ -1,5 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.io.database;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.chrono.Chronology;
 import java.util.LinkedList;
@@ -52,6 +53,16 @@ public class HealthcareDatabase {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public QueryResult callAdminDateQuery(Date start, Date end) {
+		try {
+			QueryResult result = this.client.callAdminDateQuery(start, end);
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**

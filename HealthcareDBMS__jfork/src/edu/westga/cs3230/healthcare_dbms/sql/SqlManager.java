@@ -43,7 +43,7 @@ public class SqlManager {
 				String typeName = meta.getColumnTypeName(i);
 				//SQL_TYPE type = SqlTypeConverter.convertFrom(typename);
 				
-				Object obj = SqlTypeConverter.convertObject(rs, labelName, typeName, meta.getPrecision(i));
+				Object obj = SqlTypeConverter.convertObject(rs, i, typeName, meta.getPrecision(i));
 				//if(type == SQL_TYPE.STRING && meta.getPrecision(i) == 1) {
 				
 				
@@ -66,7 +66,7 @@ public class SqlManager {
 				String typeName = meta.getColumnTypeName(i);
 				//SQL_TYPE type = SqlTypeConverter.convertFrom(typename);
 				
-				Object obj = SqlTypeConverter.convertObject(rs, labelName, typeName, meta.getPrecision(i));
+				Object obj = SqlTypeConverter.convertObject(rs, i, typeName, meta.getPrecision(i));
 				//if(type == SQL_TYPE.STRING && meta.getPrecision(i) == 1) {
 				
 				attributes.put(labelName, new SqlAttribute(labelName, obj));

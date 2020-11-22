@@ -165,7 +165,7 @@ public class MainPageCodeBehind {
     private DatePicker adminEndDate;
 
     @FXML
-    private ListView<?> adminResultList;
+    private ListView<TupleEmbed> adminResultList;
     
     @FXML
     private TextArea adminQueryArea;
@@ -182,6 +182,17 @@ public class MainPageCodeBehind {
 		);
 		
 		this.adminCallQueryButton.disableProperty().bind(this.adminQueryArea.textProperty().isEmpty());
+		
+		this.adminQueryArea.textProperty().bindBidirectional(this.viewModel.getAdminQueryProperty());
+		this.adminStartDate.valueProperty().bindBidirectional(this.viewModel.getAdminStartDateProperty());
+		this.adminEndDate.valueProperty().bindBidirectional(this.viewModel.getAdminEndDateProperty());
+		this.adminResultList.setItems(this.viewModel.getAdminResultList());
+		
+		this.adminResultList.setPadding(new Insets(0,0,0,0));
+		this.adminResultList.setFixedCellSize(100.0);
+		this.adminResultList.selectionModelProperty().addListener((evt)->{
+			this.adminResultList.refresh();
+		});
     }
     
     @FXML
@@ -198,7 +209,7 @@ public class MainPageCodeBehind {
 
     @FXML
     void handleDateSearch(ActionEvent event) {
-
+    	this.viewModel.handleAdminDateSearch();
     }
 
 
