@@ -510,12 +510,12 @@ public class FullPatientViewModelSubAppt {
 		
 		AppointmentData appt = this.getAppointment();
 		if(appt == null) {
-			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment was malformed.", "Add Appointment failed", AlertType.ERROR);
+			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment was malformed. Please double check your input and try again.", "Add Appointment failed", AlertType.ERROR);
 			return;
 		}
 		
 		if (!this.attemptAddAppointment(appt)) {
-			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment did not add successfully.", "Add Appointment failed", AlertType.ERROR);
+			FXMLAlert.statusAlert("Add Appointment Failed", "The appointment conflicts with an existing appointment.", "Add Appointment failed", AlertType.ERROR);
 		} else {
 			FXMLAlert.statusAlert("Add Appointment Success", "The appointment was added Successfully.", "Add Appointment Success", AlertType.INFORMATION);
 			this.givenAppointmentProperty.setValue(appt);
@@ -537,6 +537,7 @@ public class FullPatientViewModelSubAppt {
 		}
 		
 		results = this.givenDB.getAppointmentBy(appointmentData);
+		this.updateAvailableAppointments();
 		return true;
 	}
 	
@@ -619,7 +620,8 @@ public class FullPatientViewModelSubAppt {
 			return false;
 		}
 		results = this.givenDB.getAppointmentBy(new AppointmentData(newData,null));
-		///TODO update appointment list possibly
+
+		this.updateAvailableAppointments();
 		return true;
 	}
 	
