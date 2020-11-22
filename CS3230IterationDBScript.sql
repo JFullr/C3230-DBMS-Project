@@ -218,6 +218,26 @@ INSERT INTO `Appointment` (`appointment_id`, `person_id`, `date_time`, `doctor_i
 
 INSERT INTO `Admin` VALUES (1);
 
+INSERT INTO `Diagnosis` (`appointment_id`, `diagnosis_description`) VALUES
+(8, 'diagnosis test'),
+(10, 'also diagnosis test');
+
+INSERT INTO `LabTestOrder` (`lab_test_order_id`, `appointment_id`, `lab_test_id`, `date_to_perform`) VALUES
+(1, 6, 4, '2020-10-12'),
+(2, 6, 5, '2020-10-12'),
+(3, 8, 5, '2020-12-23'),
+(4, 8, 1, '2020-12-23'),
+(5, 8, 3, '2020-12-23');
+
+INSERT INTO `LabTestResult` (`lab_test_order_id`, `test_result`) VALUES
+(1, 'result 0'),
+(2, 'result 1'),
+(3, 'forwards'),
+(4, 'normal'),
+(5, 'normal');
+
+INSERT INTO `FinalDiagnosis` (`appointment_id`, `diagnosis_result`) VALUES
+(6, 'normal');
 
 
 drop procedure if exists `try_login`;
