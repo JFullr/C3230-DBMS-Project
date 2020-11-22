@@ -10,27 +10,57 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SqlManager.
+ */
 public class SqlManager {
 	
+	/** The tuples. */
 	private ArrayList<SqlTuple> tuples;
 	
+	/**
+	 * Instantiates a new sql manager.
+	 */
 	public SqlManager() {
 		this.tuples = new ArrayList<SqlTuple>();
 	}
 	
+	/**
+	 * Gets the tuples.
+	 *
+	 * @return the tuples
+	 */
 	public ArrayList<SqlTuple> getTuples(){
 		return this.tuples;
 	}
 	
+	/**
+	 * Adds the raw.
+	 *
+	 * @param tuple the tuple
+	 */
 	public void addRaw(SqlTuple tuple) {
 		this.tuples.add(tuple);
 	}
 	
+	/**
+	 * Sets the raw.
+	 *
+	 * @param tuple the new raw
+	 */
 	public void setRaw(SqlTuple tuple) {
 		this.tuples.clear();
 		this.tuples.add(tuple);
 	}
 	
+	/**
+	 * Read tuples.
+	 *
+	 * @param connectionString the connection string
+	 * @param query the query
+	 * @throws SQLException the SQL exception
+	 */
 	public void readTuples(String connectionString, String query) throws SQLException {
 		
 		try (Connection con = DriverManager.getConnection(connectionString);
@@ -41,6 +71,12 @@ public class SqlManager {
 		
 	}
 	
+	/**
+	 * Read tuples.
+	 *
+	 * @param rs the rs
+	 * @throws SQLException the SQL exception
+	 */
 	public void readTuples(ResultSet rs) throws SQLException {
 		
 		while (rs.next()) {
@@ -64,6 +100,12 @@ public class SqlManager {
 		
 	}
 	
+	/**
+	 * Sets the tuple.
+	 *
+	 * @param rs the new tuple
+	 * @throws SQLException the SQL exception
+	 */
 	public void setTuple(ResultSet rs) throws SQLException {
 		
 		while (rs.next()) {

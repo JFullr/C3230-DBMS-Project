@@ -9,14 +9,30 @@ import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LabTestDAL.
+ */
 public class LabTestDAL {
 
+	/** The connector. */
 	private DatabaseConnector connector;
 
+	/**
+	 * Instantiates a new lab test DAL.
+	 *
+	 * @param connector the connector
+	 */
 	public LabTestDAL(DatabaseConnector connector) {
 		this.connector = connector;
 	}
 	
+	/**
+	 * Gets the lab tests.
+	 *
+	 * @return the lab tests
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getLabTests() throws SQLException {
 		String query = "select * from LabTest "
 						+ "WHERE is_available = TRUE";

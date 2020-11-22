@@ -11,17 +11,35 @@ import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentCheckup;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AppointmentCheckupDAL.
+ */
 public class AppointmentCheckupDAL {
+	
+	/** The connector. */
 	private DatabaseConnector connector;
+	
+	/** The post dal. */
 	private PostDAL postDal;
-	private UpdateDAL updateDal;
 
+	/**
+	 * Instantiates a new appointment checkup DAL.
+	 *
+	 * @param connector the connector
+	 */
 	public AppointmentCheckupDAL(DatabaseConnector connector) {
 		this.connector = connector;
 		this.postDal = new PostDAL(connector);
-		this.updateDal = new UpdateDAL(connector);
 	}
 	
+	/**
+	 * Attempt add appointment checkup.
+	 *
+	 * @param checkup the checkup
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult attemptAddAppointmentCheckup(AppointmentCheckup checkup) throws SQLException {
 		return this.connector.getInTransaction(() -> {
 			this.postDal.postTuple(checkup);
@@ -29,10 +47,24 @@ public class AppointmentCheckupDAL {
 		});
 	}
 	
+	/**
+	 * Gets the appointment checkup for appointment.
+	 *
+	 * @param appointment the appointment
+	 * @return the appointment checkup for appointment
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getAppointmentCheckupForAppointment(Appointment appointment) throws SQLException {
 		return getAppointmentCheckupForAppointment(appointment.getAppointment_id());
 	}
 
+	/**
+	 * Gets the appointment checkup for appointment.
+	 *
+	 * @param appointmentId the appointment id
+	 * @return the appointment checkup for appointment
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getAppointmentCheckupForAppointment(int appointmentId) throws SQLException {
 		String prepared = "select * "
 				+ "from AppointmentCheckup "

@@ -1,54 +1,69 @@
 package edu.westga.cs3230.healthcare_dbms.view;
 
 import edu.westga.cs3230.healthcare_dbms.viewmodel.LoginViewModel;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LoginCodeBehind.
+ */
 public class LoginCodeBehind {
 
+    /** The login button. */
     @FXML
     private Button loginButton;
 
+    /** The cancel button. */
     @FXML
     private Button cancelButton;
 
+    /** The name text field. */
     @FXML
     private TextField nameTextField;
 
+    /** The password field. */
     @FXML
     private PasswordField passwordField;
     
+    /** The view model. */
     private LoginViewModel viewModel;
-    private BooleanProperty attemptLogin;
     
+    /**
+     * Instantiates a new login code behind.
+     */
     public LoginCodeBehind() {
 		this.viewModel = new LoginViewModel();
-		this.attemptLogin = new SimpleBooleanProperty(false);
     }
     
     /**
-	 * Initializer for the fxml data
-	 */
+     * Initializer for the fxml data.
+     */
 	@FXML
 	public void initialize() {
 		this.bindProperties();
 	}
 	
+    /**
+     * Close window.
+     *
+     * @param event the event
+     */
     @FXML
     public void closeWindow(ActionEvent event) {
     	Stage stage = (Stage) this.cancelButton.getScene().getWindow();
 	    stage.close();
     }
 
+    /**
+     * Login close window.
+     *
+     * @param event the event
+     */
     @FXML
     public void loginCloseWindow(ActionEvent event) {
     	
@@ -57,19 +72,21 @@ public class LoginCodeBehind {
     	
     }
     
+    /**
+     * Gets the view model.
+     *
+     * @return the view model
+     */
     public LoginViewModel getViewModel() {
     	return this.viewModel;
     }
     
+    /**
+     * Bind properties.
+     */
     private void bindProperties() {
 		this.viewModel.getNameProperty().bindBidirectional(this.nameTextField.textProperty());
 		this.viewModel.getPasswordProperty().bindBidirectional(this.passwordField.textProperty());
-		/*
-		this.attemptLogin.bind(this.loginButton.pressedProperty());
-		this.viewModel.getLoginButtonPressed().bind(this.attemptLogin);
-		/*/
-			//this.viewModel.getLoginButtonPressed().bind(this.loginButton.pressedProperty());
-		//*/
 	}
 
 }

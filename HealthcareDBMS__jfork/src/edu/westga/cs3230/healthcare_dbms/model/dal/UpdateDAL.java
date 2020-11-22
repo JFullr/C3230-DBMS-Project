@@ -12,18 +12,45 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UpdateDAL.
+ */
 public class UpdateDAL {
 	
+	/** The connector. */
 	private DatabaseConnector connector;
 	
+	/**
+	 * Instantiates a new update DAL.
+	 *
+	 * @param connector the connector
+	 */
 	public UpdateDAL(DatabaseConnector connector) {
 		this.connector = connector;
 	}
 	
+	/**
+	 * Update tuple.
+	 *
+	 * @param newValues the new values
+	 * @param oldValues the old values
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult updateTuple(Object newValues, Object oldValues) throws SQLException {
 		return updateTuple(newValues, oldValues, null);
 	}
 	
+	/**
+	 * Update tuple.
+	 *
+	 * @param newValues the new values
+	 * @param oldValues the old values
+	 * @param selection the selection
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult updateTuple(Object newValues, Object oldValues, SqlTuple selection) throws SQLException {
 		SqlTuple oldTuple = SqlGetter.getFrom(oldValues);
 		SqlTuple newTuple = SqlGetter.getFrom(newValues);

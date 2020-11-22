@@ -9,19 +9,43 @@ import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserTypeDAL.
+ */
 public class UserTypeDAL {
 
+	/** The connector. */
 	private DatabaseConnector connector;
 
+	/**
+	 * Instantiates a new user type DAL.
+	 *
+	 * @param connector the connector
+	 */
 	public UserTypeDAL(DatabaseConnector connector) {
 		this.connector = connector;
 	}
 
+	/**
+	 * Gets the user type.
+	 *
+	 * @param patient the patient
+	 * @return the user type
+	 * @throws SQLException the SQL exception
+	 */
 	public String getUserType(Person patient) throws SQLException {
 		
 		return this.determineUserType(patient.getPerson_id());
 	}
 
+	/**
+	 * Determine user type.
+	 *
+	 * @param person_id the person id
+	 * @return the string
+	 * @throws SQLException the SQL exception
+	 */
 	private String determineUserType(int person_id) throws SQLException {
 		
 		String[] tables = {"Doctor", "Nurse", "Admin", "Patient"};
@@ -34,6 +58,14 @@ public class UserTypeDAL {
 		return null;
 	}
 
+	/**
+	 * Read type.
+	 *
+	 * @param tableName the table name
+	 * @param person_id the person id
+	 * @return true, if successful
+	 * @throws SQLException the SQL exception
+	 */
 	private boolean readType(String tableName, int person_id) throws SQLException {
 
 		String prepared = "select ssn " + 

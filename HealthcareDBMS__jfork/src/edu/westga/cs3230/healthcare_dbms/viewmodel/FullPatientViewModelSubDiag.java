@@ -1,14 +1,9 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
-import java.sql.SQLException;
-import java.util.Optional;
-
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
-import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.Diagnosis;
-import edu.westga.cs3230.healthcare_dbms.model.FinalDiagnosis;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import javafx.beans.property.BooleanProperty;
@@ -17,24 +12,37 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 
+// TODO: Auto-generated Javadoc
 /**
  * Viewmodel class for the Login window.
  */
 public class FullPatientViewModelSubDiag {
 	
+	/** The diagnosis property. */
 	private final StringProperty diagnosisProperty;
 	
+	/** The add event property. */
 	private final BooleanProperty addEventProperty;
+	
+	/** The update event property. */
 	private final BooleanProperty updateEventProperty;
 	
+	/** The given appointment property. */
 	private final ObjectProperty<AppointmentData> givenAppointmentProperty;
+	
+	/** The given diagnosis property. */
 	private final ObjectProperty<Diagnosis> givenDiagnosisProperty;
 	
+	/** The given DB. */
 	private HealthcareDatabase givenDB;
 	
+	/**
+	 * Instantiates a new full patient view model sub diag.
+	 *
+	 * @param givenAppointmentProperty the given appointment property
+	 * @param givenDiagnosisProperty the given diagnosis property
+	 */
 	public FullPatientViewModelSubDiag(ObjectProperty<AppointmentData> givenAppointmentProperty, ObjectProperty<Diagnosis> givenDiagnosisProperty) {
 		this.givenAppointmentProperty = givenAppointmentProperty;
 		this.givenDiagnosisProperty = givenDiagnosisProperty;
@@ -47,22 +55,45 @@ public class FullPatientViewModelSubDiag {
 		this.addActionHandlers();
 	}
 	
+	/**
+	 * Gets the adds the event property.
+	 *
+	 * @return the adds the event property
+	 */
 	public BooleanProperty getAddEventProperty() {
-		return addEventProperty;
+		return this.addEventProperty;
 	}
 	
+	/**
+	 * Gets the update event property.
+	 *
+	 * @return the update event property
+	 */
 	public BooleanProperty getUpdateEventProperty() {
-		return updateEventProperty;
+		return this.updateEventProperty;
 	}
 	
+	/**
+	 * Gets the diagnosis property.
+	 *
+	 * @return the diagnosis property
+	 */
 	public StringProperty getDiagnosisProperty() {
 		return this.diagnosisProperty;
 	}
 	
+	/**
+	 * Sets the database.
+	 *
+	 * @param givenDB the new database
+	 */
 	public void setDatabase(HealthcareDatabase givenDB) {
 		this.givenDB = givenDB;
 	}
 	
+	/**
+	 * Load diagnosis.
+	 */
 	public void loadDiagnosis() {
 		
 		if(this.givenDB == null || this.givenAppointmentProperty.getValue() == null || this.givenAppointmentProperty.getValue().getAppointment() == null) {
@@ -82,6 +113,11 @@ public class FullPatientViewModelSubDiag {
 		
 	}
 	
+	/**
+	 * Inits the from.
+	 *
+	 * @param diagnosis the diagnosis
+	 */
 	public void initFrom(Diagnosis diagnosis) {
 		
 		if(diagnosis == null) {
@@ -93,6 +129,11 @@ public class FullPatientViewModelSubDiag {
 		this.givenDiagnosisProperty.setValue(diagnosis);
 	}
 
+	/**
+	 * Gets the diagnosis.
+	 *
+	 * @return the diagnosis
+	 */
 	public Diagnosis getDiagnosis() {
 		
 		Diagnosis diagnosis = new Diagnosis(
@@ -102,13 +143,17 @@ public class FullPatientViewModelSubDiag {
 		return diagnosis;
 	}
 	
+	/**
+	 * Attempt add diagnosis.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean attemptAddDiagnosis() {
 		
 		Diagnosis diagnosis = this.getDiagnosis();
 		if(diagnosis == null) {
 			return false;
 		}
-		
 		
 		QueryResult results = this.givenDB.attemptPostTuple(diagnosis);
 		
@@ -119,6 +164,9 @@ public class FullPatientViewModelSubDiag {
 		return true;
 	}
 	
+	/**
+	 * Adds the action handlers.
+	 */
 	private void addActionHandlers() {
 		this.addEventProperty.addListener((evt)->{
 			if(this.addEventProperty.getValue()) {
@@ -132,6 +180,9 @@ public class FullPatientViewModelSubDiag {
 		});
 	}
 	
+	/**
+	 * Adds the diagnosis.
+	 */
 	private void addDiagnosis() {
 		
 		Diagnosis diagnosis = this.getDiagnosis();
@@ -151,6 +202,9 @@ public class FullPatientViewModelSubDiag {
 	
 	
 	
+	/**
+	 * Update diagnosis.
+	 */
 	private void updateDiagnosis() {
 		
 		Diagnosis diag = this.getDiagnosis();
@@ -163,6 +217,13 @@ public class FullPatientViewModelSubDiag {
 		}
 	}
 	
+	/**
+	 * Attempt update diagnosis.
+	 *
+	 * @param currentDiagnosis the current diagnosis
+	 * @param newDiagnosis the new diagnosis
+	 * @return true, if successful
+	 */
 	private boolean attemptUpdateDiagnosis(Diagnosis currentDiagnosis, Diagnosis newDiagnosis) {
 		
 		QueryResult results = this.givenDB.attemptUpdateTuple(newDiagnosis, currentDiagnosis);

@@ -2,7 +2,6 @@ package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,19 +20,39 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AppointmentDAL.
+ */
 public class AppointmentDAL {
 
+	/** The connector. */
 	private DatabaseConnector connector;
 	
+	/** The post dal. */
 	private PostDAL postDal;
+	
+	/** The update dal. */
 	private UpdateDAL updateDal;
 
+	/**
+	 * Instantiates a new appointment DAL.
+	 *
+	 * @param connector the connector
+	 */
 	public AppointmentDAL(DatabaseConnector connector) {
 		this.connector = connector;
 		this.postDal = new PostDAL(connector);
 		this.updateDal = new UpdateDAL(connector);
 	}
 
+	/**
+	 * Attempt add appointment.
+	 *
+	 * @param appointment the appointment
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult attemptAddAppointment(AppointmentData appointment) throws SQLException {
 		return this.connector.getInTransaction(() -> {
 			QueryResult result = null;
@@ -56,6 +75,13 @@ public class AppointmentDAL {
 		});
 	}
 	
+	/**
+	 * Gets the appointment by id.
+	 *
+	 * @param addressId the address id
+	 * @return the appointment by id
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getAppointmentById(int addressId) throws SQLException {
         String prepared = "select * from Appointment where appointment_id = ?";
 
@@ -70,12 +96,26 @@ public class AppointmentDAL {
         return new QueryResult(manager.getTuples());
     }
 	
+	/**
+	 * Gets the appointments matching.
+	 *
+	 * @param patient the patient
+	 * @return the appointments matching
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getAppointmentsMatching(PatientData patient) throws SQLException {
 		Appointment appt = new Appointment(null,null,null,null);
 		appt.setPerson_id(patient.getPerson().getPerson_id());
 		return getAppointmentsMatching(new AppointmentData(appt));
 	}
 	
+	/**
+	 * Gets the valid appointments matching.
+	 *
+	 * @param patient the patient
+	 * @return the valid appointments matching
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getValidAppointmentsMatching(PatientData patient) throws SQLException {
 		Appointment appt = new Appointment(null,null,null,null);
 		appt.setPerson_id(patient.getPerson().getPerson_id());
@@ -87,6 +127,13 @@ public class AppointmentDAL {
 		return this.combineAssociateResults(appointments);
 	}
 	
+	/**
+	 * Gets the invalid appointments matching.
+	 *
+	 * @param patient the patient
+	 * @return the invalid appointments matching
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getInvalidAppointmentsMatching(PatientData patient) throws SQLException {
 		Appointment appt = new Appointment(null,null,null,null);
 		appt.setPerson_id(patient.getPerson().getPerson_id());
@@ -98,6 +145,13 @@ public class AppointmentDAL {
 		return this.combineAssociateResults(appointments);
 	}
 
+	/**
+	 * Gets the appointments matching.
+	 *
+	 * @param appointmentData the appointment data
+	 * @return the appointments matching
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getAppointmentsMatching(AppointmentData appointmentData) throws SQLException{
 		
 		QueryResult appointments = this.getAppointmentsMatching(appointmentData.getAppointment());
@@ -105,6 +159,13 @@ public class AppointmentDAL {
 		return this.combineAssociateResults(appointments);
 	}
 	
+	/**
+	 * Gets the appointments matching.
+	 *
+	 * @param appt the appt
+	 * @return the appointments matching
+	 * @throws SQLException the SQL exception
+	 */
 	private QueryResult getAppointmentsMatching(Appointment appt) throws SQLException {
 		
 		SqlTuple tuple = SqlGetter.getFrom(appt);
@@ -132,7 +193,7 @@ public class AppointmentDAL {
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
-			//System.out.println(stmt);
+
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
 		}
@@ -140,6 +201,13 @@ public class AppointmentDAL {
 		return new QueryResult(manager.getTuples());
 	}
 	
+	/**
+	 * Gets the appointments before.
+	 *
+	 * @param appt the appt
+	 * @return the appointments before
+	 * @throws SQLException the SQL exception
+	 */
 	private QueryResult getAppointmentsBefore(Appointment appt) throws SQLException {
 		
 		String query ="SELECT * FROM Appointment WHERE person_id = ? AND date_time < ?";
@@ -156,6 +224,13 @@ public class AppointmentDAL {
 		return new QueryResult(manager.getTuples());
 	}
 	
+	/**
+	 * Gets the appointments after.
+	 *
+	 * @param appt the appt
+	 * @return the appointments after
+	 * @throws SQLException the SQL exception
+	 */
 	private QueryResult getAppointmentsAfter(Appointment appt) throws SQLException {
 		
 		String query ="SELECT * FROM Appointment WHERE person_id = ? AND date_time > ?";
@@ -172,6 +247,12 @@ public class AppointmentDAL {
 		return new QueryResult(manager.getTuples());
 	}
 	
+	/**
+	 * Combine associate results.
+	 *
+	 * @param results the results
+	 * @return the query result
+	 */
 	private QueryResult combineAssociateResults(QueryResult results) {
 		QueryResult combined = null;
 		for(QueryResult appt : results.getBatch()) {
@@ -179,7 +260,6 @@ public class AppointmentDAL {
 			Appointment found = new Appointment(null, null,null,null);
 			
 			if(appt.getTuple() == null) {
-				//System.out.println("INVALID APPOINTMENT TUPLE");
 				continue;
 			}
 			
@@ -198,6 +278,14 @@ public class AppointmentDAL {
 		return combined;
 	}
 
+	/**
+	 * Attempt update appointment.
+	 *
+	 * @param appointment the appointment
+	 * @param newAppointment the new appointment
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult attemptUpdateAppointment(Appointment appointment, Appointment newAppointment) throws SQLException {
 		return this.updateDal.updateTuple(newAppointment, appointment);
 	}

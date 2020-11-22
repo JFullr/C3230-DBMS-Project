@@ -6,17 +6,33 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
 import java.sql.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LabTestResultDAL.
+ */
 public class LabTestResultDAL {
+    
+    /** The connector. */
     private DatabaseConnector connector;
 
+    /**
+     * Instantiates a new lab test result DAL.
+     *
+     * @param connector the connector
+     */
     public LabTestResultDAL(DatabaseConnector connector) {
         this.connector = connector;
     }
     
+    /**
+     * Gets the lab test order result for.
+     *
+     * @param labTestOrderId the lab test order id
+     * @return the lab test order result for
+     * @throws SQLException the SQL exception
+     */
     public QueryResult getLabTestOrderResultFor(int labTestOrderId) throws SQLException {
-        //String query = "SELECT * FROM LabTestResult "
-        //				+ "WHERE lab_test_order_id = ?";
-
+    	
     	String query = "CALL get_lab_result(?)";
         SqlManager manager = new SqlManager();
         Connection con = this.connector.getCurrentConnection();
@@ -29,6 +45,13 @@ public class LabTestResultDAL {
         return new QueryResult(manager.getTuples());
     }
 
+    /**
+     * Gets the lab test order results for appointment.
+     *
+     * @param appointmentId the appointment id
+     * @return the lab test order results for appointment
+     * @throws SQLException the SQL exception
+     */
     public QueryResult getLabTestOrderResultsForAppointment(int appointmentId) throws SQLException {
         String query = "SELECT r.* from LabTestResult r, LabTestOrder o "
         				+ "WHERE o.appointment_id = ? AND r.lab_test_order_id = o.lab_test_order_id";

@@ -14,15 +14,30 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MainPageViewModelSubAdmin.
+ */
 public class MainPageViewModelSubAdmin {
 	
+	/** The admin start date property. */
 	private final ObjectProperty<LocalDate> adminStartDateProperty;
+	
+	/** The admin end date property. */
 	private final ObjectProperty<LocalDate> adminEndDateProperty;
+	
+	/** The admin query property. */
 	private final StringProperty adminQueryProperty;
+	
+	/** The admin result list. */
 	private final ObservableList<TupleEmbed> adminResultList;
 	
+	/** The given DB. */
 	private HealthcareDatabase givenDB;
 	
+	/**
+	 * Instantiates a new main page view model sub admin.
+	 */
 	public MainPageViewModelSubAdmin() {
 		this.adminStartDateProperty = new SimpleObjectProperty<LocalDate>();
 		this.adminEndDateProperty = new SimpleObjectProperty<LocalDate>();
@@ -30,14 +45,17 @@ public class MainPageViewModelSubAdmin {
 		this.adminResultList = FXCollections.observableArrayList();
 	}
 	
+	/**
+	 * Sets the database.
+	 *
+	 * @param givenDB the new database
+	 */
 	public void setDatabase(HealthcareDatabase givenDB) {
 		this.givenDB = givenDB;
 	}
 	
 	/**
-	 * Performs a query on the operated database
-	 *
-	 * @param query the query
+	 * Performs a query on the operated database.
 	 */
 	public void handleAdminQuery() {
 		String rawSql = this.adminQueryProperty.getValue();
@@ -53,6 +71,9 @@ public class MainPageViewModelSubAdmin {
 		this.adminQueryProperty.setValue("");
 	}
 	
+	/**
+	 * Handle admin date search.
+	 */
 	public void handleAdminDateSearch() {
 		LocalDate start = this.adminStartDateProperty.getValue();
 		LocalDate end = this.adminEndDateProperty.getValue();
@@ -63,22 +84,47 @@ public class MainPageViewModelSubAdmin {
 		this.setAdminResults(results);
 	}
 
+	/**
+	 * Gets the admin result list.
+	 *
+	 * @return the admin result list
+	 */
 	public ObservableList<TupleEmbed> getAdminResultList() {
 		return adminResultList;
 	}
 
+	/**
+	 * Gets the admin query property.
+	 *
+	 * @return the admin query property
+	 */
 	public StringProperty getAdminQueryProperty() {
 		return adminQueryProperty;
 	}
 
+	/**
+	 * Gets the admin end date property.
+	 *
+	 * @return the admin end date property
+	 */
 	public ObjectProperty<LocalDate> getAdminEndDateProperty() {
 		return adminEndDateProperty;
 	}
 
+	/**
+	 * Gets the admin start date property.
+	 *
+	 * @return the admin start date property
+	 */
 	public ObjectProperty<LocalDate> getAdminStartDateProperty() {
 		return adminStartDateProperty;
 	}
 	
+	/**
+	 * Sets the admin results.
+	 *
+	 * @param results the new admin results
+	 */
 	private void setAdminResults(QueryResult results) {
 		this.adminResultList.clear();
 		for(QueryResult result : results) {

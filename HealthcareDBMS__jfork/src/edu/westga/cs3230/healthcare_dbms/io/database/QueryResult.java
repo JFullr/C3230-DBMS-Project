@@ -2,21 +2,36 @@ package edu.westga.cs3230.healthcare_dbms.io.database;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class QueryResult.
+ */
 public class QueryResult implements Iterable<QueryResult>{
 	
+	/** The db url. */
 	private String dbUrl;
+	
+	/** The tuple. */
 	private SqlTuple tuple;
+	
+	/** The associated. */
 	private Object associated;
 	
+	/** The batch. */
 	private ArrayList<QueryResult> batch;
 	
+	/**
+	 * Instantiates a new query result.
+	 *
+	 * @param dbUrl the db url
+	 * @param query the query
+	 */
 	public QueryResult(String dbUrl, String query) {
 		this.tuple = null;
 		this.setAssociated(null);
@@ -25,6 +40,11 @@ public class QueryResult implements Iterable<QueryResult>{
 		this.callQuery(query);
 	}
 	
+	/**
+	 * Instantiates a new query result.
+	 *
+	 * @param results the results
+	 */
 	public QueryResult(ArrayList<SqlTuple> results) {
 		this.dbUrl = null;
 		this.setAssociated(null);
@@ -32,6 +52,11 @@ public class QueryResult implements Iterable<QueryResult>{
 		this.addTuples(results);
 	}
 	
+	/**
+	 * Instantiates a new query result.
+	 *
+	 * @param result the result
+	 */
 	public QueryResult(SqlTuple result) {
 		this.dbUrl = null;
 		this.setAssociated(null);
@@ -39,10 +64,21 @@ public class QueryResult implements Iterable<QueryResult>{
 		this.tuple = result;
 	}
 	
+	/**
+	 * Gets the tuple.
+	 *
+	 * @return the tuple
+	 */
 	public SqlTuple getTuple() {
 		return this.tuple;
 	}
 	
+	/**
+	 * Combine.
+	 *
+	 * @param other the other
+	 * @return the query result
+	 */
 	public QueryResult combine(QueryResult other) {
 		if(other == null ) {
 			return this;
@@ -53,6 +89,12 @@ public class QueryResult implements Iterable<QueryResult>{
 		return this;
 	}
 	
+	/**
+	 * Combine merge.
+	 *
+	 * @param other the other
+	 * @return the query result
+	 */
 	public QueryResult combineMerge(QueryResult other) {
 		if(other == null ) {
 			return this;
@@ -71,29 +113,52 @@ public class QueryResult implements Iterable<QueryResult>{
 		return this;
 	}
 	
+	/**
+	 * Gets the batch.
+	 *
+	 * @return the batch
+	 */
 	public ArrayList<QueryResult> getBatch() {
 		
 		ArrayList<QueryResult> combined = new ArrayList<QueryResult>();
-		//if(this.batch.size() > 0 && this.batch.get(0) != this) {
-			combined.add(this);
-		//}
+		combined.add(this);
 		combined.addAll(this.batch);
 		return combined;
 	}
 
+	/**
+	 * Gets the associated.
+	 *
+	 * @return the associated
+	 */
 	public Object getAssociated() {
 		return associated;
 	}
 	
+	/**
+	 * Sets the associated.
+	 *
+	 * @param associated the new associated
+	 */
 	public void setAssociated(Object associated) {
 		this.associated = associated;
 	}
 
+	/**
+	 * Iterator.
+	 *
+	 * @return the iterator
+	 */
 	@Override
 	public Iterator<QueryResult> iterator() {
 		return this.getBatch().iterator();
 	}
 	
+	/**
+	 * Call query.
+	 *
+	 * @param query the query
+	 */
 	private void callQuery(String query) {
 		
 		SqlManager manager = new SqlManager();
@@ -105,6 +170,11 @@ public class QueryResult implements Iterable<QueryResult>{
 		}
 	}
 
+	/**
+	 * Adds the tuples.
+	 *
+	 * @param tuples the tuples
+	 */
 	private void addTuples(ArrayList<SqlTuple> tuples) {
 		
 		if(tuples == null || tuples.size() == 0) {

@@ -5,14 +5,18 @@ package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
 import javafx.beans.property.SimpleStringProperty;
 
+// TODO: Auto-generated Javadoc
 /**
- * ViewModel for attributes embedded in the horizontal list
- * 
+ * ViewModel for attributes embedded in the horizontal list.
+ *
  * @author 
  */
 public class EmbedDataViewModel {
 
+	/** The attribute label. */
 	private SimpleStringProperty attributeLabel;
+	
+	/** The value label. */
 	private SimpleStringProperty valueLabel;
 
 	/**
@@ -27,6 +31,12 @@ public class EmbedDataViewModel {
 		this.valueLabel = new SimpleStringProperty();
 	}
 
+	/**
+	 * Sets the text.
+	 *
+	 * @param attribute the attribute
+	 * @param value the value
+	 */
 	public void setText(String attribute, String value) {
 		this.attributeLabel.setValue(attribute);
 		this.valueLabel.setValue(value);

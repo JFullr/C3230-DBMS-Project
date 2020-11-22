@@ -7,6 +7,7 @@ import edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 
+// TODO: Auto-generated Javadoc
 /**
  * Class for containing FXML document and data while enforcing MVVM location.
  *
@@ -15,7 +16,10 @@ import javafx.scene.layout.Pane;
  */
 public class FXMLContainer<T> {
 	
+	/** The backed pane. */
 	private Pane backedPane;
+	
+	/** The backed loader. */
 	private FXMLLoader backedLoader;
 	
 	/**

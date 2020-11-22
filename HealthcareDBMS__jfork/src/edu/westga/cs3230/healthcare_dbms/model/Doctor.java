@@ -1,17 +1,37 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Doctor.
+ */
 public class Doctor {
 	
+	/** The person id. */
 	private Integer person_id;
 
+	/**
+	 * Instantiates a new doctor.
+	 *
+	 * @param person_id the person id
+	 */
 	public Doctor(Integer person_id) {
 		this.setPerson_id(person_id);
 	}
 
+	/**
+	 * Gets the person id.
+	 *
+	 * @return the person id
+	 */
 	public Integer getPerson_id() {
 		return person_id;
 	}
 
+	/**
+	 * Sets the person id.
+	 *
+	 * @param person_id the new person id
+	 */
 	public void setPerson_id(Integer person_id) {
 		this.person_id = person_id;
 	}

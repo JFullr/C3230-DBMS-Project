@@ -17,20 +17,33 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 
+// TODO: Auto-generated Javadoc
 /**
  * Viewmodel class for the Login window.
  */
 public class FullPatientViewModelSubFinal {
 	
+	/** The final diagnosis property. */
 	private final StringProperty finalDiagnosisProperty;
 	
+	/** The submit event property. */
 	private final BooleanProperty submitEventProperty;
 	
+	/** The given appointment property. */
 	private final ObjectProperty<AppointmentData> givenAppointmentProperty;
+	
+	/** The given final diagnosis property. */
 	private final ObjectProperty<FinalDiagnosis> givenFinalDiagnosisProperty;
 	
+	/** The given DB. */
 	private HealthcareDatabase givenDB;
 	
+	/**
+	 * Instantiates a new full patient view model sub final.
+	 *
+	 * @param givenAppointmentProperty the given appointment property
+	 * @param givenFinalDiagnosisProperty the given final diagnosis property
+	 */
 	public FullPatientViewModelSubFinal(ObjectProperty<AppointmentData> givenAppointmentProperty, ObjectProperty<FinalDiagnosis> givenFinalDiagnosisProperty) {
 		this.givenAppointmentProperty = givenAppointmentProperty;
 		this.givenFinalDiagnosisProperty = givenFinalDiagnosisProperty;
@@ -42,18 +55,36 @@ public class FullPatientViewModelSubFinal {
 		this.addActionHandlers();
 	}
 	
+	/**
+	 * Gets the submit event property.
+	 *
+	 * @return the submit event property
+	 */
 	public BooleanProperty getSubmitEventProperty() {
-		return submitEventProperty;
+		return this.submitEventProperty;
 	}
 	
+	/**
+	 * Gets the final diagnosis property.
+	 *
+	 * @return the final diagnosis property
+	 */
 	public StringProperty getFinalDiagnosisProperty() {
 		return this.finalDiagnosisProperty;
 	}
 	
+	/**
+	 * Sets the database.
+	 *
+	 * @param givenDB the new database
+	 */
 	public void setDatabase(HealthcareDatabase givenDB) {
 		this.givenDB = givenDB;
 	}
 	
+	/**
+	 * Load final diagnosis.
+	 */
 	public void loadFinalDiagnosis() {
 		
 		QueryResult result = this.givenDB.attemptGetFinalDiagnois(this.givenAppointmentProperty.getValue().getAppointment());
@@ -68,6 +99,11 @@ public class FullPatientViewModelSubFinal {
 		
 	}
 	
+	/**
+	 * Inits the from.
+	 *
+	 * @param diagnosis the diagnosis
+	 */
 	public void initFrom(FinalDiagnosis diagnosis) {
 		
 		if(diagnosis == null) {
@@ -78,6 +114,11 @@ public class FullPatientViewModelSubFinal {
 		this.givenFinalDiagnosisProperty.setValue(diagnosis);
 	}
 
+	/**
+	 * Gets the final diagnosis.
+	 *
+	 * @return the final diagnosis
+	 */
 	public FinalDiagnosis getFinalDiagnosis() {
 		
 		FinalDiagnosis checkupData = new FinalDiagnosis(
@@ -87,6 +128,11 @@ public class FullPatientViewModelSubFinal {
 		return checkupData;
 	}
 	
+	/**
+	 * Attempt push final diagnosis.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean attemptPushFinalDiagnosis() {
 		
 		FinalDiagnosis finalDiagnosis = this.getFinalDiagnosis();
@@ -103,6 +149,9 @@ public class FullPatientViewModelSubFinal {
 		return true;
 	}
 	
+	/**
+	 * Adds the action handlers.
+	 */
 	private void addActionHandlers() {
 		this.submitEventProperty.addListener((evt)->{
 			if(this.submitEventProperty.getValue()) {
@@ -111,6 +160,11 @@ public class FullPatientViewModelSubFinal {
 		});
 	}
 	
+	/**
+	 * Confirm submit.
+	 *
+	 * @return true, if successful
+	 */
 	private boolean confirmSubmit() {
 		
 		Optional<ButtonType> result = FXMLAlert.statusAlert("Final Diagnosis Confirmation", 
@@ -118,6 +172,9 @@ public class FullPatientViewModelSubFinal {
 		return result.get().getButtonData().equals(ButtonData.OK_DONE);
 	}
 	
+	/**
+	 * Submit final diagnosis.
+	 */
 	private void submitFinalDiagnosis() {
 		
 		if(!this.confirmSubmit()) {

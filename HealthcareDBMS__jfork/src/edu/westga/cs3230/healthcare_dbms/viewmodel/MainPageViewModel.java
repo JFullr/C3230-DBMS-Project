@@ -1,35 +1,22 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.HealthcareIoConstants;
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResultStorage;
-import edu.westga.cs3230.healthcare_dbms.model.Address;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
-import edu.westga.cs3230.healthcare_dbms.model.PatientData;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 import edu.westga.cs3230.healthcare_dbms.utils.ExceptionText;
-import edu.westga.cs3230.healthcare_dbms.view.FullPatientCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.LoginCodeBehind;
-import edu.westga.cs3230.healthcare_dbms.view.PatientCodeBehind;
-import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLWindow;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert.AlertType;
 
+// TODO: Auto-generated Javadoc
 /**
  * View-model for the MainPageCodeBehind.
  *
@@ -37,19 +24,32 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class MainPageViewModel {
 	
+	/** The view model main. */
 	private MainPageViewModelSubMain viewModelMain;
 
+	/** The view model admin. */
 	private MainPageViewModelSubAdmin viewModelAdmin;
 	
+	/** The logged in property. */
 	private final BooleanProperty loggedInProperty;
+	
+	/** The attempting login property. */
 	private final BooleanProperty attemptingLoginProperty;
+	
+	/** The admin logged in property. */
 	private final BooleanProperty adminLoggedInProperty;
 
+	/** The query results. */
 	private QueryResultStorage queryResults;
+	
+	/** The database. */
 	private HealthcareDatabase database;
 	
-	
-	
+	/**
+	 * Instantiates a new main page view model.
+	 *
+	 * @param dbUrl the db url
+	 */
 	public MainPageViewModel(String dbUrl) {
 		this.queryResults = new QueryResultStorage();
 		this.database = new HealthcareDatabase(dbUrl);
@@ -66,34 +66,72 @@ public class MainPageViewModel {
 		
 	}
 	
+	/**
+	 * Gets the view model admin.
+	 *
+	 * @return the view model admin
+	 */
 	public MainPageViewModelSubAdmin getViewModelAdmin() {
-		return viewModelAdmin;
+		return this.viewModelAdmin;
 	}
 	
+	/**
+	 * Gets the view model main.
+	 *
+	 * @return the view model main
+	 */
 	public MainPageViewModelSubMain getViewModelMain() {
-		return viewModelMain;
+		return this.viewModelMain;
 	}
 	
+	/**
+	 * Gets the last results.
+	 *
+	 * @return the last results
+	 */
 	public ArrayList<QueryResult> getLastResults() {
 		return this.queryResults.getLatestResults();
 	}
 
+	/**
+	 * Gets the query storage.
+	 *
+	 * @return the query storage
+	 */
 	public QueryResultStorage getQueryStorage() {
 		return this.queryResults;
 	}
 	
+	/**
+	 * Gets the logged in property.
+	 *
+	 * @return the logged in property
+	 */
 	public BooleanProperty getLoggedInProperty() {
 		return this.loggedInProperty;
 	}
 	
+	/**
+	 * Gets the admin logged in property.
+	 *
+	 * @return the admin logged in property
+	 */
 	public BooleanProperty getAdminLoggedInProperty() {
 		return this.adminLoggedInProperty;
 	}
 	
+	/**
+	 * Gets the attempting login property.
+	 *
+	 * @return the attempting login property
+	 */
 	public BooleanProperty getAttemptingLoginProperty() {
 		return this.attemptingLoginProperty;
 	}
 	
+	/**
+	 * Handle log out.
+	 */
 	public void handleLogOut() {
 		this.loggedInProperty.setValue(false);
 		this.adminLoggedInProperty.setValue(false);
@@ -105,8 +143,7 @@ public class MainPageViewModel {
 	}
 	
 	/**
-	 * Updates the display with the login name, and user type
-	 * 
+	 * Updates the display with the login name, and user type.
 	 */
 	public void updateLoginDisplay() {
 		
@@ -125,6 +162,9 @@ public class MainPageViewModel {
 		this.viewModelMain.getNameProperty().setValue(name);
 	}
 	
+	/**
+	 * Show login.
+	 */
 	public void showLogin() {
 		try {
 			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.LOGIN_GUI_URL, "Healthcare Login", true);
@@ -150,6 +190,12 @@ public class MainPageViewModel {
 		}
 	}
 	
+	/**
+	 * Attempt login.
+	 *
+	 * @param login the login
+	 * @return true, if successful
+	 */
 	public boolean attemptLogin(Login login) {
 		
 		QueryResult result = this.database.attemptAdminLogin(login);

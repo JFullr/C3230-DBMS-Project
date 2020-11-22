@@ -16,18 +16,39 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PersonDAL.
+ */
 public class PersonDAL {
 	
+	/** The post dal. */
 	private PostDAL postDal;
+	
+	/** The update dal. */
 	private UpdateDAL updateDal;
+	
+	/** The connector. */
 	private DatabaseConnector connector;
 
+	/**
+	 * Instantiates a new person DAL.
+	 *
+	 * @param connector the connector
+	 */
 	public PersonDAL(DatabaseConnector connector) {
 		this.connector = connector;
 		this.postDal = new PostDAL(connector);
 		this.updateDal = new UpdateDAL(connector);
 	}
 	
+	/**
+	 * Attempt add person.
+	 *
+	 * @param patient the patient
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult attemptAddPerson(Person patient) throws SQLException {
 		return this.connector.getInTransaction(() -> {
 			QueryResult result = this.getPersonBySSN(patient);
@@ -36,15 +57,14 @@ public class PersonDAL {
 				ArrayList<SqlTuple> current = this.postDal.postTuple(patient);
 				Integer id = null;
 				if (current == null || current.size() == 0) {
-					//TODO DELETE
-					//return result;
+					throw new SQLException("Failed, Delete Patient");
 				}
 				SqlAttribute attr = current.get(0).get("GENERATED_KEY");
 				if (attr != null) {
 					id = ((BigDecimal) attr.getValue()).intValue();
 					this.postDal.postTuple(new Patient(id));
 				} else {
-					//TODO DELETE
+					throw new SQLException("Failed, Delete Patient");
 				}
 
 			}
@@ -53,6 +73,13 @@ public class PersonDAL {
 		});
 	}
 	
+	/**
+	 * Gets the person by SSN.
+	 *
+	 * @param person the person
+	 * @return the person by SSN
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getPersonBySSN(Person person) throws SQLException {
 		String prepared = "select * "
 						+ "from Person "
@@ -63,7 +90,6 @@ public class PersonDAL {
 		Connection con = connector.getCurrentConnection();
 		try (PreparedStatement stmt = con.prepareStatement(prepared)) {
 			stmt.setObject(1, person.getSSN());
-			//System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
 		}
@@ -71,6 +97,13 @@ public class PersonDAL {
 		return new QueryResult(manager.getTuples());
 	}
 
+	/**
+	 * Gets the person matching.
+	 *
+	 * @param person the person
+	 * @return the person matching
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getPersonMatching(Person person) throws SQLException {
 		SqlTuple tuple = SqlGetter.getFrom(person);
 		StringBuilder query = new StringBuilder("SELECT * FROM Person WHERE ");
@@ -85,8 +118,6 @@ public class PersonDAL {
 			return null;
 		}
 		query.setLength(query.lastIndexOf("?")+1);
-		
-		//System.out.println(query);
 
 		SqlManager manager = new SqlManager();
 		Connection con = connector.getCurrentConnection();
@@ -99,7 +130,6 @@ public class PersonDAL {
 				stmt.setObject(j, attr.getValue());
 				j++;
 			}
-			//System.out.println(stmt);
 			ResultSet rs = stmt.executeQuery();
 			manager.readTuples(rs);
 		}
@@ -107,6 +137,14 @@ public class PersonDAL {
 		return new QueryResult(manager.getTuples());
 	}
 
+	/**
+	 * Attempt update person.
+	 *
+	 * @param previous the previous
+	 * @param newValues the new values
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult attemptUpdatePerson(Person previous, Person newValues) throws SQLException {
 		if (previous.getPerson_id() == null) {
 			throw new SQLException("Need a person to update.");

@@ -20,23 +20,35 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert.AlertType;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MainPageViewModelSubMain.
+ */
 public class MainPageViewModelSubMain {
 	
+	/** The name property. */
 	private final StringProperty nameProperty;
+	
+	/** The user id property. */
 	private final StringProperty userIdProperty;
+	
+	/** The user name property. */
 	private final StringProperty userNameProperty;
 	
+	/** The selected tuple object. */
 	private final ObjectProperty<Object> selectedTupleObject;
+	
+	/** The tuples. */
 	private ObservableList<TupleEmbed> tuples;
 	
+	/** The given DB. */
 	private HealthcareDatabase givenDB;
 	
 	/**
-	 * Instantiates a new MainPageViewModel
-	 * 
+	 * Instantiates a new MainPageViewModel.
+	 *
 	 * @precondition none
-	 * @postcondition
-	 * 
+	 * @postcondition 
 	 */
 	public MainPageViewModelSubMain() {
 
@@ -50,33 +62,65 @@ public class MainPageViewModelSubMain {
 		
 		this.addListeners();
 		
-		
 	}
 	
+	/**
+	 * Sets the database.
+	 *
+	 * @param givenDB the new database
+	 */
 	public void setDatabase(HealthcareDatabase givenDB) {
 		this.givenDB = givenDB;
 	}
 
+	/**
+	 * Gets the name property.
+	 *
+	 * @return the name property
+	 */
 	public StringProperty getNameProperty() {
 		return this.nameProperty;
 	}
 
+	/**
+	 * Gets the user id property.
+	 *
+	 * @return the user id property
+	 */
 	public StringProperty getUserIdProperty() {
 		return this.userIdProperty;
 	}
 
+	/**
+	 * Gets the user name property.
+	 *
+	 * @return the user name property
+	 */
 	public StringProperty getUserNameProperty() {
 		return this.userNameProperty;
 	}
 	
+	/**
+	 * Gets the tuple list.
+	 *
+	 * @return the tuple list
+	 */
 	public ObservableList<TupleEmbed> getTupleList() {
 		return this.tuples;
 	}
 	
+	/**
+	 * Gets the selected tuple object.
+	 *
+	 * @return the selected tuple object
+	 */
 	public ObjectProperty<Object> getSelectedTupleObject() {
 		return this.selectedTupleObject;
 	}
 	
+	/**
+	 * Show add patient.
+	 */
 	public void showAddPatient() {
 		try {
 			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.PATIENT_GUI_URL, "Add Patient", true);
@@ -105,6 +149,9 @@ public class MainPageViewModelSubMain {
 		}
 	}
 	
+	/**
+	 * Show patient search.
+	 */
 	public void showPatientSearch() {
 		try {
 			FXMLWindow window = new FXMLWindow(HealthcareIoConstants.PATIENT_GUI_URL, "Search Patient", true);
@@ -133,12 +180,16 @@ public class MainPageViewModelSubMain {
 		}
 	}
 		
+	/**
+	 * Handle patient mod.
+	 *
+	 * @param patient the patient
+	 */
 	public void handlePatientMod(PatientData patient) {
 		try {
 			
 			Person person = patient.getPerson();
 			if(person == null) {
-				//TODO error message
 				return;
 			}
 			
@@ -159,6 +210,9 @@ public class MainPageViewModelSubMain {
 		}
 	}
 	
+	/**
+	 * Adds the listeners.
+	 */
 	private void addListeners() {
 		this.selectedTupleObject.addListener((evt)->{
 			
@@ -166,7 +220,6 @@ public class MainPageViewModelSubMain {
 			if(obj == null) {
 				return;
 			}
-			
 			
 			Class<?> mutateClass = obj.getClass();
 			if(mutateClass == PatientData.class) {
@@ -177,6 +230,12 @@ public class MainPageViewModelSubMain {
 		});
 	}
 	
+	/**
+	 * Attempt add patient.
+	 *
+	 * @param patientData the patient data
+	 * @return true, if successful
+	 */
 	public boolean attemptAddPatient(PatientData patientData) {
 		
 		QueryResult results = this.givenDB.attemptAddPatient(patientData);
@@ -190,6 +249,12 @@ public class MainPageViewModelSubMain {
 		return true;
 	}
 
+	/**
+	 * Attempt patient search.
+	 *
+	 * @param patientData the patient data
+	 * @return true, if successful
+	 */
 	private boolean attemptPatientSearch(PatientData patientData) {
 		QueryResult result = this.givenDB.attemptSearchPatient(patientData);
 		if (result == null || result.getTuple() == null) {
@@ -201,6 +266,13 @@ public class MainPageViewModelSubMain {
 		return true;
 	}
 	
+	/**
+	 * Adds the results.
+	 *
+	 * @param operatedOn the operated on
+	 * @param display the display
+	 * @param results the results
+	 */
 	private void addResults(Object operatedOn, Object display, QueryResult results) {
 		
 		if(results == null) {
@@ -225,6 +297,14 @@ public class MainPageViewModelSubMain {
 		
 	}
 	
+	/**
+	 * Creates the embed.
+	 *
+	 * @param operatesOn the operates on
+	 * @param display the display
+	 * @param attributes the attributes
+	 * @return the tuple embed
+	 */
 	private TupleEmbed createEmbed(Object operatesOn, Object display, SqlTuple attributes) {
 		if(attributes == null) {
 			return null;
@@ -236,6 +316,14 @@ public class MainPageViewModelSubMain {
 		return this.createGenericEmbed(operatesOn, display, attributes);
 	}
 	
+	/**
+	 * Creates the patient embed.
+	 *
+	 * @param operatesOn the operates on
+	 * @param display the display
+	 * @param attributes the attributes
+	 * @return the tuple embed
+	 */
 	private TupleEmbed createPatientEmbed(Object operatesOn, Object display, SqlTuple attributes) {
 		
 		PatientData patient = (PatientData)operatesOn;
@@ -272,6 +360,14 @@ public class MainPageViewModelSubMain {
 		return embed;
 	}
 	
+	/**
+	 * Creates the generic embed.
+	 *
+	 * @param operatesOn the operates on
+	 * @param display the display
+	 * @param attributes the attributes
+	 * @return the tuple embed
+	 */
 	private TupleEmbed createGenericEmbed(Object operatesOn, Object display, SqlTuple attributes) {
 		TupleEmbed embed = new TupleEmbed(operatesOn, display, attributes);
 			

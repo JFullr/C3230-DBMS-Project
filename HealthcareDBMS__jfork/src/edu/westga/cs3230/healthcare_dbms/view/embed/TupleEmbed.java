@@ -3,10 +3,7 @@ package edu.westga.cs3230.healthcare_dbms.view.embed;
 
 import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlTypeConverter;
-import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,24 +12,43 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TupleEmbed.
+ */
 public class TupleEmbed extends ListView<Node> {
 	
+	/** The operates on. */
 	private Object operatesOn;
+	
+	/** The display. */
 	private Object display;
+	
+	/** The attributes. */
 	private SqlTuple attributes;
 	
+	/** The items. */
 	private ObservableList<Node> items;
+	
+	/** The can post. */
 	private BooleanProperty canPost;
+	
+	/** The selected object property. */
 	private ObjectProperty<Object> selectedObjectProperty;
 	
+	/**
+	 * Instantiates a new tuple embed.
+	 *
+	 * @param operatesOn the operates on
+	 * @param display the display
+	 * @param attributes the attributes
+	 */
 	public TupleEmbed(Object operatesOn, Object display, SqlTuple attributes) {
 		
 		this.operatesOn = operatesOn;
@@ -59,22 +75,48 @@ public class TupleEmbed extends ListView<Node> {
 		
 	}
 	
+	/**
+	 * Gets the pressed property action.
+	 *
+	 * @return the pressed property action
+	 */
 	public ObjectProperty<Object> getPressedPropertyAction() {
 		return this.selectedObjectProperty;
 	}
 	
+	/**
+	 * Gets the operated object.
+	 *
+	 * @return the operated object
+	 */
 	public Object getOperatedObject() {
 		return this.operatesOn;
 	}
 	
+	/**
+	 * Gets the display.
+	 *
+	 * @return the display
+	 */
 	public Object getDisplay() {
 		return this.display;
 	}
 	
+	/**
+	 * Gets the attributes.
+	 *
+	 * @return the attributes
+	 */
 	public SqlTuple getAttributes() {
 		return this.attributes;
 	}
 	
+	/**
+	 * Update attribute.
+	 *
+	 * @param attribute the attribute
+	 * @param result the result
+	 */
 	public void updateAttribute(String attribute, Object result) {
 		this.attributes.set(attribute, new SqlAttribute(attribute, result));
 		Node header = this.items.get(0);
@@ -83,6 +125,9 @@ public class TupleEmbed extends ListView<Node> {
 		this.generateFieldForms();
 	}
 	
+	/**
+	 * Generate control header.
+	 */
 	private void generateControlHeader() {
 		
 		Button postEdits = new Button("Edit");
@@ -96,16 +141,27 @@ public class TupleEmbed extends ListView<Node> {
 		
 	}
 	
+	/**
+	 * Gets the copy.
+	 *
+	 * @return the copy
+	 */
 	public TupleEmbed getCopy() {
 		TupleEmbed copy = new TupleEmbed(this.getOperatedObject(), this.getDisplay(), this.getAttributes());
 		return copy;
 	}
 	
+	/**
+	 * Post tuple object.
+	 */
 	private void postTupleObject() {
 		this.selectedObjectProperty.setValue(this.operatesOn);
 		this.selectedObjectProperty.setValue(null);
 	}
 
+	/**
+	 * Generate field forms.
+	 */
 	private void generateFieldForms() {
 		
 		if(this.attributes == null) {

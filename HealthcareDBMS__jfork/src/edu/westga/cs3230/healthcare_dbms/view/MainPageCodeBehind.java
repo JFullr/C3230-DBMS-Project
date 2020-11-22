@@ -1,6 +1,5 @@
 package edu.westga.cs3230.healthcare_dbms.view;
 
-import edu.westga.cs3230.healthcare_dbms.view.embed.EmbedHandler;
 import edu.westga.cs3230.healthcare_dbms.view.embed.TupleEmbed;
 import edu.westga.cs3230.healthcare_dbms.viewmodel.MainPageViewModel;
 import javafx.event.ActionEvent;
@@ -14,44 +13,54 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 
+// TODO: Auto-generated Javadoc
 /**
- * Code-behind file for the main page for the Healthcare DBMS
- * 
- * @author
+ * Code-behind file for the main page for the Healthcare DBMS.
+ *
+ * @author 
  */
 public class MainPageCodeBehind {
 
+	/** The Constant DB_URL. */
 	private static final String DB_URL = "jdbc:mysql://160.10.25.16:3306/cs3230f20i?user=jfulle11&password=9j.3pwB@B4&serverTimezone=EST&noAccessToProcedureBodies=true";
 	
+	/** The patient search button. */
 	@FXML
     private Button patientSearchButton;
 	
+	/** The login button. */
 	@FXML
     private Button loginButton;
 
+    /** The logout button. */
     @FXML
     private Button logoutButton;
 
+    /** The username label. */
     @FXML
     private Label usernameLabel;
 
+    /** The name label. */
     @FXML
     private Label nameLabel;
 
+    /** The user id label. */
     @FXML
     private Label userIdLabel;
     
+    /** The add patient button. */
     @FXML
     private Button addPatientButton;
 
+	/** The query list view. */
 	@FXML
 	private ListView<TupleEmbed> queryListView;
-
-	private EmbedHandler embedHandler;
+	
+	/** The view model. */
 	private MainPageViewModel viewModel;
 
 	/**
-	 * Initializer for the fxml data
+	 * Initializer for the fxml data.
 	 */
 	@FXML
 	public void initialize() {
@@ -78,39 +87,61 @@ public class MainPageCodeBehind {
 	 */
 	public MainPageCodeBehind() {
 		this.viewModel = new MainPageViewModel(DB_URL);
-		this.embedHandler = new EmbedHandler(this.viewModel.getQueryStorage());
 	}
 	
+	/**
+	 * Handle log out.
+	 *
+	 * @param event the event
+	 */
 	@FXML
     public void handleLogOut(ActionEvent event) {
 		
 		this.viewModel.handleLogOut();	
 	}
 	
+	/**
+	 * Handle patient search.
+	 *
+	 * @param event the event
+	 */
 	@FXML
     public void handlePatientSearch(ActionEvent event) {
 		this.viewModel.getViewModelMain().showPatientSearch();
     }
 	
+	/**
+	 * Handle open login view.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	public void handleOpenLoginView(ActionEvent event) {
 		this.viewModel.showLogin();
 	}
 	
+	/**
+	 * Handle add patient.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	public void handleAddPatient(ActionEvent event) {
 
 		this.viewModel.getViewModelMain().showAddPatient();
 	}
 	
+	/**
+	 * Update login display.
+	 */
 	public void updateLoginDisplay() {
 		this.viewModel.updateLoginDisplay();
 	}
 	
-	public void handleUpdateQueryListView() {
-		this.embedHandler.updateQueryEmbeds();
-	}
 	
+	/**
+	 * Adds the listeners.
+	 */
 	private void addListeners() {
 		this.queryListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (oldValue != newValue && oldValue != null) {
@@ -122,6 +153,9 @@ public class MainPageCodeBehind {
 		});
 	}
 	
+	/**
+	 * Setup tuple view.
+	 */
 	private void setupTupleView() {
 		this.queryListView.setItems(this.viewModel.getViewModelMain().getTupleList());
 		this.queryListView.setPadding(new Insets(0,0,0,0));
@@ -134,42 +168,57 @@ public class MainPageCodeBehind {
 	
 	
 	
+	/** The admin tab. */
 	@FXML
     private Tab adminTab;
 
+	/** The default tab. */
 	@FXML
     private Tab defaultTab;
 	
+	/** The user pane. */
 	@FXML
     private TabPane userPane;
 	
+    /** The admin username label. */
     @FXML
     private Label adminUsernameLabel;
 
+    /** The admin name lablel. */
     @FXML
     private Label adminNameLablel;
 
+    /** The admin user id label. */
     @FXML
     private Label adminUserIdLabel;
     
+    /** The admin call query button. */
     @FXML
     private Button adminCallQueryButton;
     
+    /** The admin date search button. */
     @FXML
     private Button adminDateSearchButton;
 
+    /** The admin start date. */
     @FXML
     private DatePicker adminStartDate;
 
+    /** The admin end date. */
     @FXML
     private DatePicker adminEndDate;
 
+    /** The admin result list. */
     @FXML
     private ListView<TupleEmbed> adminResultList;
     
+    /** The admin query area. */
     @FXML
     private TextArea adminQueryArea;
     
+    /**
+     * Setup admin tab.
+     */
     private void setupAdminTab() {
     	this.adminTab.disableProperty().bind(this.viewModel.getAdminLoggedInProperty().not());
     	this.adminUsernameLabel.textProperty().bindBidirectional(this.viewModel.getViewModelMain().getUserNameProperty());
@@ -195,6 +244,11 @@ public class MainPageCodeBehind {
 		});
     }
     
+    /**
+     * Handle admin log out.
+     *
+     * @param event the event
+     */
     @FXML
     public void handleAdminLogOut(ActionEvent event) {
 		
@@ -202,13 +256,23 @@ public class MainPageCodeBehind {
 		this.viewModel.handleLogOut();	
 	}
     
+    /**
+     * Handle call query.
+     *
+     * @param event the event
+     */
     @FXML
-    void handleCallQuery(ActionEvent event) {
+    public void handleCallQuery(ActionEvent event) {
     	this.viewModel.getViewModelAdmin().handleAdminQuery();
     }
 
+    /**
+     * Handle date search.
+     *
+     * @param event the event
+     */
     @FXML
-    void handleDateSearch(ActionEvent event) {
+    public void handleDateSearch(ActionEvent event) {
     	this.viewModel.getViewModelAdmin().handleAdminDateSearch();
     }
 

@@ -8,6 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SqlTypeConverter.
+ */
 public class SqlTypeConverter {
 	
 	//
@@ -26,6 +30,7 @@ public class SqlTypeConverter {
 	}
 */
 	
+	/** The convert from sql method. */
 	private static HashMap<String, Method> convertFromSqlMethod;
 	static {
 		try {
@@ -63,6 +68,16 @@ public class SqlTypeConverter {
 		}
 	}
 	
+	/**
+	 * Convert object.
+	 *
+	 * @param rs the rs
+	 * @param i the i
+	 * @param typename the typename
+	 * @param precision the precision
+	 * @return the object
+	 * @throws SQLException the SQL exception
+	 */
 	public static Object convertObject(ResultSet rs, int i, String typename, int precision) throws SQLException {
 		try {
 			if(typename.toLowerCase().endsWith("unsigned")) {
@@ -82,6 +97,13 @@ public class SqlTypeConverter {
 		return null;
 	}
 	
+	/**
+	 * Convert string to.
+	 *
+	 * @param value the value
+	 * @param type the type
+	 * @return the object
+	 */
 	public static Object convertStringTo(String value, Class<?> type) {
 		
 		Object ret = null;

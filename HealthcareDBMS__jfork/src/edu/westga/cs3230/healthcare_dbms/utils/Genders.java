@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Genders.
+ */
 public class Genders {
 
+    /** The Constant ALL_GENDERS. */
     public static final List<String> ALL_GENDERS;
 
     static {

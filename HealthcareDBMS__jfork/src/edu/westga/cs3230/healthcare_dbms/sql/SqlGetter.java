@@ -4,10 +4,21 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SqlGetter.
+ */
 public class SqlGetter {
 	
+	/** The get cache. */
 	private static HashMap<Class<?>, HashMap<String, Method>> getCache = new HashMap<Class<?>, HashMap<String, Method>>();
 	
+	/**
+	 * Gets the from.
+	 *
+	 * @param getOf the get of
+	 * @return the from
+	 */
 	public static SqlTuple getFrom(Object getOf){
 		
 		HashMap<String, SqlAttribute> attrs = new HashMap<String, SqlAttribute>();
@@ -38,6 +49,12 @@ public class SqlGetter {
 		
 	}
 	
+	/**
+	 * Gets the getters.
+	 *
+	 * @param of the of
+	 * @return the getters
+	 */
 	private static void getGetters(Object of) {
 
 		if (SqlGetter.getCache.get(of.getClass()) != null) {

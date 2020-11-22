@@ -12,45 +12,103 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FXMLWindow.
+ */
 public class FXMLWindow {
 	
 	
+	/** The loader. */
 	private FXMLLoader loader;
+	
+	/** The stage. */
 	private Stage stage;
+	
+	/** The root. */
 	private Parent root;
 	
+	/**
+	 * Instantiates a new FXML window.
+	 *
+	 * @param fxmlWindowFile the fxml window file
+	 * @param modal the modal
+	 * @throws Exception the exception
+	 */
 	public FXMLWindow(URL fxmlWindowFile, boolean modal) throws Exception {
 		this.loadFXMLWindow(fxmlWindowFile, "", modal);
 	}
 	
+	/**
+	 * Instantiates a new FXML window.
+	 *
+	 * @param fxmlWindowFile the fxml window file
+	 * @param title the title
+	 * @param modal the modal
+	 * @throws Exception the exception
+	 */
 	public FXMLWindow(URL fxmlWindowFile, String title, boolean modal) throws Exception {
 		this.loadFXMLWindow(fxmlWindowFile, title, modal);
 	}
 	
+	/**
+	 * Gets the controller.
+	 *
+	 * @return the controller
+	 */
 	public Object getController(){
 		return this.loader.getController();
 	}
 	
+	/**
+	 * Gets the node.
+	 *
+	 * @return the node
+	 */
 	public Node getNode() {
 		return this.root;
 	}
 	
+	/**
+	 * Sets the title.
+	 *
+	 * @param title the new title
+	 */
 	public void setTitle(String title){
 		this.stage.setTitle(title);
 	}
 	
+	/**
+	 * Sets the on window close.
+	 *
+	 * @param event the new on window close
+	 */
 	public void setOnWindowClose(EventHandler<WindowEvent> event){
 		this.stage.setOnHiding(event);
 	}
 	
+	/**
+	 * Pack.
+	 */
 	public void pack() {
 		this.stage.getScene().getWindow().sizeToScene();
 	}
 	
+	/**
+	 * Show.
+	 */
 	public void show(){
 		this.stage.show();
 	}
 	
+	/**
+	 * Load FXML window.
+	 *
+	 * @param fxmlWindowFile the fxml window file
+	 * @param title the title
+	 * @param modal the modal
+	 * @throws Exception the exception
+	 */
 	private void loadFXMLWindow(URL fxmlWindowFile, String title, boolean modal) throws Exception {
 		FXMLLoader fxmlLoader = new FXMLLoader(fxmlWindowFile);
 		this.root = (Parent) fxmlLoader.load();

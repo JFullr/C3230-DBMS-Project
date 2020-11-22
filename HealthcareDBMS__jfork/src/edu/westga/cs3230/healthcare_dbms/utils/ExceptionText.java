@@ -1,5 +1,6 @@
 package edu.westga.cs3230.healthcare_dbms.utils;
 
+// TODO: Auto-generated Javadoc
 /**
  * Utility class that stores exception text constants.
  * 

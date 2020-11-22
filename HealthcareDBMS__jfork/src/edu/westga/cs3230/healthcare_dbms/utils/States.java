@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class States.
+ */
 public class States {
 
+    /** The Constant ALL_STATES. */
     public static final List<String> ALL_STATES;
 
     static {

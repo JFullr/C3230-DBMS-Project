@@ -12,7 +12,6 @@ import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
 import edu.westga.cs3230.healthcare_dbms.model.LabTest;
 import edu.westga.cs3230.healthcare_dbms.model.LabTestOrder;
 import edu.westga.cs3230.healthcare_dbms.model.LabTestResult;
-import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
@@ -31,43 +30,75 @@ import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextInputDialog;
 
+// TODO: Auto-generated Javadoc
 /**
  * Viewmodel class for the Appointment window.
  */
 public class FullPatientViewModelSubTest {
 
+	/** The queue test event property. */
 	private final BooleanProperty queueTestEventProperty;
+	
+	/** The order tests event property. */
 	private final BooleanProperty orderTestsEventProperty;
+	
+	/** The remove test event property. */
 	private final BooleanProperty removeTestEventProperty;
+	
+	/** The remove all tests event property. */
 	private final BooleanProperty removeAllTestsEventProperty;
 
+	/** The test cost property. */
 	private final StringProperty testCostProperty;
+	
+	/** The test desc property. */
 	private final StringProperty testDescProperty;
+	
+	/** The test date property. */
 	private final ObjectProperty<LocalDate> testDateProperty;
 
+	/** The available tests. */
 	private ArrayList<LabTest> availableTests;
+	
+	/** The available tests lookup. */
 	private HashMap<Integer,LabTest> availableTestsLookup;
+	
+	/** The available results lookup. */
 	private HashMap<Integer,LabTestResult> availableResultsLookup;
+	
+	/** The tests list. */
 	private ObservableList<String> testsList;
+	
+	/** The tests order list. */
 	private ObservableList<TupleEmbed> testsOrderList;
+	
+	/** The test status list. */
 	private ObservableList<TupleEmbed> testStatusList;
 
+	/** The test list status selection property. */
 	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> testListStatusSelectionProperty;
+	
+	/** The test list order selection property. */
 	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> testListOrderSelectionProperty;
+	
+	/** The test drop selection property. */
 	private final ObjectProperty<SingleSelectionModel<String>> testDropSelectionProperty;
 
+	/** The given DB. */
 	private HealthcareDatabase givenDB;
 	
-	private final ObjectProperty<PatientData> givenPatientProperty;
+	/** The given appointment property. */
 	private final ObjectProperty<AppointmentData> givenAppointmentProperty;
 
 	/**
 	 * Instantiates a new AppointmentViewModel.
+	 *
+	 * @param givenPatientProperty the given patient property
+	 * @param givenAppointmentProperty the given appointment property
 	 */
-	public FullPatientViewModelSubTest(ObjectProperty<PatientData> givenPatientProperty, ObjectProperty<AppointmentData> givenAppointmentProperty) {
+	public FullPatientViewModelSubTest(ObjectProperty<AppointmentData> givenAppointmentProperty) {
 
 		this.givenAppointmentProperty = givenAppointmentProperty;
-		this.givenPatientProperty = givenPatientProperty;
 		
 		this.availableTestsLookup = new HashMap<Integer,LabTest>();
 		this.availableResultsLookup = new HashMap<Integer,LabTestResult>();
@@ -95,62 +126,137 @@ public class FullPatientViewModelSubTest {
 
 	}
 
+	/**
+	 * Gets the test list status selection property.
+	 *
+	 * @return the test list status selection property
+	 */
 	public ObjectProperty<MultipleSelectionModel<TupleEmbed>> getTestListStatusSelectionProperty() {
 		return testListStatusSelectionProperty;
 	}
 
+	/**
+	 * Sets the database.
+	 *
+	 * @param givenDB the new database
+	 */
 	public void setDatabase(HealthcareDatabase givenDB) {
 		this.givenDB = givenDB;
 	}
 
+	/**
+	 * Gets the tests list.
+	 *
+	 * @return the tests list
+	 */
 	public ObservableList<String> getTestsList() {
 		return this.testsList;
 	}
 
+	/**
+	 * Gets the test status list.
+	 *
+	 * @return the test status list
+	 */
 	public ObservableList<TupleEmbed> getTestStatusList() {
 		return this.testStatusList;
 	}
 	
+	/**
+	 * Gets the tests order list.
+	 *
+	 * @return the tests order list
+	 */
 	public ObservableList<TupleEmbed> getTestsOrderList() {
 		return this.testsOrderList;
 	}
 
+	/**
+	 * Gets the test list order selection property.
+	 *
+	 * @return the test list order selection property
+	 */
 	public ObjectProperty<MultipleSelectionModel<TupleEmbed>> getTestListOrderSelectionProperty() {
 		return this.testListOrderSelectionProperty;
 	}
 
+	/**
+	 * Gets the test drop selection property.
+	 *
+	 * @return the test drop selection property
+	 */
 	public ObjectProperty<SingleSelectionModel<String>> getTestDropSelectionProperty() {
 		return this.testDropSelectionProperty;
 	}
 
+	/**
+	 * Gets the test cost property.
+	 *
+	 * @return the test cost property
+	 */
 	public StringProperty getTestCostProperty() {
-		return testCostProperty;
+		return this.testCostProperty;
 	}
 
+	/**
+	 * Gets the test desc property.
+	 *
+	 * @return the test desc property
+	 */
 	public StringProperty getTestDescProperty() {
-		return testDescProperty;
+		return this.testDescProperty;
 	}
 
+	/**
+	 * Gets the test date property.
+	 *
+	 * @return the test date property
+	 */
 	public ObjectProperty<LocalDate> getTestDateProperty() {
-		return testDateProperty;
+		return this.testDateProperty;
 	}
 
+	/**
+	 * Gets the removes the all tests event property.
+	 *
+	 * @return the removes the all tests event property
+	 */
 	public BooleanProperty getRemoveAllTestsEventProperty() {
-		return removeAllTestsEventProperty;
+		return this.removeAllTestsEventProperty;
 	}
 
+	/**
+	 * Gets the removes the test event property.
+	 *
+	 * @return the removes the test event property
+	 */
 	public BooleanProperty getRemoveTestEventProperty() {
-		return removeTestEventProperty;
+		return this.removeTestEventProperty;
 	}
 
+	/**
+	 * Gets the order tests event property.
+	 *
+	 * @return the order tests event property
+	 */
 	public BooleanProperty getOrderTestsEventProperty() {
-		return orderTestsEventProperty;
+		return this.orderTestsEventProperty;
 	}
 
+	/**
+	 * Gets the queue test event property.
+	 *
+	 * @return the queue test event property
+	 */
 	public BooleanProperty getQueueTestEventProperty() {
-		return queueTestEventProperty;
+		return this.queueTestEventProperty;
 	}
 	
+	/**
+	 * Gets the lab test order.
+	 *
+	 * @return the lab test order
+	 */
 	public LabTestOrder getLabTestOrder(){
 		
 		int index = this.testDropSelectionProperty.getValue().getSelectedIndex();
@@ -182,6 +288,9 @@ public class FullPatientViewModelSubTest {
 		return order;
 	}
 	
+	/**
+	 * Load lab tests.
+	 */
 	public void loadLabTests() {
 		
 		this.availableTests.clear();
@@ -202,10 +311,13 @@ public class FullPatientViewModelSubTest {
 		}
 	}
 	
+	/**
+	 * Load lab test orders.
+	 */
 	public void loadLabTestOrders() {
 		
 		this.testStatusList.clear();
-		//TODO
+
 		QueryResult orders = this.givenDB.attemptGetTestOrdersOf(this.givenAppointmentProperty.getValue().getAppointment());
 		
 		if(orders == null) {
@@ -233,7 +345,6 @@ public class FullPatientViewModelSubTest {
 					display.add("Result", "");
 				}
 				
-				
 				TupleEmbed embed = new TupleEmbed(test, test, display);
 				embed.getPressedPropertyAction().addListener((evt)->{
 					if(embed.getPressedPropertyAction().getValue() != null) {
@@ -246,11 +357,20 @@ public class FullPatientViewModelSubTest {
 		}
 	}
 	
+	/**
+	 * Clear order queue.
+	 */
 	public void clearOrderQueue() {
 		this.testsOrderList.clear();
 		this.testDateProperty.setValue(null);
 	}
 	
+	/**
+	 * Gets the lab test result.
+	 *
+	 * @param order the order
+	 * @return the lab test result
+	 */
 	private LabTestResult getLabTestResult(LabTestOrder order){
 		QueryResult queryResult = this.givenDB.attemptGetTestResultOf(order);
 		
@@ -264,6 +384,11 @@ public class FullPatientViewModelSubTest {
 		return result;
 	}
 	
+	/**
+	 * Gets the all lab test results.
+	 *
+	 * @return the all lab test results
+	 */
 	private void getAllLabTestResults(){
 		QueryResult queryResult = this.givenDB.attemptGetTestResultsOf(this.givenAppointmentProperty.get().getAppointment());
 		
@@ -281,6 +406,9 @@ public class FullPatientViewModelSubTest {
 		
 	}
 	
+	/**
+	 * Show result update panel.
+	 */
 	private void showResultUpdatePanel() {
 		TupleEmbed emb = this.testListStatusSelectionProperty.getValue().getSelectedItem();
 		if(emb != null) {
@@ -322,6 +450,9 @@ public class FullPatientViewModelSubTest {
 	}
 	
 	
+	/**
+	 * Adds the action handlers.
+	 */
 	private void addActionHandlers() {
 		
 		this.queueTestEventProperty.addListener((evt) -> {
@@ -358,6 +489,9 @@ public class FullPatientViewModelSubTest {
 		
 	}
 	
+	/**
+	 * Adds the all test orders.
+	 */
 	private void addAllTestOrders() {
 		ArrayList<TupleEmbed> failedOrders = new ArrayList<TupleEmbed>();
 		for(TupleEmbed emb : this.testsOrderList) {
@@ -372,6 +506,9 @@ public class FullPatientViewModelSubTest {
 		this.loadLabTestOrders();
 	}
 
+	/**
+	 * Populate test data.
+	 */
 	private void populateTestData() {
 		SingleSelectionModel<String> sel = this.testDropSelectionProperty.getValue();
 		Integer index = sel.getSelectedIndex();
@@ -384,6 +521,9 @@ public class FullPatientViewModelSubTest {
 		}
 	}
 	
+	/**
+	 * Queue test order.
+	 */
 	private void queueTestOrder() {
 		LabTestOrder order = this.getLabTestOrder();
 		if(order == null) {
@@ -420,6 +560,9 @@ public class FullPatientViewModelSubTest {
 		this.testsOrderList.add(embed);
 	}
 	
+	/**
+	 * Removes the selected test.
+	 */
 	private void removeSelectedTest() {
 		
 		int index = this.testListOrderSelectionProperty.getValue().getSelectedIndex();
@@ -429,7 +572,5 @@ public class FullPatientViewModelSubTest {
 		this.testsOrderList.remove(index);
 		
 	}
-
-	
 
 }

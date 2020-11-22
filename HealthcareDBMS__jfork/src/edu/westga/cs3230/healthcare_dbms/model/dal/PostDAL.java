@@ -13,14 +13,31 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PostDAL.
+ */
 public class PostDAL {
 
+	/** The connector. */
 	private DatabaseConnector connector;
 	
+	/**
+	 * Instantiates a new post DAL.
+	 *
+	 * @param connector the connector
+	 */
 	public PostDAL(DatabaseConnector connector) {
 		this.connector = connector;
 	}
 	
+	/**
+	 * Post tuple.
+	 *
+	 * @param obj the obj
+	 * @return the array list
+	 * @throws SQLException the SQL exception
+	 */
 	public ArrayList<SqlTuple> postTuple(Object obj) throws SQLException {
 		
 		SqlTuple tuple = SqlGetter.getFrom(obj);
@@ -43,10 +60,15 @@ public class PostDAL {
 		return manager.getTuples();
 	}
 	
+	/**
+	 * Gets the generated ids.
+	 *
+	 * @param postResult the post result
+	 * @return the generated ids
+	 */
 	public ArrayList<BigDecimal> getGeneratedIds(ArrayList<SqlTuple> postResult){
 		
 		ArrayList<BigDecimal> values = new ArrayList<BigDecimal>();
-		Integer id = null;
 		for(SqlTuple tup : postResult) {
 			SqlAttribute attr = tup.get("GENERATED_KEY");
 			if(attr != null) {
@@ -57,6 +79,14 @@ public class PostDAL {
 		return values;
 	}
 	
+	/**
+	 * Builds the query from.
+	 *
+	 * @param obj the obj
+	 * @param tuple the tuple
+	 * @param useAttributes the use attributes
+	 * @return the string
+	 */
 	private String buildQueryFrom(Object obj, SqlTuple tuple, ArrayList<String> useAttributes) {
 		
 		int attributeCount = useAttributes.size();
@@ -85,28 +115,17 @@ public class PostDAL {
 		return query.toString();
 	}
 	
+	/**
+	 * Using attributes.
+	 *
+	 * @param data the data
+	 * @return the array list
+	 * @throws SQLException the SQL exception
+	 */
 	private ArrayList<String> usingAttributes(Object data) throws SQLException{
-		
 		
 		ArrayList<String> useAttributes = new ArrayList<String>();
 		
-		/*
-		String table = data.getClass().getSimpleName();
-		try (Connection con = DriverManager.getConnection(this.dbUrl);
-				Statement stmt = con.createStatement()){
-			ResultSet rs = stmt.executeQuery("SELECT * from "+table+" LIMIT 1");
-			ResultSetMetaData tableMeta = rs.getMetaData();
-			for(int i = 1; i <= tableMeta.getColumnCount(); i++) {
-				String labelName = tableMeta.getColumnName(i);
-				if(!tableMeta.isAutoIncrement(i)) {
-					useAttributes.add(labelName.toLowerCase());
-				}
-				
-			}
-			
-			rs.close();
-		}
-		/*/
 		SqlTuple tup = SqlGetter.getFrom(data);
 		
 		for(SqlAttribute attr : tup) {
@@ -121,7 +140,6 @@ public class PostDAL {
 				useAttributes.add(attr.getAttribute());
 			}
 		}
-		//*/
 		
 		return useAttributes;
 	}

@@ -1,8 +1,5 @@
 package edu.westga.cs3230.healthcare_dbms;
 
-import edu.westga.cs3230.healthcare_dbms.model.Patient;
-import edu.westga.cs3230.healthcare_dbms.model.Person;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
 import edu.westga.cs3230.healthcare_dbms.view.MainPageCodeBehind;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLContainer;
 import javafx.application.Application;
@@ -10,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+// TODO: Auto-generated Javadoc
 /**
  * The entry point to launch the JavaFX program.
  * 
@@ -17,10 +15,10 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javafx.application.Application#start(javafx.stage.Stage)
+	/**
+	 * Start.
+	 *
+	 * @param primaryStage the primary stage
 	 */
 	@Override
 	public void start(Stage primaryStage) {
@@ -33,11 +31,15 @@ public class Main extends Application {
 		}
 	}
 
+	/**
+	 * Setup stage.
+	 *
+	 * @param primaryStage the primary stage
+	 * @param scene the scene
+	 */
 	private void setupStage(Stage primaryStage, Scene scene) {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Psuedo Healthcare DBMS");
-		//primaryStage.setMaxWidth(650);
-		//primaryStage.setWidth(650);
 		primaryStage.show();
 		primaryStage.setOnCloseRequest((winEvent)->{
 			System.exit(0);
@@ -48,9 +50,9 @@ public class Main extends Application {
 	 * The main method.
 	 *
 	 * @param args the arguments
+	 * @throws Exception the exception
 	 */
 	public static void main(String[] args) throws Exception {
-		//System.out.println(Person.class.getDeclaredField("person_id").getDeclaredAnnotation(SqlGenerated.class)!=null);
 		launch(args);
 	}
 }

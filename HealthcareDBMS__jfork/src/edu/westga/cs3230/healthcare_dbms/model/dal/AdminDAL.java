@@ -12,14 +12,32 @@ import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AdminDAL.
+ */
 public class AdminDAL {
 
+	/** The connector. */
 	private DatabaseConnector connector;
 
+	/**
+	 * Instantiates a new admin DAL.
+	 *
+	 * @param connector the connector
+	 */
 	public AdminDAL(DatabaseConnector connector) {
 		this.connector = connector;
 	}
 	
+	/**
+	 * Search by dates.
+	 *
+	 * @param start the start
+	 * @param end the end
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult searchByDates(Date start, Date end) throws SQLException {
 		
 		SqlManager manager = new SqlManager();
@@ -34,6 +52,13 @@ public class AdminDAL {
 		return new QueryResult(manager.getTuples());
 	}
 	
+	/**
+	 * Call query.
+	 *
+	 * @param rawSql the raw sql
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult callQuery(String rawSql) throws SQLException {
 		
 		SqlManager manager = new SqlManager();

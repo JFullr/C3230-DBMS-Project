@@ -9,16 +9,32 @@ import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Login;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LoginDAL.
+ */
 public class LoginDAL {
 
+	/** The connector. */
 	private DatabaseConnector connector;
 
+	/**
+	 * Instantiates a new login DAL.
+	 *
+	 * @param connector the connector
+	 */
 	public LoginDAL(DatabaseConnector connector) {
 		this.connector = connector;
 	}
 
+	/**
+	 * Attempt login.
+	 *
+	 * @param login the login
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult attemptLogin(Login login) throws SQLException {
 		SqlManager manager = new SqlManager();
 		Connection con = this.connector.getCurrentConnection();
@@ -32,6 +48,13 @@ public class LoginDAL {
 		return new QueryResult(manager.getTuples());
 	}
 	
+	/**
+	 * Attempt admin login.
+	 *
+	 * @param login the login
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult attemptAdminLogin(Login login) throws SQLException {
 		SqlManager manager = new SqlManager();
 		Connection con = this.connector.getCurrentConnection();

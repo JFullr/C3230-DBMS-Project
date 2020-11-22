@@ -8,16 +8,30 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SqlTuple.
+ */
 public class SqlTuple implements Iterable<SqlAttribute> {
 	
+	/** The Constant SQL_GENERATED_ID. */
 	public static final String SQL_GENERATED_ID = "GEN_ID";
 	
+	/** The attrs. */
 	private HashMap<String, SqlAttribute> attrs;
 	
+	/**
+	 * Instantiates a new sql tuple.
+	 */
 	public SqlTuple() {
 		this.attrs = new LinkedHashMap<>();
 	}
 	
+	/**
+	 * Instantiates a new sql tuple.
+	 *
+	 * @param attr the attr
+	 */
 	public SqlTuple(SqlAttribute attr) {
 		this.attrs = new LinkedHashMap<>();
 		if(attr != null) {
@@ -25,6 +39,11 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 		}
 	}
 	
+	/**
+	 * Instantiates a new sql tuple.
+	 *
+	 * @param attrs the attrs
+	 */
 	public SqlTuple(HashMap<String, SqlAttribute> attrs) {
 		if(attrs == null) {
 			this.attrs = new LinkedHashMap<String, SqlAttribute>();
@@ -33,23 +52,54 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 		}
 	}
 	
+	/**
+	 * Gets the attributes.
+	 *
+	 * @return the attributes
+	 */
 	public HashMap<String, SqlAttribute> getAttributes() {
 		return this.attrs;
 	}
 	
+	/**
+	 * Gets the.
+	 *
+	 * @param attribute the attribute
+	 * @return the sql attribute
+	 */
 	public SqlAttribute get(String attribute) {
 		return this.attrs.get(attribute);
 	}
 	
+	/**
+	 * Sets the.
+	 *
+	 * @param attribute the attribute
+	 * @param value the value
+	 * @return the sql attribute
+	 */
 	public SqlAttribute set(String attribute, SqlAttribute value) {
 		return this.attrs.put(attribute, value);
 	}
 	
+	/**
+	 * Adds the.
+	 *
+	 * @param attributeName the attribute name
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	public boolean add(String attributeName, Object value) {
 		SqlAttribute attr = new SqlAttribute(attributeName, value);
 		return this.add(attr);
 	}
 	
+	/**
+	 * Adds the.
+	 *
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	public boolean add(SqlAttribute value) {
 		
 		if(this.attrs.get(value.getAttribute()) == null) {
@@ -76,6 +126,11 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 		return false;
 	}
 	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		StringBuilder build = new StringBuilder("");
@@ -86,17 +141,34 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 		return build.toString();
 	}
 
+	/**
+	 * Iterator.
+	 *
+	 * @return the iterator
+	 */
 	@Override
 	public Iterator<SqlAttribute> iterator() {
 		return this.attrs.values().iterator();
 	}
 	
+	/**
+	 * Filter.
+	 *
+	 * @param keep the keep
+	 * @return the sql tuple
+	 */
 	public SqlTuple filter(BiPredicate<String, SqlAttribute> keep) {
 		HashMap<String, SqlAttribute> filterCopy = new LinkedHashMap<>(this.attrs);
 		filterCopy.entrySet().removeIf(entry -> !keep.test(entry.getKey(), entry.getValue()));
 		return new SqlTuple(filterCopy);
 	}
 
+	/**
+	 * Hide based on.
+	 *
+	 * @param object the object
+	 * @return the sql tuple
+	 */
 	public SqlTuple hideBasedOn(Object object) {
 		if (object instanceof AssociatedHider) {
 			return filter((key, value) -> !((AssociatedHider) object).hideFunction().test(key));
@@ -110,6 +182,12 @@ public class SqlTuple implements Iterable<SqlAttribute> {
 		return new SqlTuple(filterCopy);
 	}
 
+	/**
+	 * Transform.
+	 *
+	 * @param transformer the transformer
+	 * @return the sql tuple
+	 */
 	public SqlTuple transform(Consumer<Map<String, SqlAttribute>> transformer) {
 		HashMap<String, SqlAttribute> transformed = new LinkedHashMap<>(this.attrs);
 		transformer.accept(transformed);

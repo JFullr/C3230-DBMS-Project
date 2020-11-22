@@ -33,40 +33,68 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SingleSelectionModel;
 
+// TODO: Auto-generated Javadoc
 /**
  * Viewmodel class for the Appointment window.
  */
 public class FullPatientViewModelSubAppt {
 	
+	/** The date property. */
 	private final ObjectProperty<LocalDate> dateProperty;
 	
+	/** The hour property. */
 	private final ObjectProperty<SingleSelectionModel<String>> hourProperty;
+	
+	/** The minute property. */
 	private final ObjectProperty<SingleSelectionModel<String>> minuteProperty;
+	
+	/** The diurnal property. */
 	private final ObjectProperty<SingleSelectionModel<String>> diurnalProperty;
 	
+	/** The doctor list. */
 	private ObservableList<String> doctorList;
+	
+	/** The available doctors. */
 	private ArrayList<DoctorData> availableDoctors;
 	
+	/** The doctor selection property. */
 	private ObjectProperty<SingleSelectionModel<String>> doctorSelectionProperty;
 	
+	/** The available list. */
 	private ObservableList<TupleEmbed> availableList;
+	
+	/** The available selection property. */
 	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> availableSelectionProperty;
 	
+	/** The past list. */
 	private ObservableList<TupleEmbed> pastList;
+	
+	/** The past selection property. */
 	private final ObjectProperty<MultipleSelectionModel<TupleEmbed>> pastSelectionProperty;
 	
+	/** The reason property. */
 	private final StringProperty reasonProperty;
 	
+	/** The create event property. */
 	private final BooleanProperty createEventProperty;
+	
+	/** The update event property. */
 	private final BooleanProperty updateEventProperty;
 	
+	/** The given patient property. */
 	private final ObjectProperty<PatientData> givenPatientProperty;
+	
+	/** The given appointment property. */
 	private final ObjectProperty<AppointmentData> givenAppointmentProperty;
 	
+	/** The given DB. */
 	private HealthcareDatabase givenDB;
 
 	/**
 	 * Instantiates a new AppointmentViewModel.
+	 *
+	 * @param givenPatientProperty the given patient property
+	 * @param givenAppointmentProperty the given appointment property
 	 */
 	public FullPatientViewModelSubAppt(ObjectProperty<PatientData> givenPatientProperty, ObjectProperty<AppointmentData> givenAppointmentProperty) {
 		
@@ -91,81 +119,144 @@ public class FullPatientViewModelSubAppt {
 		this.pastList = FXCollections.observableArrayList();
 		this.pastSelectionProperty = new SimpleObjectProperty<MultipleSelectionModel<TupleEmbed>>();
 		
-		/*
-		//TEST
-		Doctor test = new Doctor(42);
-		this.availableDoctors.add(test);
-		this.doctorList.add("Test Doctor Name");
-		//*/
-		
 		this.reasonProperty = new SimpleStringProperty();
 		
 		this.doctorSelectionProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
 		
 		this.addActionHandlers();
 		
-		
-		
-		
 	}
 	
+	/**
+	 * Sets the database.
+	 *
+	 * @param givenDB the new database
+	 */
 	public void setDatabase(HealthcareDatabase givenDB) {
 		this.givenDB = givenDB;
 	}
 
+	/**
+	 * Gets the available list.
+	 *
+	 * @return the available list
+	 */
 	public ObservableList<TupleEmbed> getAvailableList() {
-		return availableList;
+		return this.availableList;
 	}
 
+	/**
+	 * Gets the available selection property.
+	 *
+	 * @return the available selection property
+	 */
 	public ObjectProperty<MultipleSelectionModel<TupleEmbed>> getAvailableSelectionProperty() {
-		return availableSelectionProperty;
+		return this.availableSelectionProperty;
 	}
 
+	/**
+	 * Gets the past list.
+	 *
+	 * @return the past list
+	 */
 	public ObservableList<TupleEmbed> getPastList() {
-		return pastList;
+		return this.pastList;
 	}
 
+	/**
+	 * Gets the past selection property.
+	 *
+	 * @return the past selection property
+	 */
 	public ObjectProperty<MultipleSelectionModel<TupleEmbed>> getPastSelectionProperty() {
-		return pastSelectionProperty;
+		return this.pastSelectionProperty;
 	}
 
+	/**
+	 * Gets the hour property.
+	 *
+	 * @return the hour property
+	 */
 	public ObjectProperty<SingleSelectionModel<String>> getHourProperty() {
 		return this.hourProperty;
 	}
 
 
+	/**
+	 * Gets the minute property.
+	 *
+	 * @return the minute property
+	 */
 	public ObjectProperty<SingleSelectionModel<String>> getMinuteProperty() {
 		return this.minuteProperty;
 	}
 
+	/**
+	 * Gets the diurnal property.
+	 *
+	 * @return the diurnal property
+	 */
 	public ObjectProperty<SingleSelectionModel<String>> getDiurnalProperty() {
 		return this.diurnalProperty;
 	}
 
+	/**
+	 * Gets the date property.
+	 *
+	 * @return the date property
+	 */
 	public ObjectProperty<LocalDate> getDateProperty() {
 		return this.dateProperty;
 	}
 
+	/**
+	 * Gets the doctor list.
+	 *
+	 * @return the doctor list
+	 */
 	public ObservableList<String> getDoctorList() {
 		return this.doctorList;
 	}
 
+	/**
+	 * Gets the doctor selection property.
+	 *
+	 * @return the doctor selection property
+	 */
 	public ObjectProperty<SingleSelectionModel<String>> getDoctorSelectionProperty() {
 		return this.doctorSelectionProperty;
 	}
 	
+	/**
+	 * Gets the reason property.
+	 *
+	 * @return the reason property
+	 */
 	public StringProperty getReasonProperty() {
 		return this.reasonProperty;
 	}
 
+	/**
+	 * Gets the creates the event property.
+	 *
+	 * @return the creates the event property
+	 */
 	public BooleanProperty getCreateEventProperty() {
-		return createEventProperty;
+		return this.createEventProperty;
 	}
 
+	/**
+	 * Gets the update event property.
+	 *
+	 * @return the update event property
+	 */
 	public BooleanProperty getUpdateEventProperty() {
-		return updateEventProperty;
+		return this.updateEventProperty;
 	}
 	
+	/**
+	 * Update available appointments.
+	 */
 	public void updateAvailableAppointments() {
 		
 		if(this.givenPatientProperty.getValue() == null || this.givenDB == null) {
@@ -181,6 +272,11 @@ public class FullPatientViewModelSubAppt {
 		this.addInvalidResults(invalid);
 	}
 
+	/**
+	 * Inits the from.
+	 *
+	 * @param appt the appt
+	 */
 	public void initFrom(Appointment appt) {
 		
 		if(appt == null) {
@@ -240,6 +336,11 @@ public class FullPatientViewModelSubAppt {
 		
 	}
 	
+	/**
+	 * Gets the appointment.
+	 *
+	 * @return the appointment
+	 */
 	public AppointmentData getAppointment() {
 
 		Date date = null;
@@ -260,16 +361,11 @@ public class FullPatientViewModelSubAppt {
 		Integer minutes =  this.nullInteger(this.minuteProperty.getValue().getSelectedItem());
 		String diurnal =  this.nullString(this.diurnalProperty.getValue().getSelectedItem());
 		
-		//*
 		int index = this.doctorSelectionProperty.getValue().getSelectedIndex();
 		if(index < 0) {
 			return null;
 		}
 		Integer doctorId = this.availableDoctors.get(index).getPerson().getPerson_id();
-		/*/
-		//TEST
-		Integer doctorId = 42;
-		//*/
 		
 		if(hour == null || minutes == null || diurnal == null || doctorId == null) {
 			return null;
@@ -287,6 +383,9 @@ public class FullPatientViewModelSubAppt {
 		return new AppointmentData(appt, patient);
 	}
 	
+	/**
+	 * Load doctors.
+	 */
 	public void loadDoctors() {
 		
 		this.availableDoctors.clear();
@@ -307,6 +406,12 @@ public class FullPatientViewModelSubAppt {
 		}
 	}
 	
+	/**
+	 * Null string.
+	 *
+	 * @param check the check
+	 * @return the string
+	 */
 	private String nullString(String check) {
 		if(check == null) {
 			return null;
@@ -314,6 +419,12 @@ public class FullPatientViewModelSubAppt {
 		return check.isEmpty() ? null : check;
 	}
 	
+	/**
+	 * Null integer.
+	 *
+	 * @param check the check
+	 * @return the integer
+	 */
 	private Integer nullInteger(String check) {
 		try {
 			if(check == null) {
@@ -325,6 +436,15 @@ public class FullPatientViewModelSubAppt {
 		}
 	}
 	
+	/**
+	 * Make timestamp from.
+	 *
+	 * @param base the base
+	 * @param hour the hour
+	 * @param minutes the minutes
+	 * @param PM the pm
+	 * @return the timestamp
+	 */
 	private Timestamp makeTimestampFrom(Date base, Integer hour, Integer minutes, boolean PM) {
 		
 		if(base == null || hour == null || minutes == null) {
@@ -344,7 +464,6 @@ public class FullPatientViewModelSubAppt {
 		build.append(":00");
 		
 		try {
-			System.out.println(build.toString());
 			return Timestamp.valueOf(build.toString());
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -353,6 +472,11 @@ public class FullPatientViewModelSubAppt {
 		
 	}
 	
+	/**
+	 * Update using appointment.
+	 *
+	 * @param appt the appt
+	 */
 	private void updateUsingAppointment(Appointment appt) {
 		if(this.givenAppointmentProperty.getValue() != null) {
 			AppointmentData mod = this.givenAppointmentProperty.getValue();
@@ -362,6 +486,9 @@ public class FullPatientViewModelSubAppt {
 		}
 	}
 	
+	/**
+	 * Adds the action handlers.
+	 */
 	private void addActionHandlers() {
 		this.createEventProperty.addListener((evt)->{
 			if(this.createEventProperty.getValue()) {
@@ -376,6 +503,9 @@ public class FullPatientViewModelSubAppt {
 		});
 	}
 	
+	/**
+	 * Adds the appointment.
+	 */
 	private void addAppointment() {
 		
 		AppointmentData appt = this.getAppointment();
@@ -393,6 +523,12 @@ public class FullPatientViewModelSubAppt {
 		}
 	}
 	
+	/**
+	 * Attempt add appointment.
+	 *
+	 * @param appointmentData the appointment data
+	 * @return true, if successful
+	 */
 	private boolean attemptAddAppointment(AppointmentData appointmentData) {
 		
 		QueryResult results = this.givenDB.attemptAddAppointment(appointmentData);
@@ -404,24 +540,38 @@ public class FullPatientViewModelSubAppt {
 		return true;
 	}
 	
+	/**
+	 * Adds the valid results.
+	 *
+	 * @param results the results
+	 */
 	private void addValidResults(QueryResult results) {
-		addAppointmentResults(results, this.availableList);
+		this.addAppointmentResults(results, this.availableList);
 	}
 	
+	/**
+	 * Adds the invalid results.
+	 *
+	 * @param results the results
+	 */
 	private void addInvalidResults(QueryResult results) {
-		addAppointmentResults(results, this.pastList);
+		this.addAppointmentResults(results, this.pastList);
 	}
 
+	/**
+	 * Adds the appointment results.
+	 *
+	 * @param results the results
+	 * @param destination the destination
+	 */
 	private void addAppointmentResults(QueryResult results, ObservableList<TupleEmbed> destination) {
 		if(results == null) {
 			return;
 		}
 		for(QueryResult result : results) {
 			SqlTuple tup = result.getTuple().transform(tuples -> {
-				// Grab the doctor ID
 				int doctorId = (int) tuples.get("doctor_id").getValue();
 
-				// Remove all the IDs
 				tuples.keySet().removeIf(key -> key.endsWith("_id"));
 
 				Optional<String> doctorName = this.availableDoctors.stream()
@@ -437,16 +587,25 @@ public class FullPatientViewModelSubAppt {
 	}
 	
 	
+	/**
+	 * Update appointment.
+	 */
 	private void updateAppointment() {
 		if (!this.attemptUpdateAppointment(this.givenAppointmentProperty.get().getAppointment(), this.getAppointment().getAppointment())) {
 			FXMLAlert.statusAlert("Update Appointment Failed", "The appointment did not update successfully.", "Update Appointment failed", AlertType.ERROR);
 		} else {
 			FXMLAlert.statusAlert("Update Appointment Success", "The appointment updated successfully.", "Update Appointment Success", AlertType.INFORMATION);
-			///TODO update Appointments
 			this.givenAppointmentProperty.setValue(this.getAppointment());
 		}
 	}
 	
+	/**
+	 * Attempt update appointment.
+	 *
+	 * @param existingData the existing data
+	 * @param newData the new data
+	 * @return true, if successful
+	 */
 	private boolean attemptUpdateAppointment(Appointment existingData, Appointment newData) {
 		
 		QueryResult results;

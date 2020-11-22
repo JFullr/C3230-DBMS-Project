@@ -7,15 +7,35 @@ import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 
 import java.sql.*;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LabTestOrderDAL.
+ */
 public class LabTestOrderDAL {
+    
+    /** The connector. */
     private DatabaseConnector connector;
+    
+    /** The post DAL. */
     private PostDAL postDAL;
 
+    /**
+     * Instantiates a new lab test order DAL.
+     *
+     * @param connector the connector
+     */
     public LabTestOrderDAL(DatabaseConnector connector) {
         this.connector = connector;
         this.postDAL =  new PostDAL(connector);
     }
 
+    /**
+     * Gets the lab test orders for appointment.
+     *
+     * @param appointmentId the appointment id
+     * @return the lab test orders for appointment
+     * @throws SQLException the SQL exception
+     */
     public QueryResult getLabTestOrdersForAppointment(int appointmentId) throws SQLException {
         String query = "select * from LabTestOrder where appointment_id = ?";
 
@@ -30,6 +50,13 @@ public class LabTestOrderDAL {
         return new QueryResult(manager.getTuples());
     }
 
+    /**
+     * Adds the lab test order.
+     *
+     * @param order the order
+     * @return the query result
+     * @throws SQLException the SQL exception
+     */
     public QueryResult addLabTestOrder(LabTestOrder order) throws SQLException {
         return new QueryResult(this.postDAL.postTuple(order));
     }

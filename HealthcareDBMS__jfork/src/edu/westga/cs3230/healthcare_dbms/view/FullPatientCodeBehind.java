@@ -27,101 +27,138 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.stage.Stage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FullPatientCodeBehind.
+ */
 public class FullPatientCodeBehind {
 
+	/** The Constant ACTION_VALID_ALL. */
 	public static final String ACTION_VALID_ALL = "all";
+	
+	/** The Constant ACTION_VALID_MINIMAL. */
 	public static final String ACTION_VALID_MINIMAL = "min";
+	
+	/** The Constant ACTION_VALID_NONE. */
 	public static final String ACTION_VALID_NONE = "none";
 
+	/** The action button. */
 	@FXML
 	private Button actionButton;
 
+	/** The cancel button. */
 	@FXML
 	private Button cancelButton;
 
+	/** The first name text field. */
 	@FXML
 	private TextField firstNameTextField;
 
+	/** The last name text field. */
 	@FXML
 	private TextField lastNameTextField;
 
+	/** The gender combo box. */
 	@FXML
 	private ComboBox<String> genderComboBox;
 
+	/** The contact phone text field. */
 	@FXML
 	private TextField contactPhoneTextField;
 
+	/** The contact email text field. */
 	@FXML
 	private TextField contactEmailTextField;
 
+	/** The street address 1 text field. */
 	@FXML
 	private TextField streetAddress1TextField;
 
+	/** The street address 2 text field. */
 	@FXML
 	private TextField streetAddress2TextField;
 
+	/** The city text field. */
 	@FXML
 	private TextField cityTextField;
 
+	/** The state combo box. */
 	@FXML
 	private ComboBox<String> stateComboBox;
 
+	/** The zip code text field. */
 	@FXML
 	private TextField zipCodeTextField;
 
+	/** The dob picker. */
 	@FXML
 	private DatePicker dobPicker;
 
+	/** The middle initial text field. */
 	@FXML
 	private TextField middleInitialTextField;
 
+	/** The ssn text field. */
 	@FXML
 	private TextField ssnTextField;
 
+	/** The filter decimals. */
 	private UnaryOperator<Change> filterDecimals = change -> {
 		Pattern pattern = Pattern.compile("([.]\\d*)|(\\d*|\\d+\\.\\d*)");
 		return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 
+	/** The filter initial. */
 	private UnaryOperator<Change> filterInitial = change -> {
 		Pattern pattern = Pattern.compile("[a-zA-Z]?");
 		return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 
+	/** The filter SSN. */
 	private UnaryOperator<Change> filterSSN = change -> {
 		Pattern pattern = Pattern.compile("\\d{0,9}");
 		return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 
+	/** The filter phone. */
 	private UnaryOperator<Change> filterPhone = change -> {
 		Pattern pattern = Pattern.compile("\\d{0,10}");
 		return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 
+	/** The filter zip. */
 	private UnaryOperator<Change> filterZip = change -> {
 		Pattern pattern = Pattern.compile("\\d{0,5}");
 		return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 	
+	/** The filter integral. */
 	private UnaryOperator<Change> filterIntegral = change -> {
 		Pattern pattern = Pattern.compile("\\d*");
 		return pattern.matcher(change.getControlNewText()).matches() ? change : null;
 	};
 
+	/** The Constant emailValid. */
 	private static final Pattern emailValid = Pattern
 			.compile("[a-zA-Z]+(\\d|[a-zA-Z])*@[a-zA-Z]+(\\d|[a-zA-Z])*[.](\\d|[a-zA-Z])+");
+	
+	/** The is email valid. */
 	private final BooleanProperty isEmailValid;
 
+	/** The view model. */
 	private FullPatientViewModel viewModel;
 	
 	
+	/**
+	 * Instantiates a new full patient code behind.
+	 */
 	public FullPatientCodeBehind() {
 		this.viewModel = new FullPatientViewModel();
 		this.isEmailValid = new SimpleBooleanProperty(false);
 	}
 
 	/**
-	 * Initializer for the fxml data
+	 * Initializer for the fxml data.
 	 */
 	@FXML
 	public void initialize() {
@@ -148,22 +185,40 @@ public class FullPatientCodeBehind {
 		this.setupSubDiag();
 	}
 
+	/**
+	 * Close window.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	public void closeWindow(ActionEvent event) {
 		Stage stage = (Stage) this.cancelButton.getScene().getWindow();
 		stage.close();
 	}
 
+	/**
+	 * Action button handler.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	public void actionButtonHandler(ActionEvent event) {
 		this.viewModel.getViewModelPatient().getActionPressedProperty().setValue(true);
 		this.viewModel.getViewModelPatient().getActionPressedProperty().setValue(false);
 	}
 
+	/**
+	 * Gets the view model.
+	 *
+	 * @return the view model
+	 */
 	public FullPatientViewModel getViewModel() {
 		return this.viewModel;
 	}
 
+	/**
+	 * Initialize text field formatters.
+	 */
 	private void initializeTextFieldFormatters() {
 		this.ssnTextField.setTextFormatter(new TextFormatter<Change>(this.filterSSN));
 		this.middleInitialTextField.setTextFormatter(new TextFormatter<Change>(this.filterInitial));
@@ -186,6 +241,9 @@ public class FullPatientCodeBehind {
 		});
 	}
 
+	/**
+	 * Bind properties.
+	 */
 	private void bindProperties() {
 		this.viewModel.getViewModelPatient().getContactEmailProperty().bindBidirectional(this.contactEmailTextField.textProperty());
 		this.viewModel.getViewModelPatient().getContactPhoneProperty().bindBidirectional(this.contactPhoneTextField.textProperty());
@@ -220,6 +278,12 @@ public class FullPatientCodeBehind {
 					.or(this.isEmailValid.not()));
 	}
 
+	/**
+	 * Max length formatter.
+	 *
+	 * @param length the length
+	 * @return the unary operator
+	 */
 	private UnaryOperator<Change> maxLengthFormatter(int length) {
 		return (change) -> {
 			Pattern pattern = Pattern.compile(".{0," + length + "}");
@@ -227,15 +291,19 @@ public class FullPatientCodeBehind {
 		};
 	}
 	
+	/** The sub appt tab. */
 	@FXML
 	private Tab subApptTab;
 	
+	/** The sub checkup tab. */
 	@FXML
 	private Tab subCheckupTab;
 	
+	/** The sub test tab. */
 	@FXML
 	private Tab subTestTab;
 	
+	/** The sub final tab. */
 	@FXML
 	private Tab subFinalTab;
 
@@ -243,18 +311,25 @@ public class FullPatientCodeBehind {
 
 
 	
+	/** The appt tab. */
 	@FXML
 	private Tab apptTab;
 
+	/** The new appt button. */
 	@FXML
 	private Button newApptButton;
 
+	/** The past list. */
 	@FXML
 	private ListView<TupleEmbed> pastList;
 
+	/** The available list. */
 	@FXML
 	private ListView<TupleEmbed> availableList;
 	
+	/**
+	 * Setup appt tab.
+	 */
 	private void setupApptTab() {
 		this.apptTab.selectedProperty().addListener((evt)->{
 			if(this.apptTab.isSelected()) {
@@ -264,6 +339,9 @@ public class FullPatientCodeBehind {
 		
 	}
 	
+	/**
+	 * Setup available list.
+	 */
 	private void setupAvailableList() {
 		
 		this.availableList.selectionModelProperty().addListener((evt)->{
@@ -299,6 +377,9 @@ public class FullPatientCodeBehind {
 		});
 	}
 	
+	/**
+	 * Setup past list.
+	 */
 	private void setupPastList() {
 		
 		this.pastList.selectionModelProperty().addListener((evt)->{
@@ -337,27 +418,37 @@ public class FullPatientCodeBehind {
 	
 	
 
+	/** The appt date picker. */
 	@FXML
 	private DatePicker apptDatePicker;
 
+	/** The appt hour picker. */
 	@FXML
 	private ComboBox<String> apptHourPicker;
 
+	/** The appt minute picker. */
 	@FXML
 	private ComboBox<String> apptMinutePicker;
 
+	/** The appt diural picker. */
 	@FXML
 	private ComboBox<String> apptDiuralPicker;
 
+	/** The appt doctor picker. */
 	@FXML
 	private ComboBox<String> apptDoctorPicker;
 
+	/** The appt reason field. */
 	@FXML
 	private TextField apptReasonField;
 
+	/** The update appt button. */
 	@FXML
 	private Button updateApptButton;
 	
+	/**
+	 * Setup sub appt.
+	 */
 	private void setupSubAppt() {
 		this.apptHourPicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_HOURS));
 		this.apptMinutePicker.setItems(FXCollections.observableArrayList(TimeSelections.ALL_MINUTES));
@@ -399,6 +490,11 @@ public class FullPatientCodeBehind {
 		
 	}
 
+	/**
+	 * Update appointment.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	public void updateAppointment(ActionEvent event) {
 		//this.viewModel.app
@@ -406,6 +502,11 @@ public class FullPatientCodeBehind {
 		this.viewModel.getViewModelAppt().getUpdateEventProperty().setValue(false);
 	}
 	
+	/**
+	 * Adds the appointment.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void addAppointment(ActionEvent event) {
 		//this.viewModel.showCreateAppointment();
@@ -413,27 +514,37 @@ public class FullPatientCodeBehind {
 		this.viewModel.getViewModelAppt().getCreateEventProperty().setValue(false);
 	}
 
+	/** The systolic pressure field. */
 	@FXML
 	private TextField systolicPressureField;
 
+	/** The diastolic pressure field. */
 	@FXML
 	private TextField diastolicPressureField;
 
+	/** The pulse field. */
 	@FXML
 	private TextField pulseField;
 
+	/** The weight field. */
 	@FXML
 	private TextField weightField;
 
+	/** The temperature field. */
 	@FXML
 	private TextField temperatureField;
 
+	/** The add checkup button. */
 	@FXML
 	private Button addCheckupButton;
 	
+	/** The update checkup button. */
 	@FXML
 	private Button updateCheckupButton;
 	
+	/**
+	 * Setup sub checkup.
+	 */
 	private void setupSubCheckup() {
 		
 		this.systolicPressureField.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedPatientProperty().isNull()));
@@ -478,48 +589,71 @@ public class FullPatientCodeBehind {
 		this.weightField.setTextFormatter(new TextFormatter<Change>(this.filterDecimals));
 	}
 	
+	/**
+	 * Update checkup.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void updateCheckup(ActionEvent event) {
 		this.viewModel.getViewModelCheckup().getUpdateEventProperty().setValue(true);
 		this.viewModel.getViewModelCheckup().getUpdateEventProperty().setValue(false);
 	}
 	
+	/**
+	 * Adds the checkup.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void addCheckup(ActionEvent event) {
 		this.viewModel.getViewModelCheckup().getCreateEventProperty().setValue(true);
 		this.viewModel.getViewModelCheckup().getCreateEventProperty().setValue(false);
 	}
 
+	/** The test order status list. */
 	@FXML
 	private ListView<TupleEmbed> testOrderStatusList;
 
+	/** The test cost field. */
 	@FXML
 	private TextField testCostField;
 
+	/** The test desc field. */
 	@FXML
 	private TextField testDescField;
 
+	/** The add test button. */
 	@FXML
 	private Button addTestButton;
 
+	/** The test date picker. */
 	@FXML
 	private DatePicker testDatePicker;
 
+	/** The test picker. */
 	@FXML
 	private ComboBox<String> testPicker;
 
+	/** The test order list. */
 	@FXML
 	private ListView<TupleEmbed> testOrderList;
 
+	/** The test remove sel button. */
 	@FXML
 	private Button testRemoveSelButton;
 
+	/** The test remove all button. */
 	@FXML
 	private Button testRemoveAllButton;
 
+	/** The test order button. */
 	@FXML
 	private Button testOrderButton;
 	
+	/**
+	 * Setup sub test.
+	 */
 	private void setupSubTest() {
 		//*
 		this.testOrderStatusList.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedAppointmentProperty().isNull()));
@@ -587,36 +721,61 @@ public class FullPatientCodeBehind {
 		
 	}
 	
+	/**
+	 * Test queue add.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void testQueueAdd(ActionEvent event) {
 		this.viewModel.getViewModelTest().getQueueTestEventProperty().setValue(true);
 		this.viewModel.getViewModelTest().getQueueTestEventProperty().setValue(false);
 	}
 	
+	/**
+	 * Test remove selected.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void testRemoveSelected(ActionEvent event) {
 		this.viewModel.getViewModelTest().getRemoveTestEventProperty().setValue(true);
 		this.viewModel.getViewModelTest().getRemoveTestEventProperty().setValue(false);
 	}
 	
+	/**
+	 * Test remove all.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void testRemoveAll(ActionEvent event) {
 		this.viewModel.getViewModelTest().getRemoveAllTestsEventProperty().setValue(true);
 		this.viewModel.getViewModelTest().getRemoveAllTestsEventProperty().setValue(false);
 	}
 	
+	/**
+	 * Adds the lab tests.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void addLabTests(ActionEvent event) {
 		this.viewModel.getViewModelTest().getOrderTestsEventProperty().setValue(true);
 		this.viewModel.getViewModelTest().getOrderTestsEventProperty().setValue(false);
 	}
 
+	/** The final diagnosis field. */
 	@FXML
 	private TextArea finalDiagnosisField;
 
+	/** The submit final diagnosis button. */
 	@FXML
 	private Button submitFinalDiagnosisButton;
 	
+	/**
+	 * Setup sub final.
+	 */
 	private void setupSubFinal() {
 		
 		this.finalDiagnosisField.disableProperty().bind(
@@ -633,6 +792,11 @@ public class FullPatientCodeBehind {
 		
 	}
 
+	/**
+	 * Submit final diagnosis.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void submitFinalDiagnosis(ActionEvent event) {
 		this.viewModel.getViewModelFinal().getSubmitEventProperty().setValue(true);
@@ -640,15 +804,21 @@ public class FullPatientCodeBehind {
 	}
 	
 	
+	/** The diagnosis field. */
 	@FXML
 	private TextArea diagnosisField;
 
+	/** The add diagnosis button. */
 	@FXML
 	private Button addDiagnosisButton;
 	
+	/** The update diagnosis button. */
 	@FXML
 	private Button updateDiagnosisButton;
 	
+	/**
+	 * Setup sub diag.
+	 */
 	private void setupSubDiag() {
 		
 		this.diagnosisField.disableProperty().bind(
@@ -675,12 +845,22 @@ public class FullPatientCodeBehind {
 		
 	}
 	
+	/**
+	 * Adds the diagnosis handler.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void addDiagnosisHandler(ActionEvent event) {
 		this.viewModel.getViewModelDiag().getAddEventProperty().setValue(true);
 		this.viewModel.getViewModelDiag().getAddEventProperty().setValue(false);
 	}
 	
+	/**
+	 * Update diagnosis handler.
+	 *
+	 * @param event the event
+	 */
 	@FXML
 	void updateDiagnosisHandler(ActionEvent event) {
 		this.viewModel.getViewModelDiag().getUpdateEventProperty().setValue(true);

@@ -1,16 +1,32 @@
 package edu.westga.cs3230.healthcare_dbms.model;
 
-import edu.westga.cs3230.healthcare_dbms.sql.SqlGenerated;
-
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AppointmentCheckup.
+ */
 public class AppointmentCheckup {
 	
+	/** The appointment id. */
 	private Integer appointment_id;
+	
+	/** The systolic pressure. */
 	private Integer systolic_pressure;
+	
+	/** The diastolic pressure. */
 	private Integer diastolic_pressure;
+	
+	/** The pulse. */
 	private Integer pulse;
+	
+	/** The weight. */
 	private Double weight;
+	
+	/** The temperature. */
 	private Double temperature;
 
+	/**
+	 * Instantiates a new appointment checkup.
+	 */
 	public AppointmentCheckup() {
 		this.appointment_id = null;
 		this.systolic_pressure = null;
@@ -20,6 +36,16 @@ public class AppointmentCheckup {
 		this.setTemperature(null);
 	}
 
+	/**
+	 * Instantiates a new appointment checkup.
+	 *
+	 * @param appointment_id the appointment id
+	 * @param systolic_pressure the systolic pressure
+	 * @param diastolic_pressure the diastolic pressure
+	 * @param pulse the pulse
+	 * @param weight the weight
+	 * @param temperature the temperature
+	 */
 	public AppointmentCheckup(Integer appointment_id, Integer systolic_pressure, Integer diastolic_pressure, Integer pulse,
 			Double weight, Double temperature) {
 		this.appointment_id = appointment_id;
@@ -30,6 +56,17 @@ public class AppointmentCheckup {
 		this.setTemperature(temperature);
 	}
 	
+	/**
+	 * Instantiates a new appointment checkup.
+	 *
+	 * @param appointment_id the appointment id
+	 * @param systolic_pressure the systolic pressure
+	 * @param diastolic_pressure the diastolic pressure
+	 * @param pulse the pulse
+	 * @param weight the weight
+	 * @param temperature the temperature
+	 * @throws Exception the exception
+	 */
 	public AppointmentCheckup(String appointment_id, String systolic_pressure, String diastolic_pressure, String pulse,
 			String weight, String temperature) throws Exception {
 		this.appointment_id = Integer.parseInt(appointment_id);
@@ -41,6 +78,8 @@ public class AppointmentCheckup {
 	}
 
 	/**
+	 * Gets the appointment id.
+	 *
 	 * @return the appointment_id
 	 */
 	public Integer getAppointment_id() {
@@ -48,6 +87,8 @@ public class AppointmentCheckup {
 	}
 
 	/**
+	 * Sets the appointment id.
+	 *
 	 * @param appointment_id the appointment_id to set
 	 */
 	public void setAppointment_id(int appointment_id) {
@@ -55,6 +96,8 @@ public class AppointmentCheckup {
 	}
 
 	/**
+	 * Gets the systolic pressure.
+	 *
 	 * @return the systolic_pressure
 	 */
 	public int getSystolic_pressure() {
@@ -62,6 +105,8 @@ public class AppointmentCheckup {
 	}
 
 	/**
+	 * Sets the systolic pressure.
+	 *
 	 * @param systolic_pressure the systolic_pressure to set
 	 */
 	public void setSystolic_pressure(int systolic_pressure) {
@@ -69,6 +114,8 @@ public class AppointmentCheckup {
 	}
 
 	/**
+	 * Gets the diastolic pressure.
+	 *
 	 * @return the diastolic_pressure
 	 */
 	public Integer getDiastolic_pressure() {
@@ -76,6 +123,8 @@ public class AppointmentCheckup {
 	}
 
 	/**
+	 * Sets the diastolic pressure.
+	 *
 	 * @param diastolic_pressure the diastolic_pressure to set
 	 */
 	public void setDiastolic_pressure(int diastolic_pressure) {
@@ -83,6 +132,8 @@ public class AppointmentCheckup {
 	}
 
 	/**
+	 * Gets the pulse.
+	 *
 	 * @return the pulse
 	 */
 	public Integer getPulse() {
@@ -90,6 +141,8 @@ public class AppointmentCheckup {
 	}
 
 	/**
+	 * Sets the pulse.
+	 *
 	 * @param pulse the pulse to set
 	 */
 	public void setPulse(int pulse) {
@@ -97,6 +150,8 @@ public class AppointmentCheckup {
 	}
 
 	/**
+	 * Gets the weight.
+	 *
 	 * @return the weight
 	 */
 	public Double getWeight() {
@@ -104,16 +159,28 @@ public class AppointmentCheckup {
 	}
 
 	/**
+	 * Sets the weight.
+	 *
 	 * @param weight the weight to set
 	 */
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 
+	/**
+	 * Gets the temperature.
+	 *
+	 * @return the temperature
+	 */
 	public Double getTemperature() {
 		return temperature;
 	}
 
+	/**
+	 * Sets the temperature.
+	 *
+	 * @param temperature the new temperature
+	 */
 	public void setTemperature(Double temperature) {
 		this.temperature = temperature;
 	}

@@ -1,34 +1,42 @@
 package edu.westga.cs3230.healthcare_dbms.model.dal;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import edu.westga.cs3230.healthcare_dbms.io.database.DatabaseConnector;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Address;
-import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
-import edu.westga.cs3230.healthcare_dbms.model.Patient;
 import edu.westga.cs3230.healthcare_dbms.model.PatientData;
 import edu.westga.cs3230.healthcare_dbms.model.Person;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlAttribute;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlGetter;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlManager;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
-import edu.westga.cs3230.healthcare_dbms.sql.SqlTuple;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PatientDAL.
+ */
 public class PatientDAL {
 
+	/** The post dal. */
 	private PostDAL postDal;
+	
+	/** The person dal. */
 	private PersonDAL personDal;
+	
+	/** The address dal. */
 	private AddressDAL addressDal;
+	
+	/** The update dal. */
 	private UpdateDAL updateDal;
+	
+	/** The connector. */
 	private DatabaseConnector connector;
 
+	/**
+	 * Instantiates a new patient DAL.
+	 *
+	 * @param connector the connector
+	 */
 	public PatientDAL(DatabaseConnector connector) {
 		this.connector = connector;
 		this.postDal = new PostDAL(connector);
@@ -37,6 +45,13 @@ public class PatientDAL {
 		this.updateDal = new UpdateDAL(connector);
 	}
 	
+	/**
+	 * Attempt add patient.
+	 *
+	 * @param patient the patient
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult attemptAddPatient(PatientData patient) throws SQLException {
 		return connector.getInTransaction(() -> {
 
@@ -66,8 +81,6 @@ public class PatientDAL {
 			QueryResult person = this.personDal.attemptAddPerson(patient.getPerson());
 
 			if (person == null) {
-				System.out.println("PERSON FAILED TO ADD");
-				//TODO delete person
 				return null;
 			}
 
@@ -75,12 +88,27 @@ public class PatientDAL {
 		});
 	}
 	
+	/**
+	 * Attempt update patient.
+	 *
+	 * @param updateData the update data
+	 * @param existingData the existing data
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult attemptUpdatePatient(PatientData updateData, PatientData existingData) throws SQLException {
 		QueryResult pers = this.updateDal.updateTuple(updateData.getPerson(), existingData.getPerson());
 		QueryResult addr = this.updateDal.updateTuple(updateData.getAddress(), existingData.getAddress());
 		return pers.combineMerge(addr);
 	}
 
+	/**
+	 * Gets the person matching.
+	 *
+	 * @param patient the patient
+	 * @return the person matching
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getPersonMatching(PatientData patient) throws SQLException {
 		
 		QueryResult people = this.personDal.getPersonMatching(patient.getPerson());
@@ -115,9 +143,14 @@ public class PatientDAL {
 		return combined;
 	}
 
+	/**
+	 * Gets the patient by SSN.
+	 *
+	 * @param patientData the patient data
+	 * @return the patient by SSN
+	 * @throws SQLException the SQL exception
+	 */
 	public QueryResult getPatientBySSN(PatientData patientData) throws SQLException {
-		// 
-		//return this.personDal.getPersonBySSN(patientData.getPerson());
 		return this.getPersonMatching(patientData);
 	}
 
