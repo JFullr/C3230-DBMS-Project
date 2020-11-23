@@ -1,18 +1,27 @@
 package edu.westga.cs3230.healthcare_dbms.viewmodel;
 
+import java.util.ArrayList;
+
 import edu.westga.cs3230.healthcare_dbms.io.database.HealthcareDatabase;
 import edu.westga.cs3230.healthcare_dbms.io.database.QueryResult;
 import edu.westga.cs3230.healthcare_dbms.model.Appointment;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentCheckup;
 import edu.westga.cs3230.healthcare_dbms.model.AppointmentData;
+import edu.westga.cs3230.healthcare_dbms.model.Nurse;
+import edu.westga.cs3230.healthcare_dbms.model.NurseData;
+import edu.westga.cs3230.healthcare_dbms.model.Person;
 import edu.westga.cs3230.healthcare_dbms.sql.SqlSetter;
 import edu.westga.cs3230.healthcare_dbms.view.utils.FXMLAlert;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.SingleSelectionModel;
 
 /**
  * View model class for the checkup pane.
@@ -42,6 +51,15 @@ public class FullPatientViewModelSubCheckup {
 	/** The given appointment property. */
 	private final ObjectProperty<AppointmentData> givenAppointmentProperty;
 	
+	/** The nurse list. */
+	private ObservableList<String> nurseList;
+	
+	/** The available doctors. */
+	private ArrayList<NurseData> availableNurses;
+	
+	/** The doctor selection property. */
+	private final ObjectProperty<SingleSelectionModel<String>> nurseSelectionProperty;
+	
 	/** The create event property. */
 	private final BooleanProperty createEventProperty;
 	
@@ -65,11 +83,16 @@ public class FullPatientViewModelSubCheckup {
 		this.createEventProperty = new SimpleBooleanProperty(false);
 		this.updateEventProperty = new SimpleBooleanProperty(false);
 		
+		this.nurseSelectionProperty = new SimpleObjectProperty<SingleSelectionModel<String>>();
+		
 		this.systolicPressureProperty = new SimpleStringProperty();
 		this.diatolicPressureProperty = new SimpleStringProperty();
 		this.pulseProperty = new SimpleStringProperty();
 		this.weightProperty = new SimpleStringProperty();
 		this.temperatureProperty = new SimpleStringProperty();
+		
+		this.nurseList = FXCollections.observableArrayList();
+		this.availableNurses = new ArrayList<NurseData>();
 		
 		this.addActionHandlers();
 	}
@@ -81,6 +104,24 @@ public class FullPatientViewModelSubCheckup {
 	 */
 	public void setDatabase(HealthcareDatabase givenDB) {
 		this.givenDB = givenDB;
+	}
+	
+	/**
+	 * Gets the nurse list.
+	 *
+	 * @return the nurse list.
+	 */
+	public ObservableList<String> getNurseList(){
+		return this.nurseList;
+	}
+	
+	/**
+	 * Gets the nurse selection property.
+	 *
+	 * @return the nurse selection property
+	 */
+	public ObjectProperty<SingleSelectionModel<String>> getNurseSelectionProperty() {
+		return nurseSelectionProperty;
 	}
 	
 	/**
@@ -157,6 +198,15 @@ public class FullPatientViewModelSubCheckup {
 		this.pulseProperty.setValue(""+checkupData.getPulse());
 		this.weightProperty.setValue(""+checkupData.getWeight());
 		this.temperatureProperty.setValue(""+checkupData.getTemperature());
+		
+		for(int i = 0; i < this.availableNurses.size(); i++) {
+			Nurse nurse = this.availableNurses.get(i).getNurse();
+			if((int)nurse.getPerson_id() == (int)checkupData.getNurse_id()) {
+				NurseData n = this.availableNurses.get(i);
+				this.nurseSelectionProperty.getValue().select(n.getPerson().getFname()+" "+n.getPerson().getLname());
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -181,6 +231,29 @@ public class FullPatientViewModelSubCheckup {
 		}
 		
 		this.initFromCheckup(checkup);
+	}
+	
+	/**
+	 * Load nurses.
+	 */
+	public void loadNurses() {
+		
+		this.availableNurses.clear();
+		this.nurseList.clear();
+		
+		QueryResult nurses = this.givenDB.attemptGetNurses();
+		
+		for(QueryResult result : nurses) {
+			if(result.getTuple() != null) {
+				Person person = new Person(null, null, null, null, null, null, null, null);
+				SqlSetter.fillWith(person, result.getTuple());
+				Nurse nurse = new Nurse(person.getPerson_id());
+				
+				NurseData nurseData = new NurseData(person, nurse);
+				this.availableNurses.add(nurseData);
+				this.nurseList.add(person.getFname()+" "+person.getLname());
+			}
+		}
 	}
 	
 	/**

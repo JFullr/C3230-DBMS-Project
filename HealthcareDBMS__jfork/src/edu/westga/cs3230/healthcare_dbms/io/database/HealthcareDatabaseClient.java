@@ -22,6 +22,7 @@ import edu.westga.cs3230.healthcare_dbms.model.dal.LabTestDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.LabTestOrderDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.LabTestResultDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.LoginDAL;
+import edu.westga.cs3230.healthcare_dbms.model.dal.NurseDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.PatientDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.PostDAL;
 import edu.westga.cs3230.healthcare_dbms.model.dal.UpdateDAL;
@@ -56,6 +57,9 @@ public class HealthcareDatabaseClient {
 	
 	/** The doctor dal. */
 	private DoctorDAL doctorDal;
+	
+	/** The nurse dal. */
+	private NurseDAL nurseDal;
 	
 	/** The lab test dal. */
 	private LabTestDAL labTestDal;
@@ -106,6 +110,7 @@ public class HealthcareDatabaseClient {
 		this.diagnosisDal = new DiagnosisDAL(this.connector);
 		this.labTestResultDal = new LabTestResultDAL(this.connector);
 		this.adminDal = new AdminDAL(this.connector);
+		this.nurseDal = new NurseDAL(this.connector);
 	}
 	
 	/**
@@ -391,6 +396,17 @@ public class HealthcareDatabaseClient {
 	 */
 	public QueryResult attemptGetDoctors() throws SQLException {
 		this.lastResult = this.doctorDal.getDoctors();
+		return this.lastResult;
+	}
+	
+	/**
+	 * Attempt get nurses.
+	 *
+	 * @return the query result
+	 * @throws SQLException the SQL exception
+	 */
+	public QueryResult attemptGetNurses() throws SQLException {
+		this.lastResult = this.nurseDal.getNurses();
 		return this.lastResult;
 	}
 	

@@ -246,6 +246,7 @@ public class FullPatientViewModel {
 			this.viewModelAppt.loadDoctors();
 			this.viewModelAppt.updateAvailableAppointments();
 			this.viewModelTest.loadLabTests();
+			this.viewModelCheckup.loadNurses();
 			this.initialDataLoad = true;
 		}
 	}

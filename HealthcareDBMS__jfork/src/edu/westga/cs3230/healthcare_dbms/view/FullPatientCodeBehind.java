@@ -530,6 +530,10 @@ public class FullPatientCodeBehind {
 	@FXML
 	private Button updateCheckupButton;
 	
+	@FXML
+	private ComboBox<String> checkupNursePicker;
+	
+	
 	/**
 	 * Setup sub checkup.
 	 */
@@ -541,6 +545,9 @@ public class FullPatientCodeBehind {
 		this.weightField.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedPatientProperty().isNull()));
 		this.temperatureField.disableProperty().bind(this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull().or(this.viewModel.getSelectedPatientProperty().isNull()));
 		
+		this.viewModel.getViewModelCheckup().getNurseSelectionProperty().bindBidirectional(this.checkupNursePicker.selectionModelProperty());
+		this.checkupNursePicker.setItems(this.viewModel.getViewModelCheckup().getNurseList());
+		
 		this.addCheckupButton.disableProperty().bind(
 				this.viewModel.getSelectedFinalDiagnosisProperty().isNotNull()
 				.or(this.viewModel.getSelectedAppointmentProperty().isNull())
@@ -550,6 +557,7 @@ public class FullPatientCodeBehind {
 				.or(this.diastolicPressureField.textProperty().isEmpty())
 				.or(this.pulseField.textProperty().isEmpty())
 				.or(this.weightField.textProperty().isEmpty())
+				.or(this.checkupNursePicker.getSelectionModel().selectedItemProperty().isNull())
 		);
 		
 		this.updateCheckupButton.disableProperty().bind(
@@ -561,6 +569,7 @@ public class FullPatientCodeBehind {
 				.or(this.pulseField.textProperty().isEmpty())
 				.or(this.weightField.textProperty().isEmpty())
 				.or(this.viewModel.getSelectedCheckupProperty().isNull())
+				.or(this.checkupNursePicker.getSelectionModel().selectedItemProperty().isNull())
 		);
 		
 		

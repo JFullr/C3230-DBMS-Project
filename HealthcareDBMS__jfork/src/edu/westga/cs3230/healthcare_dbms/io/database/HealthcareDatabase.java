@@ -369,6 +369,21 @@ public class HealthcareDatabase {
 	}
 	
 	/**
+	 * Attempt get nurses.
+	 *
+	 * @return the query result
+	 */
+	public QueryResult attemptGetNurses() {
+		try {
+			QueryResult result = this.client.attemptGetNurses();
+			return result;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
 	 * Attempt get lab tests.
 	 *
 	 * @return the query result

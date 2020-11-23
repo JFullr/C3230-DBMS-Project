@@ -24,6 +24,9 @@ public class AppointmentCheckup {
 	
 	/** The patient's temperature. */
 	private Double temperature;
+	
+	/** The nurse id. */
+	private Integer nurse_id;
 
 	/**
 	 * Instantiates a new appointment checkup.
@@ -46,14 +49,16 @@ public class AppointmentCheckup {
 	 * @param pulse the patient's pulse
 	 * @param weight the patient's weight
 	 * @param temperature the patient's temperature
+	 * @param nurse_id the nurse id
 	 */
 	public AppointmentCheckup(Integer appointment_id, Integer systolic_pressure, Integer diastolic_pressure, Integer pulse,
-			Double weight, Double temperature) {
+			Double weight, Double temperature, Integer nurse_id) {
 		this.appointment_id = appointment_id;
 		this.systolic_pressure = systolic_pressure;
 		this.diastolic_pressure = diastolic_pressure;
 		this.pulse = pulse;
 		this.weight = weight;
+		this.nurse_id = nurse_id;
 		this.setTemperature(temperature);
 	}
 	
@@ -183,5 +188,23 @@ public class AppointmentCheckup {
 	 */
 	public void setTemperature(Double temperature) {
 		this.temperature = temperature;
+	}
+
+	/**
+	 * Gets the nurse id.
+	 *
+	 * @return the nurse id
+	 */
+	public Integer getNurse_id() {
+		return nurse_id;
+	}
+
+	/**
+	 * Sets the nurse id.
+	 *
+	 * @param nurse_id the new nurse id
+	 */
+	public void setNurse_id(Integer nurse_id) {
+		this.nurse_id = nurse_id;
 	}
 }
