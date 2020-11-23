@@ -203,6 +203,7 @@ public class MainPageViewModel {
 			this.queryResults.add(result);
 			return true;
 		}
+		this.adminLoggedInProperty.setValue(false);
 		
 		result = this.database.attemptLogin(login);
 		if (result == null || result.getTuple() == null) {

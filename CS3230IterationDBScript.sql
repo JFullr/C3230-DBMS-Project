@@ -191,8 +191,22 @@ INSERT INTO `Person` (`person_id`, `fname`, `lname`, `middle_initial`, `gender`,
 (14, 'Brown', 'Whale', 'r', 'Other', '2020-10-07', 413341531, '3000000008', 'i@a.com', 14),
 (15, 'Sludge', 'Farmer', 'e', 'Other', '2020-10-07', 513341531, '4000000008', 'h@a.com', 15);
 
-INSERT INTO RegisteredUser VALUES(2, '999', 11);
-INSERT INTO UserPasswordStore VALUES(2, "a9993e364706816aba3e25717850c26c9cd0d89d", "hash");
+INSERT INTO RegisteredUser VALUES
+(2, 'test0', 11),
+(3, 'test1',12),
+(4, 'test2',13),
+(5, 'test3',14),
+(6, 'test4',15);
+
+INSERT INTO UserPasswordStore VALUES
+(2, "9b4bf5cdb7381fe38284a05d44d0631cf253c095", "hash"), -- test0
+(3, "b444ac06613fc8d63795be9ad0beaf55011936ac", "hash"), -- test1
+(4, "109f4b3c50d7b0df729d299bc6f8e9ef9066971f", "hash"), -- test2
+(5, "3ebfa301dc59196f18593c45e519287a23297589", "hash"), -- test3
+(6, "1ff2b3704aede04eecb51e50ca698efd50a1379b", "hash"); -- test4
+
+INSERT INTO Admin VALUES
+(5);
 
 INSERT INTO Doctor VALUES
 (1),
@@ -267,7 +281,7 @@ INSERT INTO `FinalDiagnosis` (`appointment_id`, `diagnosis_result`) VALUES
 
 
 drop procedure if exists `try_login`;
-CREATE PROCEDURE `try_login`(IN `username` VARCHAR(255), IN `password` VARCHAR(255)) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER select distinct r.user_name, r.user_id, p.fname, p.lname from Person p, RegisteredUser r, UserPasswordStore ups where p.person_id = r.person_id and r.user_name = username and ups.password_salted_hashed = SHA1(password);
+CREATE PROCEDURE `try_login`(IN `username` VARCHAR(255), IN `password` VARCHAR(255)) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER select distinct r.user_name, r.user_id, p.fname, p.lname from Person p, RegisteredUser r, UserPasswordStore ups where p.person_id = r.person_id and r.user_name = username and r.user_id = ups.user_id and ups.password_salted_hashed = SHA1(password);
 
 drop procedure if exists `get_lab_result`;
 CREATE PROCEDURE `get_lab_result`(IN `lab_test_order_id__` INTEGER) SELECT * FROM LabTestResult WHERE lab_test_order_id = lab_test_order_id__;
