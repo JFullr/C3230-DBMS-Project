@@ -242,6 +242,15 @@ public class MainPageCodeBehind {
 		this.adminResultList.selectionModelProperty().addListener((evt)->{
 			this.adminResultList.refresh();
 		});
+		
+		this.adminResultList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue != newValue && oldValue != null) {
+				oldValue.setMouseTransparent(true);
+			}
+			if (newValue != null) {
+				newValue.setMouseTransparent(false);
+			}
+		});
     }
     
     /**
