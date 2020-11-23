@@ -118,8 +118,10 @@ CREATE TABLE AppointmentCheckup(
 	pulse INTEGER NOT NULL,
 	weight DECIMAL(4, 2) NOT NULL,
 	temperature DECIMAL(4, 2) NOT NULL,
+	nurse_id INTEGER NOT NULL,
 	PRIMARY KEY(appointment_id),
-	FOREIGN KEY(appointment_id) REFERENCES Appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(appointment_id) REFERENCES Appointment(appointment_id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(nurse_id) REFERENCES Nurse(person_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE LabTest(
@@ -162,7 +164,11 @@ INSERT INTO Address VALUES
 (9,'dogwalk 345', null, 'City g', 'Oregon', 44444),
 (10,'thrth 77', null, 'City h', 'Connecticut', 33333),
 (11,'pot ato 420', null, 'City i', 'Mississippi', 222222),
-(12,'grwgwgweg 37667', null, 'City j', 'Idaho', 11111);
+(12,'grwgwgweg 37667', null, 'City j', 'Idaho', 11111),
+(13,'wefwef 37667', null, 'City j', 'Idaho', 11111),
+(14,'2352 35wfe 37667', null, 'City j', 'Idaho', 11111),
+(15,'342 geg 37667', null, 'City j', 'Idaho', 11111),
+(16,'jtjdjyjs 37667', null, 'City j', 'Idaho', 11111);
 
 
 INSERT INTO Person VALUES(1,'frank', 'burg', 'f', 'Male', '2020-5-5', 123456789, "0123456789", "uieh@grjnrg.eee", 1);
@@ -179,12 +185,17 @@ INSERT INTO `Person` (`person_id`, `fname`, `lname`, `middle_initial`, `gender`,
 (8, 'The', 'Potato', 'v', 'Other', '2020-10-07', 111311131, '9898989898', 'c@a.com', 8),
 (9, 'Danger', 'Hotdog', 'c', 'Other', '2020-10-07', 111151131, '1212121212', 'd@a.com', 9),
 (10, 'French', 'Caterpillar', 'd', 'Other', '2020-10-07', 111141531, '9999999998', 'e@a.com', 10),
-(11, 'Orange', 'Green', 'h', 'Other', '2020-10-07', 113341531, '0000000008', 'f@a.com', 11);
+(11, 'Orange', 'Green', 'h', 'Other', '2020-10-07', 113341531, '0000000008', 'f@a.com', 11),
+(12, 'Yellow', 'Dagger', 'y', 'Other', '2020-10-07', 213341531, '1000000008', 'k@a.com', 12),
+(13, 'Purple', 'McPurple', 't', 'Other', '2020-10-07', 313341531, '2000000008', 'j@a.com', 13),
+(14, 'Brown', 'Whale', 'r', 'Other', '2020-10-07', 413341531, '3000000008', 'i@a.com', 14),
+(15, 'Sludge', 'Farmer', 'e', 'Other', '2020-10-07', 513341531, '4000000008', 'h@a.com', 15);
 
 INSERT INTO RegisteredUser VALUES(2, '999', 11);
 INSERT INTO UserPasswordStore VALUES(2, "a9993e364706816aba3e25717850c26c9cd0d89d", "hash");
 
-INSERT INTO Doctor VALUES(1),
+INSERT INTO Doctor VALUES
+(1),
 (8),
 (9),
 (10),
@@ -198,6 +209,12 @@ INSERT INTO Patient VALUES
 (5),
 (6),
 (7);
+
+INSERT INTO Nurse VALUES
+(12),
+(13),
+(14),
+(15);
 
 INSERT INTO LabTest VALUES
 (1, TRUE,  666.66, 'Blood Test', 'Lab Test 1 -- does blood test'),
@@ -218,6 +235,12 @@ INSERT INTO `Appointment` (`appointment_id`, `person_id`, `date_time`, `doctor_i
 (13, 2, '2020-11-07 18:01:00', 10, 'Repeat Checkup'),
 (14, 2, '2020-10-30 13:02:00', 11, 'Repeat Checkup'),
 (15, 2, '2020-11-05 11:00:00', 11, 'Repeat Checkup');
+
+INSERT INTO AppointmentCheckup VALUES
+(6,60,60,60,60.0,60.0,12),
+(7,70,70,70,70.0,70.0,13),
+(8,80,80,80,80.0,80.0,14),
+(9,90,90,90,90.0,90.0,15);
 
 INSERT INTO `Admin` VALUES (1);
 
