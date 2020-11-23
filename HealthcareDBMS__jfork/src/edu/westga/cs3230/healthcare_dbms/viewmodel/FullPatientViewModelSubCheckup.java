@@ -188,28 +188,6 @@ public class FullPatientViewModelSubCheckup {
 	}
 	
 	/**
-	 * Inits the from.
-	 *
-	 * @param checkupData the checkup data
-	 */
-	public void initFrom(AppointmentCheckup checkupData) {
-		this.systolicPressureProperty.setValue(""+checkupData.getSystolic_pressure());
-		this.diatolicPressureProperty.setValue(""+checkupData.getDiastolic_pressure());
-		this.pulseProperty.setValue(""+checkupData.getPulse());
-		this.weightProperty.setValue(""+checkupData.getWeight());
-		this.temperatureProperty.setValue(""+checkupData.getTemperature());
-		
-		for(int i = 0; i < this.availableNurses.size(); i++) {
-			Nurse nurse = this.availableNurses.get(i).getNurse();
-			if((int)nurse.getPerson_id() == (int)checkupData.getNurse_id()) {
-				NurseData n = this.availableNurses.get(i);
-				this.nurseSelectionProperty.getValue().select(n.getPerson().getFname()+" "+n.getPerson().getLname());
-				break;
-			}
-		}
-	}
-	
-	/**
 	 * Load checkup data.
 	 */
 	public void loadCheckupData() {
@@ -225,7 +203,6 @@ public class FullPatientViewModelSubCheckup {
 					checkup = new AppointmentCheckup();
 					SqlSetter.fillWith(checkup, result.getTuple());
 				}
-				
 				
 			}
 		}
@@ -317,6 +294,7 @@ public class FullPatientViewModelSubCheckup {
 			this.systolicPressureProperty.setValue("");
 			this.temperatureProperty.setValue("");
 			this.weightProperty.setValue("");
+			this.nurseSelectionProperty.getValue().select("");
 			
 		} else {
 			
@@ -325,6 +303,16 @@ public class FullPatientViewModelSubCheckup {
 			this.systolicPressureProperty.setValue(""+checkup.getSystolic_pressure());
 			this.temperatureProperty.setValue(""+checkup.getTemperature());
 			this.weightProperty.setValue(""+checkup.getWeight());
+			
+			for(int i = 0; i < this.availableNurses.size(); i++) {
+				Nurse nurse = this.availableNurses.get(i).getNurse();
+				//System.out.println(nurse.getPerson_id()+"  "+checkup.getNurse_id());
+				if((int)nurse.getPerson_id() == (int)checkup.getNurse_id()) {
+					NurseData n = this.availableNurses.get(i);
+					this.nurseSelectionProperty.getValue().select(n.getPerson().getFname()+" "+n.getPerson().getLname());
+					break;
+				}
+			}
 			
 		}
 		
