@@ -292,11 +292,15 @@ drop procedure if exists `adminDateQuery`;
 DELIMITER $$
 CREATE DEFINER=`jfulle11`@`%` PROCEDURE `adminDateQuery`(IN `startDate` DATE, IN `endDate` DATE)
     READS SQL DATA
-SELECT ap.date_time, p.person_id PatientID, CONCAT(p_p.lname, ' ', p_p.middle_initial, ' ', p_p.fname) PatientName, CONCAT(d_p.fname, ' ', d_p.middle_initial, ' ', d_p.lname) DoctorName, 
+SELECT ap.date_time, 
+p.person_id PatientID, 
+CONCAT(p_p.lname, ' ', p_p.middle_initial, ' ', p_p.fname) AS PatientName, 
+CONCAT(d_p.fname, ' ', d_p.middle_initial, ' ', d_p.lname) AS DoctorName,
+(SELECT CONCAT(p.fname, ' ', p.middle_initial, ' ', p.lname) FROM Person p, AppointmentCheckup c WHERE c.nurse_id = p.person_id AND c.appointment_id = ap.appointment_id) AS NurseName,
 (SELECT ddd.diagnosis_description FROM Diagnosis ddd WHERE ddd.appointment_id = ap.appointment_id) AS DiagnosisDescription, 
-(SELECT GROUP_CONCAT(lt.test_name)
-    FROM LabTestOrder lo, LabTest lt 
-    WHERE ap.appointment_id = lo.appointment_id AND lo.lab_test_id = lt.lab_test_id) AS TestsOrdered
+(SELECT GROUP_CONCAT(CONCAT('{ ',lt.test_name, ': ', (SELECT lr.test_result FROM LabTestResult lr WHERE lr.lab_test_order_id = lo.lab_test_order_id),' }'))
+    FROM LabTestOrder lo, LabTest lt
+    WHERE ap.appointment_id = lo.appointment_id AND lo.lab_test_id = lt.lab_test_id) AS TestsAndResults
 
 FROM Appointment ap, Diagnosis dd, Doctor d, Patient p, Person p_p, Person d_p
 
